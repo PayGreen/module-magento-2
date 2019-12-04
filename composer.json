@@ -4,9 +4,8 @@
     "keywords": [
         "magento2"
     ],
-    "license": "Creative Commons BY-ND 4.0",
+    "license": "CC BY-ND 4.0",
     "type": "magento2-module",
-    "version": "1.0.0",
     "authors": [
         {
             "name": "Paygreen",
@@ -18,8 +17,7 @@
     },
     "autoload": {
         "files": [
-            "boot.php",
-            "registration.php"
+            "registration-composer.php"
         ],
         "psr-4": {
             "Paygreen\\Payment\\": ""

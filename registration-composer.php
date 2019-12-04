@@ -18,38 +18,15 @@
  * @version   0.3.3
  */
 
-/**
- * Class PGFrameworkComponentsEventsModuleEvent
- * @package PGFramework\Components\Events
- */
-class PGFrameworkComponentsEventsModuleEvent extends PGFrameworkFoundationsAbstractEvent
-{
-    /** @var string */
-    private $name;
-
-    /** @var string|null */
-    private $lastUpdate;
-
-    public function __construct($type, $lastUpdate)
-    {
-        $this->name = 'MODULE.' . strtoupper($type);
-
-        $this->lastUpdate = $lastUpdate;
-    }
-
-    /**
-     * @return string
-     */
-    public function getName()
-    {
-        return $this->name;
-    }
-
-    /**
-     * @return string|null
-     */
-    public function getLastUpdate()
-    {
-        return $this->lastUpdate;
-    }
+if (!defined('DS')) {
+    define('DS', DIRECTORY_SEPARATOR);
 }
+
+define('PAYGREEN_MODULE_DIR', getcwd() . DS . 'vendor' . DS . 'paygreen' . DS . 'payment');
+define('PAYGREEN_BOOTSTRAP_SRC', PAYGREEN_MODULE_DIR . DS . 'bootstrap.php');
+
+\Magento\Framework\Component\ComponentRegistrar::register(
+    \Magento\Framework\Component\ComponentRegistrar::MODULE,
+    'Paygreen_Payment',
+    PAYGREEN_MODULE_DIR
+);

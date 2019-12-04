@@ -15,21 +15,18 @@
  * @author    PayGreen <contact@paygreen.fr>
  * @copyright 2014 - 2019 Watt Is It
  * @license   https://creativecommons.org/licenses/by-nd/4.0/fr/ Creative Commons BY-ND 4.0
- * @version   0.3.2
+ * @version   0.3.3
  */
-
-\Magento\Framework\Component\ComponentRegistrar::register(
-    \Magento\Framework\Component\ComponentRegistrar::MODULE,
-    'Paygreen_Payment',
-    __DIR__
-);
-
 
 if (!defined('DS')) {
     define('DS', DIRECTORY_SEPARATOR);
 }
 
-if (!defined('PAYGREEN_MODULE_DIR')) {
-    define('PAYGREEN_MODULE_DIR', '/var/www/html/app/code/Paygreen/Payment');
-    define('PAYGREEN_BOOTSTRAP_SRC', PAYGREEN_MODULE_DIR . DS . 'bootstrap.php');
-}
+define('PAYGREEN_MODULE_DIR', getcwd() . DS . 'app' . DS . 'code' . DS . 'Paygreen' . DS . 'Payment');
+define('PAYGREEN_BOOTSTRAP_SRC', PAYGREEN_MODULE_DIR . DS . 'bootstrap.php');
+
+\Magento\Framework\Component\ComponentRegistrar::register(
+    \Magento\Framework\Component\ComponentRegistrar::MODULE,
+    'Paygreen_Payment',
+    PAYGREEN_MODULE_DIR
+);
