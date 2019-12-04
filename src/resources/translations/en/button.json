@@ -1,0 +1,157 @@
+{
+  "button": {
+    "errors": {
+      "payment_number_with_cash": "The cash payment can be executed only once.",
+      "payment_number_with_tokenize": "The payment at delivery can be executed only once.",
+      "not_payment_number_with_xtime": "The installment payment must consist of several installments.",
+      "not_payment_number_with_recurring": "The subscription payment must consist of several installments.",
+      "payment_report_with_cash": "The cash payment can not be shifted.",
+      "payment_report_with_tokenize": "The payment at the delivery can not be shifted.",
+      "payment_report_with_xtime": "The installment payment can not be shifted.",
+      "first_payment_part_range": "The first payment part must be an number between 1 and 99.",
+      "first_payment_part_without_xtime": "First payment part option is only available for installment payment.",
+      "order_repeated_without_recurring": "The repeated order option is only available for subscription payment.",
+      "xtime_fewer_than_3_commitment": "Multi-payment can not exceed 3 times.",
+      "title_min_length": "The wording of the payment button must not be empty.",
+      "title_max_length": "The wording of the payment button must not be longer than 100 characters.",
+      "image_height_positive": "The height of the image must be a positive integer.",
+      "min_amount_positive": "The minimum amount of the cart must be a positive integer.",
+      "max_amount_positive": "The maximum amount of the cart must be a positive integer.",
+      "position_positive": "The position of the payment button must be a positive integer.",
+      "unavailable_payment_mode": "The selected payment mode is not enabled for your store.",
+      "unavailable_payment_type": "The selected payment method is not enabled for your store."
+    },
+    "actions": {
+      "delete": {
+        "errors": {
+          "id_not_found": "ID button not found.",
+          "button_not_found": "Button not found."
+        },
+        "result": {
+          "success": "Button deleted successfully.",
+          "failure": "En error occurred while deleting the button."
+        }
+      },
+      "update": {
+        "errors": {
+          "id_not_found": "ID button not found.",
+          "button_not_found": "Button not found."
+        },
+        "result": {
+          "success": "Button updated successfully.",
+          "failure": "En error occurred while updating the button."
+        }
+      },
+      "insert": {
+        "errors": {},
+        "result": {
+          "success": "Button created successfully.",
+          "failure": "En error occurred while create the button."
+        }
+      }
+    },
+    "form": {
+      "title" : "Configuration payment buttons",
+      "title_new_button": "New button",
+      "errors": {
+        "upload_picture_error": "Can not upload the image.",
+        "display_error": "An error occurred while building button form."
+      },
+      "result": {
+        "success": {
+          "button": "Button saved successfully.",
+          "picture": "Image uploaded successfully."
+        }
+      },
+      "fields": {
+        "label": {
+          "label": "Button name",
+          "placeholder": "Button label",
+          "helper": "Text displayed to the right of the icon."
+        },
+        "min_amount": {
+          "label": "Minimum amount cart",
+          "helper": "Minimum."
+        },
+        "max_amount": {
+          "label": "to",
+          "helper": "Maximum."
+        },
+        "integration": {
+          "label": "Integration type",
+          "helper": "If SSL is disabled, all IFrame butons will be disabled.",
+          "warning": "Can only be active in HTTPS and if you activate the module 'InSite' in your backoffice Paygreen.",
+          "values": {
+            "external": "External payment",
+            "insite": "IFrame payment"
+          }
+        },
+        "image": {
+          "label": "Icon",
+          "default": "Use default image.",
+          "current": "Image currently used.",
+          "helper": "Image used for the button."
+        },
+        "height": {
+          "label": "Picture height",
+          "helper": "Picture height for the button."
+        },
+        "display_type": {
+          "label": "Display type",
+          "helper": "Button display option.",
+          "values": {
+            "all": "Picture and text",
+            "picture": "Only picture",
+            "text": "Only text",
+            "complete": "Complete line",
+            "bloc": "Floating bloc",
+            "half": "Half line"
+          }
+        },
+        "position": {
+          "label": "Display order",
+          "helper": "If empty, the position will be automatic defined."
+        },
+        "payment_mode": {
+          "label": "Payment mode",
+          "empty": "Select a payment mode",
+          "helper": "Choose the payment mode associated with this button."
+        },
+        "payment_type": {
+          "label": "Payment type",
+          "empty": "Select a payment type",
+          "helper": "Means of payment accepted."
+        },
+        "payment_number": {
+          "label": "Number of installments",
+          "helper": "Define the number of monthly payments that will be made."
+        },
+        "first_payment_part": {
+          "label": "Percentage of first installment",
+          "helper": "Determine what percentage of the order will be paid from the first payment."
+        },
+        "order_repeated": {
+          "label": "Renew previous orders",
+          "placeholder": "Enable option",
+          "helper": "At each due payment, the previous order is recreated automatically."
+        },
+        "payment_report": {
+          "label": "Payment deferment",
+          "values": {
+            "none": "No deferment",
+            "1week": "One week",
+            "2week": "Two weeks",
+            "1month": "One month",
+            "2month": "Two months",
+            "3month": "Three months"
+          },
+          "helper": "Postponement of first payment."
+        },
+        "discount": {
+          "label": "Discount",
+          "helper": "Non visible cart rule."
+        }
+      }
+    }
+  }
+}

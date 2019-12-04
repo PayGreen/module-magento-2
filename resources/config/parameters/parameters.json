@@ -1,0 +1,17 @@
+{
+  "db": {
+    "split": true,
+    "var": {
+      "prefix": "",
+      "engine": "innodb"
+    }
+  },
+  "media": {
+    "baseurl": "/pub/media/paygreen"
+  },
+  "client": {
+    "curl": {
+      "verify_peer": false
+    }
+  }
+}

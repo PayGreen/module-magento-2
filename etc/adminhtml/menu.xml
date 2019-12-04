@@ -1,0 +1,52 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Backend:etc/menu.xsd">
+    <menu>
+        <add id="Paygreen_Payment::main"
+             title="Paygreen"
+             module="Paygreen_Payment"
+             parent="Magento_Backend::stores"
+             sortOrder="10"
+             resource="Magento_Backend::content"
+        />
+        <add id="Paygreen_Payment::account"
+             title="Your account"
+             module="Paygreen_Payment"
+             action="paygreen/account/index"
+             parent="Paygreen_Payment::main"
+             sortOrder="0"
+             resource="Magento_Backend::content"
+        />
+        <add id="Paygreen_Payment::buttons"
+             title="Payment buttons"
+             module="Paygreen_Payment"
+             action="paygreen/buttons/index"
+             parent="Paygreen_Payment::main"
+             sortOrder="0"
+             resource="Magento_Backend::content"
+        />
+        <add id="Paygreen_Payment::config"
+             title="Module configuration"
+             module="Paygreen_Payment"
+             action="paygreen/config/index"
+             parent="Paygreen_Payment::main"
+             sortOrder="0"
+             resource="Magento_Backend::content"
+        />
+        <add id="Paygreen_Payment::eligibleamount"
+             title="Eligible amounts"
+             module="Paygreen_Payment"
+             action="paygreen/eligibleamount/index"
+             parent="Paygreen_Payment::main"
+             sortOrder="0"
+             resource="Magento_Backend::content"
+        />
+        <add id="Paygreen_Payment::systeminfo"
+             title="System informations"
+             module="Paygreen_Payment"
+             action="paygreen/systeminfo/index"
+             parent="Paygreen_Payment::main"
+             sortOrder="0"
+             resource="Magento_Backend::content"
+        />
+    </menu>
+</config>

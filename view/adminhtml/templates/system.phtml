@@ -1,0 +1,65 @@
+<?php
+
+$logData = $this->getLogData();
+
+?>
+<div class="content-header">
+    <table cellspacing="0">
+        <tr>
+            <td style="width:50%;"><h3 class="icon-head head-payment-method">Informations système</h3></td>
+            <td class="a-right">
+
+            </td>
+        </tr>
+    </table>
+</div>
+<div class="pg-index-content">
+    <div class="pg-content-column-2">
+        <div class="pg-panel pg-informations">
+            <h3>Plateforme d'execution</h3>
+            <table>
+                <tr>
+                    <th>Plateforme</th>
+                    <td><?php echo $this->getPlatformVersion(); ?></td>
+                </tr>
+                <tr>
+                    <th>PHP</th>
+                    <td><?php echo $this->getPHPVersion(); ?></td>
+                </tr>
+                <tr>
+                    <th>Module Paygreen</th>
+                    <td><?php echo $this->getModuleVersion(); ?></td>
+                </tr>
+                <tr>
+                    <th>Framework Paygreen</th>
+                    <td><?php echo $this->getFrameworkVersion(); ?></td>
+                </tr>
+            </table>
+        </div>
+        <div class="pg-panel  pg-informations">
+            <h3>Fichiers de log</h3>
+            <table>
+                <thead>
+                <tr>
+                    <td>Nom du fichier</td>
+                    <td>Taille</td>
+                    <td>Dernière modification</td>
+                    <td></td>
+                </tr>
+                </thead>
+                <tbody>
+                <?php foreach($logData as $log): ?>
+                    <tr>
+                        <td><?php echo $log['name']; ?></td>
+                        <td><?php echo isset($log['size']) ? $log['size'] : 'Log inexistant'; ?></td>
+                        <td><?php echo isset($log['updatedAt']) ? $log['updatedAt']->format('d M Y H:i:s') : 'NA'; ?></td>
+                        <td><?php if (isset($log['size'])): ?><a href="<?php echo $this->getUrl('*/*/download', array('file' => $log['name'])) ?>">Télécharger</a><?php endif; ?></td>
+                        <td><?php if (isset($log['size'])): ?><a href="<?php echo $this->getUrl('*/*/reset', array('file' => $log['name'])) ?>">Effacer</a><?php endif; ?></td>
+                    </tr>
+                <?php endforeach; ?>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+

@@ -1,0 +1,105 @@
+<?php $data = $this->getParameters(); ?>
+<form action="<?php echo $this->getUrl('paygreen/config/save') ?>" method="POST">
+    <section>
+        <h3 class="icon-head head-payment-method">Configuration globale</h3>
+        <div class="pg-index-content">
+            <div class="pg-form-bloc">
+                <label class="left-col">Identifiant unique</label>
+                <div class="right-col">
+                    <input name="public_key" type="text" value="<?=$data['public_key']?>" />
+                </div>
+            </div>
+            <div class="pg-form-bloc">
+                <label class="left-col">Clé privée</label>
+                <div class="right-col">
+                    <input name="private_key" type="text" value="<?=$data['private_key']?>" />
+                </div>
+            </div>
+            <div class="pg-form-bloc">
+                <div class="left-col">Activation</div>
+                <div class="right-col">
+                    <label><input name="active" type="radio" value="1" <?php if ($data['active']) {echo 'checked="checked"';} ?> /> Module activé</label>
+                    <p>Le module est activé.</p>
+                    <label><input name="active" type="radio" value="0" <?php if (!$data['active']) {echo 'checked="checked"';} ?> /> Module désactivé</label>
+                    <p>Le module est désactivé.</p>
+                </div>
+            </div>
+            <?php /*
+            <div class="pg-form-bloc">
+                <div class="left-col">Visibilité du module</div>
+                <div class="right-col">
+                    <label><input name="visibility" type="radio" value="1" <?php if ($data['visibility']) {echo 'checked="checked"';} ?> /> Module visible pour tous</label>
+                    <p>Le module est visible par tous.</p>
+                    <label><input name="visibility" type="radio" value="0" <?php if (!$data['visibility']) {echo 'checked="checked"';} ?> /> Module invisible (mode TEST)</label>
+                    <p>Le module est visible uniquement par l'administrateur.</p>
+                </div>
+            </div>
+            */ ?>
+        </div>
+    </section>
+    <section>
+        <h3 class="icon-head head-payment-method">Comportement du payment</h3>
+        <div class="pg-index-content">
+            <div class="pg-form-bloc">
+                <label class="left-col">Titre du bloc de paiement Paygreen</label>
+                <div class="right-col">
+                    <input name="title" type="text" value="<?=$data['title']?>" />
+                </div>
+            </div>
+            <div class="pg-form-bloc">
+                <label class="left-col">Libelé du bouton de confirmation de paiement</label>
+                <div class="right-col">
+                    <input name="payment_confirmation_button" type="text" value="<?=$data['payment_confirmation_button']?>" />
+                </div>
+            </div>
+            <div class="pg-form-bloc">
+                <label class="left-col">Texte affiché après un paiement réussi</label>
+                <div class="right-col">
+                    <input name="payment_success_text" type="text" value="<?=$data['payment_success_text']?>" />
+                </div>
+            </div>
+            <div class="pg-form-bloc">
+                <label class="left-col">Texte affiché après un paiement infructueux</label>
+                <div class="right-col">
+                    <input name="payment_error_text" type="text" value="<?=$data['payment_error_text']?>" />
+                </div>
+            </div>
+            <div class="pg-form-bloc">
+                <div class="left-col">Action suite à un refus de paiement</div>
+                <div class="right-col">
+                    <label><input name="behavior_payment_refused" type="radio" value="cancel" <?php if ($data['behavior_payment_refused'] === 'cancel') {echo 'checked="checked"';} ?> /> Annulation de commande</label>
+                    <p>Génère une commande annulée et envoie un courrier électronique d'annulation au client.</p>
+                    <label><input name="behavior_payment_refused" type="radio" value="none" <?php if ($data['behavior_payment_refused'] === 'none') {echo 'checked="checked"';} ?> /> Aucune action</label>
+                    <p>Redirige le client vers votre page de paiement.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section>
+        <h3 class="icon-head head-payment-method">Options</h3>
+        <div class="pg-index-content">
+            <div class="pg-form-bloc">
+                <div class="left-col">Remboursement Paygreen</div>
+                <div class="right-col">
+                    <label><input name="behavior_transmit_refund" type="radio" value="1" <?php if ($data['behavior_transmit_refund']) {echo 'checked="checked"';} ?> /> Oui</label>
+                    <label><input name="behavior_transmit_refund" type="radio" value="0" <?php if (!$data['behavior_transmit_refund']) {echo 'checked="checked"';} ?> /> Non</label>
+                    <p>Autoriser le remboursement des transactions Paygreen depuis votre back-office Magento.</p>
+                </div>
+            </div>
+            <!--
+                    <div class="pg-form-bloc">
+                        <div class="left-col">Confirmation de livraison Paygreen</div>
+                        <div class="right-col">
+                            <label><input name="behavior_transmit_delivering" type="radio" value="1" /> Oui</label>
+                            <label><input name="behavior_transmit_delivering" type="radio" value="0" /> Non</label>
+                            <p>Autorisez la confirmation de livraison avec Paygreen depuis votre back-office Magento.</p>
+                        </div>
+                    </div>
+            -->
+        </div>
+    </section>
+    <section>
+        <input name="form_key" type="hidden" value="<?php /* @escapeNotVerified */ echo $this->getFormKey(); ?>" />
+        <input type="submit" value="Valider" />
+    </section>
+</form>

@@ -1,0 +1,132 @@
+<?php
+
+$data = $this->getButtonData();
+
+$isValidInsite = $this->isValidInsite();
+
+?>
+<section>
+    <h3 class="icon-head head-payment-method">Configuration globale</h3>
+    <div class="pg-index-content">
+        <div class="pg-form-bloc">
+            <label class="left-col" for="label_<?=$this->id()?>">Libellé</label>
+            <div class="right-col">
+                <input id="label_<?=$this->id()?>" name="label" type="text" value="<?=$data['label']?>" maxlength="100" />
+            </div>
+        </div>
+        <div class="pg-form-bloc">
+            <label class="left-col" for="paymentType_<?=$this->id()?>">Type de paiement</label>
+            <div class="right-col">
+                <select id="paymentType_<?=$this->id()?>" name="paymentType" class="js-payment-type-selector" data-button="<?=$this->id()?>" required>
+                    <option value=""><?php pgtrans('button.form.fields.payment_type.empty') ?></option>
+                    <?php foreach($this->getPaymentTypeChoices() as $key => $text): ?>
+                    <option value="<?=$key?>" <?php if ($data['paymentType'] === $key) {echo "selected";} ?>><?=$text?></option>
+                    <?php endforeach; ?>
+                </select>
+            </div>
+        </div>
+        <div class="pg-form-bloc">
+            <label class="left-col" for="integration_<?=$this->id()?>">Intégration</label>
+            <div class="right-col">
+                <select id="integration_<?=$this->id()?>" name="integration" class="js-integration-selector">
+                    <?php foreach($this->getIntegrationChoices() as $key => $text): ?>
+                        <option value="<?=$key?>" <?php if ($data['integration'] === $key) {echo "selected";} ?>><?=$text?></option>
+                    <?php endforeach; ?>
+                </select>
+                <?php if(!$isValidInsite): ?><div class="warning js-unactive-insite hidden-field">Ne pourra être réellement actif qu'en HTTPS et si vous activez le module 'InSite' dans votre backoffice Paygreen.</div><?php endif; ?>
+            </div>
+        </div>
+    </div>
+    <h3 class="icon-head head-payment-method">Affichage du bouton</h3>
+    <div class="pg-index-content">
+        <div class="pg-form-bloc">
+            <label class="left-col" for="image_<?=$this->id()?>">Image</label>
+            <div class="right-col">
+                <label><input id="defaultPicture_<?=$this->id()?>" name="defaultimg" type="checkbox" value="1" class="js-default-picture" data-button="<?=$this->id()?>" <?php if (!$data['image']) {echo "checked";} ?> /> Image par défaut</label>
+                <input id="image_<?=$this->id()?>" name="image" type="file" value="" accept=".jpg, .jpeg, .gif, .png" class="js-image" data-button="<?=$this->id()?>" />
+                <div><img src="<?=$this->getPictureUrl()?>" style="margin-top: 10px; height: <?=$data['height']?>px;" alt="Button picture." /></div>
+            </div>
+        </div>
+        <div class="pg-form-bloc">
+            <label class="left-col" for="height_<?=$this->id()?>">Taille de l'image</label>
+            <div class="right-col">
+                <input id="height_<?=$this->id()?>" name="height" type="number" value="<?=$data['height']?>" min="0" />
+            </div>
+        </div>
+        <div class="pg-form-bloc">
+            <label class="left-col" for="displayType_<?=$this->id()?>">Type d'affichage</label>
+            <div class="right-col">
+                <select id="displayType_<?=$this->id()?>" name="displayType">
+                    <?php foreach($this->getDisplayTypeChoices() as $key => $text): ?>
+                        <option value="<?=$key?>" <?php if ($data['displayType'] === $key) {echo "selected";} ?>><?=$text?></option>
+                    <?php endforeach; ?>
+                </select>
+            </div>
+        </div>
+        <div class="pg-form-bloc">
+            <label class="left-col" for="position_<?=$this->id()?>">Ordre</label>
+            <div class="right-col">
+                <input id="position_<?=$this->id()?>" name="position" type="number" value="<?=$data['position']?>" min="0" />
+            </div>
+        </div>
+    </div>
+    <h3 class="icon-head head-payment-method">Configuration du paiement</h3>
+    <div class="pg-index-content">
+        <div class="pg-form-bloc">
+            <label class="left-col" for="paymentMode_<?=$this->id()?>">Mode de paiement</label>
+            <div class="right-col">
+                <select id="paymentMode_<?=$this->id()?>" name="paymentMode" class="js-payment-mode-selector" data-button="<?=$this->id()?>" required>
+                    <option value=""><?php pgtrans('button.form.fields.payment_mode.empty') ?></option>
+                    <?php foreach($this->getPaymentModeChoices() as $key => $text): ?>
+                        <option value="<?=$key?>" <?php if ($data['paymentMode'] === $key) {echo "selected";} ?>><?=$text?></option>
+                    <?php endforeach; ?>
+                </select>
+            </div>
+        </div>
+        <div id="paymentNumberField-<?=$this->id()?>" class="pg-form-bloc hidden-field js-hidden-field-togglable-<?=$this->id()?>">
+            <label class="left-col" for="paymentNumber_<?=$this->id()?>">Nombre d'échéances</label>
+            <div class="right-col">
+                <input id="paymentNumber_<?=$this->id()?>" name="paymentNumber" type="number" value="<?=$data['paymentNumber']?>" min="1" />
+            </div>
+        </div>
+        <div id="firstPaymentPartField-<?=$this->id()?>" class="pg-form-bloc hidden-field js-hidden-field-togglable-<?=$this->id()?>">
+            <label class="left-col" for="firstPaymentPart_<?=$this->id()?>">Pourcentage de la première échéance</label>
+            <div class="right-col">
+                <input id="firstPaymentPart_<?=$this->id()?>" name="firstPaymentPart" type="number" value="<?=$data['firstPaymentPart']?>" min="0" max="100" />
+            </div>
+        </div>
+        <?php /*
+        <div id="orderRepeatedField-<?=$this->id()?>" class="pg-form-bloc hidden-field js-hidden-field-togglable-<?=$this->id()?>">
+            <div class="left-col">Renouveller les commandes précédentes ?</div>
+            <div class="right-col">
+                <label for="orderRepeated_<?=$this->id()?>"><input id="orderRepeated_<?=$this->id()?>" name="orderRepeated" type="checkbox" value="1" <?php if ($data['orderRepeated']) {echo "checked";} ?> /> Activer le renouvellement automatique</label>
+            </div>
+        </div>
+        */ ?>
+        <div id="paymentReportField-<?=$this->id()?>" class="pg-form-bloc hidden-field js-hidden-field-togglable-<?=$this->id()?>">
+            <label class="left-col" for="paymentReport_<?=$this->id()?>">Report de paiement</label>
+            <div class="right-col">
+                <select id="paymentReport_<?=$this->id()?>" name="paymentReport">
+                    <?php foreach($this->getPaymentReportChoices() as $key => $text): ?>
+                        <option value="<?=$key?>" <?php if ($data['paymentReport'] === $key) {echo "selected";} ?>><?=$text?></option>
+                    <?php endforeach; ?>
+                </select>
+            </div>
+        </div>
+    </div>
+    <h3 class="icon-head head-payment-method">Limitations</h3>
+    <div class="pg-index-content">
+        <div class="pg-form-bloc">
+            <label class="left-col" for="minAmount_<?=$this->id()?>">Montant minimum</label>
+            <div class="right-col">
+                <input id="minAmount_<?=$this->id()?>" name="minAmount" type="number" value="<?=$data['minAmount']?>" min="0" />
+            </div>
+        </div>
+        <div class="pg-form-bloc">
+            <label class="left-col" for="maxAmount_<?=$this->id()?>">Montant maximum</label>
+            <div class="right-col">
+                <input id="maxAmount_<?=$this->id()?>" name="maxAmount" type="number" value="<?=$data['maxAmount']?>" min="0" />
+            </div>
+        </div>
+    </div>
+</section>

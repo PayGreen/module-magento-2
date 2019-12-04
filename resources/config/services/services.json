@@ -1,0 +1,27 @@
+{
+  "magento": {},
+
+  "facade.module": {
+    "class": "PGModuleServicesModuleFacade"
+  },
+
+  "handler.database": {
+    "class": "PGModuleServicesHandlersDatabaseHandler",
+    "arguments": ["@parameters", "@parser"]
+  },
+
+  "handler.cart": {
+    "class": "PGModuleServicesHandlersCartHandler",
+    "arguments": ["@logger"]
+  },
+
+  "strategy.order_state_mapper.magento": {
+    "class": "PGModuleServicesStrategiesOrderStateMagentoStrategy",
+    "tags": [
+      {
+        "name": "mapper.strategy.order_state",
+        "options": ["magento"]
+      }
+    ]
+  }
+}

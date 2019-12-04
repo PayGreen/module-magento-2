@@ -1,0 +1,206 @@
+/**
+ * 2014 - 2019 Watt Is It
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the Creative Commons BY-ND 4.0
+ * that is bundled with this package in the file LICENSE.md.
+ * It is also available through the world-wide-web at this URL:
+ * https://creativecommons.org/licenses/by-nd/4.0/fr/
+ * If you did not receive a copy of the license and are unable to
+ * obtain it through the world-wide-web, please send an email
+ * to contact@paygreen.fr so we can send you a copy immediately.
+ *
+ * @author    PayGreen <contact@paygreen.fr>
+ * @copyright 2014 - 2019 Watt Is It
+ * @license   https://creativecommons.org/licenses/by-nd/4.0/fr/ Creative Commons BY-ND 4.0
+ * @version   0.3.2
+ */
+
+.pg-index-content {
+    display: flex;
+    flex-direction: column;
+}
+
+.pg-index-content a{
+    color: #33ad73;
+    text-decoration: underline;
+    font-weight: bold;
+
+}
+.pg-informations h1, .pg-informations h2, .pg-informations h3, .pg-informations h4, .pg-informations h5, .pg-informations h6 {
+    color: #33ad73;
+}
+
+.pg-informations__content section{
+    padding: 4px;
+}
+
+.pg-informations  table{
+    border-top: 2px solid #7A7A7A4D;
+    border-collapse: collapse;
+    background: #ffffff1a;
+    box-shadow: 1px 1px 4px 0px #7A7A7A4D;
+}
+
+.pg-informations table tr:nth-child(even) {
+    background: #F6F6F6;
+}
+
+.pg-informations table tr:nth-child(odd)  {
+    background: #fff;
+}
+
+.pg-panel{
+    box-shadow: 1px 1px 4px 0px #7A7A7A4D;
+    padding: 10px;
+    margin: 10px 0;
+    background-color: white;
+    color: #4f4f4f;
+}
+
+.pg-informations  table tbody th{
+    padding: 4px;
+    color: #808080;
+}
+
+.pg-informations  table tbody td{
+    padding: 4px;
+    color: #4f4f4f;
+}
+
+.pg-informations  table thead td{
+    font-weight: bold;
+    padding: 4px;
+}
+
+.pg-content-column-2{
+    display:flex;
+    flex-direction:row;
+}
+.pg-content-column-2 .pg-panel:first-child{
+    margin-right : 10px;
+}
+.pg-content-column-2 .pg-panel:last-child{
+    margin-left: 10px;
+    margin-right: 10px;
+}
+
+
+
+
+
+
+.pg-form-bloc {
+    box-sizing: content-box;
+    display: inline-table;
+    margin: 20px 10px;
+    width: 45%;
+}
+
+.pg-form-bloc .left-col {
+    box-sizing: border-box;
+    display: table-cell;
+    width: 50%;
+    font-weight: bold;
+}
+
+.pg-form-bloc .right-col {
+    box-sizing: border-box;
+    display: table-cell;
+    width: 50%;
+}
+
+.pg-form-bloc .right-col input[type=text],
+.pg-form-bloc .right-col input[type=number],
+.pg-form-bloc .right-col select {
+    width: 100%;
+}
+
+.pg-form-bloc .right-col p {
+    font-style: italic;
+}
+
+.hidden-field {
+    display: none;
+}
+
+.warning {
+    color: #FF0000;
+    width: 280px;
+}
+
+.pg-button-form {
+    border: 1px solid black;
+    background-color: #EEE;
+    margin-top: 15px;
+}
+
+.pg-button-form .button-header {
+    display: table;
+    width: 100%;
+}
+
+.pg-button-form .button-header > div {
+    display: table-row;
+    line-height: 40px;
+    vertical-align: center;
+}
+
+.pg-button-form .button-header > div > div {
+    display: table-cell;
+}
+.pg-button-form .button-header > div > div:nth-child(1) {
+    padding-left: 10px;
+}
+.pg-button-form .button-header > div > div:nth-child(2),
+.pg-button-form .button-header > div > div:nth-child(3) {
+    width: 25%;
+    text-align: center;
+}
+.pg-button-form .button-header > div > div:nth-child(4) {
+    width: 150px;
+    text-align: center;
+}
+.pg-button-form .button-header > div > div.actions {
+    width: 75px;
+    text-align: center;
+}
+
+.pg-button-form .button-header > div > div > * {
+    line-height: 40px;
+    margin: 0;
+}
+
+.pg-button-form .button-header img {
+    vertical-align: middle;
+    max-width: 150px;
+}
+
+
+.pg-button-form form {
+    display: none;
+}
+.pg-button-form.expended form {
+    display: initial;
+}
+
+
+.pg-button-form .button-header {
+    cursor: pointer;
+}
+.pg-button-form.expended .button-header {
+    cursor: initial;
+}
+
+
+.pg-button-form .button-header button.closer {
+    display: none;
+}
+
+.pg-button-form.expended .button-header button.closer {
+    display: initial;
+}
+.pg-button-form.expended .button-header button.opener {
+    display: none;
+}

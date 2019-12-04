@@ -1,0 +1,28 @@
+{
+    "name": "paygreen/payment",
+    "description": "Paygreen payment",
+    "keywords": [
+        "magento2"
+    ],
+    "license": "Creative Commons BY-ND 4.0",
+    "type": "magento2-module",
+    "version": "1.0.0",
+    "authors": [
+        {
+            "name": "Paygreen",
+            "email": "support@paygreen.fr"
+        }
+    ],
+    "require": {
+        "magento/framework": "*"
+    },
+    "autoload": {
+        "files": [
+            "boot.php",
+            "registration.php"
+        ],
+        "psr-4": {
+            "Paygreen\\Payment\\": ""
+        }
+    }
+}

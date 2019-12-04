@@ -1,0 +1,30 @@
+{
+  "selector.payment_mode": {
+    "class": "PGDomainServicesSelectorsPaymentModeSelector",
+    "arguments": ["@logger"],
+    "calls": [
+      {
+        "method": "setPaygreenFacade",
+        "arguments": ["@paygreen.facade"]
+      },
+      {
+        "method": "setTranslatorHandler",
+        "arguments": ["@handler.translator"]
+      }
+    ]
+  },
+  "selector.payment_type": {
+    "class": "PGDomainServicesSelectorsPaymentTypeSelector",
+    "arguments": ["@logger"],
+    "calls": [
+      {
+        "method": "setPaymentTypeManager",
+        "arguments": ["@manager.payment_type"]
+      },
+      {
+        "method": "setTranslatorHandler",
+        "arguments": ["@handler.translator"]
+      }
+    ]
+  }
+}

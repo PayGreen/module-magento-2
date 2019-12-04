@@ -1,0 +1,33 @@
+{
+  "order": {
+    "machines": {
+      "CASH": {
+        "start": ["ERROR", "VALIDATE", "TEST", "VERIFY", "CANCEL"],
+        "transitions": {
+        }
+      },
+      "RECURRING": {
+        "start": ["ERROR", "WAIT", "CANCEL"],
+        "transitions": {
+          "WAIT": ["ERROR", "VALIDATE", "TEST"],
+          "ERROR": ["VALIDATE", "TEST"],
+          "VALIDATE": ["ERROR"],
+          "TEST": ["ERROR"]
+        }
+      },
+      "XTIME": {
+        "start": ["ERROR", "WAIT", "CANCEL"],
+        "transitions": {
+          "WAIT": ["ERROR", "VALIDATE", "TEST"],
+          "ERROR": ["VALIDATE", "TEST"]
+        }
+      },
+      "TOKENIZE": {
+        "start": ["ERROR", "CANCEL", "AUTH"],
+        "transitions": {
+          "AUTH": ["ERROR", "VALIDATE", "TEST", "VERIFY"]
+        }
+      }
+    }
+  }
+}

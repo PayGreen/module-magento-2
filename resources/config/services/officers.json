@@ -1,0 +1,21 @@
+{
+  "officer.settings": {
+    "class": "PGModuleServicesOfficersSettingsOfficer",
+    "tags": [
+      {
+        "name": "listener",
+        "options": [
+          "module.install",
+          "setDefaultSettings",
+          250
+        ]
+      }
+    ]
+  },
+  "officer.post_payment": {
+    "class": "PGModuleServicesOfficersPostPaymentOfficer"
+  },
+  "officer.order": {
+    "class": "PGModuleServicesOfficersOrderOfficer"
+  }
+}

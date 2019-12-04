@@ -1,0 +1,30 @@
+{
+  "order": {
+    "machines": {
+      "CASH": {
+        "!start": [],
+        "transitions": {
+          "NEW": ["ERROR", "VALIDATE", "TEST", "VERIFY", "CANCEL"]
+        }
+      },
+      "RECURRING": {
+        "!start": [],
+        "transitions": {
+          "NEW": ["ERROR", "WAIT", "CANCEL"]
+        }
+      },
+      "XTIME": {
+        "!start": [],
+        "transitions": {
+          "NEW": ["ERROR", "WAIT", "CANCEL"]
+        }
+      },
+      "TOKENIZE": {
+        "!start": [],
+        "transitions": {
+          "NEW": ["ERROR", "CANCEL", "AUTH"]
+        }
+      }
+    }
+  }
+}

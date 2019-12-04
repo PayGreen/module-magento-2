@@ -1,0 +1,6 @@
+{
+  "diagnostic.media_folder_chmod": {
+    "class": "PGFrameworkServicesDiagnosticsMediaFolderChmod",
+    "arguments": ["@pathfinder"]
+  }
+}

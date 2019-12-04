@@ -1,0 +1,61 @@
+{
+  "db": {
+    "var": {}
+  },
+  "log": {
+    "format": "<datetime> | *<type>* | <text>",
+    "file": "${PAYGREEN_VAR_DIR}${DS}module.log",
+    "api": {
+      "format": "<datetime> | *<type>* | <text>",
+      "file": "${PAYGREEN_VAR_DIR}${DS}api.log"
+    }
+  },
+  "cache": {
+    "config": {
+      "activate": true
+    },
+    "entries": {
+      "account-infos": {
+        "ttl": 300,
+        "format": "object"
+      },
+      "status-shop": {
+        "ttl": 300,
+        "format": "object"
+      },
+      "payment-types": {
+        "ttl": 3600,
+        "format": "object"
+      },
+      "translations-fr": {
+        "ttl": 3600,
+        "format": "array"
+      },
+      "translations-en": {
+        "ttl": 3600,
+        "format": "array"
+      }
+    }
+  },
+  "media": {
+    "baseurl": null
+  },
+  "translator": {
+    "local": "FR",
+    "default_local": "EN",
+    "sources": ["bundles-resources", "module-resources"]
+  },
+  "paygreen": {
+    "backlink": "http://paygreen.io/paiement-securise/"
+  },
+  "client": {
+    "curl": {
+      "allow_redirection": true,
+      "verify_peer": true,
+      "verify_host": 2,
+      "timeout": 30,
+      "encoding": "gzip,deflate",
+      "http_version": 1.1
+    }
+  }
+}

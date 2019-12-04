@@ -1,0 +1,147 @@
+{
+  "module": {
+    "description": "The french payment solution that has a positive impact on society and the environment",
+    "form": {
+      "buttons": {
+        "validate": "Validate",
+        "delete": "Delete",
+        "cancel": "Cancel"
+      }
+    }
+  },
+  "backoffice": {
+    "errors": {
+      "connection": "Error while managing your connection.",
+      "interface_global": "Error during the preparation of the Paygreen backoffice.",
+      "processing": "An error occurred during the resolution of your request.",
+      "interface_construction": "Error during the generation of the configuration interface.",
+      "authentication_required": "This section requires you to be logged into your Paygreen account."
+    },
+    "actions": {
+      "hooks": {
+        "result": {
+          "success": "Hook at position 1.",
+          "failure": "Position hook failed."
+        },
+        "errors": {
+          "display_form": "An error occurred while building configure hooks form."
+        }
+      },
+      "credentials": {
+        "save": {
+          "result": {
+            "success": "Credentials saved successfully.",
+            "failure": "An error occured during saving credentials !"
+          }
+        },
+        "reset": {
+          "result": {
+            "success": "Credentials reseted successfully.",
+            "failure": "An error occured during reseting credentials !"
+          }
+        }
+      },
+      "testmode": {
+        "toggle": {
+          "success": "Test mode toggled successfully.",
+          "failure": "An error occured during toggling test mode !"
+        }
+      }
+    }
+  },
+  "account": {
+    "actions": {
+      "toggle": {
+        "result": {
+          "success": "Account activation updated successfully.",
+          "failure": "An error occurred during account activation updating."
+        }
+      }
+    },
+    "backoffice": {
+      "errors": {
+        "header": "An error occurred while building account header."
+      }
+    },
+    "errors": {
+      "account_not_found": "Can not connect to your Paygreen account.",
+      "invalid_public_key": "Your private key is invalid",
+      "invalid_private_key": "Your public key is invalid",
+      "empty_bank_data": "Your bank details are incomplete.",
+      "empty_shop_data": "The data of your shop are incomplete."
+    }
+  },
+  "eligible_amounts": {
+    "actions": {
+      "save_category_payments": {
+        "title": "Activation of payment methods by category",
+        "result": {
+          "success": "Category configuration saved successfully."
+        },
+        "errors": {
+          "display_form": "An error occurred while building category payments form."
+        },
+        "header": [
+          "Activate your payment methods according to the category of products added to the basket.",
+          "Example: You can activate TRD only for categories containing only eligible food products."
+        ],
+        "footer": [
+          "If you do not check any box in a column, this means that all categories are eligible for this method of payment.",
+          "A payment button can only be used for a given order if at least one product of the order is eligible.",
+          "For an order also containing non-eligible products, a supplement will be automatically requested in blue card."
+        ]
+      },
+      "save_shipping_payments": {
+        "title": "Management of delivery costs by means of payment",
+        "result": {
+          "success": "Shipping exclusion configuration saved successfully."
+        },
+        "errors": {
+          "display_form": "An error occurred while building shipping payments form."
+        },
+        "header": [
+          "If shipping costs should not be paid with certain payment types, check the corresponding boxes.",
+          "For example, check the TRD box to ensure that shipping costs are not paid using this payment type."
+        ],
+        "footer": [
+          "By default, the delivery costs are eligible for all means of payment.",
+          "Check the boxes above is therefore to exclude them from a means of payment.",
+          "If shipping costs are excluded from a payment type, a credit card payment will be required."
+        ]
+      }
+    }
+  },
+  "system": {
+    "title": "System information on the Paygreen module",
+    "platform": {
+      "title": "Execution platform",
+      "fields": {
+        "platform": "Platform",
+        "php": "PHP",
+        "module": "Paygreen module",
+        "framework": "Paygreen framework"
+      }
+    },
+    "logs": {
+      "title": "Log files",
+      "columns": {
+        "filename": "File name",
+        "size": "Size",
+        "last_update": "Last modification"
+      },
+      "actions": {
+        "delete": {
+          "button": "Delete",
+          "success": "The targeted file has been deleted."
+        },
+        "download": {
+          "button": "Download"
+        }
+      },
+      "errors": {
+        "invalid_file": "The targeted file is not a valid log file.",
+        "file_not_found": "The targeted file does not exist."
+      }
+    }
+  }
+}

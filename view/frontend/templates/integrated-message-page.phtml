@@ -1,0 +1,36 @@
+
+<div>
+    <h2><?php echo $this->getTitle(); ?></h2>
+
+    <?php if ($this->hasMessage()): ?>
+        <p><?php echo $this->getMessage(); ?></p>
+    <?php endif; ?>
+
+    <?php if ($this->hasErrors()): ?>
+    <ul class="alert alert-danger">
+        <?php foreach ($this->getErrors() as $error): ?>
+            <li><?php echo $error; ?></li>
+        <?php endforeach; ?>
+    </ul>
+    <?php endif; ?>
+
+    <?php if ($this->hasRedirection()): ?>
+        <a href="<?php echo $this->getRedirection('link'); ?>" id="redirect_link"><?php echo $this->getRedirection('text'); ?></a>
+    <?php endif; ?>
+
+    <?php if (is_array($this->getExceptions()) && (PAYGREEN_ENV === "DEV")): ?>
+        <?php foreach ($this->getExceptions() as $exception): ?>
+            <h3><?php echo $exception->getMessage(); ?></h3>
+            <?php echo print_r($exception); ?>
+        <?php endforeach; ?>
+    <?php endif; ?>
+</div>
+
+<?php if ($this->hasRedirection() && ($this->getRedirection('reload') === true)): ?>
+    <script type="text/javascript">
+        setTimeout(function() {
+            let url = document.getElementById('redirect_link').attributes['href'].value;
+            window.location.replace(url);
+        }, 5000);
+    </script>
+<?php endif; ?>

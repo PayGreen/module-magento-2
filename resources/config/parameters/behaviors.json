@@ -1,0 +1,8 @@
+{
+  "behaviors": {
+    "transmission_on_refund": {
+      "type": "user",
+      "key": "behavior_transmit_refund"
+    }
+  }
+}

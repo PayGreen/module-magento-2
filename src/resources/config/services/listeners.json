@@ -1,0 +1,62 @@
+{
+  "listener.setup.install_default_button": {
+    "class": "PGDomainServicesListenersInstallDefaultButtonListener",
+    "arguments": [
+      "@manager.button",
+      "@logger"
+    ],
+    "tags": [
+      {
+        "name": "listener",
+        "options": ["module.install"]
+      }
+    ]
+  },
+  "listener.setup.move_default_button_image": {
+    "class": "PGDomainServicesListenersInstallDefaultButtonImageListener",
+    "arguments": [
+      "@pathfinder",
+      "@handler.picture",
+      "@logger"
+    ],
+    "tags": [
+      {
+        "name": "listener",
+        "options": [
+          ["module.install", "module.upgrade"]
+        ]
+      }
+    ]
+  },
+  "listener.setup.client_compatibility_checker": {
+    "class": "PGClientServicesListenersInstallCompatibilityCheckListener",
+    "arguments": [
+      "@paygreen.facade",
+      "@logger"
+    ],
+    "tags": [
+      {
+        "name": "listener",
+        "options": [
+          "module.install",
+          "checkCompatibility",
+          100
+        ]
+      }
+    ]
+  },
+  "listener.refund.update_transaction": {
+    "class": "PGDomainServicesListenersRefundListener",
+    "arguments": [
+      "@handler.refund",
+      "@handler.behavior",
+      "@logger"
+    ],
+    "tags": [
+      {
+        "name": "listener",
+        "options": ["order.refund"]
+      }
+    ]
+  }
+}
