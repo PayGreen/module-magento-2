@@ -15,7 +15,6 @@
  * @author    PayGreen <contact@paygreen.fr>
  * @copyright 2014 - 2019 Watt Is It
  * @license   https://creativecommons.org/licenses/by-nd/4.0/fr/ Creative Commons BY-ND 4.0
- * @version   0.3.5
  */
 
 namespace Paygreen\Payment\Block;
@@ -89,5 +88,33 @@ class DisplayModuleSystem extends AbstractTemplate
     public function getPHPVersion()
     {
         return PHP_VERSION;
+    }
+
+    public function getCurlVersion()
+    {
+        $curl_data = $this->getCurlData();
+
+        return $curl_data['version'];
+    }
+
+    public function getSSLVersion()
+    {
+        $curl_data = $this->getCurlData();
+
+        return $curl_data['ssl_version'];
+    }
+
+    private function getCurlData()
+    {
+        if (function_exists('curl_version')) {
+            $curl_data = curl_version();
+        } else {
+            $curl_data = array(
+                'version' => 'NA',
+                'ssl_version' => 'NA'
+            );
+        }
+
+        return $curl_data;
     }
 }

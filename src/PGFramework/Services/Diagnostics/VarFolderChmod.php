@@ -17,7 +17,7 @@
  * @license   https://creativecommons.org/licenses/by-nd/4.0/fr/ Creative Commons BY-ND 4.0
  */
 
-class PGFrameworkServicesDiagnosticsMediaFolderChmod extends PGFrameworkFoundationsAbstractDiagnostic
+class PGFrameworkServicesDiagnosticsVarFolderChmod extends PGFrameworkFoundationsAbstractDiagnostic
 {
     /** @var PGFrameworkServicesPathfinder */
     private $pathfinder;
@@ -42,7 +42,7 @@ class PGFrameworkServicesDiagnosticsMediaFolderChmod extends PGFrameworkFoundati
      */
     protected function isFolderExists()
     {
-        $path = $this->getMediaPath();
+        $path = $this->getVarPath();
 
         return (file_exists($path) && is_dir($path));
     }
@@ -55,9 +55,9 @@ class PGFrameworkServicesDiagnosticsMediaFolderChmod extends PGFrameworkFoundati
     {
         $this->requirements();
 
-        $chmod = octdec(substr(sprintf('%o', fileperms($this->getMediaPath())), -4));
+        $chmod = octdec(substr(sprintf('%o', fileperms($this->getVarPath())), -4));
 
-        return ($chmod === PGFrameworkServicesHandlersPictureHandler::MEDIA_FOLDER_CHMOD);
+        return ($chmod === PGFrameworkBootstrap::VAR_FOLDER_CHMOD);
     }
 
     /**
@@ -69,8 +69,8 @@ class PGFrameworkServicesDiagnosticsMediaFolderChmod extends PGFrameworkFoundati
         $this->requirements();
 
         return chmod(
-            $this->getMediaPath(),
-            PGFrameworkServicesHandlersPictureHandler::MEDIA_FOLDER_CHMOD
+            $this->getVarPath(),
+            PGFrameworkBootstrap::VAR_FOLDER_CHMOD
         );
     }
 
@@ -78,9 +78,9 @@ class PGFrameworkServicesDiagnosticsMediaFolderChmod extends PGFrameworkFoundati
      * @return string
      * @throws Exception
      */
-    protected function getMediaPath()
+    protected function getVarPath()
     {
-        return $this->pathfinder->toAbsolutePath('media');
+        return $this->pathfinder->toAbsolutePath('var');
     }
 
     /**
@@ -88,10 +88,10 @@ class PGFrameworkServicesDiagnosticsMediaFolderChmod extends PGFrameworkFoundati
      */
     private function requirements()
     {
-        $path = $this->getMediaPath();
+        $path = $this->getVarPath();
 
         if (!is_dir($path)) {
-            throw new Exception("Paygreen media folder not found : $path");
+            throw new Exception("Paygreen var folder not found : $path");
         }
     }
 }

@@ -15,7 +15,6 @@
  * @author    PayGreen <contact@paygreen.fr>
  * @copyright 2014 - 2019 Watt Is It
  * @license   https://creativecommons.org/licenses/by-nd/4.0/fr/ Creative Commons BY-ND 4.0
- * @version   0.3.5
  */
 
 /**
@@ -24,7 +23,7 @@
  */
 class PGDomainServicesPaygreenFacade extends PGFrameworkFoundationsAbstractObject
 {
-    const VERSION = '1.7.3';
+    const VERSION = '1.7.11';
     const CURRENCY_EUR = 'EUR';
 
     const STATUS_WAITING = 'WAITING';
@@ -89,7 +88,8 @@ class PGDomainServicesPaygreenFacade extends PGFrameworkFoundationsAbstractObjec
     }
 
     /**
-     * @return object
+     * @return array|null
+     * @throws Exception
      */
     public function getStatusShop()
     {
@@ -102,7 +102,24 @@ class PGDomainServicesPaygreenFacade extends PGFrameworkFoundationsAbstractObjec
             try {
                 $response = $this->getApiFacade()->getStatus('shop');
 
-                $data = $response->isSuccess() ? $response->data : null;
+                if ($response->isSuccess()) {
+                    $data = $response->data;
+
+                    if (
+                        isset($data->availableMode) &&
+                        is_array($data->availableMode) &&
+                        in_array('RECURRING', $data->availableMode) &&
+                        !in_array('XTIME', $data->availableMode)
+                    ) {
+                        $data->availableMode[] = 'XTIME';
+                    }
+                } else {
+                    $data = null;
+                }
+                /**
+                 * @todo remove specific code after API correction
+                 * $data = $response->isSuccess() ? $response->data : null;
+                 */
 
                 $cacheHandler->saveEntry('status-shop', $data);
             } catch (Exception $exception) {
@@ -116,6 +133,7 @@ class PGDomainServicesPaygreenFacade extends PGFrameworkFoundationsAbstractObjec
     /**
      * @param string $name
      * @return bool
+     * @throws Exception
      */
     public function hasModule($name)
     {
@@ -185,22 +203,22 @@ class PGDomainServicesPaygreenFacade extends PGFrameworkFoundationsAbstractObjec
                     }
                 }
 
-                $response = $this->getApiFacade()->getStatus('shop');
+                $dataShop = $this->getStatusShop();
 
-                if (empty($response->data)) {
+                if ($dataShop === null) {
                     throw new PGDomainExceptionsPaygreenAccountException(
                         'Shop is empty.',
                         PGDomainExceptionsPaygreenAccountException::EMPTY_SHOP_DATA
                     );
                 }
 
-                $data['url'] = $response->data->url;
-                $data['modules'] = $response->data->modules;
-                $data['availablePaymentModes'] = $response->data->availableMode;
-                $data['solidarityType'] = $response->data->extra->solidarityType;
+                $data['url'] = $dataShop->url;
+                $data['modules'] = $dataShop->modules;
+                $data['availablePaymentModes'] = $dataShop->availableMode;
+                $data['solidarityType'] = $dataShop->extra->solidarityType;
 
-                if (isset($response->data->businessIdentifier)) {
-                    $data['siret'] = $response->data->businessIdentifier;
+                if (isset($dataShop->businessIdentifier)) {
+                    $data['siret'] = $dataShop->businessIdentifier;
                 }
 
                 $data['valide'] = true;

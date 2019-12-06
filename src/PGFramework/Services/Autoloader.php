@@ -15,7 +15,6 @@
  * @author    PayGreen <contact@paygreen.fr>
  * @copyright 2014 - 2019 Watt Is It
  * @license   https://creativecommons.org/licenses/by-nd/4.0/fr/ Creative Commons BY-ND 4.0
- * @version   0.3.5
  */
 
 /**
@@ -31,8 +30,11 @@ class PGFrameworkServicesAutoloader
 
     public function __construct()
     {
-        if (file_exists($this->getCacheFilename())) {
-            $classNames = include $this->getCacheFilename();
+        $filename = $this->getCacheFilename();
+
+        if (file_exists($filename)) {
+            $content = file_get_contents($filename);
+            $classNames = json_decode($content, true);
 
             if (is_array($classNames)) {
                 $this->classNames = $classNames;
@@ -63,19 +65,25 @@ class PGFrameworkServicesAutoloader
      */
     public function autoload($className)
     {
-        foreach ($this->vendors as $name => $vendor) {
-            $pattern = "/^{$name}/";
+        if (array_key_exists($className, $this->classNames)) {
+            $this->loadFile($this->classNames[$className]);
 
-            if (preg_match($pattern, $className) === 1) {
-                $formatedClassName = $this->snakify($className);
+            return true;
+        } else {
+            foreach ($this->vendors as $name => $vendor) {
+                $pattern = "/^{$name}/";
 
-                $src = $this->getFilename($formatedClassName, $vendor['path']);
+                if (preg_match($pattern, $className) === 1) {
+                    $formatedClassName = $this->snakify($className);
 
-                $this->loadFile($src);
+                    $src = $this->getFilename($formatedClassName, $vendor['path']);
 
-                $this->extendCache($className, $src);
+                    $this->loadFile($src);
 
-                return true;
+                    $this->extendCache($className, $src);
+
+                    return true;
+                }
             }
         }
 
@@ -131,14 +139,14 @@ class PGFrameworkServicesAutoloader
 
     protected function getCacheFilename()
     {
-        return PAYGREEN_VAR_DIR . DIRECTORY_SEPARATOR . 'autoload.cache.php';
+        return PAYGREEN_VAR_DIR . DIRECTORY_SEPARATOR . 'autoload.cache.json';
     }
 
     protected function extendCache($className, $src)
     {
         $this->classNames[$className] = $src;
 
-        $cache = '<?php return ' . var_export($this->classNames, true) . '; ?>' . PHP_EOL;
+        $cache = json_encode($this->classNames);
 
         $handler = @fopen($this->getCacheFilename(), "w+");
 

@@ -44,6 +44,10 @@
         "label": "Désactivation de CURL SSL",
         "help": "Cette option est à modifier avec le consentement du support Paygreen."
       },
+      "behavior_debug_log": {
+        "label": "Activation des logs détaillés",
+        "help": "Cette option est à modifier avec le consentement du support Paygreen."
+      },
       "shop_token": {
         "label": "Identifiant unique"
       },

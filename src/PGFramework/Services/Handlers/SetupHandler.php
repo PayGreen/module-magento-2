@@ -15,7 +15,6 @@
  * @author    PayGreen <contact@paygreen.fr>
  * @copyright 2014 - 2019 Watt Is It
  * @license   https://creativecommons.org/licenses/by-nd/4.0/fr/ Creative Commons BY-ND 4.0
- * @version   0.3.5
  */
 
 class PGFrameworkServicesHandlersSetupHandler extends PGFrameworkFoundationsAbstractObject
@@ -49,11 +48,13 @@ class PGFrameworkServicesHandlersSetupHandler extends PGFrameworkFoundationsAbst
     {
         $result = false;
 
-        if ($flags & self::INSTALL === self::INSTALL) {
+        $this->logger->debug("Setup handler initialization. Last update : '{$this->lastUpdate}'.");
+
+        if (in_array($flags, array (self::INSTALL, self::ALL))) {
             $result = $this->runInstall();
         }
 
-        if (!$result && ($flags & self::UPGRADE === self::UPGRADE)) {
+        if (!$result && in_array($flags, array (self::UPGRADE, self::ALL))) {
             $result = $this->runUprade();
         }
 
@@ -70,10 +71,23 @@ class PGFrameworkServicesHandlersSetupHandler extends PGFrameworkFoundationsAbst
 
     public function runUprade()
     {
-        if (!$this->lastUpdate && ($this->lastUpdate !== PAYGREEN_MODULE_VERSION)) {
+        if ($this->lastUpdate && ($this->lastUpdate !== PAYGREEN_MODULE_VERSION)) {
             $this->upgrade();
             return true;
         }
+    }
+
+    public function runDelayedUpgrade($version)
+    {
+        $this->logger->notice("Setup handler delayed update : '$version'.");
+
+        $this->setLastUpdate($version);
+
+        if ($version === PAYGREEN_MODULE_VERSION) {
+            $this->upgrade();
+        }
+
+        return true;
     }
 
     public function install()

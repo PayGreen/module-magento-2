@@ -19,6 +19,10 @@
     "use_transaction_lock": {
       "type": "fixed",
       "value": true
+    },
+    "detailed_logs": {
+      "type": "fixed",
+      "value": false
     }
   }
 }

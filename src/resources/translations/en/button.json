@@ -11,7 +11,7 @@
       "first_payment_part_range": "The first payment part must be an number between 1 and 99.",
       "first_payment_part_without_xtime": "First payment part option is only available for installment payment.",
       "order_repeated_without_recurring": "The repeated order option is only available for subscription payment.",
-      "xtime_fewer_than_3_commitment": "Multi-payment can not exceed 3 times.",
+      "xtime_fewer_than_max_commitments": "Multi-payment can not exceed 4 times.",
       "title_min_length": "The wording of the payment button must not be empty.",
       "title_max_length": "The wording of the payment button must not be longer than 100 characters.",
       "image_height_positive": "The height of the image must be a positive integer.",
@@ -30,7 +30,8 @@
         "result": {
           "success": "Button deleted successfully.",
           "failure": "En error occurred while deleting the button."
-        }
+        },
+        "confirmation": "Are you sure you want to delete this payment button ?"
       },
       "update": {
         "errors": {

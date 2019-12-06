@@ -157,6 +157,25 @@
       }
     ]
   },
+  "handler.diagnostic": {
+    "class": "PGFrameworkServicesHandlersDiagnosticHandler",
+    "arguments": ["@container", "@logger"],
+    "tags": [
+      {
+        "name": "listener",
+        "options": [
+          ["module.install", "module.upgrade"],
+          "listen",
+          750
+        ]
+      }
+    ],
+    "catch": {
+      "tag": "diagnostic",
+      "method": "addDiagnosticName",
+      "built": false
+    }
+  },
 
   "factory.order_state_machine": {
     "class": "PGDomainServicesOrderStateMachineFactory",

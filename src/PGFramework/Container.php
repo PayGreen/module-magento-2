@@ -15,7 +15,6 @@
  * @author    PayGreen <contact@paygreen.fr>
  * @copyright 2014 - 2019 Watt Is It
  * @license   https://creativecommons.org/licenses/by-nd/4.0/fr/ Creative Commons BY-ND 4.0
- * @version   0.3.5
  */
 
 /**
@@ -71,6 +70,34 @@ class PGFrameworkContainer
         }
 
         return self::$instance;
+    }
+
+    public function reset(array $additionalServices = array())
+    {
+        $defaultServices = array(
+            'autoloader' => $this->get('autoloader'),
+            'pathfinder' => $this->get('pathfinder'),
+            'container' => $this,
+            'parameters' => $this->parameters,
+            'parser' => $this->get('parser'),
+            'service.library' => $this->library,
+            'service.builder' => $this->builder
+        );
+
+        $services = array_merge(
+            $defaultServices,
+            $additionalServices
+        );
+
+        $this->services = array();
+
+        $this->library->reset();
+        $this->parameters->reset();
+
+        foreach($services as $name => $service) {
+            $this->set($name, $service);
+        }
+
     }
 
     /**

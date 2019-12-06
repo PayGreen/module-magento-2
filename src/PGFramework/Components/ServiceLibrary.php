@@ -15,7 +15,6 @@
  * @author    PayGreen <contact@paygreen.fr>
  * @copyright 2014 - 2019 Watt Is It
  * @license   https://creativecommons.org/licenses/by-nd/4.0/fr/ Creative Commons BY-ND 4.0
- * @version   0.3.5
  */
 
 class PGFrameworkComponentsServiceLibrary implements arrayaccess
@@ -23,10 +22,18 @@ class PGFrameworkComponentsServiceLibrary implements arrayaccess
     /** @var PGFrameworkComponentsBag  */
     private $definitions;
 
+    /** @var array */
+    private $files = array();
+
     /**
      * PGFrameworkContainer constructor.
      */
     public function __construct()
+    {
+        $this->buildDefinitionBag();
+    }
+
+    private function buildDefinitionBag()
     {
         $this->definitions = new PGFrameworkComponentsBag();
 
@@ -38,6 +45,19 @@ class PGFrameworkComponentsServiceLibrary implements arrayaccess
         return $this->definitions->toArray();
     }
 
+    public function reset()
+    {
+        $this->buildDefinitionBag();
+
+        $filenames = $this->files;
+
+        $this->files = array();
+
+        foreach($filenames as $filename) {
+            $this->addConfigurationFile($filename);
+        }
+    }
+
     /**
      * @param string $filename
      * @return $this
@@ -46,6 +66,8 @@ class PGFrameworkComponentsServiceLibrary implements arrayaccess
     public function addConfigurationFile($filename)
     {
         $data = json_decode(file_get_contents($filename), true);
+
+        $this->files[] = $filename;
 
         if (!$data) {
             throw new Exception("Unable to load service definition file : '$filename'.");

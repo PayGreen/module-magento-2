@@ -15,7 +15,6 @@
  * @author    PayGreen <contact@paygreen.fr>
  * @copyright 2014 - 2019 Watt Is It
  * @license   https://creativecommons.org/licenses/by-nd/4.0/fr/ Creative Commons BY-ND 4.0
- * @version   0.3.5
  */
 
 /**
@@ -36,8 +35,8 @@ class PGDomainServicesProcessorsManageCashTransactionProcessor extends PGDomainF
             case PGDomainServicesPaygreenFacade::STATUS_SUCCESSED:
                 $this->pushSteps(array(
                     array('setOrderStatus', array('VALIDATE')),
-                    'checkAmountValidity',
                     'checkTestingMode',
+                    'checkAmountValidity',
                     'saveOrder',
                     'insertTransaction',
                     array('sendOrderEvent', array('VALIDATION')),

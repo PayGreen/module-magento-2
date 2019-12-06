@@ -15,7 +15,6 @@
  * @author    PayGreen <contact@paygreen.fr>
  * @copyright 2014 - 2019 Watt Is It
  * @license   https://creativecommons.org/licenses/by-nd/4.0/fr/ Creative Commons BY-ND 4.0
- * @version   0.3.5
  */
 
 /**
@@ -30,7 +29,9 @@ class PGFrameworkServicesLogger extends PGFrameworkFoundationsAbstractObject
     /** @var PGFrameworkServicesDumper */
     private $dumper;
 
-    private $format = "*<type>* | <datetime> | <text>";
+    private $format = "<datetime> | *<type>* | <text>";
+
+    private $detailed_logs = false;
 
     public function __construct(PGFrameworkServicesDumper $dumper)
     {
@@ -72,6 +73,14 @@ class PGFrameworkServicesLogger extends PGFrameworkFoundationsAbstractObject
         return $this;
     }
 
+    /**
+     * @param bool $detailed_logs
+     */
+    public function setDetailedLogs($detailed_logs)
+    {
+        $this->detailed_logs = $detailed_logs;
+    }
+
     public function emergency($text, $data = null)
     {
         $this->write('EMERGENCY', $text, $data);
@@ -109,7 +118,7 @@ class PGFrameworkServicesLogger extends PGFrameworkFoundationsAbstractObject
 
     public function debug($text, $data = null)
     {
-        if (PAYGREEN_ENV === 'DEV') {
+        if ($this->detailed_logs) {
             $this->write('DEBUG', $text, $data);
         }
     }

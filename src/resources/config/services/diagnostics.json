@@ -1,6 +1,34 @@
 {
   "diagnostic.media_folder_chmod": {
     "class": "PGFrameworkServicesDiagnosticsMediaFolderChmod",
-    "arguments": ["@pathfinder"]
+    "arguments": ["@pathfinder"],
+    "tags": [
+      { "name": "diagnostic" }
+    ]
+  },
+  "diagnostic.var_folder_chmod": {
+    "class": "PGFrameworkServicesDiagnosticsVarFolderChmod",
+    "arguments": ["@pathfinder"],
+    "tags": [
+      { "name": "diagnostic" }
+    ]
+  },
+  "diagnostic.default_button_picture": {
+    "class": "PGDomainServicesDiagnosticsDefaultButtonPictureDiagnostic",
+    "arguments": [
+      "@pathfinder",
+      "@handler.picture",
+      "@logger"
+    ],
+    "tags": [
+      { "name": "diagnostic" },
+      {
+        "name": "listener",
+        "options": [
+          "module.install",
+          "installDefaultButtonPicture"
+        ]
+      }
+    ]
   }
 }

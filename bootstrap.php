@@ -15,7 +15,6 @@
  * @author    PayGreen <contact@paygreen.fr>
  * @copyright 2014 - 2019 Watt Is It
  * @license   https://creativecommons.org/licenses/by-nd/4.0/fr/ Creative Commons BY-ND 4.0
- * @version   0.3.5
  */
 
 // #############################################################################################
@@ -27,7 +26,7 @@ try {
         define('DS', DIRECTORY_SEPARATOR);
     }
 
-    define('PAYGREEN_MODULE_VERSION', '0.3.5');
+    define('PAYGREEN_MODULE_VERSION', '0.4.0');
 
     $objectManager = \Magento\Framework\App\ObjectManager::getInstance();
 
@@ -66,6 +65,7 @@ try {
         ->insertStaticServices(array(
             'magento' => $objectManager
         ))
+        ->activateDetailedLogs()
         ->setup(PGFrameworkServicesHandlersSetupHandler::UPGRADE)
     ;
 

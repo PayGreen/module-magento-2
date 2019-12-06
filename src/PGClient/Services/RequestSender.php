@@ -15,7 +15,6 @@
  * @author    PayGreen <contact@paygreen.fr>
  * @copyright 2014 - 2019 Watt Is It
  * @license   https://creativecommons.org/licenses/by-nd/4.0/fr/ Creative Commons BY-ND 4.0
- * @version   0.3.5
  */
 
 /**
@@ -65,6 +64,9 @@ class PGClientServicesRequestSender
             /** @var PGClientInterfacesRequesterInterface $requester */
             foreach ($this->requesters as $requester) {
                 if (!$request->isSent() && $requester->isValid($request)) {
+                    $requesterName = get_class($requester);
+                    $this->logger->debug("Send request with requester : '$requesterName'.");
+
                     /** @var PGClientEntitiesResponse $data */
                     $response = $requester->send($request);
                 }

@@ -15,7 +15,6 @@
  * @author    PayGreen <contact@paygreen.fr>
  * @copyright 2014 - 2019 Watt Is It
  * @license   https://creativecommons.org/licenses/by-nd/4.0/fr/ Creative Commons BY-ND 4.0
- * @version   0.3.5
  */
 
 namespace Paygreen\Payment\Console\Command;
@@ -51,7 +50,9 @@ class TestCommand extends Command
         $logger = $this->getService('logger');
 
         try {
-            /** Do something !! */
+            $logger->info("Do something !!");
+            
+            $output->writeln("<info>Command executed successfully.</info>");
         } catch (Exception $exception) {
             $logger->critical("Error during execute 'paygreen:test' command.", $exception);
 

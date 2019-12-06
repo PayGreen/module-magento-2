@@ -15,7 +15,6 @@
  * @author    PayGreen <contact@paygreen.fr>
  * @copyright 2014 - 2019 Watt Is It
  * @license   https://creativecommons.org/licenses/by-nd/4.0/fr/ Creative Commons BY-ND 4.0
- * @version   0.3.5
  */
 
 namespace Paygreen\Payment\Block;
@@ -40,7 +39,8 @@ class DisplayModuleConfig extends AbstractTemplate
             'payment_success_text' => $settings->get('payment_success_text'),
             'payment_error_text' => $settings->get('payment_error_text'),
             'behavior_payment_refused' => $settings->get('behavior_payment_refused'),
-            'behavior_transmit_refund' => $settings->get('behavior_transmit_refund')
+            'behavior_transmit_refund' => $settings->get('behavior_transmit_refund'),
+            'behavior_detailed_logs' => $settings->get('behavior_detailed_logs')
         ];
     }
 }

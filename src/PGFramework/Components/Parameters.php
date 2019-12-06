@@ -15,7 +15,6 @@
  * @author    PayGreen <contact@paygreen.fr>
  * @copyright 2014 - 2019 Watt Is It
  * @license   https://creativecommons.org/licenses/by-nd/4.0/fr/ Creative Commons BY-ND 4.0
- * @version   0.3.5
  */
 
 /**
@@ -27,7 +26,15 @@ class PGFrameworkComponentsParameters implements arrayaccess
     /** @var PGFrameworkComponentsBag */
     private $bag;
 
+    /** @var array */
+    private $files = array();
+
     public function __construct()
+    {
+        $this->buildParametersBag();
+    }
+
+    private function buildParametersBag()
     {
         $this->bag = new PGFrameworkComponentsBag();
     }
@@ -40,6 +47,19 @@ class PGFrameworkComponentsParameters implements arrayaccess
         return $this->bag;
     }
 
+    public function reset()
+    {
+        $this->buildParametersBag();
+
+        $filenames = $this->files;
+
+        $this->files = array();
+
+        foreach($filenames as $filename) {
+            $this->addParametersFile($filename);
+        }
+    }
+
     /**
      * @param string $filename
      * @return $this
@@ -48,6 +68,8 @@ class PGFrameworkComponentsParameters implements arrayaccess
     public function addParametersFile($filename)
     {
         $data = json_decode(file_get_contents($filename), true);
+
+        $this->files[] = $filename;
 
         if (!$data) {
             throw new Exception("Unable to load parameters file : '$filename'.");

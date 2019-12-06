@@ -11,7 +11,7 @@
       "first_payment_part_range": "La première partie du paiement doit être un nombre compris entre 1 et 99.",
       "first_payment_part_without_xtime": "L'option de premier paiement est uniquement disponible pour les paiements en plusieurs fois.",
       "order_repeated_without_recurring": "L'option de commande répétée n'est disponible que pour le paiement par abonnement.",
-      "xtime_fewer_than_3_commitment": "Le paiement en plusieurs fois ne peut pas comporter plus de 3 échéances.",
+      "xtime_fewer_than_max_commitments": "Le paiement en plusieurs fois ne peut pas comporter plus de 4 échéances.",
       "title_min_length": "Le libelé du bouton de paiement ne doit pas être vide.",
       "title_max_length": "Le libelé du bouton de paiement ne doit pas comporter plus de 100 caractères.",
       "image_height_positive": "La hauteur de l'image doit être un nombre entier positif.",
@@ -30,7 +30,8 @@
         "result": {
           "success": "Bouton supprimé avec succès.",
           "failure": "Une erreur s'est produite lors de la suppression du bouton."
-        }
+        },
+        "confirmation": "Êtes-vous certains de vouloir supprimer ce bouton de paiement ?"
       },
       "update": {
         "errors": {

@@ -15,7 +15,6 @@
  * @author    PayGreen <contact@paygreen.fr>
  * @copyright 2014 - 2019 Watt Is It
  * @license   https://creativecommons.org/licenses/by-nd/4.0/fr/ Creative Commons BY-ND 4.0
- * @version   0.3.5
  */
 
 /**
@@ -45,9 +44,9 @@ class PGClientServicesRequestersCurlRequester extends PGClientFoundationsAbstrac
             CURLOPT_SSL_VERIFYHOST => (int) $this->getConfig('verify_host'),
             CURLOPT_URL => $request->getFinalUrl(),
             CURLOPT_RETURNTRANSFER => true,
-            CURLOPT_FOLLOWLOCATION => (bool) $this->getConfig('allow_redirection'),
-            CURLOPT_ENCODING => (string) $this->getConfig('encoding'),
-            CURLOPT_MAXREDIRS => (bool) $this->getConfig('allow_redirection') ? 10 : 0,
+            CURLOPT_FOLLOWLOCATION => false,
+            CURLOPT_MAXREDIRS => 0,
+            CURLOPT_ENCODING => '',
             CURLOPT_CONNECTTIMEOUT => (int) $this->getConfig('timeout'),
             CURLOPT_TIMEOUT => (int) $this->getConfig('timeout'),
             CURLOPT_HTTP_VERSION => $this->getHttpVersionOption(),

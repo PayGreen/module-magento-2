@@ -15,7 +15,6 @@
  * @author    PayGreen <contact@paygreen.fr>
  * @copyright 2014 - 2019 Watt Is It
  * @license   https://creativecommons.org/licenses/by-nd/4.0/fr/ Creative Commons BY-ND 4.0
- * @version   0.3.5
  */
 
 class PGFrameworkServicesHandlersCacheHandler
@@ -24,6 +23,9 @@ class PGFrameworkServicesHandlersCacheHandler
 
     /** @var array */
     private $entries = array();
+
+    /** @var array */
+    private $cached_entries = array();
 
     /** @var array */
     private $config = array();
@@ -38,12 +40,14 @@ class PGFrameworkServicesHandlersCacheHandler
 
         $this->logger = $logger;
 
-        $this->logger->debug("Cache handler initialized.");
+        if ($this->isActivate()) {
+            $this->logger->debug("Cache handler initialized.");
+        }
     }
 
     public function isActivate()
     {
-        return ($this->config['activate'] === true);
+        return ((PAYGREEN_ENV === 'PROD') && ($this->config['activate'] === true));
     }
 
     public function loadEntry($name)
@@ -56,7 +60,10 @@ class PGFrameworkServicesHandlersCacheHandler
             return $data;
         }
 
-        if ($this->isActivate() && $this->hasValidEntry($name)) {
+        if (array_key_exists($name, $this->cached_entries)) {
+            $this->logger->debug("Reading entry '$name' from handler.");
+            $data = $this->cached_entries[$name];
+        } elseif ($this->isActivate() && $this->hasValidEntry($name)) {
             $this->logger->debug("Reading entry '$name' in '$path'.");
 
             $content = file_get_contents($path);
@@ -73,6 +80,8 @@ class PGFrameworkServicesHandlersCacheHandler
                 default:
                     $this->logger->warning("Unknown entry cache format : '$format'.");
             }
+
+            $this->cached_entries[$name] = $data;
         }
 
         return $data;
@@ -86,21 +95,27 @@ class PGFrameworkServicesHandlersCacheHandler
             throw new Exception("Undefined entry cache : '$name'.");
         }
 
+        $this->cached_entries[$name] = $data;
+
         if ($this->isActivate()) {
             $this->logger->debug("Saving entry '$name' in '$path'.");
 
-            if ($this->hasEntry($name, $path)) {
-                unlink($path);
-            }
-
             $content = json_encode($data);
 
-            file_put_contents($path, $content);
+            $result = file_put_contents($path, $content);
+
+            if ($result === false) {
+                throw new Exception("Unable to save entry '$name' in path '$path'.");
+            }
+
+            $this->logger->debug("$result octets saved in '$path' for entry '$name'.");
         }
     }
 
     public function clearCache()
     {
+        $this->cached_entries = array();
+
         foreach (array_keys($this->entries) as $name) {
             $path = $this->getPath($name);
 
@@ -119,7 +134,13 @@ class PGFrameworkServicesHandlersCacheHandler
     {
         $path = $this->getPath($name);
 
-        return $this->hasEntry($name, $path) && !$this->isExpiredEntry($name, $path);
+        $hasEntry = $this->hasEntry($name, $path);
+
+        if (!$hasEntry) {
+            $this->logger->warning("File not found for entry '$name' : '$path'.");
+        }
+
+        return $hasEntry && !$this->isExpiredEntry($name, $path);
     }
 
     protected function hasEntry($name, $path = null)
@@ -135,7 +156,17 @@ class PGFrameworkServicesHandlersCacheHandler
 
         $dt = new DateTime("-$ttl seconds");
 
-        return filemtime($path) < $dt->getTimestamp();
+        $filetime = filemtime($path);
+
+        $timestamp = $dt->getTimestamp();
+
+        $isExpired = $filetime < $timestamp;
+
+        if ($isExpired) {
+            $this->logger->warning("Detect expired entry for '$name' with TTL of $ttl.");
+        }
+
+        return $isExpired;
     }
 
     protected function getPath($name)
@@ -144,6 +175,6 @@ class PGFrameworkServicesHandlersCacheHandler
             $name = PAYGREEN_CACHE_PREFIX . '.' . $name;
         }
 
-        return PAYGREEN_VAR_DIR . DIRECTORY_SEPARATOR . 'entry.' . $name . '.cache.php';
+        return PAYGREEN_VAR_DIR . DIRECTORY_SEPARATOR . 'entry.' . $name . '.cache.json';
     }
 }

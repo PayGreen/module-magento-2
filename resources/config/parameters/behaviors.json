@@ -3,6 +3,10 @@
     "transmission_on_refund": {
       "type": "user",
       "key": "behavior_transmit_refund"
+    },
+    "detailed_logs": {
+      "type": "user",
+      "key": "behavior_detailed_logs"
     }
   }
 }

@@ -99,6 +99,19 @@
         </div>
     </section>
     <section>
+        <h3 class="icon-head head-payment-method">Configuration avancée</h3>
+        <div class="pg-index-content">
+            <div class="pg-form-bloc">
+                <div class="left-col">Activer les logs détaillés</div>
+                <div class="right-col">
+                    <label><input name="behavior_detailed_logs" type="radio" value="1" <?php if ($data['behavior_detailed_logs']) {echo 'checked="checked"';} ?> /> Oui</label>
+                    <label><input name="behavior_detailed_logs" type="radio" value="0" <?php if (!$data['behavior_detailed_logs']) {echo 'checked="checked"';} ?> /> Non</label>
+                    <p>Cette option est à modifier avec le consentement du support Paygreen.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section>
         <input name="form_key" type="hidden" value="<?php /* @escapeNotVerified */ echo $this->getFormKey(); ?>" />
         <input type="submit" value="Valider" />
     </section>

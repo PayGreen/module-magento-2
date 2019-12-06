@@ -15,11 +15,10 @@
  * @author    PayGreen <contact@paygreen.fr>
  * @copyright 2014 - 2019 Watt Is It
  * @license   https://creativecommons.org/licenses/by-nd/4.0/fr/ Creative Commons BY-ND 4.0
- * @version   0.3.5
  */
 
 
-class PGDomainServicesListenersInstallDefaultButtonImageListener
+class PGDomainServicesDiagnosticsDefaultButtonPictureDiagnostic extends PGFrameworkFoundationsAbstractDiagnostic
 {
     /** @var PGFrameworkServicesPathfinder */
     private $pathfinder;
@@ -37,15 +36,42 @@ class PGDomainServicesListenersInstallDefaultButtonImageListener
         $this->logger = $logger;
     }
 
-    public function listen(PGFrameworkComponentsEventsModuleEvent $event)
+    public function installDefaultButtonPicture()
+    {
+        if (!$this->isValid()) {
+            try {
+                $this->resolve();
+            } catch (Exception $exception) {
+                $this->logger->error("Error during default button picture installation : " . $exception->getMessage(), $exception);
+            }
+        }
+    }
+
+    public function isValid()
+    {
+        $defaultButtonFilename = PGFrameworkServicesHandlersPictureHandler::DEFAULT_PICTURE;
+
+        return $this->mediaHandler->isStored($defaultButtonFilename);
+    }
+
+    /**
+     * @throws Exception
+     */
+    public function resolve()
     {
         $defaultButtonFilename = PGFrameworkServicesHandlersPictureHandler::DEFAULT_PICTURE;
         $defaultButtonSrc = $this->pathfinder->toAbsolutePath('bundles-media', "/$defaultButtonFilename");
 
-        if (is_file($defaultButtonSrc) and !$this->mediaHandler->isStored($defaultButtonFilename)) {
-            $this->mediaHandler->store($defaultButtonSrc, $defaultButtonFilename);
+        if (!is_file($defaultButtonSrc)) {
+            throw new Exception("Default button picture not found : '$defaultButtonSrc'.");
+        }
 
+        $result = $this->mediaHandler->store($defaultButtonSrc, $defaultButtonFilename);
+
+        if ($result) {
             $this->logger->info("Default button image successfully installed.");
         }
+
+        return $result;
     }
 }

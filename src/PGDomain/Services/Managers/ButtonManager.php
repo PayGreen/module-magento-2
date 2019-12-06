@@ -15,7 +15,6 @@
  * @author    PayGreen <contact@paygreen.fr>
  * @copyright 2014 - 2019 Watt Is It
  * @license   https://creativecommons.org/licenses/by-nd/4.0/fr/ Creative Commons BY-ND 4.0
- * @version   0.3.5
  */
 
 /**
@@ -26,26 +25,45 @@
  */
 class PGDomainServicesManagersButtonManager extends PGFrameworkFoundationsAbstractManager
 {
+    const XTIME_MAX_COMMITMENTS = 4;
+
+    /**
+     * @param $id
+     * @return PGDomainInterfacesEntitiesButtonInterface|null
+     */
     public function getByPrimary($id)
     {
         return $this->getRepository()->findByPrimary($id);
     }
 
+    /**
+     * @return PGDomainInterfacesEntitiesButtonInterface[]
+     */
     public function getAll()
     {
         return $this->getRepository()->findAll();
     }
 
+    /**
+     * @return PGDomainInterfacesEntitiesButtonInterface
+     */
     public function getNew()
     {
         return $this->getRepository()->create();
     }
 
+    /**
+     * @return int
+     */
     public function count()
     {
         return (int) $this->getRepository()->count();
     }
 
+    /**
+     * @param PGDomainInterfacesEntitiesButtonInterface $button
+     * @return bool
+     */
     public function save(PGDomainInterfacesEntitiesButtonInterface $button)
     {
         if ($button->id() > 0) {
@@ -55,11 +73,21 @@ class PGDomainServicesManagersButtonManager extends PGFrameworkFoundationsAbstra
         }
     }
 
+    /**
+     * @param PGDomainInterfacesEntitiesButtonInterface $button
+     * @return bool
+     */
     public function delete(PGDomainInterfacesEntitiesButtonInterface $button)
     {
         return $this->getRepository()->delete($button);
     }
 
+    /**
+     * @param PGDomainInterfacesCheckoutProvisionerInterface $checkoutProvisioner
+     * @return PGDomainInterfacesEntitiesButtonInterface[]
+     * @throws PGClientExceptionsPaymentRequestException
+     * @throws Exception
+     */
     public function getValidButtons(PGDomainInterfacesCheckoutProvisionerInterface $checkoutProvisioner)
     {
         /** @var PGDomainInterfacesEntitiesButtonInterface[] $buttons */
@@ -113,8 +141,9 @@ class PGDomainServicesManagersButtonManager extends PGFrameworkFoundationsAbstra
 
     /**
      * @param PGDomainInterfacesEntitiesButtonInterface $button
-     * @param PGDomainInterfacesEntitiesCartItemInterface[] $items
+     * @param array $items
      * @return bool
+     * @throws Exception
      */
     public function hasEligibleProduct(PGDomainInterfacesEntitiesButtonInterface $button, array $items)
     {
@@ -123,7 +152,11 @@ class PGDomainServicesManagersButtonManager extends PGFrameworkFoundationsAbstra
 
         /** @var PGDomainInterfacesEntitiesCartItemInterface $item */
         foreach ($items as $item) {
-            if ($productManager->isEligibleProduct($item->getProduct(), $button->getPaymentType())) {
+            $product = $item->getProduct();
+
+            if ($product === null) {
+                throw new Exception("Cart product not found.");
+            } elseif ($productManager->isEligibleProduct($product, $button->getPaymentType())) {
                 return true;
             }
         }
@@ -134,6 +167,7 @@ class PGDomainServicesManagersButtonManager extends PGFrameworkFoundationsAbstra
     /**
      * @param PGDomainInterfacesEntitiesButtonInterface $button
      * @return array
+     * @throws PGClientExceptionsPaymentRequestException
      */
     public function check(PGDomainInterfacesEntitiesButtonInterface $button)
     {
@@ -182,8 +216,8 @@ class PGDomainServicesManagersButtonManager extends PGFrameworkFoundationsAbstra
         }
 
         if ($button->getPaymentMode() === PGDomainData::MODE_XTIME) {
-            if ($button->getPaymentNumber() > 3) {
-                $errors[] = "button.errors.xtime_fewer_than_3_commitment";
+            if ($button->getPaymentNumber() > self::XTIME_MAX_COMMITMENTS) {
+                $errors[] = "button.errors.xtime_fewer_than_max_commitments";
             }
         }
 

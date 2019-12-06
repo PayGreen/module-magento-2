@@ -15,7 +15,6 @@
  * @author    PayGreen <contact@paygreen.fr>
  * @copyright 2014 - 2019 Watt Is It
  * @license   https://creativecommons.org/licenses/by-nd/4.0/fr/ Creative Commons BY-ND 4.0
- * @version   0.3.5
  */
 
 /**
@@ -24,6 +23,8 @@
  */
 class PGFrameworkBootstrap
 {
+    const VAR_FOLDER_CHMOD = 0755;
+
     /** @var PGFrameworkServicesAutoloader */
     private $autoloader;
 
@@ -187,7 +188,7 @@ class PGFrameworkBootstrap
             $path = $this->pathfinder->toAbsolutePath($base, $src);
 
             if (!is_dir($path)) {
-                mkdir($path, 0770, true);
+                mkdir($path, self::VAR_FOLDER_CHMOD, true);
             }
         }
 
@@ -359,6 +360,29 @@ class PGFrameworkBootstrap
         $setupHandler = $this->container->get('handler.setup');
 
         $setupHandler->run($flags);
+
+        return $this;
+    }
+
+    /**
+     * @return $this
+     * @throws Exception
+     */
+    public function activateDetailedLogs()
+    {
+        if ($this->container === null) {
+            throw new Exception("Container must be initialized before running setup.");
+        }
+
+        /** @var PGFrameworkServicesHandlersBehaviorHandler $behaviorHandler */
+        $behaviorHandler = $this->container->get('handler.behavior');
+
+        $detailedLogs = $behaviorHandler->get('detailed_logs');
+
+        if ($detailedLogs) {
+            $this->container->get('logger')->setDetailedLogs(true);
+            $this->container->get('logger.api')->setDetailedLogs(true);
+        }
 
         return $this;
     }

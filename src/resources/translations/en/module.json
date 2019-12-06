@@ -119,7 +119,9 @@
         "platform": "Platform",
         "php": "PHP",
         "module": "Paygreen module",
-        "framework": "Paygreen framework"
+        "framework": "Paygreen framework",
+        "curl": "cURL version",
+        "ssl": "OpenSSL version"
       }
     },
     "logs": {

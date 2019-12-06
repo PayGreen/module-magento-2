@@ -54,7 +54,6 @@
       "verify_peer": true,
       "verify_host": 2,
       "timeout": 30,
-      "encoding": "gzip,deflate",
       "http_version": 1.1
     }
   }
