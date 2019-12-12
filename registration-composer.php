@@ -21,7 +21,7 @@ if (!defined('DS')) {
     define('DS', DIRECTORY_SEPARATOR);
 }
 
-define('PAYGREEN_MODULE_DIR', getcwd() . DS . 'vendor' . DS . 'paygreen' . DS . 'payment');
+define('PAYGREEN_MODULE_DIR', getcwd() . DS . 'vendor' . DS . 'paygreen' . DS . 'payment-magento-2');
 define('PAYGREEN_BOOTSTRAP_SRC', PAYGREEN_MODULE_DIR . DS . 'bootstrap.php');
 
 \Magento\Framework\Component\ComponentRegistrar::register(

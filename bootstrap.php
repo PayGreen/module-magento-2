@@ -26,7 +26,7 @@ try {
         define('DS', DIRECTORY_SEPARATOR);
     }
 
-    define('PAYGREEN_MODULE_VERSION', '0.4.0');
+    define('PAYGREEN_MODULE_VERSION', '0.4.1');
 
     $objectManager = \Magento\Framework\App\ObjectManager::getInstance();
 
