@@ -1,6 +1,6 @@
 <?php
 /**
- * 2014 - 2019 Watt Is It
+ * 2014 - 2020 Watt Is It
  *
  * NOTICE OF LICENSE
  *
@@ -13,8 +13,9 @@
  * to contact@paygreen.fr so we can send you a copy immediately.
  *
  * @author    PayGreen <contact@paygreen.fr>
- * @copyright 2014 - 2019 Watt Is It
+ * @copyright 2014 - 2020 Watt Is It
  * @license   https://creativecommons.org/licenses/by-nd/4.0/fr/ Creative Commons BY-ND 4.0
+ * @version   1.0.0
  */
 
 class PGFrameworkServicesHandlersSetupHandler extends PGFrameworkFoundationsAbstractObject
@@ -32,51 +33,110 @@ class PGFrameworkServicesHandlersSetupHandler extends PGFrameworkFoundationsAbst
     /** @var PGFrameworkServicesSettings */
     private $settings;
 
-    /** @var string|null */
-    private $lastUpdate;
+    /** @var PGFrameworkInterfacesOfficersSetupOfficerInterface|null */
+    private $setupOfficer = null;
 
-    public function __construct(PGFrameworkServicesBroadcaster $broadcaster, PGFrameworkServicesSettings $settings, PGFrameworkServicesLogger $logger)
-    {
+    /** @var string|null */
+    private $lastUpdate = null;
+
+    /** @var PGFrameworkComponentsBag */
+    private $config;
+
+    /**
+     * PGFrameworkServicesHandlersSetupHandler constructor.
+     * @param PGFrameworkServicesBroadcaster $broadcaster
+     * @param PGFrameworkServicesSettings $settings
+     * @param PGFrameworkServicesLogger $logger
+     * @param array $config
+     * @throws Exception
+     */
+    public function __construct(
+        PGFrameworkServicesBroadcaster $broadcaster,
+        PGFrameworkServicesSettings $settings,
+        PGFrameworkServicesLogger $logger,
+        array $config
+    ) {
         $this->broadcaster = $broadcaster;
         $this->logger = $logger;
         $this->settings = $settings;
 
-        $this->lastUpdate = $settings->get('last_update');
+        $this->config = new PGFrameworkComponentsBag($config);
     }
 
-    public function run($flags = self::ALL)
+    /**
+     * @param PGFrameworkInterfacesOfficersSetupOfficerInterface $setupOfficer
+     */
+    public function setSetupOfficer(PGFrameworkInterfacesOfficersSetupOfficerInterface $setupOfficer)
+    {
+        $this->setupOfficer = $setupOfficer;
+    }
+
+    /**
+     * @param int $flag
+     * @return bool
+     * @throws Exception
+     */
+    public function run($flag = self::ALL)
     {
         $result = false;
 
-        $this->logger->debug("Setup handler initialization. Last update : '{$this->lastUpdate}'.");
+        $this->logger->debug("Setup handler initialization with last update on '{$this->getLastUpdate()}'.");
 
-        if (in_array($flags, array (self::INSTALL, self::ALL))) {
+        if (in_array($flag, array(self::INSTALL, self::ALL))) {
             $result = $this->runInstall();
         }
 
-        if (!$result && in_array($flags, array (self::UPGRADE, self::ALL))) {
-            $result = $this->runUprade();
+        if (!$result && in_array($flag, array(self::UPGRADE, self::ALL))) {
+            $result = $this->runUpgrade();
         }
 
         return $result;
     }
 
+    /**
+     * @return bool
+     * @throws Exception
+     */
     public function runInstall()
     {
-        if (!$this->lastUpdate) {
+        if (!$this->getLastUpdate()) {
+            $this->logger->debug("Installation is required.");
             $this->install();
             return true;
+        } else {
+            $this->logger->debug("Module already installed.");
         }
+
+        return false;
     }
 
-    public function runUprade()
+    /**
+     * @return bool
+     * @throws Exception
+     */
+    public function runUpgrade()
     {
-        if ($this->lastUpdate && ($this->lastUpdate !== PAYGREEN_MODULE_VERSION)) {
+        $lastUpdate = $this->getLastUpdate();
+
+        if (empty($lastUpdate)) {
+            $this->logger->debug("Module not installed. Update not necessary.");
+        } elseif ($lastUpdate === PAYGREEN_MODULE_VERSION) {
+            $this->logger->debug("Module already up to date.");
+        } else {
+            $this->logger->debug("Update is required.");
             $this->upgrade();
             return true;
         }
+
+        return false;
     }
 
+    /**
+     * @param string $version
+     * @return bool
+     * @throws Exception
+     * @todo Verify if method is not utilised by any module and remove it.
+     */
     public function runDelayedUpgrade($version)
     {
         $this->logger->notice("Setup handler delayed update : '$version'.");
@@ -90,37 +150,114 @@ class PGFrameworkServicesHandlersSetupHandler extends PGFrameworkFoundationsAbst
         return true;
     }
 
+    /**
+     * @throws Exception
+     */
     public function install()
     {
-        $this->fire('install');
+        $this->fire('install', PAYGREEN_MODULE_VERSION);
         $this->setLastUpdate(PAYGREEN_MODULE_VERSION);
     }
 
+    /**
+     * @throws Exception
+     */
     public function upgrade()
     {
-        $this->fire('upgrade');
+        $this->fire('upgrade', PAYGREEN_MODULE_VERSION);
         $this->setLastUpdate(PAYGREEN_MODULE_VERSION);
     }
 
+    /**
+     * @throws Exception
+     */
     public function uninstall()
     {
         $this->fire('uninstall');
         $this->setLastUpdate(null);
     }
 
-    protected function fire($type)
+    /**
+     * @param string $type
+     * @param string|null $to
+     * @throws Exception
+     */
+    protected function fire($type, $to = null)
     {
-        $newUpdate = PAYGREEN_MODULE_VERSION;
+        $from = $this->getLastUpdate();
 
-        $this->logger->notice("Paygreen $type : '$this->lastUpdate' -> '$newUpdate'.");
+        $txtFrom = $from ? " from '$from'" : '';
+        $txtTo = $to ? " to '$to'" : '';
 
-        $this->broadcaster->fire(new PGFrameworkComponentsEventsModuleEvent($type, $this->lastUpdate));
+        $this->logger->notice("PayGreen {$type}{$txtFrom}{$txtTo}.");
+
+        $this->broadcaster->fire(new PGFrameworkComponentsEventsModuleEvent($type, $from));
     }
 
+    /**
+     * @return bool
+     * @throws Exception
+     */
+    public function isLatest()
+    {
+        return ($this->getLastUpdate() === PAYGREEN_MODULE_VERSION);
+    }
+
+    /**
+     * @return string|null
+     * @throws Exception
+     */
+    public function getLastUpdate()
+    {
+        if ($this->lastUpdate === null) {
+            $this->lastUpdate = $this->buildLastUpdate();
+        }
+
+        return $this->lastUpdate;
+    }
+
+    /**
+     * @param string $lastUpdate
+     * @throws Exception
+     */
     protected function setLastUpdate($lastUpdate)
     {
         $this->lastUpdate = $lastUpdate;
 
         $this->settings->set('last_update', $lastUpdate);
+    }
+
+    /**
+     * @return string|null
+     * @throws Exception
+     * @todo Remove deprecation management.
+     */
+    protected function buildLastUpdate()
+    {
+        $lastUpdate = (string) $saveUpdate = $this->settings->get('last_update');
+
+        if (empty($lastUpdate)) {
+            if ($this->setupOfficer === null) {
+                $this->logger->warning("Setup handler require setup officer to detect older installations.");
+            } elseif (method_exists($this->setupOfficer, 'hasOldInstallation')) {
+                $this->logger->warning("'hasOldInstallation' method is deprecated. Implements 'retrieveOldInstallation' method instead.");
+
+                if ($this->setupOfficer->hasOldInstallation()) {
+                    $lastUpdate = $this->config['older'];
+                }
+            } else {
+                $lastUpdate = $this->setupOfficer->retrieveOldInstallation();
+
+                if ($lastUpdate) {
+                    $this->logger->debug("'last_update' corrected by SetupOfficer : '$lastUpdate'.");
+                }
+            }
+        }
+
+        if ($lastUpdate !== $saveUpdate) {
+            $this->setLastUpdate($lastUpdate);
+        }
+
+        return $lastUpdate;
     }
 }

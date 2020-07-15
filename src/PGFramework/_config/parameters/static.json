@@ -1,0 +1,10 @@
+{
+  "static": {
+    "public": null,
+    "path": "static",
+    "install": {
+      "target": null,
+      "envs": []
+    }
+  }
+}

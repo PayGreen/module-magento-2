@@ -1,0 +1,13 @@
+{
+  "fields": {
+    "default": {
+      "type": "basic",
+      "enabled": true,
+      "behavior": null
+    },
+    "types": {
+      "basic": "PGFormComponentsField",
+      "object": "PGFormComponentsFieldObject"
+    }
+  }
+}

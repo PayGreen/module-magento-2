@@ -1,0 +1,9 @@
+{
+  "routing": {
+    "routes": {
+      "front.payment.abort": {
+        "target": "abortPayment@front.invalid_payments"
+      }
+    }
+  }
+}

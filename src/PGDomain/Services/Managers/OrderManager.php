@@ -1,6 +1,6 @@
 <?php
 /**
- * 2014 - 2019 Watt Is It
+ * 2014 - 2020 Watt Is It
  *
  * NOTICE OF LICENSE
  *
@@ -13,8 +13,9 @@
  * to contact@paygreen.fr so we can send you a copy immediately.
  *
  * @author    PayGreen <contact@paygreen.fr>
- * @copyright 2014 - 2019 Watt Is It
+ * @copyright 2014 - 2020 Watt Is It
  * @license   https://creativecommons.org/licenses/by-nd/4.0/fr/ Creative Commons BY-ND 4.0
+ * @version   1.0.0
  */
 
 /**
@@ -58,12 +59,11 @@ class PGDomainServicesManagersOrderManager extends PGFrameworkFoundationsAbstrac
      * @param PGDomainInterfacesEntitiesOrderInterface $order
      * @param string $targetState
      * @param string $mode
+     * @return bool
      * @throws PGDomainExceptionsUnnecessaryOrderTransitionException
      * @throws PGDomainExceptionsUnauthorizedOrderTransitionException
      * @throws Exception
-     * @todo Should be return boolean.
      * @todo Should not throw an Exception in case of unnecessary transition.
-     * @todo Add new method in OrderRepository to update OrderState.
      */
     public function updateOrder(PGDomainInterfacesEntitiesOrderInterface $order, $targetState, $mode)
     {
@@ -79,9 +79,15 @@ class PGDomainServicesManagersOrderManager extends PGFrameworkFoundationsAbstrac
 
             $targetLocalState = $this->orderStateMapper->getLocalOrderState($targetState);
 
-            $this->getRepository()->updateOrderState($order, $targetLocalState);
+            $result = $this->getRepository()->updateOrderState($order, $targetLocalState);
+
+            if (!$result) {
+                throw new Exception("Unable to update state for order #{$order->id()}.");
+            }
 
             $this->fireOrderStateEvent($order);
+
+            return (bool) $result;
         } elseif ($currentState === $targetState) {
             $message = "Unnecessary transition : $currentState -> $targetState";
             throw new PGDomainExceptionsUnnecessaryOrderTransitionException($message);

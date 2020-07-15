@@ -1,6 +1,6 @@
 <?php
 /**
- * 2014 - 2019 Watt Is It
+ * 2014 - 2020 Watt Is It
  *
  * NOTICE OF LICENSE
  *
@@ -13,8 +13,9 @@
  * to contact@paygreen.fr so we can send you a copy immediately.
  *
  * @author    PayGreen <contact@paygreen.fr>
- * @copyright 2014 - 2019 Watt Is It
+ * @copyright 2014 - 2020 Watt Is It
  * @license   https://creativecommons.org/licenses/by-nd/4.0/fr/ Creative Commons BY-ND 4.0
+ * @version   1.0.0
  */
 
 /**
@@ -90,7 +91,7 @@ class PGDomainFoundationsProcessorsAbstractTransactionManagementProcessor extend
             $transactionManager->save($transaction);
         } catch (Exception $exception) {
             $this->addException($exception);
-            $logger->error('Error on insert transaction :' . $exception->getMessage(), $exception);
+            $logger->error('Error on insert transaction: ' . $exception->getMessage(), $exception);
         }
     }
 
@@ -104,7 +105,7 @@ class PGDomainFoundationsProcessorsAbstractTransactionManagementProcessor extend
 
         if ($task->getTransaction()->getUserAmount() !== $task->getProvisioner()->getUserAmount()) {
             $logger->error(
-                'Paygreen fraud check notice',
+                'PayGreen fraud check notice',
                 array(
                     'paygreen-amount' => $task->getTransaction()->getUserAmount(),
                     'local-amount' => $task->getProvisioner()->getUserAmount()
@@ -169,7 +170,7 @@ class PGDomainFoundationsProcessorsAbstractTransactionManagementProcessor extend
                 $task->getOrderStatus()
             );
         } else {
-            $logger->error("Unauthorized start state : '{$task->getOrderStatus()}'.");
+            $logger->error("Unauthorized start state: '{$task->getOrderStatus()}'.");
             $task->setStatus($task::STATE_WORKFLOW_ERROR);
         }
 

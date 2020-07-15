@@ -1,0 +1,40 @@
+{
+  "view.form": {
+    "extends": "view.basic",
+    "class": "PGFormServicesViewsFormView"
+  },
+  "view.field": {
+    "extends": "view.basic",
+    "class": "PGFormServicesViewsFieldView"
+  },
+  "view.field.bool.checkbox": {
+    "extends": "view.basic",
+    "class": "PGFormServicesViewsFieldBoolCheckboxView"
+  },
+  "view.field.choice.abstract": {
+    "extends": "view.basic",
+    "abstract": true,
+    "arguments": ["@handler.select", "@handler.translator"]
+  },
+  "view.field.choice.expanded": {
+    "extends": "view.field.choice.abstract",
+    "class": "PGFormServicesViewsFieldChoiceExpandedView"
+  },
+  "view.field.choice.contracted": {
+    "extends": "view.field.choice.abstract",
+    "class": "PGFormServicesViewsFieldChoiceContractedView"
+  },
+  "view.field.picture": {
+    "extends": "view.basic",
+    "class": "PGFormServicesViewsFieldPictureView",
+    "arguments": ["@handler.picture"]
+  },
+  "view.field.object": {
+    "extends": "view.basic",
+    "class": "PGFormServicesViewsFieldObjectView"
+  },
+  "view.field.choice.double.bool": {
+    "extends": "view.field.choice.abstract",
+    "class": "PGFormServicesViewsFieldDoubleChoiceBooleanView"
+  }
+}

@@ -1,6 +1,6 @@
 <?php
 /**
- * 2014 - 2019 Watt Is It
+ * 2014 - 2020 Watt Is It
  *
  * NOTICE OF LICENSE
  *
@@ -13,8 +13,9 @@
  * to contact@paygreen.fr so we can send you a copy immediately.
  *
  * @author    PayGreen <contact@paygreen.fr>
- * @copyright 2014 - 2019 Watt Is It
+ * @copyright 2014 - 2020 Watt Is It
  * @license   https://creativecommons.org/licenses/by-nd/4.0/fr/ Creative Commons BY-ND 4.0
+ * @version   1.0.0
  */
 
 /**
@@ -31,13 +32,13 @@ class PGFrameworkComponentsParser
     const REGEX_ENV_VAR_REPLACE = '/(^|[^\\\\])(\$\{%s\})/';
     const REGEX_ENV_VAR_CLEANING = '/(\\\\)(\$\{[a-zA-Z0-9_]+\})/';
 
-    /** @var PGFrameworkComponentsParameters */
+    /** @var iterable */
     private $parameters;
 
     /** @var PGFrameworkComponentsServiceBuilder */
     private $builder;
 
-    public function __construct(PGFrameworkComponentsParameters $parameters)
+    public function __construct($parameters)
     {
         $this->parameters = $parameters;
     }
@@ -85,7 +86,7 @@ class PGFrameworkComponentsParser
     /**
      * @param string $var
      * @return string
-     * @throws Exception
+     * @throws PGFrameworkExceptionsParserParameterException
      */
     public function parseStringParameters($var)
     {
@@ -94,7 +95,7 @@ class PGFrameworkComponentsParser
                 $key = $matches['key'];
 
                 if (!isset($this->parameters[$key])) {
-                    throw new Exception("Target parameters '$key' is not defined.");
+                    throw new PGFrameworkExceptionsParserParameterException("Target parameters '$key' is not defined.");
                 }
 
                 $pattern = sprintf(self::REGEX_PARAMETER_REPLACE, preg_quote($key));
@@ -110,7 +111,7 @@ class PGFrameworkComponentsParser
     /**
      * @param mixed $var
      * @return mixed
-     * @throws Exception
+     * @throws PGFrameworkExceptionsParserParameterException
      */
     public function parseParameter($var)
     {
@@ -119,7 +120,7 @@ class PGFrameworkComponentsParser
                 $key = substr($var, 1);
 
                 if (!isset($this->parameters[$key])) {
-                    throw new Exception("Target parameters '$key' is not defined.");
+                    throw new PGFrameworkExceptionsParserParameterException("Target parameters '$key' is not defined.");
                 }
 
                 $var = $this->parameters[$key];
@@ -132,7 +133,7 @@ class PGFrameworkComponentsParser
     /**
      * @param string $var
      * @return string
-     * @throws Exception
+     * @throws PGFrameworkExceptionsParserConstantException
      */
     public function parseConstants($var)
     {
@@ -141,7 +142,7 @@ class PGFrameworkComponentsParser
                 $key = $matches['key'];
 
                 if (!defined($key)) {
-                    throw new Exception("Target constant '$key' is not defined.");
+                    throw new PGFrameworkExceptionsParserConstantException("Target constant '$key' is not defined.");
                 }
 
                 $pattern = sprintf(self::REGEX_ENV_VAR_REPLACE, preg_quote($key));

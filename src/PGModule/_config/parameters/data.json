@@ -1,0 +1,8 @@
+{
+  "data": {
+    "display_type": {
+      "IMAGE": "button.form.fields.display_type.values.picture",
+      "TEXT": "button.form.fields.display_type.values.text"
+    }
+  }
+}

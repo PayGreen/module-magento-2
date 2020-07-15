@@ -1,6 +1,6 @@
 <?php
 /**
- * 2014 - 2019 Watt Is It
+ * 2014 - 2020 Watt Is It
  *
  * NOTICE OF LICENSE
  *
@@ -13,8 +13,9 @@
  * to contact@paygreen.fr so we can send you a copy immediately.
  *
  * @author    PayGreen <contact@paygreen.fr>
- * @copyright 2014 - 2019 Watt Is It
+ * @copyright 2014 - 2020 Watt Is It
  * @license   https://creativecommons.org/licenses/by-nd/4.0/fr/ Creative Commons BY-ND 4.0
+ * @version   1.0.0
  */
 
 /**
@@ -77,6 +78,7 @@ class PGFrameworkContainer
         $defaultServices = array(
             'autoloader' => $this->get('autoloader'),
             'pathfinder' => $this->get('pathfinder'),
+            'bootstrap' => $this->get('bootstrap'),
             'container' => $this,
             'parameters' => $this->parameters,
             'parser' => $this->get('parser'),
@@ -94,10 +96,9 @@ class PGFrameworkContainer
         $this->library->reset();
         $this->parameters->reset();
 
-        foreach($services as $name => $service) {
+        foreach ($services as $name => $service) {
             $this->set($name, $service);
         }
-
     }
 
     /**
@@ -107,11 +108,11 @@ class PGFrameworkContainer
      */
     public function get($name)
     {
-        if (!array_key_exists($name, $this->services)) {
-            $this->builder->build($name);
+        if (array_key_exists($name, $this->services)) {
+            return $this->services[$name];
+        } else {
+            return $this->builder->build($name);
         }
-
-        return $this->services[$name];
     }
 
     /**
@@ -132,6 +133,8 @@ class PGFrameworkContainer
     {
         if (!isset($this->library[$name])) {
             throw new LogicException("Attempt to set a non-defined service : '$name'.");
+        } elseif ($this->library->isAbstract($name)) {
+            throw new LogicException("Unable to set abstract service : '$name'.");
         }
 
         $this->services[$name] = $service;

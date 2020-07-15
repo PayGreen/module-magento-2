@@ -1,0 +1,11 @@
+{
+  "repository.abstract": {
+    "abstract": true,
+    "arguments": ["@handler.database"]
+  },
+  "repository.setting": {
+    "extends": "repository.abstract",
+    "class": "PGFrameworkServicesRepositoriesSettingRepository",
+    "arguments": ["%database.entities.setting"]
+  }
+}

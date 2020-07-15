@@ -1,0 +1,25 @@
+{
+  "magento": {},
+
+  "facade.module": {
+    "class": "PGModuleServicesModuleFacade"
+  },
+
+  "strategy.order_state_mapper.magento": {
+    "class": "PGModuleServicesStrategiesOrderStateMagentoStrategy",
+    "tags": [
+      {
+        "name": "mapper.strategy.order_state",
+        "options": ["magento"]
+      }
+    ],
+    "calls": [
+      { "method": "setOrderStateManager", "arguments": ["@manager.order_state"] }
+    ]
+  },
+
+  "provisioner.pre_payment": {
+    "class": "PGModuleProvisionersPrePaymentProvisioner",
+    "arguments": ["@magento"]
+  }
+}

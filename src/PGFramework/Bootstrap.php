@@ -1,6 +1,6 @@
 <?php
 /**
- * 2014 - 2019 Watt Is It
+ * 2014 - 2020 Watt Is It
  *
  * NOTICE OF LICENSE
  *
@@ -13,8 +13,9 @@
  * to contact@paygreen.fr so we can send you a copy immediately.
  *
  * @author    PayGreen <contact@paygreen.fr>
- * @copyright 2014 - 2019 Watt Is It
+ * @copyright 2014 - 2020 Watt Is It
  * @license   https://creativecommons.org/licenses/by-nd/4.0/fr/ Creative Commons BY-ND 4.0
+ * @version   1.0.0
  */
 
 /**
@@ -23,7 +24,7 @@
  */
 class PGFrameworkBootstrap
 {
-    const VAR_FOLDER_CHMOD = 0755;
+    const VAR_FOLDER_CHMOD = 0775;
 
     /** @var PGFrameworkServicesAutoloader */
     private $autoloader;
@@ -34,19 +35,25 @@ class PGFrameworkBootstrap
     /** @var PGFrameworkContainer */
     private $container;
 
+    private $path;
+
+    /** @var PGFrameworkComponentsAppliance */
+    private $appliance;
+
     private static $required_paths = array(
-        'bundles',
-        'bundles-resources',
-        'bundles-media',
         'module',
-        'module-resources',
         'var',
-        'media'
+        'log',
+        'cache',
+        'config',
+        'media',
+        'static'
     );
 
     private static $required_constants = array(
         'PAYGREEN_VENDOR_DIR',
         'PAYGREEN_VAR_DIR',
+        'PAYGREEN_CONFIG_DIR',
         'PAYGREEN_MEDIA_DIR',
         'PAYGREEN_MODULE_VERSION'
     );
@@ -57,30 +64,35 @@ class PGFrameworkBootstrap
     );
 
     private static $default_created_folders = array(
-        'var'
+        'var',
+        'log',
+        'cache',
+        'config'
     );
 
     private static $default_vendors = array(
-        'PGModule' => 'PGModule',
         'PGFramework' => 'PGFramework',
         'PGClient' => 'PGClient',
-        'PGDomain' => 'PGDomain'
-    );
-
-    private static $default_services = array(
-        'bundles-resources:/config/services'
-    );
-
-    private static $default_parameters = array(
-        'bundles-resources:/config/parameters'
+        'PGServer' => 'PGServer',
+        'PGView' => 'PGView',
+        'PGForm' => 'PGForm',
+        'PGDomain' => 'PGDomain',
+        'APPbackoffice' => 'APPbackoffice',
+        'APPfrontoffice' => 'APPfrontoffice',
+        'APPiss' => 'APPiss',
+        'APPdevelopment' => 'APPdevelopment',
+        'PGModule' => 'PGModule'
     );
 
     /**
      * PGFrameworkBootstrap constructor.
+     * @param string $path The path to all bundle folders.
      * @throws Exception
      */
-    public function __construct()
+    public function __construct($path)
     {
+        $this->path = $path;
+
         define('PAYGREEN_ENV', getenv('PAYGREEN_ENV') ? strtoupper(getenv('PAYGREEN_ENV')) : 'PROD');
 
         foreach (self::$required_constants as $constant) {
@@ -115,21 +127,56 @@ class PGFrameworkBootstrap
     }
 
     /**
+     * @param string $name
+     * @return self
+     * @throws Exception
+     */
+    public function buildAppliance($name)
+    {
+        $DS = DIRECTORY_SEPARATOR;
+
+        require_once $this->path . $DS . 'PGFramework' . $DS . 'Components' . $DS . 'Appliance.php';
+
+        $this->appliance = new PGFrameworkComponentsAppliance($name, PAYGREEN_MODULE_VERSION);
+
+        $this->addVendors(self::$default_vendors);
+
+        return $this;
+    }
+
+    public function addVendors(array $vendors)
+    {
+        if ($this->appliance === null) {
+            throw new Exception("Appliance must be builded before adding vendors.");
+        }
+
+        foreach ($vendors as $vendor) {
+            $this->appliance->addVendor($vendor);
+        }
+
+        return $this;
+    }
+
+    /**
      * @param array $paths
      * @return self
      * @throws Exception
      */
     public function buildPathfinder(array $paths)
     {
+        if ($this->appliance === null) {
+            throw new Exception("Appliance must be builded before building pathfinder.");
+        }
+
         $DS = DIRECTORY_SEPARATOR;
 
         $this->verifyPaths($paths);
 
-        require_once $paths['bundles'] . $DS . 'PGFramework' . $DS . 'Services' . $DS . 'Pathfinder.php';
+        require_once $this->path . $DS . 'PGFramework' . $DS . 'Services' . $DS . 'Pathfinder.php';
 
         $paths = $this->getPathfinderConfiguration($paths);
 
-        $this->pathfinder = new PGFrameworkServicesPathfinder($paths);
+        $this->pathfinder = new PGFrameworkServicesPathfinder($this->appliance, $paths);
 
         return $this;
     }
@@ -149,14 +196,11 @@ class PGFrameworkBootstrap
 
     protected function getPathfinderConfiguration(array $paths)
     {
-        $pathfinderConfiguration = array(
-            'PGFramework' => $paths['bundles'] . '/PGFramework',
-            'PGClient' => $paths['bundles'] . '/PGClient',
-            'PGDomain' => $paths['bundles'] . '/PGDomain',
-            'PGModule' => $paths['bundles'] . '/PGModule'
-        );
+        $pathfinderConfiguration = array();
 
-        unset($paths['bundles']);
+        foreach ($this->appliance->getVendors() as $vendor) {
+            $pathfinderConfiguration[$vendor] = "{$this->path}/$vendor";
+        }
 
         return array_merge($pathfinderConfiguration, $paths);
     }
@@ -172,23 +216,16 @@ class PGFrameworkBootstrap
             throw new Exception("PathFinder must be initialized before loading functions.");
         }
 
-        $folders = array_merge(
+        $targets = array_merge(
             self::$default_created_folders,
             $additionalFolders
         );
 
-        foreach($folders as $folder) {
-            if (strstr($folder, ':') !== false) {
-                list($base, $src) = explode(':', $folder, 2);
-            } else {
-                $base = $folder;
-                $src = '';
-            }
-
-            $path = $this->pathfinder->toAbsolutePath($base, $src);
+        foreach ($targets as $target) {
+            $path = $this->pathfinder->toAbsolutePath($target);
 
             if (!is_dir($path)) {
-                mkdir($path, self::VAR_FOLDER_CHMOD, true);
+                @mkdir($path, self::VAR_FOLDER_CHMOD, true);
             }
         }
 
@@ -211,7 +248,7 @@ class PGFrameworkBootstrap
             $additionalLibraries
         );
 
-        foreach($libraries as $library) {
+        foreach ($libraries as $library) {
             list($base, $src) = explode(':', $library, 2);
 
             require_once $this->pathfinder->toAbsolutePath($base, $src);
@@ -225,23 +262,36 @@ class PGFrameworkBootstrap
      * @return self
      * @throws Exception
      */
-    public function registerAutoloader(array $additionalVendors = array())
+    public function registerAutoloader()
     {
         if ($this->pathfinder === null) {
             throw new Exception("PathFinder must be initialized before loading functions.");
         }
 
-        $vendors = array_merge(
-            self::$default_vendors,
-            $additionalVendors
-        );
+        require_once $this->pathfinder->toAbsolutePath('PGFramework', '/Interfaces/StorageInterface.php');
+        require_once $this->pathfinder->toAbsolutePath('PGFramework', '/Foundations/AbstractStorage.php');
+        require_once $this->pathfinder->toAbsolutePath('PGFramework', '/Foundations/AbstractStorageFile.php');
+
+        $varFolder = $this->pathfinder->toAbsolutePath('var');
+
+        if (is_dir($varFolder) && is_writable($varFolder)) {
+            require_once $this->pathfinder->toAbsolutePath('PGFramework', '/Components/Storages/JSONFileStorage.php');
+
+            $filename = $this->pathfinder->toAbsolutePath('var', '/autoload.cache.json');
+
+            $storage = new PGFrameworkComponentsStoragesJSONFileStorage($filename);
+        } else {
+            require_once $this->pathfinder->toAbsolutePath('PGFramework', '/Components/Storages/BlackHoleStorage.php');
+
+            $storage = new PGFrameworkComponentsStoragesBlackHoleStorage();
+        }
 
         require_once $this->pathfinder->toAbsolutePath('PGFramework', '/Services/Autoloader.php');
 
-        $this->autoloader = new PGFrameworkServicesAutoloader();
+        $this->autoloader = new PGFrameworkServicesAutoloader($storage);
 
-        foreach ($vendors as $vendor => $basePath) {
-            $path = $this->pathfinder->toAbsolutePath($basePath);
+        foreach ($this->appliance->getVendors() as $vendor) {
+            $path = $this->pathfinder->toAbsolutePath($vendor);
             $this->autoloader->addVendor($vendor, $path);
         }
 
@@ -276,21 +326,18 @@ class PGFrameworkBootstrap
      * @param array $additionalPaths
      * @throws Exception
      */
-    private function loadServiceLibrary(array $additionalPaths)
+    private function loadServiceLibrary(array $additionalPaths = array())
     {
-        $services = array_merge(
-            self::$default_services,
-            $additionalPaths
-        );
+        $paths = $this->pathfinder->reviewVendorPaths('/_config/services');
+
+        foreach ($additionalPaths as $additionalPath) {
+            $paths[] = $this->pathfinder->toAbsolutePath($additionalPath);
+        }
 
         /** @var PGFrameworkComponentsServiceLibrary $library */
         $library = $this->container->get('service.library');
 
-        foreach($services as $service) {
-            list($base, $src) = explode(':', $service, 2);
-
-            $path = $this->pathfinder->toAbsolutePath($base, $src);
-
+        foreach ($paths as $path) {
             $library->addConfigurationFolder($path);
         }
     }
@@ -299,23 +346,33 @@ class PGFrameworkBootstrap
      * @param array $additionalPaths
      * @throws Exception
      */
-    private function loadParameters(array $additionalPaths)
+    private function loadParameters(array $additionalPaths = array())
     {
-        $parametersPaths = array_merge(
-            self::$default_parameters,
-            $additionalPaths
-        );
+        $paths = $this->pathfinder->reviewVendorPaths('/_config/parameters');
+
+        foreach ($additionalPaths as $additionalPath) {
+            $paths[] = $this->pathfinder->toAbsolutePath($additionalPath);
+        }
 
         /** @var PGFrameworkComponentsParameters $parameters */
         $parameters = $this->container->get('parameters');
 
-        foreach($parametersPaths as $parameterPath) {
-            list($base, $src) = explode(':', $parameterPath, 2);
-
-            $path = $this->pathfinder->toAbsolutePath($base, $src);
-
+        foreach ($paths as $path) {
             $parameters->addParametersFolder($path);
         }
+    }
+
+    private function buildVendorPaths($src)
+    {
+        $paths = array();
+
+        $vendors = $this->autoloader->getVendors();
+
+        foreach (array_keys($vendors) as $vendor) {
+            $paths[] = "$vendor:$src";
+        }
+
+        return $paths;
     }
 
     /**
@@ -330,8 +387,10 @@ class PGFrameworkBootstrap
         }
 
         $defaultServices = array(
+            'appliance' => $this->appliance,
             'autoloader' => $this->autoloader,
-            'pathfinder' => $this->pathfinder
+            'pathfinder' => $this->pathfinder,
+            'bootstrap' => $this
         );
 
         $services = array_merge(
@@ -339,7 +398,7 @@ class PGFrameworkBootstrap
             $additionalServices
         );
 
-        foreach($services as $name => $service) {
+        foreach ($services as $name => $service) {
             $this->container->set($name, $service);
         }
 
@@ -347,6 +406,7 @@ class PGFrameworkBootstrap
     }
 
     /**
+     * @param int $flags
      * @return self
      * @throws Exception
      */
@@ -365,24 +425,12 @@ class PGFrameworkBootstrap
     }
 
     /**
-     * @return $this
+     * @return self
      * @throws Exception
      */
     public function activateDetailedLogs()
     {
-        if ($this->container === null) {
-            throw new Exception("Container must be initialized before running setup.");
-        }
-
-        /** @var PGFrameworkServicesHandlersBehaviorHandler $behaviorHandler */
-        $behaviorHandler = $this->container->get('handler.behavior');
-
-        $detailedLogs = $behaviorHandler->get('detailed_logs');
-
-        if ($detailedLogs) {
-            $this->container->get('logger')->setDetailedLogs(true);
-            $this->container->get('logger.api')->setDetailedLogs(true);
-        }
+        $this->container->get('logger')->warning("Method 'activateDetailedLogs' is deprecated. Just remove call to it in bootstrap file.");
 
         return $this;
     }

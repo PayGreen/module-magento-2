@@ -1,6 +1,6 @@
 <?php
 /**
- * 2014 - 2019 Watt Is It
+ * 2014 - 2020 Watt Is It
  *
  * NOTICE OF LICENSE
  *
@@ -13,8 +13,9 @@
  * to contact@paygreen.fr so we can send you a copy immediately.
  *
  * @author    PayGreen <contact@paygreen.fr>
- * @copyright 2014 - 2019 Watt Is It
+ * @copyright 2014 - 2020 Watt Is It
  * @license   https://creativecommons.org/licenses/by-nd/4.0/fr/ Creative Commons BY-ND 4.0
+ * @version   1.0.0
  */
 
 class PGFrameworkComponentsServiceBuilder
@@ -115,6 +116,8 @@ class PGFrameworkComponentsServiceBuilder
             throw new LogicException("Call to a non-existant service : '$name'.");
         } elseif (in_array($name, $this->underConstructionServices)) {
             throw new LogicException("Circular reference detected for service : '$name'.");
+        } elseif ($this->library->isAbstract($name)) {
+            throw new LogicException("Unable to implements abstract service : '$name'.");
         }
 
         $this->underConstructionServices[] = $name;
@@ -139,19 +142,22 @@ class PGFrameworkComponentsServiceBuilder
             }
         }
 
-        if (array_key_exists('calls', $definition)) {
-            $this->callDelayer->addCalls($name, $definition['calls']);
-        }
-
-        if (array_key_exists('catch', $definition)) {
-            $this->collectTaggedServices($name, $definition);
-        }
-
         $reflexionClass = new ReflectionClass($class);
 
         $service = $reflexionClass->newInstanceArgs($arguments);
 
-        $this->container->set($name, $service);
+        if (array_key_exists('calls', $definition)) {
+            $subject = $this->library->isShared($name) ? null : $service;
+            $this->callDelayer->addCalls($name, $definition['calls'], $subject);
+        }
+
+        if (array_key_exists('catch', $definition)) {
+            $this->collectTaggedServices($service, $name, $definition);
+        }
+
+        if ($this->library->isShared($name)) {
+            $this->container->set($name, $service);
+        }
 
         $index = array_search($name, $this->underConstructionServices);
         unset($this->underConstructionServices[$index]);
@@ -160,10 +166,11 @@ class PGFrameworkComponentsServiceBuilder
     }
 
     /**
+     * @param object $service
      * @param string $name
      * @param array $definition
      */
-    protected function collectTaggedServices($name, array $definition)
+    protected function collectTaggedServices($service, $name, array $definition)
     {
         $catch = $definition['catch'];
 
@@ -191,7 +198,9 @@ class PGFrameworkComponentsServiceBuilder
                 'arguments' => $arguments
             );
 
-            $this->callDelayer->addCall($name, $call);
+            $subject = $this->library->isShared($name) ? null : $service;
+
+            $this->callDelayer->addCall($name, $call, $subject);
         }
     }
 }

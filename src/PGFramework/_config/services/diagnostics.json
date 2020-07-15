@@ -1,0 +1,23 @@
+{
+  "diagnostic.abstract": {
+    "abstract": true,
+    "tags": [
+      { "name": "diagnostic" }
+    ]
+  },
+  "diagnostic.media_files_chmod": {
+    "class": "PGFrameworkServicesDiagnosticsMediaFilesChmod",
+    "extends": "diagnostic.abstract",
+    "arguments": ["@pathfinder"]
+  },
+  "diagnostic.media_folder_chmod": {
+    "class": "PGFrameworkServicesDiagnosticsMediaFolderChmod",
+    "extends": "diagnostic.abstract",
+    "arguments": ["@pathfinder"]
+  },
+  "diagnostic.var_folder_chmod": {
+    "class": "PGFrameworkServicesDiagnosticsVarFolderChmod",
+    "extends": "diagnostic.abstract",
+    "arguments": ["@pathfinder"]
+  }
+}

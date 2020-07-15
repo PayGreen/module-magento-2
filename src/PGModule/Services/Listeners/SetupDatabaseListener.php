@@ -1,6 +1,6 @@
 <?php
 /**
- * 2014 - 2019 Watt Is It
+ * 2014 - 2020 Watt Is It
  *
  * NOTICE OF LICENSE
  *
@@ -13,35 +13,48 @@
  * to contact@paygreen.fr so we can send you a copy immediately.
  *
  * @author    PayGreen <contact@paygreen.fr>
- * @copyright 2014 - 2019 Watt Is It
+ * @copyright 2014 - 2020 Watt Is It
  * @license   https://creativecommons.org/licenses/by-nd/4.0/fr/ Creative Commons BY-ND 4.0
+ * @version   1.0.0
  */
 
 class PGModuleServicesListenersSetupDatabaseListener
 {
-    /** @var PGModuleServicesHandlersDatabaseHandler */
+    /** @var PGFrameworkServicesHandlersDatabaseHandler */
     private $databaseHandler;
 
     /** @var PGFrameworkServicesLogger */
     private $logger;
 
-    public function __construct(PGModuleServicesHandlersDatabaseHandler $databaseHandler, PGFrameworkServicesLogger $logger)
+    /**
+     * PGModuleServicesListenersSetupDatabaseListener constructor.
+     * @param PGFrameworkServicesHandlersDatabaseHandler $databaseHandler
+     * @param PGFrameworkServicesLogger $logger
+     */
+    public function __construct(PGFrameworkServicesHandlersDatabaseHandler $databaseHandler, PGFrameworkServicesLogger $logger)
     {
         $this->databaseHandler = $databaseHandler;
         $this->logger = $logger;
     }
 
+    /**
+     * @throws Exception
+     */
     public function install()
     {
         $this->logger->info("Install Paygreen database schema.");
 
-        $this->databaseHandler->runScript('schema.sql');
+        $this->databaseHandler->runScript('PGModule:clean.sql');
+        $this->databaseHandler->runScript('PGModule:schema.sql');
     }
 
+    /**
+     * @throws Exception
+     */
     public function uninstall()
     {
         $this->logger->info("Uninstall Paygreen database schema.");
 
-        $this->databaseHandler->runScript('clean.sql');
+        $this->databaseHandler->runScript('PGModule:clean.sql');
     }
 }

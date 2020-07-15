@@ -1,5 +1,5 @@
 /**
- * 2014 - 2019 Watt Is It
+ * 2014 - 2020 Watt Is It
  *
  * NOTICE OF LICENSE
  *
@@ -12,39 +12,25 @@
  * to contact@paygreen.fr so we can send you a copy immediately.
  *
  * @author    PayGreen <contact@paygreen.fr>
- * @copyright 2014 - 2019 Watt Is It
+ * @copyright 2014 - 2020 Watt Is It
  * @license   https://creativecommons.org/licenses/by-nd/4.0/fr/ Creative Commons BY-ND 4.0
+ * @version   1.0.0
  */
 define(
     [
-        'jquery',
-        'mage/url'
+        'jquery'
     ],
-    function ($, urlBuilder) {
+    function ($) {
         'use strict';
 
         let buttons = window.checkoutConfig.paygreen.buttons;
 
         return function (id_button) {
-            let button;
-
-            buttons.forEach(function(element) {
-                if (element.id === id_button) {
-                    button = element;
+            buttons.forEach(function(button) {
+                if (button.id === id_button) {
+                    $.mage.redirect(button.url);
                 }
             });
-
-            let url;
-
-            if (button.insite) {
-                url = urlBuilder.build("pgfront/checkout/insite") + '?button=' + id_button;
-            } else {
-                url = urlBuilder.build("pgfront/checkout/redirect") + '?button=' + id_button;
-            }
-
-            console.log('url', url);
-
-            $.mage.redirect(url);
         };
     }
 );

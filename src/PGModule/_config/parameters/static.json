@@ -1,0 +1,6 @@
+{
+  "static": {
+    "module": "Paygreen_Payment",
+    "folder": "static"
+  }
+}

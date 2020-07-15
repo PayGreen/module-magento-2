@@ -1,0 +1,20 @@
+{
+  "aggregator.requirement": {
+    "class": "PGFrameworkServicesAggregatorsRequirementAggregator",
+    "arguments": ["@container"],
+    "catch": {
+      "tag": "requirement",
+      "method": "addServiceName",
+      "built": false
+    }
+  },
+  "aggregator.upgrade": {
+    "class": "PGFrameworkServicesAggregatorsUpgradeAggregator",
+    "arguments": ["@container"],
+    "catch": {
+      "tag": "upgrade",
+      "method": "addServiceName",
+      "built": false
+    }
+  }
+}

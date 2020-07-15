@@ -1,6 +1,6 @@
 <?php
 /**
- * 2014 - 2019 Watt Is It
+ * 2014 - 2020 Watt Is It
  *
  * NOTICE OF LICENSE
  *
@@ -13,8 +13,9 @@
  * to contact@paygreen.fr so we can send you a copy immediately.
  *
  * @author    PayGreen <contact@paygreen.fr>
- * @copyright 2014 - 2019 Watt Is It
+ * @copyright 2014 - 2020 Watt Is It
  * @license   https://creativecommons.org/licenses/by-nd/4.0/fr/ Creative Commons BY-ND 4.0
+ * @version   1.0.0
  */
 
 /**
@@ -23,7 +24,7 @@
  */
 class PGDomainServicesPaygreenFacade extends PGFrameworkFoundationsAbstractObject
 {
-    const VERSION = '1.7.11';
+    const VERSION = '2.6.0';
     const CURRENCY_EUR = 'EUR';
 
     const STATUS_WAITING = 'WAITING';
@@ -38,15 +39,21 @@ class PGDomainServicesPaygreenFacade extends PGFrameworkFoundationsAbstractObjec
     const STATUS_REFUNDED = 'REFUNDED';
     const STATUS_FAILED = 'FAILED';
 
+    /** @var PGFrameworkServicesHandlersHTTPHandler */
+    private $httpHandler;
+
     /** @var PGFrameworkInterfacesApiFactoryInterface */
     private $apiFactory;
 
     /** @var PGClientServicesApiFacade|null */
     private $apiFacade = null;
 
-    public function __construct(PGFrameworkInterfacesApiFactoryInterface $apiFactory)
-    {
+    public function __construct(
+        PGFrameworkInterfacesApiFactoryInterface $apiFactory,
+        PGFrameworkServicesHandlersHTTPHandler $httpHandler
+    ) {
         $this->apiFactory = $apiFactory;
+        $this->httpHandler = $httpHandler;
     }
 
     /**
@@ -156,8 +163,29 @@ class PGDomainServicesPaygreenFacade extends PGFrameworkFoundationsAbstractObjec
 
     public function isValidInsite()
     {
-        $isHttps = (array_key_exists('HTTPS', $_SERVER) && !empty($_SERVER['HTTPS']));
-        $isInsiteShop = $this->hasModule('insite');
+        return ($this->httpHandler->isSecureConnection() && $this->isValidInsiteModule());
+    }
+
+    public function isValidInsiteModule()
+    {
+        return $this->hasModule('insite');
+    }
+
+    public function verifyInsiteValidity()
+    {
+        /** @var PGFrameworkServicesLogger $logger */
+        $logger = $this->getService('logger');
+
+        $isHttps = $this->httpHandler->isSecureConnection();
+        $isInsiteShop = $this->isValidInsiteModule();
+
+        if (!$isHttps) {
+            $logger->warning("Insite mode is only available with HTTPS connexion.");
+        }
+
+        if (!$isInsiteShop) {
+            $logger->warning("Insite module is not activated.");
+        }
 
         return ($isHttps && $isInsiteShop);
     }
@@ -214,6 +242,7 @@ class PGDomainServicesPaygreenFacade extends PGFrameworkFoundationsAbstractObjec
 
                 $data['url'] = $dataShop->url;
                 $data['modules'] = $dataShop->modules;
+                $data['activate'] = $dataShop->activate;
                 $data['availablePaymentModes'] = $dataShop->availableMode;
                 $data['solidarityType'] = $dataShop->extra->solidarityType;
 
@@ -260,7 +289,7 @@ class PGDomainServicesPaygreenFacade extends PGFrameworkFoundationsAbstractObjec
             /** @var PGFrameworkServicesLogger $logger */
             $logger = $this->getService('logger');
 
-            $logger->error("An error occurred during available payment modes aggregation : " . $exception->getMessage());
+            $logger->error("An error occurred during available payment modes agregation: " . $exception->getMessage());
         }
 
         return $availablePaymentModes;

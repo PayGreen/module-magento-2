@@ -1,0 +1,30 @@
+{
+  "frontoffice": {
+    "payment": {
+      "errors": {
+        "creation": {
+          "title": "Une erreur est survenue durant la préparation de votre paiement.",
+          "message": "Essayez de valider à nouveau votre commande et si le problème persiste, merci de contacter l'administrateur du site pour l'en informer."
+        },
+        "redirection": {
+          "title": "Une erreur est survenue durant la redirection vers notre prestataire de paiement.",
+          "message": "Essayez de valider à nouveau votre commande et si le problème persiste, merci de contacter l'administrateur du site pour l'en informer."
+        },
+        "iframe": {
+          "title": "Une erreur est survenue durant l'affichage de la page de paiement.",
+          "message": "Essayez de valider à nouveau votre commande et si le problème persiste, merci de contacter l'administrateur du site pour l'en informer."
+        },
+        "customer_return": {
+          "title": "Une erreur est survenue durant la confirmation de votre paiement.",
+          "message": "Merci de contacter l'administrateur du site pour l'en informer.",
+          "link": "Rejoindre la page d'accueil"
+        },
+        "validation": {
+          "title": "Une erreur est survenue durant la validation de votre commande.",
+          "message": "Merci de contacter l'administrateur du site pour l'en informer.",
+          "link": "Rejoindre la page d'accueil"
+        }
+      }
+    }
+  }
+}

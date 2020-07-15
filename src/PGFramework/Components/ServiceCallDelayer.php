@@ -1,6 +1,6 @@
 <?php
 /**
- * 2014 - 2019 Watt Is It
+ * 2014 - 2020 Watt Is It
  *
  * NOTICE OF LICENSE
  *
@@ -13,8 +13,9 @@
  * to contact@paygreen.fr so we can send you a copy immediately.
  *
  * @author    PayGreen <contact@paygreen.fr>
- * @copyright 2014 - 2019 Watt Is It
+ * @copyright 2014 - 2020 Watt Is It
  * @license   https://creativecommons.org/licenses/by-nd/4.0/fr/ Creative Commons BY-ND 4.0
+ * @version   1.0.0
  */
 
 class PGFrameworkComponentsServiceCallDelayer
@@ -43,34 +44,36 @@ class PGFrameworkComponentsServiceCallDelayer
      */
     public function callDelayed()
     {
-        while(!empty($this->delayedCalls)) {
-            $callDefinition = array_pop($this->delayedCalls);
+        while (!empty($this->delayedCalls)) {
+            $callDefinition = array_shift($this->delayedCalls);
 
-            $this->executeCall($callDefinition['name'], $callDefinition['call']);
+            $this->executeCall($callDefinition['subject'], $callDefinition['name'], $callDefinition['call']);
         }
     }
 
     /**
      * @param string $name
      * @param array $calls
+     * @param object $subject
      */
-    public function addCalls($name, $calls)
+    public function addCalls($name, $calls, $subject = null)
     {
-            if (!is_array($calls)) {
-                $message = "Target service definition has inconsistent call list : '$name'.";
-                throw new LogicException($message);
-            }
+        if (!is_array($calls)) {
+            $message = "Target service definition has inconsistent call list : '$name'.";
+            throw new LogicException($message);
+        }
 
-            foreach ($calls as $call) {
-                $this->addCall($name, $call);
-            }
+        foreach ($calls as $call) {
+            $this->addCall($name, $call, $subject);
+        }
     }
 
     /**
      * @param string $name
      * @param array $call
+     * @param object $subject
      */
-    public function addCall($name, $call)
+    public function addCall($name, $call, $subject = null)
     {
         if (!is_array($call)) {
             $message = "Target service definition has inconsistent call list : '$name'.";
@@ -78,25 +81,31 @@ class PGFrameworkComponentsServiceCallDelayer
         }
 
         $this->delayedCalls[] = array(
+            'subject' => $subject,
             'name' => $name,
             'call' => $call
         );
     }
 
     /**
+     * @param object $subject
      * @param string $name
      * @param array $delayedCall
      * @throws LogicException
      * @throws Exception
      */
-    protected function executeCall($name, array $delayedCall)
+    protected function executeCall($subject, $name, array $delayedCall)
     {
-        if (!$this->container->has($name)) {
-            $message = "Unable to retrieve target service : '$name'.";
-            throw new LogicException($message);
-        }
+        if ($subject === null) {
+            if (!$this->container->has($name)) {
+                $message = "Unable to retrieve target service : '$name'.";
+                throw new LogicException($message);
+            }
 
-        $service = $this->container->get($name);
+            $service = $this->container->get($name);
+        } else {
+            $service = $subject;
+        }
 
         if (!array_key_exists('method', $delayedCall)) {
             $message = "Target service call has no method name : '$name'.";

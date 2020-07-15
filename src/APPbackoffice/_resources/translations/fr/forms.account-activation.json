@@ -1,0 +1,12 @@
+{
+  "forms":{
+    "account_activation": {
+      "fields": {
+        "activation": {
+          "label": "En production",
+          "help": "Si votre compte est en production, vous encaissez les paiements de vos clients et vous êtes soumis à la facturation PayGreen*."
+        }
+      }
+    }
+  }
+}

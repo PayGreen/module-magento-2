@@ -1,0 +1,16 @@
+{
+  "builder.request.backoffice": {
+    "class": "PGServerServicesRequestBuilder",
+    "arguments": ["%request_builder.backoffice"]
+  },
+
+  "server.backoffice": {
+    "extends": "server.abstract",
+    "arguments": ["%servers.backoffice"]
+  },
+
+  "cleaner.forward.message_page": {
+    "class": "PGServerServicesCleanersForwardCleaner",
+    "arguments": ["displayException@backoffice.error"]
+  }
+}

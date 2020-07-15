@@ -1,6 +1,6 @@
 <?php
 /**
- * 2014 - 2019 Watt Is It
+ * 2014 - 2020 Watt Is It
  *
  * NOTICE OF LICENSE
  *
@@ -13,11 +13,12 @@
  * to contact@paygreen.fr so we can send you a copy immediately.
  *
  * @author    PayGreen <contact@paygreen.fr>
- * @copyright 2014 - 2019 Watt Is It
+ * @copyright 2014 - 2020 Watt Is It
  * @license   https://creativecommons.org/licenses/by-nd/4.0/fr/ Creative Commons BY-ND 4.0
+ * @version   1.0.0
  */
 
-function pgtrans($key, $data = array())
+function pgTrans($key, $data = array())
 {
     /** @var PGFrameworkServicesHandlersTranslatorHandler $translatorHandler */
     $translatorHandler = PGFrameworkContainer::getInstance()->get('handler.translator');
@@ -27,7 +28,17 @@ function pgtrans($key, $data = array())
     echo $text;
 }
 
-function pgtranslines($key)
+function pgTransEscaped($key, $data = array())
+{
+    /** @var PGFrameworkServicesHandlersTranslatorHandler $translatorHandler */
+    $translatorHandler = PGFrameworkContainer::getInstance()->get('handler.translator');
+
+    $text = $translatorHandler->get($key, $data);
+
+    echo addslashes($text);
+}
+
+function pgTransLines($key, $before = '<p>', $after = '</p>')
 {
     /** @var PGFrameworkServicesHandlersTranslatorHandler $translatorHandler */
     $translatorHandler = PGFrameworkContainer::getInstance()->get('handler.translator');
@@ -39,6 +50,6 @@ function pgtranslines($key)
     }
 
     foreach ($lines as $line) {
-        echo "<p>$line</p>" . PHP_EOL;
+        echo "$before$line$after" . PHP_EOL;
     }
 }

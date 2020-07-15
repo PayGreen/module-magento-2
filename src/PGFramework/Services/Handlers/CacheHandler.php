@@ -1,6 +1,6 @@
 <?php
 /**
- * 2014 - 2019 Watt Is It
+ * 2014 - 2020 Watt Is It
  *
  * NOTICE OF LICENSE
  *
@@ -13,8 +13,9 @@
  * to contact@paygreen.fr so we can send you a copy immediately.
  *
  * @author    PayGreen <contact@paygreen.fr>
- * @copyright 2014 - 2019 Watt Is It
+ * @copyright 2014 - 2020 Watt Is It
  * @license   https://creativecommons.org/licenses/by-nd/4.0/fr/ Creative Commons BY-ND 4.0
+ * @version   1.0.0
  */
 
 class PGFrameworkServicesHandlersCacheHandler
@@ -27,17 +28,25 @@ class PGFrameworkServicesHandlersCacheHandler
     /** @var array */
     private $cached_entries = array();
 
-    /** @var array */
-    private $config = array();
+    /** @var PGFrameworkServicesPathfinder */
+    private $pathfinder;
+
+    /** @var PGFrameworkServicesSettings */
+    private $settings;
 
     /** @var PGFrameworkServicesLogger */
     private $logger;
 
-    public function __construct(array $parameters, PGFrameworkServicesLogger $logger)
-    {
-        $this->config = $parameters['config'];
+    public function __construct(
+        array $parameters,
+        PGFrameworkServicesPathfinder $pathfinder,
+        PGFrameworkServicesSettings $settings,
+        PGFrameworkServicesLogger $logger
+    ) {
         $this->entries = $parameters['entries'];
 
+        $this->pathfinder = $pathfinder;
+        $this->settings = $settings;
         $this->logger = $logger;
 
         if ($this->isActivate()) {
@@ -47,12 +56,14 @@ class PGFrameworkServicesHandlersCacheHandler
 
     public function isActivate()
     {
-        return ((PAYGREEN_ENV === 'PROD') && ($this->config['activate'] === true));
+        $varFolder = $this->pathfinder->getBasePath('cache');
+        $useCache = $this->settings->get('use_cache');
+
+        return ($useCache && is_dir($varFolder) && is_writable($varFolder));
     }
 
     public function loadEntry($name)
     {
-        $path = $this->getPath($name);
         $data = null;
 
         if (!isset($this->entries[$name])) {
@@ -61,9 +72,11 @@ class PGFrameworkServicesHandlersCacheHandler
         }
 
         if (array_key_exists($name, $this->cached_entries)) {
-            $this->logger->debug("Reading entry '$name' from handler.");
+            $this->logger->debug("Reading entry '$name' from cache handler.");
             $data = $this->cached_entries[$name];
         } elseif ($this->isActivate() && $this->hasValidEntry($name)) {
+            $path = $this->getPath($name);
+
             $this->logger->debug("Reading entry '$name' in '$path'.");
 
             $content = file_get_contents($path);
@@ -175,6 +188,6 @@ class PGFrameworkServicesHandlersCacheHandler
             $name = PAYGREEN_CACHE_PREFIX . '.' . $name;
         }
 
-        return PAYGREEN_VAR_DIR . DIRECTORY_SEPARATOR . 'entry.' . $name . '.cache.json';
+        return $this->pathfinder->toAbsolutePath('cache', "/entry.$name.cache.json");
     }
 }

@@ -1,0 +1,25 @@
+{
+  "form": {
+    "definitions": {
+      "account_activation": {
+        "model": "basic",
+        "fields": {
+          "activation": {
+            "model": "bool.switch",
+            "view": {
+              "data": {
+                "label": "forms.account_activation.fields.activation.label",
+                "help": "forms.account_activation.fields.activation.help"
+              }
+            }
+          }
+        },
+        "view": {
+          "data": {
+            "validate": "config.buttons.save"
+          }
+        }
+      }
+    }
+  }
+}

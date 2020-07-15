@@ -1,0 +1,16 @@
+{
+  "handler.route": {
+    "class": "PGServerServicesHandlersRouteHandler",
+    "arguments": ["%routing.routes"],
+    "calls": [
+      {
+        "method": "setRequirementHandler",
+        "arguments": ["@handler.requirement"]
+      }
+    ]
+  },
+  "handler.area": {
+    "class": "PGServerServicesHandlersAreaHandler",
+    "arguments": ["%routing.areas"]
+  }
+}

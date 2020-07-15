@@ -1,0 +1,8 @@
+{
+  "pages": {
+    "eligible_amounts": {
+      "name": "Moyens de paiement",
+      "title": "Configuration des montants éligibles et des frais de livraison par moyens de paiement"
+    }
+  }
+}

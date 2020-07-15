@@ -1,6 +1,6 @@
 <?php
 /**
- * 2014 - 2019 Watt Is It
+ * 2014 - 2020 Watt Is It
  *
  * NOTICE OF LICENSE
  *
@@ -13,8 +13,9 @@
  * to contact@paygreen.fr so we can send you a copy immediately.
  *
  * @author    PayGreen <contact@paygreen.fr>
- * @copyright 2014 - 2019 Watt Is It
+ * @copyright 2014 - 2020 Watt Is It
  * @license   https://creativecommons.org/licenses/by-nd/4.0/fr/ Creative Commons BY-ND 4.0
+ * @version   1.0.0
  */
 
 /**
@@ -26,20 +27,12 @@ class PGFrameworkServicesAutoloader
     /** @var array */
     private $vendors;
 
-    private $classNames = array();
+    /** @var PGFrameworkInterfacesStorageInterface  */
+    private $classNames;
 
-    public function __construct()
+    public function __construct(PGFrameworkInterfacesStorageInterface $storage)
     {
-        $filename = $this->getCacheFilename();
-
-        if (file_exists($filename)) {
-            $content = file_get_contents($filename);
-            $classNames = json_decode($content, true);
-
-            if (is_array($classNames)) {
-                $this->classNames = $classNames;
-            }
-        }
+        $this->classNames = $storage;
     }
 
     /**
@@ -59,31 +52,43 @@ class PGFrameworkServicesAutoloader
     }
 
     /**
+     * @return array
+     */
+    public function getVendors()
+    {
+        return $this->vendors;
+    }
+
+    /**
      * @param $className
      * @return bool
      * @throws Exception
      */
     public function autoload($className)
     {
-        if (array_key_exists($className, $this->classNames)) {
-            $this->loadFile($this->classNames[$className]);
+        if (isset($this->classNames[$className])) {
+            $src = $this->classNames[$className];
 
-            return true;
-        } else {
-            foreach ($this->vendors as $name => $vendor) {
-                $pattern = "/^{$name}/";
+            if (file_exists($src)) {
+                $this->loadFile($src);
+                return true;
+            }
+        }
 
-                if (preg_match($pattern, $className) === 1) {
-                    $formatedClassName = $this->snakify($className);
+        foreach ($this->vendors as $name => $vendor) {
+            $pattern = "/^{$name}/";
 
-                    $src = $this->getFilename($formatedClassName, $vendor['path']);
+            if (preg_match($pattern, $className) === 1) {
+                $formatedClassName = substr($className, strlen($name));
+                $formatedClassName = $this->snakify($formatedClassName);
 
-                    $this->loadFile($src);
+                $src = $this->getFilename($formatedClassName, $vendor['path']);
 
-                    $this->extendCache($className, $src);
+                $this->loadFile($src);
 
-                    return true;
-                }
+                $this->extendCache($className, $src);
+
+                return true;
             }
         }
 
@@ -112,8 +117,6 @@ class PGFrameworkServicesAutoloader
     {
         $tokens = explode('_', $className);
 
-        array_shift($tokens);
-
         $tokens = $this->pathFinderTokenParse($tokens, $basePath);
 
         array_unshift($tokens, $basePath);
@@ -123,37 +126,36 @@ class PGFrameworkServicesAutoloader
 
     protected function pathFinderTokenParse($tokens, $folder)
     {
-        foreach ($tokens as $index => $token) {
-            if (is_dir($folder . DIRECTORY_SEPARATOR . $token)) {
-                $folder .= DIRECTORY_SEPARATOR . $token;
-            } else {
-                $filename = implode('', array_slice($tokens, $index));
-                $tokens = array_merge(array_slice($tokens, 0, $index), array($filename));
+        $directories = array();
+        $directory = null;
+        $lastIndex = count($tokens) - 1;
+        $fileIndex = 0;
 
+        foreach ($tokens as $index => $token) {
+            if ($index === $lastIndex) {
                 break;
+            }
+
+            $directory = ($directory === null) ? $token : $directory . $token;
+
+            $folderTokens = array_merge(array($folder), $directories, array($directory));
+            $path = implode(DIRECTORY_SEPARATOR, $folderTokens);
+
+            if (is_dir($path)) {
+                $directories[] = $directory;
+                $directory = null;
+                $fileIndex = $index + 1;
             }
         }
 
-        return $tokens;
-    }
+        $filename = implode('', array_slice($tokens, $fileIndex));
+        $tokens = array_merge($directories, array($filename));
 
-    protected function getCacheFilename()
-    {
-        return PAYGREEN_VAR_DIR . DIRECTORY_SEPARATOR . 'autoload.cache.json';
+        return $tokens;
     }
 
     protected function extendCache($className, $src)
     {
         $this->classNames[$className] = $src;
-
-        $cache = json_encode($this->classNames);
-
-        $handler = @fopen($this->getCacheFilename(), "w+");
-
-        if ($handler && flock($handler, LOCK_EX | LOCK_NB)) {
-            ftruncate($handler, 0);
-            fwrite($handler, $cache);
-            flock($handler, LOCK_UN);
-        }
     }
 }

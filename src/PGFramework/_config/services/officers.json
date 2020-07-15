@@ -1,0 +1,18 @@
+{
+  "officer.settings.database.basic": {
+    "class": "PGFrameworkServicesOfficersSettingsDatabaseOfficer",
+    "arguments": ["@manager.setting", "@handler.shop"]
+  },
+  "officer.settings.database.global": {
+    "class": "PGFrameworkServicesOfficersSettingsDatabaseOfficer",
+    "arguments": ["@manager.setting"]
+  },
+  "officer.settings.storage.basic": {
+    "class": "PGFrameworkServicesOfficersSettingsStorageOfficer",
+    "arguments": ["@handler.shop"]
+  },
+  "officer.settings.storage.global": {
+    "class": "PGFrameworkServicesOfficersSettingsStorageOfficer"
+  },
+  "officer.setup": {}
+}

@@ -1,0 +1,29 @@
+{
+  "routing": {
+    "routes": {
+      "front.payment.validation": {
+        "target": "validatePayment@front.payment"
+      },
+      "front.payment.process_customer_return": {
+        "target": "process@front.customer_return"
+      },
+      "front.payment.receive": {
+        "target": "receive@front.payment"
+      },
+      "front.payment.display.insite": {
+        "target": "displayIFramePayment@front.payment"
+      },
+      "front.tree.save": {
+        "target": "saveNavigationData@front.tree",
+        "input": {
+          "client": ".+",
+          "startAt": "[0-9]+",
+          "useTime": "[0-9]+",
+          "nbImage": "[0-9]+",
+          "device": ".+",
+          "browser": ".+"
+        }
+      }
+    }
+  }
+}

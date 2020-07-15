@@ -1,0 +1,8 @@
+{
+  "smarty": {
+    "builder": {
+      "service": "builder.smarty",
+      "path": null
+    }
+  }
+}

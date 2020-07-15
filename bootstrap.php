@@ -1,6 +1,6 @@
 <?php
 /**
- * 2014 - 2019 Watt Is It
+ * 2014 - 2020 Watt Is It
  *
  * NOTICE OF LICENSE
  *
@@ -13,8 +13,9 @@
  * to contact@paygreen.fr so we can send you a copy immediately.
  *
  * @author    PayGreen <contact@paygreen.fr>
- * @copyright 2014 - 2019 Watt Is It
+ * @copyright 2014 - 2020 Watt Is It
  * @license   https://creativecommons.org/licenses/by-nd/4.0/fr/ Creative Commons BY-ND 4.0
+ * @version   1.0.0
  */
 
 // #############################################################################################
@@ -26,15 +27,17 @@ try {
         define('DS', DIRECTORY_SEPARATOR);
     }
 
-    define('PAYGREEN_MODULE_VERSION', '0.4.1');
+    define('PAYGREEN_MODULE_VERSION', '1.0.0');
 
     $objectManager = \Magento\Framework\App\ObjectManager::getInstance();
 
+    /** @var \Magento\Framework\Filesystem\DirectoryList $directory */
     $directory = $objectManager->get('\Magento\Framework\Filesystem\DirectoryList');
 
     define('PAYGREEN_VENDOR_DIR', PAYGREEN_MODULE_DIR . DS . 'src');
     define('PAYGREEN_VAR_DIR', $directory->getPath('var') . DS . 'paygreen');
     define('PAYGREEN_MEDIA_DIR', $directory->getPath('media') . DS . 'paygreen');
+    define('PAYGREEN_CONFIG_DIR', $directory->getPath('var') . DS . 'paygreen');
 
 // #############################################################################################
 // Running Bootstrap
@@ -42,45 +45,54 @@ try {
 
     require_once PAYGREEN_VENDOR_DIR . DS . 'PGFramework' . DS . 'Bootstrap.php';
 
-    $bootstrap = new PGFrameworkBootstrap();
+    $bootstrap = new PGFrameworkBootstrap(PAYGREEN_VENDOR_DIR);
 
     $bootstrap
+        ->buildAppliance('Paygreen payment module for Prestashop')
+        ->addVendors(array())
         ->buildPathfinder(array(
-            'bundles' => PAYGREEN_VENDOR_DIR,
-            'bundles-resources' => PAYGREEN_VENDOR_DIR . '/resources',
-            'bundles-media' => PAYGREEN_MODULE_DIR . '/resources/media',
+            'static' => PAYGREEN_MODULE_DIR . '/view/base/web/static',
             'module' => PAYGREEN_MODULE_DIR,
-            'module-resources' => PAYGREEN_MODULE_DIR . '/resources',
             'var' => PAYGREEN_VAR_DIR,
-            'media' => PAYGREEN_MEDIA_DIR
+            'log' => PAYGREEN_VAR_DIR . '/logs',
+            'cache' => PAYGREEN_VAR_DIR . '/cache',
+            'media' => PAYGREEN_MEDIA_DIR,
+            'config' => PAYGREEN_CONFIG_DIR
         ))
         ->preloadFunctions()
         ->createVarFolder()
         ->registerAutoloader()
-        ->buildContainer(array(
-            'module-resources:/config/services'
-        ), array(
-            'module-resources:/config/parameters'
-        ))
+        ->buildContainer()
         ->insertStaticServices(array(
             'magento' => $objectManager
         ))
-        ->activateDetailedLogs()
         ->setup(PGFrameworkServicesHandlersSetupHandler::UPGRADE)
     ;
 
-// #############################################################################################
-// Logging End of bootstrap
-// #############################################################################################
+    // #############################################################################################
+    // Logging End of bootstrap
+    // #############################################################################################
 
     /** @var PGFrameworkServicesLogger $logger */
     $logger = $bootstrap->getContainer()->get('logger');
 
-    $logger->notice("Paygreen bootstrap successfully executed.");
+    /** @var PGDomainInterfacesShopHandlerInterface $shopHandler */
+    $shopHandler = $bootstrap->getContainer()->get('handler.shop');
 
-// #############################################################################################
-// Logging PHP errors
-// #############################################################################################
+    /** @var PGDomainInterfacesEntitiesShopInterface $shop */
+    $shop = $shopHandler->getCurrentShop();
+
+    $logger->debug("Current shop detected : {$shop->getName()} #{$shop->id()}.");
+
+    if (isset($_SERVER) && is_array($_SERVER) && isset($_SERVER['REQUEST_URI'])) {
+        $logger->debug("Paygreen bootstrap successfully executed for URI : {$_SERVER['REQUEST_URI']}");
+    } else {
+        $logger->notice("Paygreen bootstrap successfully executed in non-HTTP context.");
+    }
+
+    // #############################################################################################
+    // Logging PHP errors
+    // #############################################################################################
 
     if (PAYGREEN_ENV === 'DEV') {
         ini_set('error_log', PAYGREEN_VAR_DIR . DS . 'error.log');

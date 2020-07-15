@@ -1,0 +1,54 @@
+{
+  "form": {
+    "definitions": {
+      "authentication": {
+        "model": "basic",
+        "fields": {
+          "public_key": {
+            "model": "string",
+            "required": true,
+            "validators": {
+              "regexp": {
+                "format": "/^(PP|SB)?[a-f0-9]{32}$/",
+                "error": "config.errors.identifier_bad_format"
+              }
+            },
+            "view": {
+              "data": {
+                "label": "config.fields.shop_token.label",
+                "attr": {
+                  "maxlength": 34,
+                  "size": 34
+                }
+              }
+            }
+          },
+          "private_key": {
+            "model": "string",
+            "required": true,
+            "validators": {
+              "regexp": {
+                "format": "/^[a-f0-9]{4}\\-[a-f0-9]{4}\\-[a-f0-9]{4}\\-[a-f0-9]{12}$/",
+                "error": "config.errors.private_key_bad_format"
+              }
+            },
+            "view": {
+              "data": {
+                "label": "config.fields.private_key.label",
+                "attr": {
+                  "maxlength": 27,
+                  "size": 34
+                }
+              }
+            }
+          }
+        },
+        "view": {
+          "data": {
+            "validate": "config.buttons.save"
+          }
+        }
+      }
+    }
+  }
+}

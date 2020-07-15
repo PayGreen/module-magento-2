@@ -1,0 +1,33 @@
+{
+  "upgrades": {
+    "1_0_0_database_multishop": {
+      "version": "1.0.0",
+      "type": "database.multishop",
+      "priority": 100
+    },
+    "1_0_0_upgrade_tables": {
+      "version": "1.0.0",
+      "type": "database",
+      "config": {
+        "script": "PGModule:upgrades/1.0.0-upgrade-tables.sql"
+      }
+    },
+    "1_0_0_restore_settings": {
+      "version": "1.0.0",
+      "type": "settings.restore",
+      "priority": 750,
+      "config": {
+        "keys": {
+          "active": "active",
+          "visibility": "admin_only_visibility",
+          "title": "title",
+          "payment_confirmation_button": "payment_confirmation_button",
+          "payment_success_text": "notice_payment_accepted",
+          "payment_error_text": "notice_payment_refused",
+          "behavior_transmit_refund": "behavior_payment_refund",
+          "behavior_transmit_delivering": "behavior_delivery_confirmation"
+        }
+      }
+    }
+  }
+}

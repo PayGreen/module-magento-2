@@ -1,0 +1,17 @@
+{
+  "listener.setup.install_default_button": {
+    "class": "PGDomainServicesListenersInstallDefaultButtonListener",
+    "arguments": [
+      "@manager.button",
+      "@logger"
+    ]
+  },
+  "listener.refund.update_transaction": {
+    "class": "PGDomainServicesListenersRefundListener",
+    "arguments": [
+      "@handler.refund",
+      "@handler.behavior",
+      "@logger"
+    ]
+  }
+}

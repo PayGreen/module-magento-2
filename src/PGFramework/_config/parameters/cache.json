@@ -1,0 +1,14 @@
+{
+  "cache": {
+    "entries": {
+      "translations-fr": {
+        "ttl": 86400,
+        "format": "array"
+      },
+      "translations-en": {
+        "ttl": 86400,
+        "format": "array"
+      }
+    }
+  }
+}

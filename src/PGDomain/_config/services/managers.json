@@ -1,0 +1,61 @@
+{
+  "manager.order": {
+    "class": "PGDomainServicesManagersOrderManager",
+    "arguments": ["@repository.order"],
+    "calls": [
+      { "method": "setOrderStateMapper", "arguments": ["@mapper.order_state"] }
+    ]
+  },
+  "manager.button": {
+    "class": "PGDomainServicesManagersButtonManager",
+    "arguments": ["@repository.button"]
+  },
+  "manager.customer": {
+    "class": "PGDomainServicesManagersCustomerManager",
+    "arguments": ["@repository.customer"]
+  },
+  "manager.address": {
+    "class": "PGDomainServicesManagersAddressManager",
+    "arguments": ["@repository.address"]
+  },
+  "manager.payment_type": {
+    "class": "PGDomainServicesManagersPaymentTypeManager",
+    "arguments": ["@repository.payment_type"]
+  },
+  "manager.lock": {
+    "class": "PGDomainServicesManagersLockManager",
+    "arguments": ["@repository.lock"]
+  },
+  "manager.product": {
+    "class": "PGDomainServicesManagersProductManager",
+    "arguments": ["@repository.product"]
+  },
+  "manager.category": {
+    "class": "PGDomainServicesManagersCategoryManager",
+    "arguments": ["@repository.category"]
+  },
+  "manager.category_has_payment_type": {
+    "class": "PGDomainServicesManagersCategoryHasPaymentTypeManager",
+    "arguments": ["@repository.category_has_payment_type"]
+  },
+  "manager.order_state": {
+    "class": "PGDomainServicesManagersOrderStateManager",
+    "arguments": ["@repository.order_state", "@factory.order_state_machine", "@mapper.order_state"]
+  },
+  "manager.transaction": {
+    "class": "PGDomainServicesManagersTransactionManager",
+    "arguments": ["@repository.transaction"]
+  },
+  "manager.recurring_transaction": {
+    "class": "PGDomainServicesManagersRecurringTransactionManager",
+    "arguments": ["@repository.recurring_transaction"]
+  },
+  "manager.shop": {
+    "class": "PGDomainServicesManagersShopManager",
+    "arguments": ["@repository.shop"]
+  },
+  "manager.fingerprint": {
+    "class": "PGDomainServicesManagersFingerPrintManager",
+    "arguments": ["@repository.fingerprint"]
+  }
+}

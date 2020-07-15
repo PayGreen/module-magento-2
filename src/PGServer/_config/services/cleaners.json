@@ -1,0 +1,21 @@
+{
+  "cleaner.basic_http.not_found": {
+    "class": "PGServerServicesCleanersBasicHTTPCleaner",
+    "arguments": [404]
+  },
+  "cleaner.basic_http.unauthorized_access": {
+    "class": "PGServerServicesCleanersBasicHTTPCleaner",
+    "arguments": [401]
+  },
+  "cleaner.basic_http.server_error": {
+    "class": "PGServerServicesCleanersBasicHTTPCleaner",
+    "arguments": [500]
+  },
+  "cleaner.basic_http.bad_request": {
+    "class": "PGServerServicesCleanersBasicHTTPCleaner",
+    "arguments": [400]
+  },
+  "cleaner.basic_throw": {
+    "class": "PGServerServicesCleanersBasicThrowCleaner"
+  }
+}

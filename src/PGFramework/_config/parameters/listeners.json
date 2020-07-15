@@ -1,0 +1,29 @@
+{
+  "listeners": {
+    "run_diagnostics": {
+      "event": ["module.install", "module.upgrade"],
+      "service": "handler.diagnostic",
+      "priority": 750
+    },
+    "install_default_settings": {
+      "event": "module.install",
+      "service": "listener.settings.install_default",
+      "priority": 150
+    },
+    "uninstall_settings": {
+      "event": "module.uninstall",
+      "service": "listener.settings.uninstall",
+      "priority": 900
+    },
+    "upgrade_static_files": {
+      "event": ["module.install", "module.upgrade"],
+      "service": "listener.setup.static_files",
+      "method": "installStaticFiles"
+    },
+    "upgrade_module": {
+      "service": "listener.upgrade",
+      "event": "module.upgrade",
+      "priority": 25
+    }
+  }
+}

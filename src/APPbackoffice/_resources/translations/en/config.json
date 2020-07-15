@@ -1,0 +1,95 @@
+{
+  "config": {
+    "title": "Payment system configuration",
+    "fields": {
+      "label": "Activate payments",
+      "help": "Activate payments with the PayGreen module."
+    },
+      "behavior_payment_refused": {
+        "label": "Action following a failed payment",
+        "help": "Define the behavior of the PayGreen module when a payment fail.",
+        "values": {
+          "yes": "Order cancellation",
+          "no": "Redirection to the payment page"
+        }
+      },
+      "visibility": {
+        "label": "Module's visibility",
+        "help": "Allows the administrator to test the module before activating it for his clients.",
+        "values": {
+          "yes": "Visible by clients",
+          "no": "Visible only by administrator"
+        }
+      },
+      "behavior_transmit_refund": {
+        "label": "Synchronize refunds",
+        "help": "If you activate this option, then as soon as you make a refund from the back office of your shop, a notification will be automatically sent to the PayGreen server in order to proceed with the refund of the transaction."
+      },
+      "behavior_transmit_delivering": {
+        "label": "Synchronize delivery confirmations",
+        "help": "If you activate this option, then as soon as an order payable on delivery is marked as 'completed', a notification will be automatically sent to the PayGreen server in order to validate the payment."
+      },
+      "behavior_display_footer": {
+        "label": "Display PayGreen security logo",
+        "help": "If this option is activated, the PayGreen security logo will be displayed in the bottom of your website."
+      },
+      "shop_token": {
+        "label": "Unique identifier"
+      },
+      "private_key": {
+        "label": "Private key"
+      },
+      "success_payment_text": {
+        "label": "Displayed text after a successful payment",
+        "placeholder": "Your payment was accepted",
+        "help": "This message is displayed after customers finalized a payment."
+      },
+      "failure_payment_text": {
+        "label": "Displayed text after a unsuccessful payment",
+        "placeholder": "Your payment was unsuccessful",
+        "help": "This message is displayed after customers failed to validate a payment."
+      },
+      "canceled_payment_text": {
+        "label": "Text displayed when canceling an order",
+        "placeholder": "Your order has been canceled",
+        "help": "This message is displayed when a customer cancels his payment."
+      },
+      "display_footer_color": {
+        "label": "PayGreen security logo's color",
+        "values": {
+          "white": "White",
+          "green": "Green",
+          "black": "Black"
+        }
+      },
+      "regenerate_cart": {
+        "label": "Regenerate cart if payment is cancelled",
+        "help": "If this option is activated and a customer cancels his payment, his cart vill be regenerated."
+      },
+      "detailed_logs": {
+        "label": "Activate detailed logs",
+        "help": "Detailed logs can provoke important disk space usage. This setting musn't be modified without the agreement of the PayGreen support."
+      },
+      "behavior_iss": {
+        "label": "Activate distant access for PayGreen support",
+        "help": "If this option is activated, PayGreen support can analyze and fix your module remotely."
+      }
+    },
+    "buttons": {
+      "save": "Save",
+      "enabled": "Enabled",
+      "disabled": "Disabled",
+      "yes": "Yes",
+      "no": "No"
+    },
+    "result": {
+      "success": "Configuration saved successfully."
+    },
+    "errors": {
+      "processing_form": "An error occurred while processing config form.",
+      "display_form": "An error occurred while building config form.",
+      "private_key_bad_format": "Your private key is wrong.",
+      "identifier_bad_format": "Your unique Identifier is wrong."
+    }
+  }
+}

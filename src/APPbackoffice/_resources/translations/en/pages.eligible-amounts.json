@@ -1,0 +1,8 @@
+{
+  "pages": {
+    "eligible_amounts": {
+      "name": "Payment methods",
+      "title": "Configuration of eligible amounts and shipping costs for each payment method"
+    }
+  }
+}

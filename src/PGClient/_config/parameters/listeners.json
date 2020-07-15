@@ -1,0 +1,10 @@
+{
+  "listeners": {
+    "check_client_compatibility": {
+      "event": "module.install",
+      "service": "listener.setup.client_compatibility_checker",
+      "method": "checkCompatibility",
+      "priority": 100
+    }
+  }
+}

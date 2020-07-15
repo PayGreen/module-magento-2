@@ -1,0 +1,7 @@
+{
+  "action.settings.save": {
+    "extends": "action.abstract",
+    "class": "APPbackofficeActionsSaveSettingsAction",
+    "arguments": ["@builder.form", "@settings"]
+  }
+}

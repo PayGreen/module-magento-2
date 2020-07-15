@@ -1,6 +1,6 @@
 <?php
 /**
- * 2014 - 2019 Watt Is It
+ * 2014 - 2020 Watt Is It
  *
  * NOTICE OF LICENSE
  *
@@ -13,8 +13,9 @@
  * to contact@paygreen.fr so we can send you a copy immediately.
  *
  * @author    PayGreen <contact@paygreen.fr>
- * @copyright 2014 - 2019 Watt Is It
+ * @copyright 2014 - 2020 Watt Is It
  * @license   https://creativecommons.org/licenses/by-nd/4.0/fr/ Creative Commons BY-ND 4.0
+ * @version   1.0.0
  */
 
 /**
@@ -53,7 +54,7 @@ class PGFrameworkComponentsBag implements arrayaccess
 
     public function merge(array $data)
     {
-        $this->mergeData($this->data, $data);
+        PGFrameworkToolsArray::merge($this->data, $data);
     }
 
     // ###################################################################
@@ -62,15 +63,15 @@ class PGFrameworkComponentsBag implements arrayaccess
 
     public function offsetSet($var, $value)
     {
-        throw new Exception('Un arbre de donnée ne peut être modifié.');
+        throw new Exception('A data tree cannot be modified.');
     }
     public function offsetExists($var)
     {
-        return ($this->searchData($var) !== false);
+        return ($this->searchData($var) !== null);
     }
     public function offsetUnset($var)
     {
-        throw new Exception('Un arbre de donnée ne peut être modifié.');
+        throw new Exception('A data tree cannot be modified.');
     }
     public function offsetGet($var)
     {
@@ -80,26 +81,6 @@ class PGFrameworkComponentsBag implements arrayaccess
     // ###################################################################
     // ###       sous-fonctions utilitaires
     // ###################################################################
-
-    private function mergeData(&$localData, $incomeData)
-    {
-        if (!is_array($localData) || !is_array($incomeData)) {
-            $localData = $incomeData;
-        } elseif (PGFrameworkToolsArray::isSequential($localData) && PGFrameworkToolsArray::isSequential($incomeData)) {
-            $localData = array_merge($localData, $incomeData);
-        } else {
-            foreach ($incomeData as $key => $val) {
-                if (substr($key, 0, 1) === '!') {
-                    $key = substr($key, 1);
-                    $localData[$key] = $val;
-                } elseif (array_key_exists($key, $localData)) {
-                    $this->mergeData($localData[$key], $val);
-                } else {
-                    $localData[$key] = $val;
-                }
-            }
-        }
-    }
 
     private function searchData($key = false, &$data = false)
     {
@@ -122,7 +103,7 @@ class PGFrameworkComponentsBag implements arrayaccess
         if (is_array($data) and isset($data[$first_key])) {
             $data =& $data[$first_key];
         } else {
-            return false;
+            return null;
         }
 
         if (!empty($all_keys)) {

@@ -1,0 +1,25 @@
+{
+  "handler.shop": {
+    "class": "PGModuleServicesHandlersShopHandler",
+    "arguments": ["@logger"],
+    "calls": [
+      { "method": "setShopManager", "arguments": ["@manager.shop"] },
+      { "method": "setSessionHandler", "arguments": ["@handler.session"] }
+    ]
+  },
+  "handler.static_file": {
+    "class": "PGModuleServicesHandlersStaticFileHandler",
+    "calls": [
+      { "method": "setAssetRepository", "arguments": ["@magento"] }
+    ]
+  },
+  "handler.setup": {
+    "calls": [
+      { "method": "setSetupOfficer", "arguments": ["@officer.setup"] }
+    ]
+  },
+  "handler.cart": {
+    "class": "PGModuleServicesHandlersCartHandler",
+    "arguments": ["@logger"]
+  }
+}

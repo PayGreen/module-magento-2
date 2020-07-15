@@ -1,6 +1,6 @@
 <?php
 /**
- * 2014 - 2019 Watt Is It
+ * 2014 - 2020 Watt Is It
  *
  * NOTICE OF LICENSE
  *
@@ -13,8 +13,9 @@
  * to contact@paygreen.fr so we can send you a copy immediately.
  *
  * @author    PayGreen <contact@paygreen.fr>
- * @copyright 2014 - 2019 Watt Is It
+ * @copyright 2014 - 2020 Watt Is It
  * @license   https://creativecommons.org/licenses/by-nd/4.0/fr/ Creative Commons BY-ND 4.0
+ * @version   1.0.0
  */
 
 /**
@@ -23,62 +24,79 @@
  */
 class PGFrameworkServicesLogger extends PGFrameworkFoundationsAbstractObject
 {
+    const DEFAULT_FORMAT = "<datetime> | *<type>* | <text>";
+
     /** @var SplFileObject|null */
     private $handle;
 
     /** @var PGFrameworkServicesDumper */
     private $dumper;
 
-    private $format = "<datetime> | *<type>* | <text>";
+    /** @var PGFrameworkServicesPathfinder */
+    private $pathfinder;
 
-    private $detailed_logs = false;
+    private $target;
 
-    public function __construct(PGFrameworkServicesDumper $dumper)
-    {
+    private $format = self::DEFAULT_FORMAT;
+
+    private $detailedLogActivated = null;
+
+    private $detailedLogActivation = false;
+
+    private $logs = array();
+
+    /** @var PGFrameworkServicesHandlersBehaviorHandler */
+    private $behaviorHandler;
+
+    public function __construct(
+        PGFrameworkServicesDumper $dumper,
+        PGFrameworkServicesPathfinder $pathfinder,
+        $target,
+        $format = null
+    ) {
         $this->dumper = $dumper;
+        $this->pathfinder = $pathfinder;
+        $this->target = $target;
+
+        if ($format !== null) {
+            $this->format = $format;
+        }
     }
 
     /**
-     * @param $path
+     * @param PGFrameworkServicesHandlersBehaviorHandler $behaviorHandler
+     */
+    public function setBehaviorHandler(PGFrameworkServicesHandlersBehaviorHandler $behaviorHandler)
+    {
+        $this->behaviorHandler = $behaviorHandler;
+    }
+
+    /**
      * @return $this
      */
-    public function openHandle($path)
+    protected function openHandle()
     {
         $this->handle = null;
 
         try {
+            $path = $this->pathfinder->toAbsolutePath($this->target);
+
             $this->handle = new SplFileObject($path, 'a');
 
             if (!$this->handle->isWritable()) {
                 throw new Exception("Log file is not writable : $path.");
             }
-        } catch (Exception $e) {
-            echo $e->getMessage();
-            exit;
+
+            array_unshift($this->logs, array(
+                'NOTICE',
+                "Logging channel opened : '$path'.",
+                null
+            ));
+        } catch (Exception $exception) {
+            $this->handle = null;
         }
 
-        $this->debug("Logging channel opened : '$path'.");
-
         return $this;
-    }
-
-    /**
-     * @param $format
-     * @return $this
-     */
-    public function setFormat($format)
-    {
-        $this->format = $format;
-
-        return $this;
-    }
-
-    /**
-     * @param bool $detailed_logs
-     */
-    public function setDetailedLogs($detailed_logs)
-    {
-        $this->detailed_logs = $detailed_logs;
     }
 
     public function emergency($text, $data = null)
@@ -118,37 +136,78 @@ class PGFrameworkServicesLogger extends PGFrameworkFoundationsAbstractObject
 
     public function debug($text, $data = null)
     {
-        if ($this->detailed_logs) {
-            $this->write('DEBUG', $text, $data);
+        $this->write('DEBUG', $text, $data);
+    }
+
+    private function isDetailedLogActivated()
+    {
+        if ($this->detailedLogActivated === null) {
+            try {
+                $this->detailedLogActivation = true;
+
+                $this->detailedLogActivated = $this->behaviorHandler->get('detailed_logs');
+
+                $this->detailedLogActivation = false;
+            } catch (Exception $exception) {
+                $this->detailedLogActivation = false;
+
+                $this->detailedLogActivated = true;
+
+                $this->error("An error occurred during detailed logs activation : " . $exception->getMessage(), $exception);
+            }
         }
+
+        return (bool) $this->detailedLogActivated;
     }
 
     private function write($type, $text, $data = null)
     {
-        if ($this->handle !== null) {
-            $dt = new DateTime();
-            $datetime = $dt->format('Y-m-d H:i:s');
+        $this->logs[] = array($type, $text, $data);
 
-            if (!is_string($text)) {
-                $data = $text;
-                $text = '';
-            }
-
-            $basicLog = $this->format;
-
-            $basicLog = str_replace('<type>', $type, $basicLog);
-            $basicLog = str_replace('<datetime>', $datetime, $basicLog);
-            $basicLog = str_replace('<text>', $text, $basicLog);
-
-            $log = $basicLog;
-
-            if (!is_null($data)) {
-                $formatedData = $this->dumper->toString($data);
-
-                $log .= " | $formatedData";
-            }
-
-            $this->handle->fwrite($log . PHP_EOL);
+        if ($this->detailedLogActivation) {
+            return;
         }
+
+        if ($this->handle === null) {
+            $this->openHandle();
+        }
+
+        if ($this->handle !== null) {
+            while (!empty($this->logs)) {
+                list($type, $text, $data) = array_shift($this->logs);
+
+                if (($type !== 'DEBUG') || $this->isDetailedLogActivated()) {
+                    $formatedLog = $this->formatLog($type, $text, $data);
+                    $this->handle->fwrite($formatedLog . PHP_EOL);
+                }
+            }
+        }
+    }
+
+    protected function formatLog($type, $text, $data = null)
+    {
+        $dt = new DateTime();
+        $datetime = $dt->format('Y-m-d H:i:s');
+
+        if (!is_string($text)) {
+            $data = $text;
+            $text = '';
+        }
+
+        $basicLog = $this->format;
+
+        $basicLog = str_replace('<type>', $type, $basicLog);
+        $basicLog = str_replace('<datetime>', $datetime, $basicLog);
+        $basicLog = str_replace('<text>', $text, $basicLog);
+
+        $log = $basicLog;
+
+        if (!is_null($data)) {
+            $formatedData = $this->dumper->toString($data);
+
+            $log .= " | $formatedData";
+        }
+
+        return $log;
     }
 }

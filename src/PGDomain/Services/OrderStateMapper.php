@@ -1,6 +1,6 @@
 <?php
 /**
- * 2014 - 2019 Watt Is It
+ * 2014 - 2020 Watt Is It
  *
  * NOTICE OF LICENSE
  *
@@ -13,8 +13,9 @@
  * to contact@paygreen.fr so we can send you a copy immediately.
  *
  * @author    PayGreen <contact@paygreen.fr>
- * @copyright 2014 - 2019 Watt Is It
+ * @copyright 2014 - 2020 Watt Is It
  * @license   https://creativecommons.org/licenses/by-nd/4.0/fr/ Creative Commons BY-ND 4.0
+ * @version   1.0.0
  */
 
 class PGDomainServicesOrderStateMapper extends PGFrameworkFoundationsAbstractObject
@@ -32,6 +33,11 @@ class PGDomainServicesOrderStateMapper extends PGFrameworkFoundationsAbstractObj
         $this->definitions = $definitions;
     }
 
+    /**
+     * @param PGDomainInterfacesOrderStateMapperStrategyInterface $mapperStrategy
+     * @param string $name
+     * @throws PGFrameworkExceptionsConfigurationException
+     */
     public function addMapperStrategy(PGDomainInterfacesOrderStateMapperStrategyInterface $mapperStrategy, $name)
     {
         if (!is_string($name) || empty($name)) {
@@ -84,9 +90,21 @@ class PGDomainServicesOrderStateMapper extends PGFrameworkFoundationsAbstractObj
             }
         }
 
+        if ($state === self::STATE_UNKNOWN) {
+            /** @var PGFrameworkServicesLogger $logger */
+            $logger = $this->getService('logger');
+
+            $logger->warning("Unknown order state.", $source);
+        }
+
         return $state;
     }
 
+    /**
+     * @param string $state
+     * @return array
+     * @throws PGFrameworkExceptionsConfigurationException
+     */
     public function getLocalOrderState($state)
     {
         if (!array_key_exists($state, $this->definitions)) {

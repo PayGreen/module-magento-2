@@ -1,0 +1,12 @@
+{
+  "plugin.smarty.bool": {
+    "class": "APPbackofficeServicesPluginsSmartyBool",
+    "arguments": ["@handler.translator"],
+    "tags": [
+      {
+        "name": "plugin.smarty",
+        "options": ["pgbool", "writeBoolean"]
+      }
+    ]
+  }
+}

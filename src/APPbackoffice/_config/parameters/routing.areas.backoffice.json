@@ -1,0 +1,11 @@
+{
+  "routing": {
+    "areas": {
+      "backoffice": {
+        "patterns": [
+          "backoffice.*"
+        ]
+      }
+    }
+  }
+}

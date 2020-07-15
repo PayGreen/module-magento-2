@@ -1,0 +1,13 @@
+{
+  "upgrade.abstract": {
+    "abstract": true,
+    "tags": [
+      { "name": "upgrade" }
+    ]
+  },
+  "upgrade.database": {
+    "class": "PGFrameworkServicesUpgradesDatabaseUpgrade",
+    "extends": "upgrade.abstract",
+    "arguments": ["@handler.database"]
+  }
+}

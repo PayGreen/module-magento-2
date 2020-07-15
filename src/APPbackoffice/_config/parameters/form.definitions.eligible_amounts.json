@@ -1,0 +1,27 @@
+{
+  "form": {
+    "definitions": {
+      "eligible_amounts": {
+        "model": "basic",
+        "fields": {
+          "eligible_amounts": {
+            "model": "choice.double.bool",
+            "view": {
+              "data": {
+                "horizontal_choices": "payment_type",
+                "vertical_choices": "category.hierarchized",
+                "axis": "vertical",
+                "filterPlaceholder": "eligible_amounts.actions.save_category_payments.form.search"
+              }
+            }
+          }
+        },
+        "view": {
+          "data": {
+            "validate": "config.buttons.save"
+          }
+        }
+      }
+    }
+  }
+}

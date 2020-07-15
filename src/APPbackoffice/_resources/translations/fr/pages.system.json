@@ -1,0 +1,14 @@
+{
+  "pages": {
+    "system": {
+      "name": "Support",
+      "title": "Informations système",
+      "advanced": {
+        "title": "Configuration avancée de l'API PayGreen"
+      },
+      "support": {
+        "title": "En cas de problème"
+      }
+    }
+  }
+}

@@ -1,6 +1,6 @@
 <?php
 /**
- * 2014 - 2019 Watt Is It
+ * 2014 - 2020 Watt Is It
  *
  * NOTICE OF LICENSE
  *
@@ -13,23 +13,30 @@
  * to contact@paygreen.fr so we can send you a copy immediately.
  *
  * @author    PayGreen <contact@paygreen.fr>
- * @copyright 2014 - 2019 Watt Is It
+ * @copyright 2014 - 2020 Watt Is It
  * @license   https://creativecommons.org/licenses/by-nd/4.0/fr/ Creative Commons BY-ND 4.0
+ * @version   1.0.0
  */
 
 namespace Paygreen\Payment\Model;
 
 use Magento\Checkout\Model\ConfigProviderInterface;
+use Magento\Framework\App\ObjectManager;
+use Magento\Framework\UrlInterface;
 use PGDomainServicesPaygreenFacade;
 use PGFrameworkContainer;
+use PGServerServicesLinker;
 use PGFrameworkServicesHandlersPictureHandler;
-use PGModuleEntitiesButton;
+use PGDomainInterfacesEntitiesButtonInterface;
 use PGModuleProvisionersCheckoutProvisioner;
-
-require_once PAYGREEN_BOOTSTRAP_SRC;
 
 class ConfigProvider implements ConfigProviderInterface
 {
+    public function __construct()
+    {
+        require_once PAYGREEN_BOOTSTRAP_SRC;
+    }
+
     protected function getService($name)
     {
         return PGFrameworkContainer::getInstance()->get($name);
@@ -42,8 +49,8 @@ class ConfigProvider implements ConfigProviderInterface
         /** @var PGFrameworkServicesHandlersPictureHandler $pictureHandler */
         $pictureHandler = $this->getService('handler.picture');
 
-        /** @var PGDomainServicesPaygreenFacade $paygreenFacade */
-        $paygreenFacade = $this->getService('paygreen.facade');
+        /** @var PGServerServicesLinker $linker */
+        $linker = $this->getService('linker');
 
         /** @var PGModuleProvisionersCheckoutProvisioner $checkoutProvisioner */
         $checkoutProvisioner = new PGModuleProvisionersCheckoutProvisioner();
@@ -52,17 +59,13 @@ class ConfigProvider implements ConfigProviderInterface
 
         $formatedButtons = [];
 
-        $isValidInsite = $paygreenFacade->isValidInsite();
-
-        /** @var PGModuleEntitiesButton $button */
+        /** @var PGDomainInterfacesEntitiesButtonInterface $button */
         foreach ($buttons as $button) {
-            $insite = (($button->getIntegration() === 'INSITE') && $isValidInsite);
-
             $formatedButtons[] = array_merge(
                 $button->toArray(),
                 [
                     'imageUrl' => $pictureHandler->getUrl($button->getImageSrc()),
-                    'insite' => $insite
+                    'url' => $linker->buildFrontOfficeUrl('front.payment.validation', ['id' => $button->id()])
                 ]
             );
         }

@@ -1,6 +1,6 @@
 <?php
 /**
- * 2014 - 2019 Watt Is It
+ * 2014 - 2020 Watt Is It
  *
  * NOTICE OF LICENSE
  *
@@ -13,8 +13,9 @@
  * to contact@paygreen.fr so we can send you a copy immediately.
  *
  * @author    PayGreen <contact@paygreen.fr>
- * @copyright 2014 - 2019 Watt Is It
+ * @copyright 2014 - 2020 Watt Is It
  * @license   https://creativecommons.org/licenses/by-nd/4.0/fr/ Creative Commons BY-ND 4.0
+ * @version   1.0.0
  */
 
 /**
@@ -32,6 +33,7 @@ class PGClientServicesRequestersCurlRequester extends PGClientFoundationsAbstrac
      * @param PGClientEntitiesRequest $request
      * @return mixed|PGClientEntitiesResponse
      * @throws PGClientExceptionsPaymentRequestException
+     * @throws Exception
      */
     public function sendRequest(PGClientEntitiesRequest $request)
     {
@@ -39,9 +41,17 @@ class PGClientServicesRequestersCurlRequester extends PGClientFoundationsAbstrac
 
         $postFields = $request->getContent();
 
+        if ($this->getSetting('ssl_security_skip')) {
+            $verifyPeer = false;
+            $verifyHost = 0;
+        } else {
+            $verifyPeer = (bool) $this->getConfig('verify_peer');
+            $verifyHost = (int) $this->getConfig('verify_host');
+        }
+
         $options = array(
-            CURLOPT_SSL_VERIFYPEER => (bool) $this->getConfig('verify_peer'),
-            CURLOPT_SSL_VERIFYHOST => (int) $this->getConfig('verify_host'),
+            CURLOPT_SSL_VERIFYPEER => $verifyPeer,
+            CURLOPT_SSL_VERIFYHOST => $verifyHost,
             CURLOPT_URL => $request->getFinalUrl(),
             CURLOPT_RETURNTRANSFER => true,
             CURLOPT_FOLLOWLOCATION => false,
@@ -85,7 +95,7 @@ class PGClientServicesRequestersCurlRequester extends PGClientFoundationsAbstrac
     {
         $http_version = (string) $this->getConfig('http_version');
 
-        switch($http_version) {
+        switch ($http_version) {
             case '':
                 $option = CURL_HTTP_VERSION_NONE;
                 break;

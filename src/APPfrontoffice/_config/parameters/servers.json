@@ -1,0 +1,59 @@
+{
+  "servers": {
+    "front": {
+      "areas": ["front"],
+      "request_builder": "builder.request.frontoffice",
+      "cleaners": {
+        "not_found": "cleaner.basic_http.not_found",
+        "unauthorized_access": "cleaner.basic_http.unauthorized_access",
+        "server_error": "cleaner.basic_http.server_error",
+        "bad_request": "cleaner.basic_http.bad_request",
+        "rendering_error": "cleaner.basic_http.server_error"
+      },
+      "rendering": [
+        {
+          "if": {
+            "class": "PGServerComponentsResponsesTemplateResponse"
+          },
+          "do": "return",
+          "with": "renderer.processor.output_template"
+        },
+        {
+          "if": {
+            "instance": "PGServerComponentsResponsesPaygreenModuleResponse"
+          },
+          "do": "continue",
+          "with": "renderer.transformer.paygreen_module_2_array"
+        },
+        {
+          "if": {
+            "instance": "PGServerComponentsResponsesArrayResponse"
+          },
+          "do": "continue",
+          "with": "renderer.transformer.array_2_http"
+        },
+        {
+          "if": {
+            "instance": "PGServerComponentsResponsesFileResponse"
+          },
+          "do": "continue",
+          "with": "renderer.transformer.file_2_http"
+        },
+        {
+          "if": {
+            "instance": "PGServerComponentsResponsesRedirectionResponse"
+          },
+          "do": "continue",
+          "with": "renderer.transformer.redirection_2_http"
+        },
+        {
+          "if": {
+            "instance": "PGServerComponentsResponsesHTTPResponse"
+          },
+          "do": "stop",
+          "with": "renderer.processor.write_http"
+        }
+      ]
+    }
+  }
+}

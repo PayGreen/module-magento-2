@@ -1,0 +1,139 @@
+{
+  "fields": {
+    "models": {
+      "string": {
+        "format": "string",
+        "view": {
+          "name": "field",
+          "data": {
+            "class": null,
+            "attr": {"type": "text"}
+          },
+          "template": "fields/input-bloc"
+        }
+      },
+      "array": {
+        "format": "array"
+      },
+      "int": {
+        "format": "int",
+        "view": {
+          "name": "field",
+          "data": {
+            "class": null,
+            "attr": {"type": "number"}
+          },
+          "template": "fields/input-bloc"
+        }
+      },
+      "float": {
+        "format": "float",
+        "view": {
+          "name": "field",
+          "data": {
+            "class": null,
+            "attr": {"type": "text"}
+          },
+          "template": "fields/input-bloc"
+        }
+      },
+      "object": {
+        "type": "object",
+        "format": "object"
+      },
+      "bool": {
+        "format": "bool",
+        "view": {
+          "name": "field.bool.checkbox",
+          "data": {
+            "class": null
+          },
+          "template": "fields/input-bloc"
+        }
+      },
+      "hidden": {
+        "format": "string",
+        "view": {
+          "name": "field",
+          "data": {
+            "attr": {"type": "hidden"}
+          },
+          "template": "fields/partials/input"
+        }
+      },
+      "choice.expanded.single": {
+        "format": "string",
+        "view": {
+          "name": "field.choice.expanded",
+          "data": {
+            "class": null,
+            "translate": false,
+            "multiple": false
+          },
+          "template": "fields/bloc-choice-expanded"
+        }
+      },
+      "choice.expanded.multiple": {
+        "format": "array",
+        "view": {
+          "name": "field.choice.expanded",
+          "data": {
+            "class": null,
+            "translate": false,
+            "multiple": true
+          },
+          "template": "fields/bloc-choice-expanded"
+        }
+      },
+      "choice.contracted.single": {
+        "format": "string",
+        "view": {
+          "name": "field.choice.contracted",
+          "data": {
+            "class": null,
+            "translate": false,
+            "multiple": false
+          },
+          "template": "fields/bloc-choice-contracted"
+        }
+      },
+      "choice.contracted.multiple": {
+        "format": "array",
+        "view": {
+          "name": "field.choice.contracted",
+          "data": {
+            "class": null,
+            "translate": false,
+            "multiple": true
+          },
+          "template": "fields/bloc-choice-contracted"
+        }
+      },
+      "choice.double.bool": {
+        "format": "array",
+        "view": {
+          "name": "field.choice.double.bool",
+          "data": {
+            "class": null,
+            "translate": false,
+            "axis": "both",
+            "multiple": true,
+            "filter": true,
+            "filterPlaceholder": "module.form.input.search.placeholder"
+          },
+          "template": "fields/bloc-double-choice-boolean"
+        }
+      },
+      "bool.switch": {
+        "format": "bool",
+        "view": {
+          "name": "field",
+          "data": {
+            "class": null
+          },
+          "template": "fields/bloc-switch"
+        }
+      }
+    }
+  }
+}

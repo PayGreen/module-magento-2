@@ -1,0 +1,22 @@
+{
+  "view.menu": {
+    "extends": "view.basic",
+    "class": "APPbackofficeServicesViewsMenuView",
+    "arguments": ["@handler.menu", "@manager.shop", "@handler.shop"]
+  },
+  "view.notifications": {
+    "extends": "view.basic",
+    "class": "APPbackofficeServicesViewsNotificationsView",
+    "arguments": ["@notifier"]
+  },
+  "view.blocks": {
+    "extends": "view.basic",
+    "class": "APPbackofficeServicesViewsBlocksView",
+    "arguments": ["@handler.block"]
+  },
+  "view.system.paths": {
+    "extends": "view.basic",
+    "class": "APPbackofficeServicesViewsSystemPathsView",
+    "arguments": ["@pathfinder"]
+  }
+}

@@ -1,0 +1,19 @@
+{
+  "payment": {
+    "insite": {
+      "return": "front:front.payment.abort"
+    },
+    "forwarding": {
+      "task": {
+        "!payment_aborted": {
+          "type": "forward",
+          "target": "abortPayment@front.invalid_payments"
+        },
+        "!payment_refused": {
+          "type": "forward",
+          "target": "refusePayment@front.invalid_payments"
+        }
+      }
+    }
+  }
+}

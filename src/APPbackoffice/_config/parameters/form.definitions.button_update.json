@@ -1,0 +1,16 @@
+{
+  "form": {
+    "definitions": {
+      "button_update": {
+        "extends": "button",
+        "fields": {
+          "id": {
+            "model": "hidden",
+            "format": "int",
+            "required": true
+          }
+        }
+      }
+    }
+  }
+}

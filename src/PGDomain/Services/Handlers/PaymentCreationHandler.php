@@ -1,6 +1,6 @@
 <?php
 /**
- * 2014 - 2019 Watt Is It
+ * 2014 - 2020 Watt Is It
  *
  * NOTICE OF LICENSE
  *
@@ -13,8 +13,9 @@
  * to contact@paygreen.fr so we can send you a copy immediately.
  *
  * @author    PayGreen <contact@paygreen.fr>
- * @copyright 2014 - 2019 Watt Is It
+ * @copyright 2014 - 2020 Watt Is It
  * @license   https://creativecommons.org/licenses/by-nd/4.0/fr/ Creative Commons BY-ND 4.0
+ * @version   1.0.0
  */
 
 /**
@@ -23,6 +24,72 @@
  */
 class PGDomainServicesHandlersPaymentCreationHandler extends PGFrameworkFoundationsAbstractObject
 {
+    /** @var PGFrameworkComponentsBag */
+    private $config;
+
+    public function __construct(array $config)
+    {
+        $this->config = new PGFrameworkComponentsBag($config);
+    }
+
+    public function getTarget($name)
+    {
+        return $this->config["targets.$name"];
+    }
+
+    /**
+     * @return string
+     * @throws Exception
+     */
+    public function buildCustomerEntrypointURL()
+    {
+        /** @var PGServerServicesLinker $linker */
+        $linker = $this->getService('linker');
+
+        $customerEntrypoint = $this->config['entrypoints.customer'];
+
+        return $linker->buildFrontOfficeUrl($customerEntrypoint);
+    }
+
+    /**
+     * @return string
+     * @throws Exception
+     */
+    public function buildIPNEntrypointURL()
+    {
+        /** @var PGServerServicesLinker $linker */
+        $linker = $this->getService('linker');
+
+        $ipnEntrypoint = $this->config['entrypoints.ipn'];
+
+        return $linker->buildFrontOfficeUrl($ipnEntrypoint);
+    }
+
+    /**
+     * @param PGDomainInterfacesEntitiesButtonInterface $button
+     * @return string
+     * @throws PGClientExceptionsPaymentException
+     * @throws PGClientExceptionsPaymentRequestException
+     * @throws Exception
+     */
+    public function buildPayment(PGDomainInterfacesEntitiesButtonInterface $button)
+    {
+        /** @var PGDomainInterfacesPrePaymentProvisionerInterface $prePaymentProvisioner */
+        $prePaymentProvisioner = $this->getService('provisioner.pre_payment');
+
+        /** @var PGClientEntitiesResponse $response */
+        $response = $this->createPayment($prePaymentProvisioner, $button, array(
+            'returned_url' => $this->buildCustomerEntrypointURL(),
+            'notified_url' => $this->buildIPNEntrypointURL()
+        ));
+
+        if (!$response->isSuccess()) {
+            throw new Exception("Unable to create payment data.");
+        }
+
+        return $response->data->url;
+    }
+
     /**
      * @param PGDomainInterfacesPrePaymentProvisionerInterface $prePaymentProvisioner
      * @param PGDomainInterfacesEntitiesButtonInterface $button
@@ -69,7 +136,7 @@ class PGDomainServicesHandlersPaymentCreationHandler extends PGFrameworkFoundati
                 break;
 
             default:
-                $message = "Unknown payment mode : '{$button->getPaymentMode()}'.";
+                $message = "Unknown payment mode: '{$button->getPaymentMode()}'.";
                 throw new PGClientExceptionsPaymentException($message);
         }
 
@@ -116,15 +183,33 @@ class PGDomainServicesHandlersPaymentCreationHandler extends PGFrameworkFoundati
         return $data;
     }
 
+    /**
+     * @param array $data
+     * @param PGDomainInterfacesEntitiesButtonInterface $button
+     * @throws Exception
+     */
     protected function addPaymentReportData(array &$data, PGDomainInterfacesEntitiesButtonInterface $button)
     {
         $paymentReport = $button->getPaymentReport();
 
-        $paymentReportStartAt = ($paymentReport === 0) ? null : strtotime($paymentReport);
+        if ($paymentReport === '0') {
+            $startAt = null;
+            $day = date('d');
+        } else {
+            try {
+                $dt = new DateTime($paymentReport);
+            } catch (Exception $exception) {
+                $text = "Unable to parse payment report with value : '$paymentReport'.";
+                throw new Exception($text, 0, $exception);
+            }
+
+            $startAt = $dt->getTimestamp();
+            $day = $dt->format('d');
+        }
 
         $data['orderDetails'] += array(
-            'day' => date('d'),
-            'startAt' => $paymentReportStartAt
+            'day' => $day,
+            'startAt' => $startAt
         );
     }
 
@@ -181,6 +266,9 @@ class PGDomainServicesHandlersPaymentCreationHandler extends PGFrameworkFoundati
         array &$data,
         PGDomainInterfacesPrePaymentProvisionerInterface $prePaymentProvisioner
     ) {
+        /** @var PGFrameworkServicesLogger $logger */
+        $logger = $this->getService('logger');
+
         /** @var PGDomainServicesPaygreenFacade $paygreenFacade */
         $paygreenFacade = $this->getService('paygreen.facade');
 
@@ -191,18 +279,19 @@ class PGDomainServicesHandlersPaymentCreationHandler extends PGFrameworkFoundati
             $shopInfo = $paygreenFacade->getAccountInfos();
 
             if ($shopInfo->solidarityType === 'CCARBONE') {
-                $carbon = $fingerPrintHandler->generateFingerprintDatas();
+                $carbon = $fingerPrintHandler->generateFingerprintDatas($prePaymentProvisioner);
 
-                if (!empty($carbon) && $carbon !== false) {
+                if ($carbon instanceof PGClientEntitiesResponse) {
                     if (isset($carbon->data) && $carbon->data->idFingerprint) {
                         $data['idFingerprint'] = $carbon->data->idFingerprint;
+                    } else {
+                        $logger->error("Unable to get fingerprint ID in server response.");
                     }
+                } else {
+                    $logger->error("Unable to retrieve fingerprint ID.");
                 }
             }
         } catch (Exception $exception) {
-            /** @var PGFrameworkServicesLogger $logger */
-            $logger = $this->getService('logger');
-
             $logger->error("Unable to compute fingerprint : " . $exception->getMessage(), $exception);
         }
     }

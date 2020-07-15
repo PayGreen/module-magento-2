@@ -1,0 +1,9 @@
+{
+  "behaviors": {
+    "detailed_logs": {
+      "type": "service",
+      "service": "behavior.detailed_logs",
+      "method": "isDetailedLogActivated"
+    }
+  }
+}

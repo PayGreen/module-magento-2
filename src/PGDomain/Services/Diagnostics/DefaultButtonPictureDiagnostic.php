@@ -1,6 +1,6 @@
 <?php
 /**
- * 2014 - 2019 Watt Is It
+ * 2014 - 2020 Watt Is It
  *
  * NOTICE OF LICENSE
  *
@@ -13,10 +13,10 @@
  * to contact@paygreen.fr so we can send you a copy immediately.
  *
  * @author    PayGreen <contact@paygreen.fr>
- * @copyright 2014 - 2019 Watt Is It
+ * @copyright 2014 - 2020 Watt Is It
  * @license   https://creativecommons.org/licenses/by-nd/4.0/fr/ Creative Commons BY-ND 4.0
+ * @version   1.0.0
  */
-
 
 class PGDomainServicesDiagnosticsDefaultButtonPictureDiagnostic extends PGFrameworkFoundationsAbstractDiagnostic
 {
@@ -60,16 +60,22 @@ class PGDomainServicesDiagnosticsDefaultButtonPictureDiagnostic extends PGFramew
     public function resolve()
     {
         $defaultButtonFilename = PGFrameworkServicesHandlersPictureHandler::DEFAULT_PICTURE;
-        $defaultButtonSrc = $this->pathfinder->toAbsolutePath('bundles-media', "/$defaultButtonFilename");
+        $defaultButtonSrc = $this->pathfinder->toAbsolutePath('static', "/pictures/PGDomain/$defaultButtonFilename");
 
         if (!is_file($defaultButtonSrc)) {
             throw new Exception("Default button picture not found : '$defaultButtonSrc'.");
         }
 
-        $result = $this->mediaHandler->store($defaultButtonSrc, $defaultButtonFilename);
+        $result = false;
 
-        if ($result) {
+        try {
+            $this->mediaHandler->store($defaultButtonSrc, $defaultButtonFilename, true);
+
             $this->logger->info("Default button image successfully installed.");
+
+            $result = true;
+        } catch (Exception $exception) {
+            $this->logger->error("An error occured during default button installation : " . $exception->getMessage(), $exception);
         }
 
         return $result;

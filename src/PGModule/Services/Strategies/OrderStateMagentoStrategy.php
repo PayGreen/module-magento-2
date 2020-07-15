@@ -1,6 +1,6 @@
 <?php
 /**
- * 2014 - 2019 Watt Is It
+ * 2014 - 2020 Watt Is It
  *
  * NOTICE OF LICENSE
  *
@@ -13,12 +13,24 @@
  * to contact@paygreen.fr so we can send you a copy immediately.
  *
  * @author    PayGreen <contact@paygreen.fr>
- * @copyright 2014 - 2019 Watt Is It
+ * @copyright 2014 - 2020 Watt Is It
  * @license   https://creativecommons.org/licenses/by-nd/4.0/fr/ Creative Commons BY-ND 4.0
+ * @version   1.0.0
  */
 
 class PGModuleServicesStrategiesOrderStateMagentoStrategy extends PGDomainFoundationsAbstractOrderStateMapperStrategy
 {
+    /** @var PGDomainServicesManagersOrderStateManager */
+    private $orderStateManager;
+
+    /**
+     * @param PGDomainServicesManagersOrderStateManager $orderStateManager
+     */
+    public function setOrderStateManager(PGDomainServicesManagersOrderStateManager $orderStateManager)
+    {
+        $this->orderStateManager = $orderStateManager;
+    }
+
     /**
      * @param array $localState
      * @return string|null
@@ -75,6 +87,8 @@ class PGModuleServicesStrategiesOrderStateMagentoStrategy extends PGDomainFounda
             throw new PGFrameworkExceptionsConfigurationException($message);
         }
 
+        $this->verifyOrderStateExistence($state, $definitions[$state]['status']);
+
         return [
             'state' => $definitions[$state]['state'],
             'status' => $definitions[$state]['status']
@@ -89,5 +103,25 @@ class PGModuleServicesStrategiesOrderStateMagentoStrategy extends PGDomainFounda
     public function isRecognizedLocalState(array $localState)
     {
         return ($this->getState($localState) !== null);
+    }
+
+    /**
+     * @param $state
+     * @param $status
+     * @throws PGFrameworkExceptionsConfigurationException
+     */
+    protected function verifyOrderStateExistence($state, $status)
+    {
+        /** @var PGDomainInterfacesEntitiesOrderStateInterface $orderState */
+        $orderState = $this->orderStateManager->getByPrimary($status);
+
+        if ($orderState === null) {
+            $this->getService('logger')->notice("Creating order state : '$state'.");
+            $orderState = $this->orderStateManager->create($state);
+
+            if ($orderState === null) {
+                throw new Exception("Can not create the orderState '$state'.");
+            }
+        }
     }
 }

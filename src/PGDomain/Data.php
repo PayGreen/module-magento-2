@@ -1,6 +1,6 @@
 <?php
 /**
- * 2014 - 2019 Watt Is It
+ * 2014 - 2020 Watt Is It
  *
  * NOTICE OF LICENSE
  *
@@ -13,8 +13,9 @@
  * to contact@paygreen.fr so we can send you a copy immediately.
  *
  * @author    PayGreen <contact@paygreen.fr>
- * @copyright 2014 - 2019 Watt Is It
+ * @copyright 2014 - 2020 Watt Is It
  * @license   https://creativecommons.org/licenses/by-nd/4.0/fr/ Creative Commons BY-ND 4.0
+ * @version   1.0.0
  */
 
 /**
@@ -38,16 +39,4 @@ abstract class PGDomainData
     const RECURRING_SEMI_ANNUAL = 70;
     const RECURRING_ANNUAL = 80;
     const RECURRING_BIANNUAL = 90;
-
-    public static $RECURRING_LABEL = array(
-        self::RECURRING_DAILY => 'jour',
-        self::RECURRING_WEEKLY => 'semaine',
-        self::RECURRING_SEMI_MONTHLY => 'quinzaine',
-        self::RECURRING_MONTHLY => 'mois',
-        self::RECURRING_BIMONTHLY => '2 mois',
-        self::RECURRING_QUARTERLY => '4 mois',
-        self::RECURRING_SEMI_ANNUAL => 'semestre',
-        self::RECURRING_ANNUAL => 'an',
-        self::RECURRING_BIANNUAL => '2 ans'
-    );
 }

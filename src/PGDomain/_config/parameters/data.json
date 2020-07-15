@@ -1,0 +1,19 @@
+{
+  "data": {
+    "payment_report": {
+      "0": "button.form.fields.payment_report.values.none",
+      "1 week": "button.form.fields.payment_report.values.1week",
+      "2 weeks": "button.form.fields.payment_report.values.2week",
+      "1 month": "button.form.fields.payment_report.values.1month",
+      "2 months": "button.form.fields.payment_report.values.2month",
+      "3 months": "button.form.fields.payment_report.values.3month"
+    },
+    "button_integration": {
+      "EXTERNAL": "button.form.fields.integration.values.external",
+      "INSITE": "button.form.fields.integration.values.insite"
+    },
+    "display_type": {
+      "DEFAULT": "button.form.fields.display_type.values.all"
+    }
+  }
+}

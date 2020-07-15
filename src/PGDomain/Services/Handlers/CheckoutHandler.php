@@ -1,6 +1,6 @@
 <?php
 /**
- * 2014 - 2019 Watt Is It
+ * 2014 - 2020 Watt Is It
  *
  * NOTICE OF LICENSE
  *
@@ -13,8 +13,9 @@
  * to contact@paygreen.fr so we can send you a copy immediately.
  *
  * @author    PayGreen <contact@paygreen.fr>
- * @copyright 2014 - 2019 Watt Is It
+ * @copyright 2014 - 2020 Watt Is It
  * @license   https://creativecommons.org/licenses/by-nd/4.0/fr/ Creative Commons BY-ND 4.0
+ * @version   1.0.0
  */
 
 /**
@@ -67,12 +68,12 @@ class PGDomainServicesHandlersCheckoutHandler extends PGFrameworkFoundationsAbst
     public function isCheckoutAvailable(PGDomainInterfacesCheckoutProvisionerInterface $checkoutProvisioner)
     {
         if (!$this->moduleFacade->isActive()) {
-            $this->logger->warning("Paygreen module is deactivated for checkout.");
+            $this->logger->warning("PayGreen module is deactivated for checkout.");
             return false;
         }
 
         if (!$this->paygreenFacade->isConnected()) {
-            $this->logger->warning("No Paygreen account available for checkout.");
+            $this->logger->warning("No PayGreen account available for checkout.");
             return false;
         }
 

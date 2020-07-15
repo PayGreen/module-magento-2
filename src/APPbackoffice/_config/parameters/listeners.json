@@ -1,0 +1,12 @@
+{
+  "listeners": {
+    "display_connexion_requirement": {
+      "event": ["action.backoffice.account.display", "action.backoffice.system.display"],
+      "service": "listener.action.display_backoffice"
+    },
+    "display_shop_context_requirement": {
+      "event": "action.backoffice.system.display",
+      "service": "listener.action.shop_context_backoffice"
+    }
+  }
+}

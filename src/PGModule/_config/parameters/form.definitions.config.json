@@ -1,0 +1,22 @@
+{
+  "form": {
+    "definitions": {
+      "config": {
+        "fields": {
+          "active": {
+            "enabled": true
+          },
+          "admin_only_visibility": {
+            "enabled": false
+          },
+          "behavior_delivery_confirmation": {
+            "enabled": false
+          },
+          "cancel_order_on_refused_payment": {
+            "enabled": false
+          }
+        }
+      }
+    }
+  }
+}

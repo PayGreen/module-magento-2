@@ -1,0 +1,6 @@
+{
+  "handler.oauth": {
+    "class": "PGClientServicesHandlersOAuthHandler",
+    "arguments": ["@paygreen.facade", "@settings", "@pathfinder", "@facade.module", "@linker"]
+  }
+}

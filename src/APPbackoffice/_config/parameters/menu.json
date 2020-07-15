@@ -1,0 +1,40 @@
+{
+  "menu": {
+    "shop_selector": false,
+    "entries": {
+      "account": {
+        "action": "backoffice.account.display",
+        "name": "pages.account.name",
+        "title": "pages.account.title",
+        "icon": "user"
+      },
+      "config": {
+        "action": "backoffice.config.display",
+        "name": "pages.config.name",
+        "title": "pages.config.title",
+        "icon": "cogs"
+      },
+      "buttons": {
+        "action": "backoffice.buttons.display",
+        "name": "pages.buttons.name",
+        "title": "pages.buttons.title",
+        "icon": "credit-card"
+      },
+      "eligible_amounts": {
+        "action": "backoffice.eligible_amounts.display",
+        "name": "pages.eligible_amounts.name",
+        "title": "pages.eligible_amounts.title",
+        "icon": "truck"
+      },
+      "system": {
+        "action": "backoffice.system.display",
+        "name": "pages.system.name",
+        "title": "pages.system.title",
+        "icon": "bug"
+      },
+      "error": {
+        "title": "pages.error.title"
+      }
+    }
+  }
+}

@@ -1,6 +1,6 @@
 <?php
 /**
- * 2014 - 2019 Watt Is It
+ * 2014 - 2020 Watt Is It
  *
  * NOTICE OF LICENSE
  *
@@ -13,8 +13,9 @@
  * to contact@paygreen.fr so we can send you a copy immediately.
  *
  * @author    PayGreen <contact@paygreen.fr>
- * @copyright 2014 - 2019 Watt Is It
+ * @copyright 2014 - 2020 Watt Is It
  * @license   https://creativecommons.org/licenses/by-nd/4.0/fr/ Creative Commons BY-ND 4.0
+ * @version   1.0.0
  */
 
 class PGFrameworkServicesDiagnosticsVarFolderChmod extends PGFrameworkFoundationsAbstractDiagnostic
@@ -55,7 +56,7 @@ class PGFrameworkServicesDiagnosticsVarFolderChmod extends PGFrameworkFoundation
     {
         $this->requirements();
 
-        $chmod = octdec(substr(sprintf('%o', fileperms($this->getVarPath())), -4));
+        $chmod = PGFrameworkToolsFile::getChmod($this->getVarPath());
 
         return ($chmod === PGFrameworkBootstrap::VAR_FOLDER_CHMOD);
     }
@@ -91,7 +92,7 @@ class PGFrameworkServicesDiagnosticsVarFolderChmod extends PGFrameworkFoundation
         $path = $this->getVarPath();
 
         if (!is_dir($path)) {
-            throw new Exception("Paygreen var folder not found : $path");
+            throw new Exception("PayGreen var folder not found: $path");
         }
     }
 }

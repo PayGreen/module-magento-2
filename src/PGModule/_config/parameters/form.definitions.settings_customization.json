@@ -1,0 +1,16 @@
+{
+  "form": {
+    "definitions": {
+      "settings_customization": {
+        "fields": {
+          "footer_display": {
+            "enabled": false
+          },
+          "footer_color": {
+            "enabled": false
+          }
+        }
+      }
+    }
+  }
+}

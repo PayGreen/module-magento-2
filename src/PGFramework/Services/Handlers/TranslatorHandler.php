@@ -1,6 +1,6 @@
 <?php
 /**
- * 2014 - 2019 Watt Is It
+ * 2014 - 2020 Watt Is It
  *
  * NOTICE OF LICENSE
  *
@@ -13,8 +13,9 @@
  * to contact@paygreen.fr so we can send you a copy immediately.
  *
  * @author    PayGreen <contact@paygreen.fr>
- * @copyright 2014 - 2019 Watt Is It
+ * @copyright 2014 - 2020 Watt Is It
  * @license   https://creativecommons.org/licenses/by-nd/4.0/fr/ Creative Commons BY-ND 4.0
+ * @version   1.0.0
  */
 
 /**
@@ -98,7 +99,7 @@ class PGFrameworkServicesHandlersTranslatorHandler extends PGFrameworkFoundation
 
         $translations = $this->cacheHandler->loadEntry($cacheName);
 
-        if (($translations === null) || (PAYGREEN_ENV === 'DEV')) {
+        if ($translations === null) {
             $translations = $this->buildTranslations($local);
 
             $this->cacheHandler->saveEntry($cacheName, $translations);
@@ -113,14 +114,17 @@ class PGFrameworkServicesHandlersTranslatorHandler extends PGFrameworkFoundation
     {
         $translations = array();
 
-        foreach ($this->sources as $source) {
-            $path = $this->pathfinder->toAbsolutePath($source, '/translations/' . strtolower($local));
+        $paths = $this->pathfinder->reviewVendorPaths('/_resources/translations/' . strtolower($local));
 
-            if (is_dir($path)) {
-                foreach (glob($path . DIRECTORY_SEPARATOR . '*.json') as $filename) {
-                    $data = json_decode(file_get_contents($filename), true);
-                    $this->flatenize($translations, $data);
+        foreach ($paths as $path) {
+            foreach (glob($path . DIRECTORY_SEPARATOR . '*.json') as $filename) {
+                $data = json_decode(file_get_contents($filename), true);
+
+                if ($data === null) {
+                    throw new Exception("Invalid translation file : '$filename'.");
                 }
+
+                $this->flatenize($translations, $data);
             }
         }
 
@@ -140,8 +144,19 @@ class PGFrameworkServicesHandlersTranslatorHandler extends PGFrameworkFoundation
         }
     }
 
-    public function get($key, array $values = array(), $local = null)
+    public function get($key, $local = null)
     {
+        $data = array();
+
+        if (is_object($key) && ($key instanceof PGFrameworkComponentsTranslation)) {
+            $data = $key->getData();
+            $key = $key->getKey();
+        }
+
+        if (substr($key, 0, 1) === '~') {
+            return $this->getCustomTranslation(substr($key, 1));
+        }
+
         $local = ($local === null) ? $this->local : $local;
 
         if (preg_match(self::REGEX_TRANSLATION_KEY, $key)) {
@@ -149,9 +164,20 @@ class PGFrameworkServicesHandlersTranslatorHandler extends PGFrameworkFoundation
 
             if (is_null($translation)) {
                 if ($local !== $this->defaultLocal) {
-                    $translation = $this->get($key, $values, $this->defaultLocal);
+                    $translation = $this->get($key, $this->defaultLocal);
                 } else {
                     $translation = "Missing translation";
+                }
+            }
+
+            if (!is_null($translation) && !empty($data)) {
+                try {
+                    $parser = new PGFrameworkComponentsParser($data);
+
+                    $translation = $parser->parseStringParameters($translation);
+                } catch (PGFrameworkExceptionsParserParameterException $exception) {
+                    $this->getService('logger')->warning("Missing data for translation '$key'.", $exception);
+                    $translation = "Invalid translation";
                 }
             }
         } else {
@@ -161,6 +187,14 @@ class PGFrameworkServicesHandlersTranslatorHandler extends PGFrameworkFoundation
         }
 
         return $translation;
+    }
+
+    protected function getCustomTranslation($key)
+    {
+        /** @var PGFrameworkServicesSettings $settings */
+        $settings = $this->getService('settings');
+
+        return $settings->get($key);
     }
 
     public function has($key, $local = null)

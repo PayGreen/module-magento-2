@@ -1,0 +1,18 @@
+{
+  "pages": {
+    "config": {
+      "name": "Configuration",
+      "title": "Your payment module's configuration",
+      "module": {
+        "title": "Module's configuration"
+      },
+      "customization": {
+        "title": "Customization"
+      },
+      "paymentTypes": {
+        "title": "Payment methods configuration",
+        "description": "If you want to configure eligible amounts and shipping costs for each payment method, go on Payment methods' page."
+      }
+    }
+  }
+}

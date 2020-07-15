@@ -1,0 +1,9 @@
+{
+  "routing": {
+    "areas": {
+      "front": {
+        "patterns": []
+      }
+    }
+  }
+}

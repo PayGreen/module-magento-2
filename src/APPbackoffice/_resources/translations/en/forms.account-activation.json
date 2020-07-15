@@ -1,0 +1,12 @@
+{
+  "forms":{
+    "account_activation": {
+      "fields": {
+        "activation": {
+          "label": "In production",
+          "help": "If your account is in production, your clients can pay on your shop and you're subjected to PayGreen invoicing*."
+        }
+      }
+    }
+  }
+}

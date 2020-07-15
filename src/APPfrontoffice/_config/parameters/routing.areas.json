@@ -1,0 +1,11 @@
+{
+  "routing": {
+    "areas": {
+      "front": {
+        "patterns": [
+          "front.*"
+        ]
+      }
+    }
+  }
+}

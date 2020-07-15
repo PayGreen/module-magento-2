@@ -1,0 +1,15 @@
+{
+  "form": {
+    "definitions": {
+      "button": {
+        "view": {
+          "data": {
+            "columns": {
+              "other": ["form_key"]
+            }
+          }
+        }
+      }
+    }
+  }
+}

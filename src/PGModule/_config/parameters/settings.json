@@ -1,0 +1,21 @@
+{
+  "settings": {
+    "officers": {
+      "system": "officer.settings.configuration.global"
+    },
+    "entries": {
+      "title": {
+        "type": "string",
+        "default": "Payer avec PayGreen"
+      },
+      "payment_confirmation_button": {
+        "type": "string",
+        "default": "Payer votre commande"
+      },
+      "cancel_order_on_refused_payment": {
+        "type": "bool",
+        "default": true
+      }
+    }
+  }
+}

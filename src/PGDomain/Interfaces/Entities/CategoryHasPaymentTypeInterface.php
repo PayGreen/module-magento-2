@@ -1,6 +1,6 @@
 <?php
 /**
- * 2014 - 2019 Watt Is It
+ * 2014 - 2020 Watt Is It
  *
  * NOTICE OF LICENSE
  *
@@ -13,15 +13,16 @@
  * to contact@paygreen.fr so we can send you a copy immediately.
  *
  * @author    PayGreen <contact@paygreen.fr>
- * @copyright 2014 - 2019 Watt Is It
+ * @copyright 2014 - 2020 Watt Is It
  * @license   https://creativecommons.org/licenses/by-nd/4.0/fr/ Creative Commons BY-ND 4.0
+ * @version   1.0.0
  */
 
 /**
  * Interface PGDomainInterfacesEntitiesCategoryHasPaymentTypeInterface
  * @package PGDomain\Interfaces\Entities
  */
-interface PGDomainInterfacesEntitiesCategoryHasPaymentTypeInterface extends PGFrameworkInterfacesWrappedEntityInterface
+interface PGDomainInterfacesEntitiesCategoryHasPaymentTypeInterface extends PGFrameworkInterfacesPersistedEntityInterface
 {
     /**
      * @return mixed
@@ -36,7 +37,7 @@ interface PGDomainInterfacesEntitiesCategoryHasPaymentTypeInterface extends PGFr
     /**
      * @return int
      */
-    public function getCategoryId();
+    public function getCategoryPrimary();
 
     /**
      * @return string

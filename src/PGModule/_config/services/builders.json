@@ -1,0 +1,11 @@
+{
+  "builder.form": {
+    "class": "PGModuleServicesBuildersFormBuilder",
+    "calls": [
+      {
+        "method": "setFormKey",
+        "arguments": ["@magento"]
+      }
+    ]
+  }
+}

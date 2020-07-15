@@ -1,6 +1,6 @@
 <?php
 /**
- * 2014 - 2019 Watt Is It
+ * 2014 - 2020 Watt Is It
  *
  * NOTICE OF LICENSE
  *
@@ -13,8 +13,9 @@
  * to contact@paygreen.fr so we can send you a copy immediately.
  *
  * @author    PayGreen <contact@paygreen.fr>
- * @copyright 2014 - 2019 Watt Is It
+ * @copyright 2014 - 2020 Watt Is It
  * @license   https://creativecommons.org/licenses/by-nd/4.0/fr/ Creative Commons BY-ND 4.0
+ * @version   1.0.0
  */
 
 use Magento\Sales\Model\Order;
@@ -72,6 +73,15 @@ class PGModuleServicesRepositoriesOrderStateRepository extends PGModuleFoundatio
             throw new PGFrameworkExceptionsConfigurationException($message);
         }
 
+        $metadata = array();
+
+        if (array_key_exists('metadata', $this->definitions[$code]) and is_array($this->definitions[$code]['metadata'])) {
+            $metadata = $this->definitions[$code]['metadata'];
+        }
+
+        $visibility = array_key_exists('visibility', $metadata) ? $metadata['visibility'] : false;
+        $default = array_key_exists('default', $metadata) ? $metadata['default'] : false;
+
         /** @var Magento\Sales\Model\Order\Status $localEntity */
         $localEntity = $this->createLocalEntity([
             'status' => $this->definitions[$code]['source']['status'],
@@ -80,7 +90,7 @@ class PGModuleServicesRepositoriesOrderStateRepository extends PGModuleFoundatio
 
         $this->insertLocalEntity($localEntity);
 
-        $localEntity->assignState($this->definitions[$code]['source']['state']);
+        $localEntity->assignState($this->definitions[$code]['source']['state'], $default, $visibility);
 
         $this->updateLocalEntity($localEntity);
 

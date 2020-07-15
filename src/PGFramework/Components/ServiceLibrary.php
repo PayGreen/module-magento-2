@@ -1,6 +1,6 @@
 <?php
 /**
- * 2014 - 2019 Watt Is It
+ * 2014 - 2020 Watt Is It
  *
  * NOTICE OF LICENSE
  *
@@ -13,14 +13,18 @@
  * to contact@paygreen.fr so we can send you a copy immediately.
  *
  * @author    PayGreen <contact@paygreen.fr>
- * @copyright 2014 - 2019 Watt Is It
+ * @copyright 2014 - 2020 Watt Is It
  * @license   https://creativecommons.org/licenses/by-nd/4.0/fr/ Creative Commons BY-ND 4.0
+ * @version   1.0.0
  */
 
 class PGFrameworkComponentsServiceLibrary implements arrayaccess
 {
     /** @var PGFrameworkComponentsBag  */
     private $definitions;
+
+    /** @var array */
+    private $compiledDefinitions = array();
 
     /** @var array */
     private $files = array();
@@ -53,7 +57,7 @@ class PGFrameworkComponentsServiceLibrary implements arrayaccess
 
         $this->files = array();
 
-        foreach($filenames as $filename) {
+        foreach ($filenames as $filename) {
             $this->addConfigurationFile($filename);
         }
     }
@@ -99,14 +103,22 @@ class PGFrameworkComponentsServiceLibrary implements arrayaccess
     /**
      * @param string $tagName
      * @return array
+     * @throws LogicException
+     * @throws Exception
      */
     public function getTaggedServices($tagName)
     {
         $findedTags = array();
 
-        foreach ($this->definitions->toArray() as $name => $serviceDefinition) {
-            if (array_key_exists('tags', $serviceDefinition)) {
-                $tags = $serviceDefinition['tags'];
+        $names = array_keys($this->definitions->toArray());
+
+        foreach ($names as $name) {
+            $definition = $this->getDefinition($name);
+
+            $isAbstract = array_key_exists('abstract', $definition) && $definition['abstract'];
+
+            if (!$isAbstract && array_key_exists('tags', $definition)) {
+                $tags = $definition['tags'];
 
                 if (!is_array($tags)) {
                     $message = "Target service definition has inconsistent 'tags' options : '$name'.";
@@ -155,6 +167,56 @@ class PGFrameworkComponentsServiceLibrary implements arrayaccess
         return null;
     }
 
+    /**
+     * @param string $name
+     * @return array|null
+     * @throws Exception
+     */
+    private function getDefinition($name)
+    {
+        if (array_key_exists($name, $this->compiledDefinitions)) {
+            $definition = $this->compiledDefinitions[$name];
+        } else {
+            $definition = $this->definitions[$name];
+
+            if (array_key_exists('extends', $definition)) {
+                $parentName = $definition['extends'];
+
+                if (!isset($this[$parentName])) {
+                    throw new Exception("Unknown parent service : $parentName");
+                }
+
+                $parentDefinition = $this->getDefinition($parentName);
+
+                $bag = new PGFrameworkComponentsBag($parentDefinition);
+                $bag->setDotSeparator(false);
+
+                $bag->merge(array('abstract' => false));
+                $bag->merge($definition);
+
+                $definition = $bag->toArray();
+
+                $this->compiledDefinitions[$name] = $definition;
+            }
+        }
+
+        return $definition;
+    }
+
+    public function isAbstract($name)
+    {
+        $definition = $this[$name];
+
+        return (array_key_exists('abstract', $definition) && ($definition['abstract'] === true));
+    }
+
+    public function isShared($name)
+    {
+        $definition = $this->getDefinition($name);
+
+        return (!array_key_exists('shared', $definition) || ($definition['shared'] !== false));
+    }
+
     // ###################################################################
     // ###       sous-fonctions d'accès par tableau
     // ###################################################################
@@ -173,6 +235,10 @@ class PGFrameworkComponentsServiceLibrary implements arrayaccess
     }
     public function offsetGet($var)
     {
-        return $this->definitions[$var];
+        if (!isset($this[$var])) {
+            throw new Exception("Unknown service definition : $var");
+        }
+
+        return $this->getDefinition($var);
     }
 }

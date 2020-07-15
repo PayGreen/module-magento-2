@@ -1,0 +1,44 @@
+{
+  "pages": {
+    "account": {
+      "name": "Mon compte",
+      "title": "Gestion de votre compte PayGreen",
+      "status": {
+        "title": "Statut de mon compte",
+        "footer": "* En passant votre compte en production, vous acceptez les conditions tarifaires PayGreen.",
+        "footerLink": "Voir les conditions tarifaires"
+      },
+      "ids": {
+        "title": "Mes identifiants PayGreen"
+      },
+      "logout": {
+        "title": "Déconnexion",
+        "description": "Attention&nbsp;: si vous vous déconnectez, vous ne serez plus en mesure d'accepter des paiements via le module PayGreen.",
+        "action": "Me déconnecter"
+      },
+      "infos": {
+        "title": "Mes informations",
+        "description": "Les informations ci-dessous sont indispensables à la mise en production de votre compte PayGreen. Vous pouvez les renseigner et les modifier sur votre back-office PayGreen.",
+        "descriptionLink": "Ouvrir mon back-office",
+        "form": {
+          "url": "URL de votre e-commerce",
+          "siret": "N° SIRET",
+          "iban": "IBAN"
+        }
+      },
+      "login": {
+        "title": "Déjà un compte PayGreen&nbsp;?",
+        "description": "&hellip;ou renseignez vos identifiants PayGreen&nbsp;:",
+        "action": "Me connecter"
+      },
+      "subscription": {
+        "title": "Pas encore de compte PayGreen&nbsp;?",
+        "action": "M'inscrire"
+      },
+      "notification": {
+        "needLogin": "Pour utiliser les fonctionnalités de PayGreen, veuillez vous connecter à votre compte PayGreen.",
+        "incorrectKey": "Votre identifiant unique et/ou votre clé privée sont incorrects."
+      }
+    }
+  }
+}

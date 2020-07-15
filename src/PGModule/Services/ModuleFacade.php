@@ -1,6 +1,6 @@
 <?php
 /**
- * 2014 - 2019 Watt Is It
+ * 2014 - 2020 Watt Is It
  *
  * NOTICE OF LICENSE
  *
@@ -13,9 +13,16 @@
  * to contact@paygreen.fr so we can send you a copy immediately.
  *
  * @author    PayGreen <contact@paygreen.fr>
- * @copyright 2014 - 2019 Watt Is It
+ * @copyright 2014 - 2020 Watt Is It
  * @license   https://creativecommons.org/licenses/by-nd/4.0/fr/ Creative Commons BY-ND 4.0
+ * @version   1.0.0
  */
+
+use Magento\Framework\App\ProductMetadataInterface;
+use Magento\Framework\App\Config\ScopeConfigInterface;
+use Magento\Store\Model\ScopeInterface;
+use Magento\Store\Model\StoreManagerInterface;
+use Magento\Framework\Exception\NoSuchEntityException;
 
 /**
  * Class PGModuleServicesModuleFacade
@@ -35,10 +42,33 @@ class PGModuleServicesModuleFacade extends PGFrameworkFoundationsAbstractObject 
 
     public function getApplicationVersion()
     {
-        /** @var Magento\Framework\App\ProductMetadataInterface $productMetadata */
+        /** @var ProductMetadataInterface $productMetadata */
         $productMetadata = $this->getService('magento')->get('Magento\Framework\App\ProductMetadataInterface');
 
         return $productMetadata->getVersion();
+    }
+
+    public function getShopMail()
+    {
+        /** @var ScopeConfigInterface $scopeConfig */
+        $scopeConfig = $this->getService('magento')->get('\Magento\Framework\App\Config\ScopeConfigInterface');
+
+        return $scopeConfig->getValue(
+            'trans_email/ident_sales/email',
+            ScopeInterface::SCOPE_STORE
+        );
+    }
+
+    /**
+     * @return string
+     * @throws NoSuchEntityException
+     */
+    public function getShopName()
+    {
+        /** @var StoreManagerInterface $storeManager */
+        $storeManager = $this->getService('magento')->get('\Magento\Store\Model\StoreManagerInterface');
+
+        return $storeManager->getStore()->getName();
     }
 
     public function getAPICredentials()

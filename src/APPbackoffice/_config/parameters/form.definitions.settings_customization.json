@@ -1,0 +1,69 @@
+{
+  "form": {
+    "definitions": {
+      "settings_customization": {
+        "model": "basic",
+        "fields": {
+          "notice_payment_accepted": {
+            "model": "string",
+            "view": {
+              "data": {
+                "label": "config.fields.success_payment_text.label",
+                "help": "config.fields.success_payment_text.help"
+              }
+            }
+          },
+          "notice_payment_refused": {
+            "model": "string",
+            "view": {
+              "data": {
+                "label": "config.fields.failure_payment_text.label",
+                "help": "config.fields.failure_payment_text.help"
+              }
+            }
+          },
+          "notice_payment_canceled": {
+            "model": "string",
+            "view": {
+              "data": {
+                "label": "config.fields.canceled_payment_text.label",
+                "help": "config.fields.canceled_payment_text.help"
+              }
+            }
+          },
+          "footer_display": {
+            "model": "bool.switch",
+            "view": {
+              "data": {
+                "label": "config.fields.behavior_display_footer.label",
+                "help": "config.fields.behavior_display_footer.help"
+              }
+            }
+          },
+          "footer_color": {
+            "model": "choice.contracted.single",
+            "validators": {
+              "array.in": ["white", "green", "black"]
+            },
+            "view": {
+              "data": {
+                "choices": {
+                  "white": "config.fields.display_footer_color.values.white",
+                  "green": "config.fields.display_footer_color.values.green",
+                  "black": "config.fields.display_footer_color.values.black"
+                },
+                "translate": true,
+                "label": "config.fields.display_footer_color.label"
+              }
+            }
+          }
+        },
+        "view": {
+          "data": {
+            "validate": "config.buttons.save"
+          }
+        }
+      }
+    }
+  }
+}

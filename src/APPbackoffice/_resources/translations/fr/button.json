@@ -1,0 +1,155 @@
+{
+  "button": {
+    "breadcrumb": {
+      "list": "Tous mes boutons"
+    },
+    "pages": {
+      "list": {
+        "title": "Tous mes boutons de paiement",
+        "error": "La configuration de ce bouton de paiement est incorrecte.",
+        "image": "Image de votre bouton de paiement"
+      },
+      "update": {
+        "title": "Modifier mon bouton de paiement"
+      },
+      "insert": {
+        "title": "Créer un bouton de paiement"
+      },
+      "general": {
+        "design": {
+          "title": "Apparence du bouton",
+          "preview": "Aperçu de votre bouton",
+          "previewImageAlt": "Image de votre bouton"
+        },
+        "payment": {
+          "title": "Type de paiement"
+        },
+        "other": {
+          "title": "Autres réglages"
+        }
+      }
+    },
+    "actions": {
+      "delete": {
+        "button": "Supprimer",
+        "errors": {
+          "id_not_found": "Identifiant du bouton non trouvé.",
+          "button_not_found": "Bouton non trouvé."
+        },
+        "result": {
+          "success": "Bouton supprimé avec succès.",
+          "failure": "Une erreur s'est produite lors de la suppression du bouton."
+        },
+        "confirmation": "Êtes-vous certain de vouloir supprimer ce bouton de paiement ?"
+      },
+      "update": {
+        "button": "Modifier",
+        "errors": {
+          "id_not_found": "Identifiant du bouton non trouvé.",
+          "button_not_found": "Bouton non trouvé."
+        },
+        "result": {
+          "success": "Bouton modifié avec succès.",
+          "failure": "Une erreur s'est produite lors de la modification du bouton.",
+          "invalid": "Votre bouton de paiement n'est pas valide."
+        }
+      },
+      "insert": {
+        "button": "Nouveau bouton",
+        "errors": {},
+        "result": {
+          "success": "Bouton créé avec succès.",
+          "failure": "Une erreur s'est produite lors de la création du bouton.",
+          "invalid": "Votre bouton de paiement n'est pas valide."
+        }
+      }
+    },
+    "form": {
+      "title" : "Configuration des boutons de paiement",
+      "title_new_button": "Nouveau bouton",
+      "errors": {
+        "upload_picture_error": "Impossible de changer l'image.",
+        "display_error": "Une erreur s'est produite lors de la création du formulaire de gestion des boutons."
+      },
+      "result": {
+        "success": {
+          "button": "Bouton enregistré avec succès.",
+          "picture": "Image téléchargée avec succès."
+        }
+      },
+      "fields": {
+        "label": {
+          "label": "Intitulé du bouton",
+          "placeholder": "Ex : Paiement en CB/Visa/MasterCard"
+        },
+        "cart_amount": {
+          "label": "Montant du panier",
+          "helper": "Votre bouton ne s'affichera que pour les clients dont le panier est compris entre ces 2 montants. Indiquez 0 pour ne pas mettre de montant minimum ou maximum."
+        },
+        "integration": {
+          "label": "Interface de paiement",
+          "helper": "Pour activer l'interface de paiement in site, le module In Site doit être activé via votre back-office PayGreen. Par ailleurs, l'URL de votre e-commerce doit être en HTTPS (SSL activé), sans quoi votre bouton de paiement sera désactivé.",
+          "values": {
+            "external": "Page de paiement déportée",
+            "insite": "Interface de paiement in site"
+          }
+        },
+        "image": {
+          "label": "Image du bouton",
+          "default": "Utiliser l'image par défaut"
+        },
+        "height": {
+          "label": "Hauteur de l'image",
+          "helper": "Hauteur de l'image du bouton de paiement.",
+          "append": "pixels"
+        },
+        "display_type": {
+          "label": "Style du bouton",
+          "values": {
+            "all": "Intitulé et image",
+            "picture": "Uniquement l'image",
+            "text": "Uniquement l'intitulé"
+          }
+        },
+        "position": {
+          "label": "Ordre d'affichage du bouton",
+          "helper": "Définissez la position de votre bouton par rapport à vos autres boutons de paiement PayGreen. Indiquez 0 pour que la position de votre bouton soit définie automatiquement."
+        },
+        "payment_mode": {
+          "label": "Mode de paiement"
+        },
+        "payment_type": {
+          "label": "Moyen de paiement"
+        },
+        "payment_number": {
+          "label": "Nombre d'échéances"
+        },
+        "first_payment_part": {
+          "label": "Montant de la 1ère échéance",
+          "helper": "Choisissez le pourcentage du montant de la commande qui doit être payé lors de la première échéance. Laissez 0 pour que le montant de la première échéance soit calculé automatiquement.",
+          "append": "% du total"
+        },
+        "payment_report": {
+          "label": "Report de la 1ère échéance",
+          "values": {
+            "none": "Pas de report (paiement immédiat)",
+            "1week": "Reportée d'une semaine",
+            "2week": "Reportée de 2 semaines",
+            "1month": "Reportée d'un mois",
+            "2month": "Reportée de 2 mois",
+            "3month": "Reportée de 3 mois"
+          },
+          "helper": "Vous pouvez reporter le prélèvement de la 1ère échéance afin que vos clients n'aient pas à la payer immédiatement."
+        },
+        "order_repeated": {
+          "label": "Renouveler la précédente commande",
+          "helper": "À chaque échéance, la commande précédente est automatiquement recréée."
+        },
+        "discount": {
+          "label": "Promotion",
+          "helper": "Rêgle de panier non-visible."
+        }
+      }
+    }
+  }
+}

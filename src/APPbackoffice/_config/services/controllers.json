@@ -1,0 +1,38 @@
+{
+  "controller.backoffice.account": {
+    "extends": "controller.abstract",
+    "class": "APPbackofficeControllersAccountController"
+  },
+  "controller.backoffice.oauth": {
+    "extends": "controller.abstract",
+    "class": "APPbackofficeControllersOAuthController"
+  },
+  "controller.backoffice.config": {
+    "extends": "controller.abstract",
+    "class": "APPbackofficeControllersConfigController"
+  },
+  "controller.backoffice.eligible_amounts": {
+    "extends": "controller.abstract",
+    "class": "APPbackofficeControllersEligibleAmountsController"
+  },
+  "controller.backoffice.buttons": {
+    "extends": "controller.abstract",
+    "class": "APPbackofficeControllersButtonsController",
+    "arguments": ["@manager.button"]
+  },
+  "controller.backoffice.system": {
+    "extends": "controller.abstract",
+    "class": "APPbackofficeControllersSystemController"
+  },
+  "controller.backoffice.shop": {
+    "extends": "controller.abstract",
+    "class": "APPbackofficeControllersShopController",
+    "tags": [
+      { "name": "controller" }
+    ]
+  },
+  "controller.backoffice.error": {
+    "extends": "controller.abstract",
+    "class": "APPbackofficeControllersErrorController"
+  }
+}

@@ -1,6 +1,6 @@
 <?php
 /**
- * 2014 - 2019 Watt Is It
+ * 2014 - 2020 Watt Is It
  *
  * NOTICE OF LICENSE
  *
@@ -13,19 +13,148 @@
  * to contact@paygreen.fr so we can send you a copy immediately.
  *
  * @author    PayGreen <contact@paygreen.fr>
- * @copyright 2014 - 2019 Watt Is It
+ * @copyright 2014 - 2020 Watt Is It
  * @license   https://creativecommons.org/licenses/by-nd/4.0/fr/ Creative Commons BY-ND 4.0
+ * @version   1.0.0
  */
 
 /**
  * Class PGDomainServicesHandlersFingerprintHandler
  * @package PGFramework\Services\Handlers
- * @todo Importer et généraliser le code présent dans le module Prestashop.
  */
 class PGDomainServicesHandlersFingerprintHandler extends PGFrameworkFoundationsAbstractObject
 {
-    public function generateFingerprintDatas()
+    const FINGERPRINT_COOKIE_NAME = 'pgFingerPrintSession';
+
+    public static $REQUIRED_CLIENT_DATA = array('client', 'startAt', 'useTime', 'nbImage', 'device', 'browser');
+
+    /** @var PGFrameworkServicesLogger */
+    private $logger;
+
+    /** @var PGDomainServicesManagersFingerPrintManager */
+    private $fingerPrintManager;
+
+    /** @var PGFrameworkServicesHandlersCookieHandler */
+    private $cookieHandler;
+
+    /**
+     * PGDomainServicesHandlersFingerprintHandler constructor.
+     * @param PGDomainServicesManagersFingerPrintManager $fingerPrintManager
+     * @param PGFrameworkServicesHandlersCookieHandler $cookieHandler
+     * @param PGFrameworkServicesLogger $logger
+     */
+    public function __construct(
+        PGDomainServicesManagersFingerPrintManager $fingerPrintManager,
+        PGFrameworkServicesHandlersCookieHandler $cookieHandler,
+        PGFrameworkServicesLogger $logger
+    ) {
+        $this->fingerPrintManager = $fingerPrintManager;
+        $this->cookieHandler = $cookieHandler;
+        $this->logger = $logger;
+    }
+
+    /**
+     * @param array $data
+     * @return bool
+     */
+    public function isValidClientData(array $data)
     {
-        return false;
+        foreach (self::$REQUIRED_CLIENT_DATA as $key) {
+            if (!array_key_exists($key, $data) || empty($data[$key])) {
+                $this->logger->error("Unable to save fingerprint. Client data not found : '$key'.");
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    /**
+     * @param array $data
+     * @return bool
+     * @throws Exception
+     */
+    public function insertFingerprintData(array $data)
+    {
+        if (!$this->isValidClientData($data)) {
+            throw new Exception("Invalid client data.");
+        }
+
+        $this->cookieHandler->set(self::FINGERPRINT_COOKIE_NAME, $data['client']);
+
+        $this->logger->debug("Saving client data for finger print computing.");
+
+        return $this->fingerPrintManager->saveNavigationData(
+            $data['client'],
+            $data['browser'],
+            $data['device'],
+            $data['nbImage'],
+            $data['useTime']
+        );
+    }
+
+    /**
+     * @param PGDomainInterfacesPrePaymentProvisionerInterface $prePaymentProvisioner
+     * @return PGClientEntitiesResponse|null
+     * @throws PGClientExceptionsPaymentRequestException
+     */
+    public function generateFingerprintDatas(PGDomainInterfacesPrePaymentProvisionerInterface $prePaymentProvisioner)
+    {
+        /** @var PGClientServicesApiFacade $apiFacade */
+        $apiFacade = $this->getService('paygreen.facade')->getApiFacade();
+
+        $session = $this->cookieHandler->get(self::FINGERPRINT_COOKIE_NAME);
+
+        if ($session) {
+            $this->getService('logger')->error("Empty fingerprint cookie.");
+            return null;
+        }
+
+        /** @var PGDomainEntitiesFingerPrint|null $storedFingerPrint */
+        $storedFingerPrint = $this->fingerPrintManager->getBySession($session);
+
+        if ($storedFingerPrint === null) {
+            $this->getService('logger')->error("Empty fingerprint data.");
+            return null;
+        }
+
+        $aggregatedFingerPrint = array();
+
+        $totalWeight = $prePaymentProvisioner->getShippingWeight();
+
+        /** @var PGDomainInterfacesEntitiesCartItemInterface $item */
+        foreach ($prePaymentProvisioner->getItems() as $item) {
+            if (!$item->getProduct()->getWeight()) {
+                $totalWeight ++;
+            }
+        }
+
+        $aggregatedFingerPrint['deviceType'] = $storedFingerPrint->getDevice();
+        $aggregatedFingerPrint['browser'] = $storedFingerPrint->getBrowser();
+        $aggregatedFingerPrint['nbPage'] = (int) $storedFingerPrint->getPages();
+        $aggregatedFingerPrint['useTime'] = (float) $storedFingerPrint->getTime() / 1000;
+        $aggregatedFingerPrint['nbImage'] = (int) $storedFingerPrint->getPictures();
+        $aggregatedFingerPrint['fingerprint'] = (int) $session;
+        $aggregatedFingerPrint['carrier'] = (string) $prePaymentProvisioner->getShippingName();
+        $aggregatedFingerPrint['weight'] = (float) $totalWeight;
+        $aggregatedFingerPrint['nbPackage'] = (int) 1;
+        $aggregatedFingerPrint['clientAddress'] = (string)
+            $prePaymentProvisioner->getAddressLineOne() . ',' .
+            $prePaymentProvisioner->getAddressLineTwo() . ',' .
+            $prePaymentProvisioner->getZipCode() . ',' .
+            $prePaymentProvisioner->getCity() . ',' .
+            $prePaymentProvisioner->getCountry()
+        ;
+
+        $this->fingerPrintManager->delete($storedFingerPrint);
+
+        foreach ($aggregatedFingerPrint as $key => $value) {
+            if (empty($value)) {
+                $this->getService('logger')->error("Empty value in fingerprint data : '$key'.", $aggregatedFingerPrint);
+                return null;
+            }
+        }
+
+        return $apiFacade->sendFingerprintDatas($aggregatedFingerPrint);
     }
 }

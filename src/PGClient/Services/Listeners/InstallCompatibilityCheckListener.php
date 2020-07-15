@@ -1,6 +1,6 @@
 <?php
 /**
- * 2014 - 2019 Watt Is It
+ * 2014 - 2020 Watt Is It
  *
  * NOTICE OF LICENSE
  *
@@ -13,30 +13,26 @@
  * to contact@paygreen.fr so we can send you a copy immediately.
  *
  * @author    PayGreen <contact@paygreen.fr>
- * @copyright 2014 - 2019 Watt Is It
+ * @copyright 2014 - 2020 Watt Is It
  * @license   https://creativecommons.org/licenses/by-nd/4.0/fr/ Creative Commons BY-ND 4.0
+ * @version   1.0.0
  */
-
 
 class PGClientServicesListenersInstallCompatibilityCheckListener
 {
-    /** @var PGFrameworkServicesLogger */
-    private $logger;
-
     /** @var PGDomainServicesPaygreenFacade */
     private $paygreenFacade;
 
-    public function __construct(PGDomainServicesPaygreenFacade $paygreenFacade, PGFrameworkServicesLogger $logger)
+    public function __construct(PGDomainServicesPaygreenFacade $paygreenFacade)
     {
         $this->paygreenFacade = $paygreenFacade;
-        $this->logger = $logger;
     }
 
     public function checkCompatibility()
     {
         if (!$this->paygreenFacade->getApiFacade()->getRequestSender()->checkCompatibility()) {
-            $error = "Your server is not able to contact the Paygreen API.";
-            $error .= " You must install the CURL extension or allow url fopen.";
+            $error = "Your server is not able to contact PayGreen API.";
+            $error .= " You must install the cURL extension or allow URL fopen.";
 
             throw new Exception($error);
         }

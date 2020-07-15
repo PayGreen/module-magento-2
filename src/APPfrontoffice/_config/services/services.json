@@ -1,0 +1,11 @@
+{
+  "builder.request.frontoffice": {
+    "class": "APPfrontofficeServicesRequestBuilder",
+    "arguments": ["%request_builder.frontoffice"]
+  },
+
+  "server.front": {
+    "extends": "server.abstract",
+    "arguments": ["%servers.front"]
+  }
+}

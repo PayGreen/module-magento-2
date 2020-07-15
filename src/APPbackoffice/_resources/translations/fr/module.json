@@ -1,0 +1,195 @@
+{
+  "module": {
+    "description": "La solution de paiement française à impact positif sur la société et l'environnement",
+    "uninstall": {
+      "confirmation": "Êtes-vous sure de vouloir désinstaller le module PayGreen ?"
+    },
+    "form": {
+      "input": {
+        "empty": "Non renseigné",
+        "range": {
+          "from": "De",
+          "to": "à"
+        },
+        "search": {
+          "placeholder": "Rechercher&hellip;"
+        }
+      },
+      "buttons": {
+        "validate": "Valider",
+        "delete": "Effacer",
+        "cancel": "Annuler"
+      }
+    },
+    "bool": {
+      "null": "NA",
+      "true": "Oui",
+      "false": "Non"
+    }
+  },
+  "backoffice": {
+    "menu": {
+      "logo": "Ouvrir mon back-office PayGreen",
+      "shop_selector": {
+        "label": "Vous configurez"
+      }
+    },
+    "errors": {
+      "connection": "Erreur durant la gestion de votre connexion.",
+      "interface_global": "Erreur durant la préparation du back-office PayGreen.",
+      "processing": "Une erreur est survenue durant la résolution de votre demande.",
+      "interface_construction": "Erreur durant la génération de l'interface de configuration.",
+      "authentication_required": "Cette section requiert que vous soyez connecté sur votre compte PayGreen.",
+      "multishop_bad_level": "Cette page n'est disponible qu'au niveau boutique.",
+      "shop_context_needed": "Le module PayGreen n'est pleinement configurable qu'au niveau boutique."
+    },
+    "actions": {
+      "credentials": {
+        "save": {
+          "result": {
+            "success": "Vos identifiants de connexion ont été sauvegardés avec succès.",
+            "failure": "Une erreur s'est produite lors de la sauvegarde de vos identifiants de connexion."
+          }
+        },
+        "reset": {
+          "result": {
+            "success": "Vos identifiants de connexion ont été réinitialisés avec succès.",
+            "failure": "Une erreur s'est produite lors de la réinitialisation de vos identifiants de connexion."
+          }
+        }
+      },
+      "testmode": {
+        "toggle": {
+          "result": {
+            "success": "Le mode test a été modifié avec succès.",
+            "failure": "Une erreur s'est produite lors de la modification du mode test."
+          }
+        }
+      }
+    }
+  },
+  "account": {
+    "actions": {
+      "toggle": {
+        "result": {
+          "success": "L'activation du compte a été mise à jour avec succès.",
+          "failure": "Une erreur s'est produite lors de la mise à jour de l'activation du compte."
+        }
+      }
+    },
+    "backoffice": {
+      "errors": {
+        "header": "Une erreur s'est produite lors de la création de l'en-tête de l'interface de configuration."
+      }
+    },
+    "errors": {
+      "account_not_found": "Impossible de se connecter à votre compte PayGreen.",
+      "invalid_public_key": "Votre identifiant unique n'est pas valide.",
+      "invalid_private_key": "Votre clé privée n'est pas valide.",
+      "empty_bank_data": "Vos données bancaires sont incomplètes.",
+      "empty_shop_data": "Les données de votre boutique sont incomplètes."
+    }
+  },
+  "eligible_amounts": {
+    "actions": {
+      "save_category_payments": {
+        "title": "Activation des moyens de paiement par catégorie",
+        "explain": "Sélectionnez les moyens de paiement disponibles pour chacune de vos catégories de produit. Si aucune case n'est cochée dans une colonne, cela signifie que toutes les catégories sont éligibles pour ce moyen de paiement.",
+        "footerTitle": "Qu'est-ce qu'un montant/un produit/une catégorie éligible&nbsp;?",
+        "footer": [
+          "Certains moyens de paiement ne peuvent être utilisés que pour certains types de produits. Par exemple, les Titres Restaurant Dématérialisés ne peuvent permettre de payer que des produits alimentaires, alcool exclu. Il est donc de votre responsabilité de n'activer ce moyen de paiement que pour les catégories de produits qui contiennent exclusivement des produits alimentaires.",
+          "Si un panier contient à la fois des produits éligibles et des produits non éligibles au moyen de paiement choisi par le consommateur, un second moyen de paiement lui sera proposé pour régler le montant non éligible."
+        ],
+        "form": {
+          "search": "Catégorie&hellip;"
+        },
+        "result": {
+          "success": "Configuration des catégories de paiement enregistrée avec succès."
+        },
+        "errors": {
+          "display_form": "Une erreur s'est produite lors de la création du formulaire de configuration des catégories de paiement."
+        }
+      },
+      "save_shipping_payments": {
+        "title": "Paiement des frais de livraison par moyen de paiement",
+        "explain": "Certains moyens de paiement ne permettent pas de régler les frais de livraison (exemple&nbsp;: légalement, les Titres Restaurant Dématérialisés ne doivent pas être utilisés pour payer les frais de livraison). Vous avez donc la possibilité de sélectionner les moyens de paiement qui ne permettent PAS de régler ces frais de livraison.",
+        "form": {
+          "label": "Moyens de paiement non-compatibles avec les frais de livraison"
+        },
+        "result": {
+          "success": "La configuration de l'exclusion des modes d'expédition a été enregistrée avec succès.",
+          "failure": "Le formulaire n'est pas valide."
+        },
+        "errors": {
+          "display_form": "Une erreur s'est produite lors de la création du formulaire d'exclusion des modes d'expédition."
+        }
+      }
+    }
+  },
+  "system": {
+    "title": "Informations système sur le module PayGreen",
+    "platform": {
+      "title": "Plateforme d'exécution",
+      "fields": {
+        "platform": "Plateforme",
+        "php": "PHP",
+        "module": "Module PayGreen",
+        "framework": "Framework PayGreen",
+        "curl": "Version de cURL",
+        "ssl": "Version de OpenSSL"
+      }
+    },
+    "filesystem": {
+      "title": "Informations sur le système de fichiers",
+      "subtitle": "Emplacements physiques",
+      "columns": {
+        "name": "Nom",
+        "path": "Chemin physique",
+        "exists": "Existe&nbsp;?",
+        "writable": "Inscriptible&nbsp;?"
+      }
+    },
+    "logs": {
+      "title": "Fichiers de logs",
+      "columns": {
+        "filename": "Nom du fichier",
+        "size": "Taille",
+        "last_update": "Dernière modification",
+        "actions": "Actions"
+      },
+      "actions": {
+        "delete": {
+          "button": "Effacer",
+          "success": "Le fichier ciblé a bien été effacé."
+        },
+        "download": {
+          "button": "Télécharger"
+        }
+      },
+      "errors": {
+        "invalid_file": "Le fichier ciblé n'est pas un fichier de logd valide.",
+        "file_not_found": "Le fichier ciblé n'existe pas."
+      }
+    }
+  },
+  "support": {
+    "error": {
+      "title": "Une erreur interne s'est produite",
+      "text": [
+        "Merci de contacter le support PayGreen en lui fournissant les informations indiquées ci-dessous&nbsp;:"
+      ],
+      "exception": {
+        "type": "Type d'exception&nbsp;:",
+        "text": "Message&nbsp;:",
+        "code": "Code&nbsp;:",
+        "file": "Survenue dans le fichier",
+        "line": "à la ligne",
+        "traces": "Pile des appels"
+      },
+      "trace": {
+        "file": "Dans",
+        "line": "à la ligne"
+      }
+    }
+  }
+}

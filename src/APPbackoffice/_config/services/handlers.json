@@ -1,0 +1,6 @@
+{
+  "handler.menu": {
+    "class": "APPbackofficeServicesHandlersMenuHandler",
+    "arguments": ["@handler.route", "@linker", "%menu"]
+  }
+}

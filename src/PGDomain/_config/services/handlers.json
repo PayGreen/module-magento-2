@@ -1,0 +1,69 @@
+{
+  "handler.payment_creation": {
+    "class": "PGDomainServicesHandlersPaymentCreationHandler",
+    "arguments": ["%payment"]
+  },
+
+  "handler.payment_testing": {
+    "class": "PGDomainServicesHandlersTestingPaymentHandler",
+    "arguments": ["@logger", "@logger.api", "@pathfinder"]
+  },
+
+  "handler.fingerprint": {
+    "class": "PGDomainServicesHandlersFingerprintHandler",
+    "arguments": ["@manager.fingerprint", "@handler.cookie", "@logger"]
+  },
+
+  "handler.refund": {
+    "class": "PGDomainServicesHandlersRefundHandler",
+    "arguments": ["@paygreen.facade", "@logger"],
+    "calls": [
+      {
+        "method": "setOrderManager",
+        "arguments": ["@manager.order"]
+      },
+      {
+        "method": "setTransactionManager",
+        "arguments": ["@manager.transaction"]
+      }
+    ]
+  },
+
+  "handler.checkout": {
+    "class": "PGDomainServicesHandlersCheckoutHandler",
+    "arguments": ["@logger"],
+    "calls": [
+      {
+        "method": "setPaygreenFacade",
+        "arguments": ["@paygreen.facade"]
+      },
+      {
+        "method": "setModuleFacade",
+        "arguments": ["@facade.module"]
+      },
+      {
+        "method": "setButtonManager",
+        "arguments": ["@manager.button"]
+      }
+    ]
+  },
+
+  "handler.tokenize": {
+    "class": "PGDomainServicesHandlersTokenizeHandler",
+    "arguments": ["@broadcaster", "@logger"],
+    "calls": [
+      {
+        "method": "setBehaviorHandler",
+        "arguments": ["@handler.behavior"]
+      },
+      {
+        "method": "setPaygreenFacade",
+        "arguments": ["@paygreen.facade"]
+      },
+      {
+        "method": "setTransactionManager",
+        "arguments": ["@manager.transaction"]
+      }
+    ]
+  }
+}

@@ -1,0 +1,34 @@
+{
+  "settings": {
+    "entries": {
+      "private_key": {
+        "type": "string",
+        "private": true
+      },
+      "public_key": {
+        "type": "string",
+        "private": true
+      },
+      "ssl_security_skip": {
+        "type": "bool",
+        "global": true,
+        "default": false
+      },
+      "api_server": {
+        "type": "string",
+        "global": true,
+        "default": "paygreen.fr"
+      },
+      "use_https": {
+        "type": "bool",
+        "global": true,
+        "default": true
+      },
+      "oauth_ip_source": {
+        "type": "string",
+        "global": true,
+        "default": null
+      }
+    }
+  }
+}

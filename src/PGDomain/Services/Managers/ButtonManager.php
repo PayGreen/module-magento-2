@@ -1,6 +1,6 @@
 <?php
 /**
- * 2014 - 2019 Watt Is It
+ * 2014 - 2020 Watt Is It
  *
  * NOTICE OF LICENSE
  *
@@ -13,8 +13,9 @@
  * to contact@paygreen.fr so we can send you a copy immediately.
  *
  * @author    PayGreen <contact@paygreen.fr>
- * @copyright 2014 - 2019 Watt Is It
+ * @copyright 2014 - 2020 Watt Is It
  * @license   https://creativecommons.org/licenses/by-nd/4.0/fr/ Creative Commons BY-ND 4.0
+ * @version   1.0.0
  */
 
 /**
@@ -130,9 +131,12 @@ class PGDomainServicesManagersButtonManager extends PGFrameworkFoundationsAbstra
         /** @var bool $result */
         $result = true;
 
-        if (($button->getMaxAmount() > 0) && (($button->getMaxAmount() * 100) < $userAmount)) {
+        $min = (float) $button->getMinAmount();
+        $max = (float) $button->getMaxAmount();
+
+        if (($max > 0) && ($max < $userAmount)) {
             $result = false;
-        } elseif (($button->getMinAmount() > 0) && (($button->getMinAmount() * 100) > $userAmount)) {
+        } elseif (($min > 0) && ($min > $userAmount)) {
             $result = false;
         }
 
@@ -183,6 +187,14 @@ class PGDomainServicesManagersButtonManager extends PGFrameworkFoundationsAbstra
             $errors[] = "button.errors.title_max_length";
         } elseif (strlen($button->getLabel()) === 0) {
             $errors[] = "button.errors.title_min_length";
+        }
+
+        if (
+            ($button->getMinAmount() > 0) &&
+            ($button->getMaxAmount() > 0) &&
+            ($button->getMinAmount() > $button->getMaxAmount())
+        ) {
+            $errors[] = "button.errors.min_amount_greater_than_max_amount";
         }
 
         if ($button->getImageHeight() < 0) {

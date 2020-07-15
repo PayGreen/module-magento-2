@@ -1,0 +1,120 @@
+{
+  "payment": {
+    "entrypoints": {
+      "customer": "front.payment.process_customer_return",
+      "ipn": "front.payment.receive"
+    },
+    "targets": {
+      "external": "redirect@front.payment",
+      "insite": "displayIFramePayment@front.payment"
+    },
+    "insite": {
+      "return": "link:checkout"
+    },
+    "forwarding": {
+      "task": {
+        "success": {
+          "type": "forward",
+          "target": "dispatchByOrderState@front.customer_return"
+        },
+        "payment_aborted": {
+          "type": "redirect",
+          "link": "checkout"
+        },
+        "payment_refused": {
+          "type": "message",
+          "title": "frontoffice.payment.results.payment.refused.title",
+          "message": "~notice_payment_refused",
+          "link": {
+            "name": "checkout",
+            "text": "frontoffice.payment.results.payment.refused.link"
+          }
+        },
+        "pid_locked": {
+          "type": "redirect",
+          "link": "order.history"
+        },
+        "fatal_error": {
+          "type": "error",
+          "error": "frontoffice.payment.results.payment.fatal_error.error"
+        },
+        "inconsistent_context": {
+          "type": "error",
+          "error": "frontoffice.payment.results.payment.inconsistent_context.error"
+        },
+        "pid_not_found": {
+          "type": "error",
+          "error": "frontoffice.payment.results.payment.pid_not_found.error"
+        },
+        "workflow_error": {
+          "type": "error",
+          "error": "frontoffice.payment.results.payment.workflow_error.error"
+        },
+        "provider_error": {
+          "type": "error",
+          "error": "frontoffice.payment.results.payment.inconsistent_context.error"
+        },
+        "paygreen_unavailable": {
+          "type": "message",
+          "title": "frontoffice.payment.results.payment.paygreen_unavailable.title",
+          "message": "frontoffice.payment.results.payment.paygreen_unavailable.message",
+          "link": {
+            "name": "retry_payment_validation",
+            "text": "frontoffice.payment.results.payment.paygreen_unavailable.link",
+            "reload": false
+          }
+        }
+      },
+      "order": {
+        "validate": {
+          "type": "message",
+          "title": "frontoffice.payment.results.order.validate.title",
+          "message": "~notice_payment_accepted",
+          "link": {
+            "name": "order",
+            "text": "frontoffice.payment.results.order.validate.link"
+          }
+        },
+        "test": {
+          "extends": "validate"
+        },
+        "verify": {
+          "extends": "validate"
+        },
+        "auth": {
+          "extends": "validate"
+        },
+        "wait": {
+          "extends": "validate"
+        },
+        "cancel": {
+          "type": "message",
+          "title": "frontoffice.payment.results.order.cancel.title",
+          "message": "~notice_payment_canceled",
+          "link": {
+            "name": "order",
+            "text": "frontoffice.payment.results.order.cancel.link"
+          }
+        },
+        "error": {
+          "type": "message",
+          "title": "frontoffice.payment.results.order.error.title",
+          "message": "frontoffice.payment.results.order.error.message",
+          "link": {
+            "name": "order",
+            "text": "frontoffice.payment.results.order.error.link"
+          }
+        },
+        "new": {
+          "type": "message",
+          "title": "frontoffice.payment.results.order.new.title",
+          "message": "frontoffice.payment.results.order.new.message",
+          "link": {
+            "name": "order",
+            "text": "frontoffice.payment.results.order.new.link"
+          }
+        }
+      }
+    }
+  }
+}

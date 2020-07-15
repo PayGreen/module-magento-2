@@ -1,0 +1,18 @@
+{
+  "pages": {
+    "config": {
+      "name": "Configuration",
+      "title": "Configuration de votre module de paiement",
+      "module": {
+        "title": "Configuration du module"
+      },
+      "customization": {
+        "title": "Personnalisation"
+      },
+      "paymentTypes": {
+        "title": "Configuration des moyens de paiement",
+        "description": "Pour configurer les montants éligibles et les frais de livraison par moyen de paiement, rendez-vous sur la page Moyens de paiement."
+      }
+    }
+  }
+}

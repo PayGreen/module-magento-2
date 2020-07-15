@@ -1,0 +1,35 @@
+{
+  "builder.form": {
+    "class": "PGFormServicesFormBuilder",
+    "arguments": ["@builder.field", "@logger", "@builder.view", "%form"]
+  },
+  "builder.field": {
+    "class": "PGFormServicesFieldBuilder",
+    "arguments": [
+      "@container",
+      "@builder.validator",
+      "@builder.formatter",
+      "@handler.behavior",
+      "@builder.view",
+      "%fields"
+    ]
+  },
+  "builder.validator": {
+    "class": "PGFormServicesValidatorBuilder",
+    "arguments": ["@container"],
+    "catch": {
+      "tag": "validator",
+      "method": "addValidatorServiceName",
+      "built": false
+    }
+  },
+  "builder.formatter": {
+    "class": "PGFormServicesFormatterBuilder",
+    "arguments": ["@container"],
+    "catch": {
+      "tag": "formatter",
+      "method": "addFormatterServiceName",
+      "built": false
+    }
+  }
+}

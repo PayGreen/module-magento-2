@@ -1,0 +1,74 @@
+{
+  "form": {
+    "definitions": {
+      "config": {
+        "model": "basic",
+        "fields": {
+          "active": {
+            "enabled": false,
+            "model": "bool.switch",
+            "view": {
+              "data": {
+                "label": "config.fields.active.label",
+                "help": "config.fields.active.help"
+              }
+            }
+          },
+          "admin_only_visibility": {
+            "model": "choice.expanded.single",
+            "format": "int",
+            "view": {
+              "data": {
+                "choices": [
+                  "config.fields.visibility.values.no",
+                  "config.fields.visibility.values.yes"
+                ],
+                "translate": true,
+                "label": "config.fields.visibility.label",
+                "help": "config.fields.visibility.help"
+              }
+            }
+          },
+          "cancel_order_on_refused_payment": {
+            "model": "choice.expanded.single",
+            "format": "int",
+            "view": {
+              "data": {
+                "choices": [
+                  "config.fields.behavior_payment_refused.values.no",
+                  "config.fields.behavior_payment_refused.values.yes"
+                ],
+                "translate": true,
+                "label": "config.fields.behavior_payment_refused.label",
+                "help": "config.fields.behavior_payment_refused.help"
+              }
+            }
+          },
+          "behavior_payment_refund": {
+            "model": "bool.switch",
+            "view": {
+              "data": {
+                "label": "config.fields.behavior_transmit_refund.label",
+                "help": "config.fields.behavior_transmit_refund.help"
+              }
+            }
+          },
+          "behavior_delivery_confirmation": {
+            "model": "bool.switch",
+            "view": {
+              "data": {
+                "label": "config.fields.behavior_transmit_delivering.label",
+                "help": "config.fields.behavior_transmit_delivering.help"
+              }
+            }
+          }
+        },
+        "view": {
+          "data": {
+            "validate": "config.buttons.save"
+          }
+        }
+      }
+    }
+  }
+}

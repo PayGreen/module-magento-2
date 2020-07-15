@@ -1,0 +1,61 @@
+{
+  "settings": {
+    "entries": {
+      "oauth_access": {
+        "type": "array",
+        "default": []
+      },
+      "shop_identifier": {
+        "type": "string"
+      },
+      "active": {
+        "type": "bool",
+        "default": true
+      },
+      "behavior_payment_refund": {
+        "type": "bool",
+        "default": false
+      },
+      "behavior_delivery_confirmation": {
+        "type": "bool",
+        "default": false
+      },
+      "shipping_deactivated_payment_modes": {
+        "type": "array",
+        "default": []
+      },
+      "ipn_reception_method": {
+        "global": true,
+        "default": "POST"
+      },
+      "cancel_order_on_refused_payment": {
+        "type": "bool",
+        "default": false
+      },
+      "notice_payment_accepted": {
+        "type": "string",
+        "default": "Votre paiement a été accepté"
+      },
+      "notice_payment_refused": {
+        "type": "string",
+        "default": "Votre paiement a été refusé"
+      },
+      "notice_payment_canceled": {
+        "type": "string",
+        "default": "Votre commande a été annulée"
+      },
+      "admin_only_visibility": {
+        "type": "bool",
+        "default": false
+      },
+      "footer_display": {
+        "type": "bool",
+        "default": true
+      },
+      "footer_color": {
+        "type": "string",
+        "default": "green"
+      }
+    }
+  }
+}

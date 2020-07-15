@@ -1,6 +1,6 @@
 <?php
 /**
- * 2014 - 2019 Watt Is It
+ * 2014 - 2020 Watt Is It
  *
  * NOTICE OF LICENSE
  *
@@ -13,8 +13,9 @@
  * to contact@paygreen.fr so we can send you a copy immediately.
  *
  * @author    PayGreen <contact@paygreen.fr>
- * @copyright 2014 - 2019 Watt Is It
+ * @copyright 2014 - 2020 Watt Is It
  * @license   https://creativecommons.org/licenses/by-nd/4.0/fr/ Creative Commons BY-ND 4.0
+ * @version   1.0.0
  */
 
 class PGFrameworkServicesDiagnosticsMediaFolderChmod extends PGFrameworkFoundationsAbstractDiagnostic
@@ -55,7 +56,7 @@ class PGFrameworkServicesDiagnosticsMediaFolderChmod extends PGFrameworkFoundati
     {
         $this->requirements();
 
-        $chmod = octdec(substr(sprintf('%o', fileperms($this->getMediaPath())), -4));
+        $chmod = PGFrameworkToolsFile::getChmod($this->getMediaPath());
 
         return ($chmod === PGFrameworkServicesHandlersPictureHandler::MEDIA_FOLDER_CHMOD);
     }
@@ -91,7 +92,7 @@ class PGFrameworkServicesDiagnosticsMediaFolderChmod extends PGFrameworkFoundati
         $path = $this->getMediaPath();
 
         if (!is_dir($path)) {
-            throw new Exception("Paygreen media folder not found : $path");
+            throw new Exception("PayGreen media folder not found: $path");
         }
     }
 }

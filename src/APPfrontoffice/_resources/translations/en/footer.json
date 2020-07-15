@@ -1,0 +1,10 @@
+{
+  "frontoffice": {
+    "footer": {
+      "securized": {
+        "short": "Secured Payment by",
+        "long": "Secured Payment by PayGreen"
+      }
+    }
+  }
+}

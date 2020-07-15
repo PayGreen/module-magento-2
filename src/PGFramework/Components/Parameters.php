@@ -1,6 +1,6 @@
 <?php
 /**
- * 2014 - 2019 Watt Is It
+ * 2014 - 2020 Watt Is It
  *
  * NOTICE OF LICENSE
  *
@@ -13,8 +13,9 @@
  * to contact@paygreen.fr so we can send you a copy immediately.
  *
  * @author    PayGreen <contact@paygreen.fr>
- * @copyright 2014 - 2019 Watt Is It
+ * @copyright 2014 - 2020 Watt Is It
  * @license   https://creativecommons.org/licenses/by-nd/4.0/fr/ Creative Commons BY-ND 4.0
+ * @version   1.0.0
  */
 
 /**
@@ -26,11 +27,16 @@ class PGFrameworkComponentsParameters implements arrayaccess
     /** @var PGFrameworkComponentsBag */
     private $bag;
 
+    /** @var PGFrameworkComponentsParser */
+    private $parser;
+
     /** @var array */
     private $files = array();
 
     public function __construct()
     {
+        $this->parser = new PGFrameworkComponentsParser(array());
+
         $this->buildParametersBag();
     }
 
@@ -47,6 +53,9 @@ class PGFrameworkComponentsParameters implements arrayaccess
         return $this->bag;
     }
 
+    /**
+     * @throws Exception
+     */
     public function reset()
     {
         $this->buildParametersBag();
@@ -55,7 +64,7 @@ class PGFrameworkComponentsParameters implements arrayaccess
 
         $this->files = array();
 
-        foreach($filenames as $filename) {
+        foreach ($filenames as $filename) {
             $this->addParametersFile($filename);
         }
     }
@@ -74,6 +83,8 @@ class PGFrameworkComponentsParameters implements arrayaccess
         if (!$data) {
             throw new Exception("Unable to load parameters file : '$filename'.");
         }
+
+        $data = $this->parseConstants($data);
 
         $this->bag->merge($data);
 
@@ -96,6 +107,28 @@ class PGFrameworkComponentsParameters implements arrayaccess
         }
 
         return $this;
+    }
+
+    /**
+     * @param array $data
+     * @return array
+     * @throws PGFrameworkExceptionsParserConstantException
+     */
+    private function parseConstants(array $data)
+    {
+        $parsedData = array();
+
+        foreach ($data as $key => $var) {
+            if (is_array($var)) {
+                $var = $this->parseConstants($var);
+            } else {
+                $var = $this->parser->parseConstants($var);
+            }
+
+            $parsedData[$key] = $var;
+        }
+
+        return $parsedData;
     }
 
     // ###################################################################

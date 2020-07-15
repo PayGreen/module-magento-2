@@ -1,0 +1,20 @@
+{
+  "behaviors": {
+    "cancel_order_on_refused_payment": {
+      "type": "user",
+      "key": "cancel_order_on_refused_payment"
+    },
+    "cancel_order_on_canceled_payment": {
+      "type": "fixed",
+      "value": false
+    },
+    "transmission_on_delivery_confirmation": {
+      "type": "user",
+      "key": "behavior_delivery_confirmation"
+    },
+    "use_transaction_lock": {
+      "type": "fixed",
+      "value": true
+    }
+  }
+}

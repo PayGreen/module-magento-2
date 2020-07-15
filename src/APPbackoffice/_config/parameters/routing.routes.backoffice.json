@@ -1,0 +1,145 @@
+{
+  "routing": {
+    "routes": {
+      "backoffice.account.display": {
+        "target": "displayAccountHeader@backoffice.account",
+        "requirements": {
+          "shop_context": true
+        }
+      },
+      "backoffice.account.save": {
+        "target": "saveAccountConfiguration@backoffice.account",
+        "requirements": {
+          "shop_context": true
+        }
+      },
+      "backoffice.account.activation": {
+        "target": "activateAccount@backoffice.account",
+        "requirements": {
+          "shop_context": true,
+          "paygreen_connexion": true
+        }
+      },
+      "backoffice.account.disconnect": {
+        "target": "disconnect@backoffice.account",
+        "requirements": {
+          "shop_context": true,
+          "paygreen_connexion": true
+        }
+      },
+      "backoffice.account.oauth.request": {
+        "target": "sendOAuthRequest@backoffice.oauth",
+        "requirements": {
+          "shop_context": true,
+          "paygreen_connexion": false
+        }
+      },
+      "backoffice.account.oauth.response": {
+        "target": "processOAuthResponse@backoffice.oauth",
+        "requirements": {
+          "shop_context": true,
+          "paygreen_connexion": false
+        }
+      },
+      "backoffice.config.display": {
+        "target": "displayConfigForm@backoffice.config",
+        "requirements": {
+          "shop_context": true,
+          "paygreen_connexion": true
+        }
+      },
+      "backoffice.config.save": {
+        "target": "saveModuleConfiguration@backoffice.config",
+        "requirements": {
+          "shop_context": true,
+          "paygreen_connexion": true
+        }
+      },
+      "backoffice.config.save_customization": {
+        "target": "saveModuleCustomization@backoffice.config",
+        "requirements": {
+          "shop_context": true,
+          "paygreen_connexion": true
+        }
+      },
+      "backoffice.eligible_amounts.display": {
+        "target": "display@backoffice.eligible_amounts",
+        "requirements": {
+          "shop_context": true,
+          "paygreen_connexion": true
+        }
+      },
+      "backoffice.eligible_amounts.categories.save": {
+        "target": "saveCategoryPayments@backoffice.eligible_amounts",
+        "requirements": {
+          "shop_context": true,
+          "paygreen_connexion": true
+        }
+      },
+      "backoffice.eligible_amounts.shipping.save": {
+        "target": "saveShippingPayments@backoffice.eligible_amounts",
+        "requirements": {
+          "shop_context": true,
+          "paygreen_connexion": true
+        }
+      },
+      "backoffice.buttons.display": {
+        "target": "displayList@backoffice.buttons",
+        "requirements": {
+          "shop_context": true,
+          "paygreen_connexion": true
+        }
+      },
+      "backoffice.buttons.display_update": {
+        "target": "displayUpdateForm@backoffice.buttons",
+        "requirements": {
+          "shop_context": true,
+          "paygreen_connexion": true
+        }
+      },
+      "backoffice.buttons.update": {
+        "target": "updateButton@backoffice.buttons",
+        "requirements": {
+          "shop_context": true,
+          "paygreen_connexion": true
+        }
+      },
+      "backoffice.buttons.display_insert": {
+        "target": "displayInsertForm@backoffice.buttons",
+        "requirements": {
+          "shop_context": true,
+          "paygreen_connexion": true
+        }
+      },
+      "backoffice.buttons.insert": {
+        "target": "insertButton@backoffice.buttons",
+        "requirements": {
+          "shop_context": true,
+          "paygreen_connexion": true
+        }
+      },
+      "backoffice.buttons.delete": {
+        "target": "deleteButton@backoffice.buttons",
+        "requirements": {
+          "shop_context": true,
+          "paygreen_connexion": true
+        }
+      },
+      "backoffice.system.display": {
+        "target": "displayData@backoffice.system"
+      },
+      "backoffice.system.save_support_config": {
+        "target": "saveSupportConfiguration@backoffice.system"
+      },
+      "backoffice.system.log.download": {
+        "target": "downloadLogFile@backoffice.system"
+      },
+      "backoffice.system.log.delete": {
+        "target": "deleteLogFile@backoffice.system"
+      },
+      "backoffice.shop.select": {
+        "target": "setCurrentShop@backoffice.shop"
+      }
+    }
+  }
+}

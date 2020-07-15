@@ -1,0 +1,11 @@
+{
+  "aggregator.deflector": {
+    "class": "PGServerServicesAggregatorsDeflectorAggregator",
+    "arguments": ["@container"],
+    "catch": {
+      "tag": "deflector",
+      "method": "addServiceName",
+      "built": false
+    }
+  }
+}

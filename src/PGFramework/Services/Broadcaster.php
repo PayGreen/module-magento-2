@@ -1,6 +1,6 @@
 <?php
 /**
- * 2014 - 2019 Watt Is It
+ * 2014 - 2020 Watt Is It
  *
  * NOTICE OF LICENSE
  *
@@ -13,34 +13,97 @@
  * to contact@paygreen.fr so we can send you a copy immediately.
  *
  * @author    PayGreen <contact@paygreen.fr>
- * @copyright 2014 - 2019 Watt Is It
+ * @copyright 2014 - 2020 Watt Is It
  * @license   https://creativecommons.org/licenses/by-nd/4.0/fr/ Creative Commons BY-ND 4.0
+ * @version   1.0.0
  */
 
 /**
  * Interface PGFrameworkServicesBroadcaster
  * @package PGFramework\Services
  */
-class PGFrameworkServicesBroadcaster extends PGFrameworkFoundationsAbstractObject
+class PGFrameworkServicesBroadcaster
 {
+    /** @var PGFrameworkContainer */
+    private $container;
+
+    /** @var PGFrameworkServicesLogger */
+    private $logger;
+
     private $listeners = array();
+
+    private static $LISTENER_DEFAULT_CONFIGURATION = array(
+        'method' => 'listen',
+        'priority' => 500
+    );
+
+    /**
+     * PGFrameworkServicesBroadcaster constructor.
+     * @param PGFrameworkContainer $container
+     * @param PGFrameworkServicesLogger $logger
+     * @param array $listeners
+     * @throws PGFrameworkExceptionsConfigurationException
+     */
+    public function __construct(
+        PGFrameworkContainer $container,
+        PGFrameworkServicesLogger $logger,
+        array $listeners
+    ) {
+        $this->container = $container;
+        $this->logger = $logger;
+
+        foreach ($listeners as $listener) {
+            $this->addListenerConfiguration($listener);
+        }
+    }
+
+    /**
+     * @param array $listenerConfiguration
+     * @throws PGFrameworkExceptionsConfigurationException
+     */
+    protected function addListenerConfiguration(array $listenerConfiguration)
+    {
+        if (!array_key_exists('event', $listenerConfiguration)) {
+            $this->logger->critical("Listener declaration must contain 'event' key.", $listenerConfiguration);
+            throw new PGFrameworkExceptionsConfigurationException("Bad listener configuration.");
+        } elseif (!array_key_exists('service', $listenerConfiguration)) {
+            $this->logger->critical("Listener declaration must contain 'service' key.", $listenerConfiguration);
+            throw new PGFrameworkExceptionsConfigurationException("Bad listener configuration.");
+        }
+
+        $listenerConfiguration = array_merge(self::$LISTENER_DEFAULT_CONFIGURATION, $listenerConfiguration);
+
+        if (!is_array($listenerConfiguration['event'])) {
+            $listenerConfiguration['event'] = array($listenerConfiguration['event']);
+        }
+
+        $this->listeners[] = array(
+            'service' => $listenerConfiguration['service'],
+            'method' => $listenerConfiguration['method'],
+            'events' => array_map('strtoupper', $listenerConfiguration['event']),
+            'priority' => $listenerConfiguration['priority']
+        );
+    }
 
     /**
      * @param string $serviceName
      * @param string $event
      * @param string $method
      * @param int $priority
+     * @throws PGFrameworkExceptionsConfigurationException
      */
     public function addListener($serviceName, $event, $method = 'listen', $priority = 500)
     {
-        $watchedEvents = is_array($event) ? array_map('strtoupper', $event) : array(strtoupper($event));
-
-        $this->listeners[] = array(
-            'serviceName' => $serviceName,
+        $listenerConfiguration = array(
+            'service' => $serviceName,
             'method' => $method,
-            'events' => $watchedEvents,
-            'priority' => (int) $priority
+            'event' => $event,
+            'priority' => $priority
         );
+
+        $this->logger->warning("Using tag to declare listeners is deprecated.", $listenerConfiguration);
+
+        $this->addListenerConfiguration($listenerConfiguration);
     }
 
     /**
@@ -66,7 +129,12 @@ class PGFrameworkServicesBroadcaster extends PGFrameworkFoundationsAbstractObjec
         }
     }
 
-    public function sortListeners($l1, $l2)
+    /**
+     * @param array $l1
+     * @param array $l2
+     * @return int
+     */
+    public function sortListeners(array $l1, array $l2)
     {
         if ($l1['priority'] < $l2['priority']) {
             return -1;
@@ -77,23 +145,27 @@ class PGFrameworkServicesBroadcaster extends PGFrameworkFoundationsAbstractObjec
         }
     }
 
-    protected function callListener(PGFrameworkInterfacesEventInterface $event, $listener)
+    /**
+     * @param PGFrameworkInterfacesEventInterface $event
+     * @param $listener
+     * @throws Exception
+     */
+    protected function callListener(PGFrameworkInterfacesEventInterface $event, array $listener)
     {
-        /** @var PGFrameworkServicesLogger $logger */
-        $logger = $this->getService('logger');
-
-        $service = $this->getService($listener['serviceName']);
+        $serviceName = $listener['service'];
+        $method = $listener['method'];
+        $service = $this->container->get($serviceName);
 
         try {
-            $logger->debug("Fire event '{$event->getName()}' to method '{$listener['method']}' in service '{$listener['serviceName']}'.");
+            $this->logger->debug("Fire event '{$event->getName()}' to method '$method' in service '$serviceName'.");
 
-            if (!method_exists($service, $listener['method'])) {
-                throw new Exception("Unknown listener method '{$listener['method']}' in service '{$listener['serviceName']}'.");
+            if (!method_exists($service, $method)) {
+                throw new Exception("Unknown listener method '$method' in service '$serviceName'.");
             }
 
-            call_user_func(array($service, $listener['method']), $event);
+            call_user_func(array($service, $method), $event);
         } catch (Exception $exception) {
-            $logger->critical("An error is occured during the execution of event '{$event->getName()}' : {$exception->getMessage()}", $exception);
+            $this->logger->critical("An error is occured during the execution of event '{$event->getName()}' : {$exception->getMessage()}", $exception);
 
             throw $exception;
         }

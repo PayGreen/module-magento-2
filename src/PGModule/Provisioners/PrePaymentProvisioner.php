@@ -1,6 +1,6 @@
 <?php
 /**
- * 2014 - 2019 Watt Is It
+ * 2014 - 2020 Watt Is It
  *
  * NOTICE OF LICENSE
  *
@@ -13,14 +13,18 @@
  * to contact@paygreen.fr so we can send you a copy immediately.
  *
  * @author    PayGreen <contact@paygreen.fr>
- * @copyright 2014 - 2019 Watt Is It
+ * @copyright 2014 - 2020 Watt Is It
  * @license   https://creativecommons.org/licenses/by-nd/4.0/fr/ Creative Commons BY-ND 4.0
+ * @version   1.0.0
  */
 
+use Magento\Framework\App\ObjectManager;
 use Magento\Checkout\Model\Session;
 use Magento\Sales\Model\Order;
 use Magento\Customer\Api\Data\CustomerInterface;
 use Magento\Customer\Api\Data\AddressInterface;
+use Magento\Framework\Exception\LocalizedException;
+use Magento\Framework\Exception\NoSuchEntityException;
 
 /**
  * Class PGModuleProvisionersPrePaymentProvisioner
@@ -37,29 +41,24 @@ class PGModuleProvisionersPrePaymentProvisioner extends PGFrameworkFoundationsAb
     /** @var Order */
     private $order;
 
-    public function __construct(Order $order, CustomerInterface $customer)
+    /**
+     * PGModuleProvisionersPrePaymentProvisioner constructor.
+     * @param ObjectManager $objectManager
+     * @throws LocalizedException
+     * @throws NoSuchEntityException
+     */
+    public function __construct(ObjectManager $objectManager)
     {
-        $this->order = $order;
+        /** @var Session $session */
+        $session = $objectManager->get('Magento\Checkout\Model\Session');
+
+        $this->order = $session->getLastRealOrder();
+        $this->customer = $session->getQuote()->getCustomer();
         $this->address = $this->order->getBillingAddress();
-        $this->customer = $customer;
 
         if ($this->address === null) {
             throw new Exception("Billing address not found.");
         }
-    }
-
-    static public function createFromSession()
-    {
-        $magento = PGFrameworkContainer::getInstance()->get('magento');
-
-        /** @var Session $session */
-        $session = $magento->get('Magento\Checkout\Model\Session');
-
-        $order = $session->getLastRealOrder();
-
-        $customer = $session->getQuote()->getCustomer();
-
-        return new self($order, $customer);
     }
 
     public function getReference()
@@ -183,5 +182,18 @@ class PGModuleProvisionersPrePaymentProvisioner extends PGFrameworkFoundationsAb
         return array(
             'order_id' => $this->order->getId()
         );
+    }
+
+    public function getShippingName()
+    {
+        /** @var Magento\Framework\DataObject $carrier */
+        $carrier = $this->order->getShippingMethod(true);
+
+        return $carrier->getData('method');
+    }
+
+    public function getShippingWeight()
+    {
+        return$this->order->getWeight();
     }
 }

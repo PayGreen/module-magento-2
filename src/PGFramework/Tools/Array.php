@@ -1,6 +1,6 @@
 <?php
 /**
- * 2014 - 2019 Watt Is It
+ * 2014 - 2020 Watt Is It
  *
  * NOTICE OF LICENSE
  *
@@ -13,8 +13,9 @@
  * to contact@paygreen.fr so we can send you a copy immediately.
  *
  * @author    PayGreen <contact@paygreen.fr>
- * @copyright 2014 - 2019 Watt Is It
+ * @copyright 2014 - 2020 Watt Is It
  * @license   https://creativecommons.org/licenses/by-nd/4.0/fr/ Creative Commons BY-ND 4.0
+ * @version   1.0.0
  */
 
 abstract class PGFrameworkToolsArray
@@ -30,5 +31,34 @@ abstract class PGFrameworkToolsArray
         }
 
         return (array_keys($array) === range(0, count($array) - 1));
+    }
+
+    public static function merge(&$localData, $incomeData)
+    {
+        if (!is_array($localData) || !is_array($incomeData)) {
+            $localData = $incomeData;
+        } elseif (self::isSequential($localData) && self::isSequential($incomeData)) {
+            $localData = array_merge($localData, $incomeData);
+        } else {
+            foreach ($incomeData as $key => $val) {
+                if (substr($key, 0, 1) === '!') {
+                    $key = substr($key, 1);
+                    $localData[$key] = $val;
+                } elseif (array_key_exists($key, $localData)) {
+                    self::merge($localData[$key], $val);
+                } else {
+                    $localData[$key] = $val;
+                }
+            }
+        }
+    }
+
+    public static function stripSlashes($value)
+    {
+        $value = is_array($value) ?
+            array_map(array('PGFrameworkToolsArray', 'stripSlashes'), $value) :
+            stripslashes($value);
+
+        return $value;
     }
 }

@@ -1,0 +1,12 @@
+{
+  "database": {
+    "entities": {
+      "recurring_transaction": {
+        "table": "paygreen_recurring_transaction"
+      },
+      "lock": {
+        "table": "paygreen_transaction_locks"
+      }
+    }
+  }
+}

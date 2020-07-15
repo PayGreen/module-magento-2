@@ -1,0 +1,27 @@
+{
+  "listener.settings.install_default": {
+    "class": "PGFrameworkServicesListenersInstallDefaultSettingsListener",
+    "arguments": [
+      "@settings",
+      "@logger"
+    ]
+  },
+  "listener.settings.uninstall": {
+    "class": "PGFrameworkServicesListenersUninstallSettingsListener",
+    "arguments": [
+      "@settings",
+      "@logger"
+    ]
+  },
+  "listener.setup.static_files": {
+    "class": "PGFrameworkServicesListenersInstallStaticFilesListener",
+    "arguments": ["@handler.static_file", "@logger"]
+  },
+  "listener.upgrade": {
+    "class": "PGFrameworkServicesListenersUpgradeListener",
+    "arguments": [
+      "@upgrader",
+      "@logger"
+    ]
+  }
+}

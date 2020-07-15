@@ -1,6 +1,6 @@
 <?php
 /**
- * 2014 - 2019 Watt Is It
+ * 2014 - 2020 Watt Is It
  *
  * NOTICE OF LICENSE
  *
@@ -13,8 +13,9 @@
  * to contact@paygreen.fr so we can send you a copy immediately.
  *
  * @author    PayGreen <contact@paygreen.fr>
- * @copyright 2014 - 2019 Watt Is It
+ * @copyright 2014 - 2020 Watt Is It
  * @license   https://creativecommons.org/licenses/by-nd/4.0/fr/ Creative Commons BY-ND 4.0
+ * @version   1.0.0
  */
 
 /**
@@ -61,7 +62,6 @@ class PGClientServicesApiFacade extends PGFrameworkFoundationsAbstractObject
     }
 
     /**
-     * 3
      * return url of Authorization
      * @return string url of Authorization
      */
@@ -71,7 +71,6 @@ class PGClientServicesApiFacade extends PGFrameworkFoundationsAbstractObject
     }
 
     /**
-     * 4
      * return url of auth token
      * @return string url of Authentication
      */
@@ -82,7 +81,6 @@ class PGClientServicesApiFacade extends PGFrameworkFoundationsAbstractObject
 
     /**
      * return url of Authentication
-     * 2
      * @return string url of Authentication
      */
     private function getOAuthDeclareEndpoint()
@@ -107,16 +105,18 @@ class PGClientServicesApiFacade extends PGFrameworkFoundationsAbstractObject
      * Authentication to server paygreen
      *
      * @param string $email
-     * @param string $name
      * @param string|null $phone
      * @param string|null $ipAddress
      * @return PGClientEntitiesResponse
      * @throws PGClientExceptionsPaymentRequestException
      */
-    public function getOAuthServerAccess($email, $name, $phone = null, $ipAddress = null)
+    public function getOAuthServerAccess($email, $name, $ipAddress = null)
     {
+        $ipAddress = ($ipAddress === null) ? $_SERVER['REMOTE_ADDR'] : $ipAddress;
+
         $request = $this->getRequestFactory()->buildRequest('oauth_access')->setContent(array(
-            "ipAddress" => $ipAddress ?: $_SERVER['REMOTE_ADDR'],
+            "ipAddress" => $ipAddress,
+            "serverAddress" => $ipAddress,
             "email" => $email,
             "name" => $name
         ));
@@ -188,7 +188,7 @@ class PGClientServicesApiFacade extends PGFrameworkFoundationsAbstractObject
             return null;
         }
 
-        $amount = $amount * 100;
+        $amount = PGDomainToolsPrice::toInteger($amount);
 
         $request = $this->getRequestFactory()->buildRequest('refund', array('pid' => $pid))->setContent(array(
             'amount' => $amount ? $amount : null
@@ -364,7 +364,7 @@ class PGClientServicesApiFacade extends PGFrameworkFoundationsAbstractObject
             return $this->getRequestSender()->sendRequest($request);
         } catch (Exception $exception) {
             throw new PGClientExceptionsRetrieveDataException(
-                "Unable to retrieve payment types.",
+                "Unable to retrieve payment methods.",
                 PGClientExceptionsRetrieveDataException::CODE_PAYMENT_TYPE,
                 $exception
             );

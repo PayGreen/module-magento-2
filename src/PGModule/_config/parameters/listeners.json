@@ -1,0 +1,32 @@
+{
+  "listeners": {
+    "create_order_states": {
+      "event": "listener.setup.order_states_creation",
+      "service": "handler.diagnostic",
+      "method": "createOrderStates"
+    },
+    "create_database": {
+      "event": "module.install",
+      "service": "listener.setup.database",
+      "method": "install",
+      "priority": 50
+    },
+    "delete_database": {
+      "event": "module.uninstall",
+      "service": "listener.setup.database",
+      "method": "uninstall",
+      "priority": 950
+    },
+    "create_invoice": {
+      "event": "order.validation",
+      "service": "listener.order_validation.invoice_creation",
+      "method": "createInvoice"
+    },
+    "update_order_history": {
+      "event": "order.validation",
+      "service": "listener.order_validation.invoice_creation",
+      "method": "saveOrderHistory",
+      "priority": 250
+    }
+  }
+}

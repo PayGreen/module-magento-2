@@ -1,6 +1,6 @@
 <?php
 /**
- * 2014 - 2019 Watt Is It
+ * 2014 - 2020 Watt Is It
  *
  * NOTICE OF LICENSE
  *
@@ -13,8 +13,9 @@
  * to contact@paygreen.fr so we can send you a copy immediately.
  *
  * @author    PayGreen <contact@paygreen.fr>
- * @copyright 2014 - 2019 Watt Is It
+ * @copyright 2014 - 2020 Watt Is It
  * @license   https://creativecommons.org/licenses/by-nd/4.0/fr/ Creative Commons BY-ND 4.0
+ * @version   1.0.0
  */
 
 /**
@@ -29,12 +30,18 @@ abstract class PGClientFoundationsAbstractRequester implements PGClientInterface
     /** @var PGFrameworkComponentsBag */
     private $config;
 
+    /** @var PGFrameworkServicesSettings */
+    private $settings;
+
     /**
-     * RequestSender constructor.
-     * @param callable|null $logger
+     * PGClientFoundationsAbstractRequester constructor.
+     * @param PGFrameworkServicesSettings $settings
+     * @param null $logger
+     * @param array $config
      */
-    public function __construct($logger = null, $config)
+    public function __construct(PGFrameworkServicesSettings $settings, $logger = null, $config)
     {
+        $this->settings = $settings;
         $this->logger = $logger;
         $this->config = new PGFrameworkComponentsBag($config ? $config : array());
     }
@@ -42,6 +49,16 @@ abstract class PGClientFoundationsAbstractRequester implements PGClientInterface
     protected function getConfig($key)
     {
         return $this->config[$key];
+    }
+
+    /**
+     * @param string $name
+     * @return mixed
+     * @throws Exception
+     */
+    public function getSetting($name)
+    {
+        return $this->settings->get($name);
     }
 
     /**

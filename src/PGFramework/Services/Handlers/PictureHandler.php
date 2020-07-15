@@ -1,6 +1,6 @@
 <?php
 /**
- * 2014 - 2019 Watt Is It
+ * 2014 - 2020 Watt Is It
  *
  * NOTICE OF LICENSE
  *
@@ -13,8 +13,9 @@
  * to contact@paygreen.fr so we can send you a copy immediately.
  *
  * @author    PayGreen <contact@paygreen.fr>
- * @copyright 2014 - 2019 Watt Is It
+ * @copyright 2014 - 2020 Watt Is It
  * @license   https://creativecommons.org/licenses/by-nd/4.0/fr/ Creative Commons BY-ND 4.0
+ * @version   1.0.0
  */
 
 /**
@@ -31,11 +32,13 @@ class PGFrameworkServicesHandlersPictureHandler extends PGFrameworkFoundationsAb
 
     const DEFAULT_PICTURE = 'default-payment-button.png';
 
-    const MEDIA_FOLDER_CHMOD = 0755;
+    const MEDIA_FOLDER_CHMOD = 0775;
+    const MEDIA_FILE_CHMOD = 0664;
 
     /**
-     * PGFrameworkServicesPictureHandler constructor.
-     * @param string $path
+     * PGFrameworkServicesHandlersPictureHandler constructor.
+     * @param string $basePath
+     * @param string $baseUrl
      */
     public function __construct($basePath, $baseUrl)
     {
@@ -97,7 +100,7 @@ class PGFrameworkServicesHandlersPictureHandler extends PGFrameworkFoundationsAb
     {
         $filename = $button->getImageSrc();
 
-        if(!empty($filename) && !$this->isStored($filename)) {
+        if (!empty($filename) && !$this->isStored($filename)) {
             $filename = self::DEFAULT_PICTURE;
         }
 
@@ -107,20 +110,44 @@ class PGFrameworkServicesHandlersPictureHandler extends PGFrameworkFoundationsAb
     /**
      * @param string $source
      * @param string $name
+     * @param bool $keepOriginalName
      * @return PGFrameworkEntitiesPicture
      * @throws Exception
      */
-    public function store($source, $name)
+    public function store($source, $name, $keepOriginalName = false)
     {
+        /** @var PGFrameworkServicesLogger $logger */
+        $logger = $this->getService('logger');
+
+        if (!is_file($source)) {
+            throw new Exception("Source file not found : '$source'.");
+        }
+
+        if (!$keepOriginalName) {
+            $name = $this->getHashFilename($source, $name);
+        }
+
         $path = $this->getPath($name);
 
-        if (is_writable($source)) {
+        if (is_file($path)) {
+            $logger->warning("Target file already stored : '$path'.");
+        } elseif (is_writable($source)) {
             rename($source, $path);
         } else {
             copy($source, $path);
         }
 
+        chmod($path, self::MEDIA_FILE_CHMOD);
+
         return $this->getPicture($name);
+    }
+
+    protected function getHashFilename($source, $name)
+    {
+        $hash = md5_file($source);
+        $ext = pathinfo($name, PATHINFO_EXTENSION);
+
+        return $hash . '.' . $ext;
     }
 
     /**

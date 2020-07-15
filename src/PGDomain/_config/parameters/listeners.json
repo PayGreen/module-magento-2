@@ -1,0 +1,17 @@
+{
+  "listeners": {
+    "install_default_button_picture_bis": {
+      "event": "module.install",
+      "service": "diagnostic.default_button_picture",
+      "method": "installDefaultButtonPicture"
+    },
+    "install_default_button_picture": {
+      "event": "module.install",
+      "service": "listener.setup.install_default_button"
+    },
+    "refund_order": {
+      "event": "order.refund",
+      "service": "listener.refund.update_transaction"
+    }
+  }
+}

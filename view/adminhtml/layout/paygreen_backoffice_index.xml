@@ -1,0 +1,13 @@
+<?xml version="1.0"?>
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <head>
+        <title>Administration du module PayGreen</title>
+        <css src="Paygreen_Payment::static/css/backoffice.css"/>
+        <script src="Paygreen_Payment::static/js/backoffice.js"/>
+    </head>
+    <body>
+        <referenceContainer name="content">
+            <block class="Paygreen\Payment\Block\DisplayOutput" cacheable="false" />
+        </referenceContainer>
+    </body>
+</page>

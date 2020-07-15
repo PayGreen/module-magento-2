@@ -1,0 +1,46 @@
+{
+  "servers": {
+    "backoffice": {
+      "areas": ["backoffice"],
+      "request_builder": "builder.request.backoffice",
+      "deflectors": ["filter.paygreen_connexion", "filter.shop_context"],
+      "cleaners": {
+        "not_found": "cleaner.forward.message_page",
+        "unauthorized_access": "cleaner.forward.message_page",
+        "server_error": "cleaner.forward.message_page",
+        "bad_request": "cleaner.forward.message_page",
+        "rendering_error": "cleaner.forward.message_page"
+      },
+      "rendering": [
+        {
+          "if": {
+            "class": "PGServerComponentsResponsesTemplateResponse"
+          },
+          "do": "return",
+          "with": "renderer.processor.output_template"
+        },
+        {
+          "if": {
+            "class": "PGServerComponentsResponsesFileResponse"
+          },
+          "do": "continue",
+          "with": "renderer.transformer.file_2_http"
+        },
+        {
+          "if": {
+            "instance": "PGServerComponentsResponsesRedirectionResponse"
+          },
+          "do": "continue",
+          "with": "renderer.transformer.redirection_2_http"
+        },
+        {
+          "if": {
+            "class": "PGServerComponentsResponsesHTTPResponse"
+          },
+          "do": "stop",
+          "with": "renderer.processor.write_http"
+        }
+      ]
+    }
+  }
+}
