@@ -15,7 +15,7 @@
  * @author    PayGreen <contact@paygreen.fr>
  * @copyright 2014 - 2020 Watt Is It
  * @license   https://creativecommons.org/licenses/by-nd/4.0/fr/ Creative Commons BY-ND 4.0
- * @version   1.0.0
+ * @version   1.0.1
  */
 
 /**
@@ -24,7 +24,7 @@
  */
 class PGDomainServicesPaygreenFacade extends PGFrameworkFoundationsAbstractObject
 {
-    const VERSION = '2.6.0';
+    const VERSION = '2.6.1';
     const CURRENCY_EUR = 'EUR';
 
     const STATUS_WAITING = 'WAITING';

@@ -15,7 +15,7 @@
  * @author    PayGreen <contact@paygreen.fr>
  * @copyright 2014 - 2020 Watt Is It
  * @license   https://creativecommons.org/licenses/by-nd/4.0/fr/ Creative Commons BY-ND 4.0
- * @version   1.0.0
+ * @version   1.0.1
  */
 
 /**
@@ -34,9 +34,7 @@ class PGFrameworkServicesBehaviorsDetailedLogsBehavior extends PGFrameworkFounda
 
     public function isDetailedLogActivated()
     {
-        if (defined('PAYGREEN_ENV') && (PAYGREEN_ENV === 'DEV')) {
-            $detailedLogActivated = true;
-        } elseif ($this->settings->get('last_update') !== PAYGREEN_MODULE_VERSION) {
+        if ($this->settings->get('last_update') !== PAYGREEN_MODULE_VERSION) {
             $detailedLogActivated = true;
         } else {
             $detailedLogActivated = $this->settings->get('behavior_detailed_logs');
