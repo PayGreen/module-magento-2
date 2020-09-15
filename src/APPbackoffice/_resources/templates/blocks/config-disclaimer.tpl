@@ -14,14 +14,8 @@
  * @author    PayGreen <contact@paygreen.fr>
  * @copyright 2014 - 2020 Watt Is It
  * @license   https://creativecommons.org/licenses/by-nd/4.0/fr/ Creative Commons BY-ND 4.0
- * @version   1.0.1
+ * @version   1.1.0
  *}
-<div class="pgpreview__container" id="{$id}">
-    <img
-        src=""
-        alt="{'button.pages.general.design.previewImageAlt'|pgtrans}"
-        class="pg__height-lg pg__width-md pg__mbottom-xxs"
-    />
-
-    <span></span>
-</div>
+<p>
+    {'pages.config.paymentTypes.description'|pgtrans}
+</p>

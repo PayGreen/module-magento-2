@@ -2,7 +2,7 @@
   "module": {
     "description": "La solution de paiement française à impact positif sur la société et l'environnement",
     "uninstall": {
-      "confirmation": "Êtes-vous sure de vouloir désinstaller le module PayGreen ?"
+      "confirmation": "Êtes-vous sûr de vouloir désinstaller le module PayGreen ?"
     },
     "form": {
       "input": {
@@ -18,7 +18,8 @@
       "buttons": {
         "validate": "Valider",
         "delete": "Effacer",
-        "cancel": "Annuler"
+        "cancel": "Annuler",
+        "translation_add": "Ajouter une traduction"
       }
     },
     "bool": {
@@ -150,22 +151,6 @@
       }
     },
     "logs": {
-      "title": "Fichiers de logs",
-      "columns": {
-        "filename": "Nom du fichier",
-        "size": "Taille",
-        "last_update": "Dernière modification",
-        "actions": "Actions"
-      },
-      "actions": {
-        "delete": {
-          "button": "Effacer",
-          "success": "Le fichier ciblé a bien été effacé."
-        },
-        "download": {
-          "button": "Télécharger"
-        }
-      },
       "errors": {
         "invalid_file": "Le fichier ciblé n'est pas un fichier de logd valide.",
         "file_not_found": "Le fichier ciblé n'existe pas."

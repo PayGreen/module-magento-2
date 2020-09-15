@@ -79,8 +79,7 @@
       },
       "fields": {
         "label": {
-          "label": "Intitulé du bouton",
-          "placeholder": "Ex : Paiement en CB/Visa/MasterCard"
+          "label": "Intitulé du bouton"
         },
         "cart_amount": {
           "label": "Montant du panier",

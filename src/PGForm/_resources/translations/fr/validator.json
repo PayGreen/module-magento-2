@@ -4,7 +4,8 @@
       "min_length": "La chaine doit comporter au moins %{min} caractères.",
       "max_length": "La chaine ne doit pas comporter plus de %{max} caractères.",
       "regexp": "La chaine de caractères ne respecte pas le format attendu.",
-      "array_in": "La valeur sélectionnée doit être l'une des suivantes : [%{values}]"
+      "array_in": "La valeur sélectionnée doit être l'une des suivantes : [%{values}]",
+      "empty": "Ce champ ne doit pas être vide."
     }
   }
 }

@@ -11,7 +11,9 @@
             <li>
                 <label class="paygreen-button">
                     <div><input type="radio" name="pg-button" data-bind="{click: $parent.selectButton, attr: {'value': button.id}}" ></div>
-                    <div data-bind="if: $parent.isPictureDisplayed(button.displayType)"><img data-bind="attr: {src: button.imageUrl}, style: {height: button.height + 'px'}" /></div>
+                    <div data-bind="if: $parent.isPictureDisplayed(button.displayType)">
+                        <img data-bind="attr: {src: button.imageUrl}, style: {height: $parent.computeButtonPictureHeight(button.height)}" />
+                    </div>
                     <div data-bind="if: $parent.isTextDisplayed(button.displayType)"><span data-bind="text: button.label"></span></div>
                 </label>
             </li>
@@ -22,7 +24,7 @@
                         type="submit"
                         data-bind="
                         click: placeOrder,
-                        attr: {title: 'Payer votre commande avec PayGreen.'},
+                        attr: {title: getSubmitTitle()},
                         css: {disabled: !isPlaceOrderActionAllowed()},
                         enable: ((getCode() == isChecked()) && isButtonSelected())
                         "

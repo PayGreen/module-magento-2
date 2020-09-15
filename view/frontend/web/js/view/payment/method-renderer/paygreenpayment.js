@@ -14,7 +14,7 @@
  * @author    PayGreen <contact@paygreen.fr>
  * @copyright 2014 - 2020 Watt Is It
  * @license   https://creativecommons.org/licenses/by-nd/4.0/fr/ Creative Commons BY-ND 4.0
- * @version   1.0.1
+ * @version   1.1.0
  */
 define(
     [
@@ -26,6 +26,7 @@ define(
         'use strict';
 
         let title = window.checkoutConfig.paygreen.title;
+        let submitTitle = window.checkoutConfig.paygreen.submitTitle;
         let confirmation = window.checkoutConfig.paygreen.confirmation;
         let buttons = window.checkoutConfig.paygreen.buttons;
 
@@ -50,8 +51,20 @@ define(
                 return confirmation;
             },
 
+            getSubmitTitle: function() {
+                return submitTitle;
+            },
+
             getButtons: function () {
                 return buttons;
+            },
+
+            computeButtonPictureHeight: function(buttonHeight) {
+                if (buttonHeight > 0) {
+                    return buttonHeight + 'px';
+                } else {
+                    return 'auto';
+                }
             },
 
             isPictureDisplayed: function (displayMode) {

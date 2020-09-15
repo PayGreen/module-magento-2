@@ -15,38 +15,47 @@
  * @author    PayGreen <contact@paygreen.fr>
  * @copyright 2014 - 2020 Watt Is It
  * @license   https://creativecommons.org/licenses/by-nd/4.0/fr/ Creative Commons BY-ND 4.0
- * @version   1.0.1
+ * @version   1.1.0
  */
 
-class PGViewServicesPluginsSmartyTranslator
+class PGIntlComponentsTranslation
 {
-    /** @var PGFrameworkServicesHandlersTranslatorHandler */
-    private $translator;
+    private $key;
 
-    public function __construct(PGFrameworkServicesHandlersTranslatorHandler $translator)
+    private $data = array();
+
+    public function __construct($key, array $data = array())
     {
-        $this->translator = $translator;
+        $this->key = $key;
+        $this->data = $data;
     }
 
-    public function translateExpression($key)
+    public function __toString()
     {
-        return $this->translator->get($key);
+        return $this->key;
     }
 
-    public function translateParagraph($key)
+    /**
+     * @return mixed
+     */
+    public function getKey()
     {
-        $lines = $this->translator->get($key);
+        return $this->key;
+    }
 
-        if (!is_array($lines)) {
-            $lines = array($lines);
-        }
+    /**
+     * @return array
+     */
+    public function getData()
+    {
+        return $this->data;
+    }
 
-        $result = '';
-
-        foreach ($lines as $line) {
-            $result .= "<p>$line</p>" . PHP_EOL;
-        }
-
-        return $result;
+    /**
+     * @return bool
+     */
+    public function hasData()
+    {
+        return !empty($this->data);
     }
 }

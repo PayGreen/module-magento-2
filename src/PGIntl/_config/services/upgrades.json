@@ -1,0 +1,27 @@
+{
+  "upgrade.translations.install_default_values": {
+    "class": "PGIntlServicesUpgradesInsertDefaultTranslationsUpgrade",
+    "extends": "upgrade.abstract",
+    "arguments": ["@handler.translation", "@manager.shop"]
+  },
+  "upgrade.translations.restore": {
+    "class": "PGIntlServicesUpgradesRestoreTranslationsUpgrade",
+    "extends": "upgrade.abstract",
+    "arguments": [
+      "@manager.translation",
+      "@manager.shop",
+      "@repository.setting",
+      "@officer.settings.database.basic",
+      "@officer.settings.database.global"
+    ]
+  },
+  "upgrade.button_labels.restore": {
+    "class": "PGIntlServicesUpgradesRestoreButtonLabelsUpgrade",
+    "extends": "upgrade.abstract",
+    "arguments": [
+      "@manager.translation",
+      "@manager.shop",
+      "@handler.database"
+    ]
+  }
+}

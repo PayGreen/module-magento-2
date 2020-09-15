@@ -1,7 +1,5 @@
 {
   "translator": {
-    "local": "FR",
-    "default_local": "EN",
     "sources": ["bundles-resources", "module-resources"]
   }
 }

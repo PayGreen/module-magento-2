@@ -30,7 +30,7 @@
 
   "handler.smarty": {
     "class": "PGViewServicesHandlersSmartyHandler",
-    "arguments": ["@%{smarty.builder.service}", "@pathfinder", "@logger"],
+    "arguments": ["@%{smarty.builder.service}", "@pathfinder", "@logger.view"],
     "catch": {
       "tag": "plugin.smarty",
       "method": "installPlugin",
@@ -46,5 +46,16 @@
   "builder.smarty": {
     "class": "PGViewServicesBuildersSmartyBuilder",
     "arguments": ["@pathfinder", "%smarty.builder"]
+  },
+
+  "logger.view": {
+    "class": "PGFrameworkServicesLogger",
+    "arguments": ["@dumper", "@pathfinder", "%{log.view.file}", "%{log.view.format}"],
+    "calls": [
+      {
+        "method": "setBehaviorHandler",
+        "arguments": ["@handler.behavior"]
+      }
+    ]
   }
 }

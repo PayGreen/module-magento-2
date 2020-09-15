@@ -1,7 +1,7 @@
 {
   "plugin.smarty.bool": {
     "class": "APPbackofficeServicesPluginsSmartyBool",
-    "arguments": ["@handler.translator"],
+    "arguments": ["@translator"],
     "tags": [
       {
         "name": "plugin.smarty",

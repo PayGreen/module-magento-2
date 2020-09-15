@@ -9,9 +9,6 @@
           "id": {
             "type": "int"
           },
-          "label": {
-            "type": "string"
-          },
           "image": {
             "type": "string"
           },

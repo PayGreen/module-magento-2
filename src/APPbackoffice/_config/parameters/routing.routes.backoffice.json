@@ -62,6 +62,20 @@
           "paygreen_connexion": true
         }
       },
+      "backoffice.translations.display": {
+        "target": "display@backoffice.translations",
+        "requirements": {
+          "shop_context": true,
+          "paygreen_connexion": true
+        }
+      },
+      "backoffice.translations.save": {
+        "target": "save@backoffice.translations",
+        "requirements": {
+          "shop_context": true,
+          "paygreen_connexion": true
+        }
+      },
       "backoffice.eligible_amounts.display": {
         "target": "display@backoffice.eligible_amounts",
         "requirements": {
@@ -128,17 +142,23 @@
       "backoffice.system.display": {
         "target": "displayData@backoffice.system"
       },
-      "backoffice.system.save_support_config": {
-        "target": "saveSupportConfiguration@backoffice.system"
+      "backoffice.support.save_support_config": {
+        "target": "saveSupportConfiguration@backoffice.support"
       },
-      "backoffice.system.log.download": {
-        "target": "downloadLogFile@backoffice.system"
+      "backoffice.logs.download": {
+        "target": "downloadLogFile@backoffice.logs"
       },
-      "backoffice.system.log.delete": {
-        "target": "deleteLogFile@backoffice.system"
+      "backoffice.logs.delete": {
+        "target": "deleteLogFile@backoffice.logs"
       },
       "backoffice.shop.select": {
         "target": "setCurrentShop@backoffice.shop"
+      },
+      "backoffice.support.display": {
+        "target": "display@backoffice.support"
+      },
+      "backoffice.diagnostic.run": {
+        "target": "run@backoffice.diagnostic"
       }
     }
   }

@@ -1,0 +1,18 @@
+{
+  "blocks": {
+    "diagnostic": {
+      "title": "Automatic module repair",
+      "subtitle": "List of diagnostics",
+      "columns": {
+        "name": "Name",
+        "state": "State"
+      },
+      "links": {
+        "run": {
+          "text": "Correct invalid diagnoses",
+          "title": "Attempts to correct all diagnoses marked as invalid."
+        }
+      }
+    }
+  }
+}

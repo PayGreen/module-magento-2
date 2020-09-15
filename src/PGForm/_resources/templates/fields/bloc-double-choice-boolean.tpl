@@ -14,7 +14,7 @@
  * @author    PayGreen <contact@paygreen.fr>
  * @copyright 2014 - 2020 Watt Is It
  * @license   https://creativecommons.org/licenses/by-nd/4.0/fr/ Creative Commons BY-ND 4.0
- * @version   1.0.1
+ * @version   1.1.0
  *}
 <table
     {if isset($id)}id="{$id}"{/if}
@@ -27,10 +27,8 @@
                 <span class="pgform__field js__table-row-search">
                     {include
                         file="fields/partials/input.tpl"
-                        attr=[
-                            'type' => 'text',
-                            'placeholder' => "{$filterPlaceholder|pgtrans}"
-                        ]
+                        attr=['type' => 'search']
+                        placeholder="{$filterPlaceholder}"
                     }
                 </span>
             {else}

@@ -15,7 +15,7 @@
  * @author    PayGreen <contact@paygreen.fr>
  * @copyright 2014 - 2020 Watt Is It
  * @license   https://creativecommons.org/licenses/by-nd/4.0/fr/ Creative Commons BY-ND 4.0
- * @version   1.0.1
+ * @version   1.1.0
  */
 
 class APPbackofficeServicesHandlersMenuHandler
@@ -51,25 +51,68 @@ class APPbackofficeServicesHandlersMenuHandler
     protected function buildEntries(array $entries)
     {
         $this->default = null;
-        $this->entries = array();
+        $this->entries = $this->compileEntries($entries);
+    }
+
+    /**
+     * @param array $entries
+     * @return array
+     * @throws Exception
+     */
+    protected function compileEntries(array $entries)
+    {
+        $compiledEntries = array();
 
         foreach ($entries as $code => $entry) {
             $entry = new PGFrameworkComponentsBag($entry);
 
-            if ($entry['action'] && $this->routeHandler->areRequirementsFulfilled($entry['action'])) {
-                if ($this->default === null) {
-                    $this->default = $entry['action'];
+            if ($this->isDisplayed($entry)) {
+                $compiledEntry = array(
+                    'code' => $code,
+                    'name' => $entry['name'],
+                    'title' => $entry['title']
+                );
+
+                if ($entry['action']) {
+                    if ($this->default === null) {
+                        $this->default = $entry['action'];
+                    }
+
+                    $compiledEntry['href'] = $this->linker->buildBackofficeUrl($entry['action']);
+                } elseif ($entry['children']) {
+                    $compiledEntry['children'] = $this->compileEntries($entry['children']);
                 }
 
-                $this->entries[$code] = array(
-                    'action' => $entry['action'],
-                    'name' => $entry['name'],
-                    'title' => $entry['title'],
-                    'href' => $this->linker->buildBackofficeUrl($entry['action']),
-                    'icon' => 'pgicon-' . $entry['icon']
-                );
+                $compiledEntries[] = $compiledEntry;
             }
         }
+
+        return $compiledEntries;
+    }
+
+    /**
+     * @param PGFrameworkComponentsBag $entry
+     * @return bool
+     * @throws Exception
+     */
+    protected function isDisplayed(PGFrameworkComponentsBag $entry)
+    {
+        $isDisplayed = false;
+
+        if ($entry['action']) {
+            $isDisplayed = $this->routeHandler->areRequirementsFulfilled($entry['action']);
+        } elseif ($entry['children']) {
+            foreach($entry['children'] as $child) {
+                $child = new PGFrameworkComponentsBag($child);
+
+                if ($this->isDisplayed($child)) {
+                    $isDisplayed = true;
+                    break;
+                }
+            }
+        }
+
+        return $isDisplayed;
     }
 
     /**
@@ -96,20 +139,6 @@ class APPbackofficeServicesHandlersMenuHandler
         }
 
         return $this->default;
-    }
-
-    /**
-     * @param string $code
-     * @return mixed
-     * @throws Exception
-     */
-    public function getTitle($code)
-    {
-        if (!array_key_exists($code, $this->config['entries'])) {
-            throw new Exception("Menu entry not found: '$code'.");
-        }
-
-        return $this->config['entries'][$code]['title'];
     }
 
     public function isShopSelectorActivated()

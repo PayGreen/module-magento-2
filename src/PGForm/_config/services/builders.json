@@ -11,6 +11,7 @@
       "@builder.formatter",
       "@handler.behavior",
       "@builder.view",
+      "@logger",
       "%fields"
     ]
   },

@@ -5,19 +5,10 @@
         "model": "multipart",
         "fields": {
           "label": {
-            "model": "string",
-            "required": true,
-            "validators": {
-              "length.max": 100
-            },
+            "model": "collection.translations",
             "view": {
               "data": {
-                "label": "button.form.fields.label.label",
-                "placeholder": "button.form.fields.label.placeholder",
-                "attr": {
-                  "maxlength": 100,
-                  "size": 35
-                }
+                "label": "button.form.fields.label.label"
               }
             }
           },

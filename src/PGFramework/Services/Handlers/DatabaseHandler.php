@@ -15,7 +15,7 @@
  * @author    PayGreen <contact@paygreen.fr>
  * @copyright 2014 - 2020 Watt Is It
  * @license   https://creativecommons.org/licenses/by-nd/4.0/fr/ Creative Commons BY-ND 4.0
- * @version   1.0.1
+ * @version   1.1.0
  */
 
 class PGFrameworkServicesHandlersDatabaseHandler
@@ -46,21 +46,22 @@ class PGFrameworkServicesHandlersDatabaseHandler
 
     /**
      * @param string $script
+     * @param array $values
      * @return mixed
      * @throws Exception
      */
-    public function runScript($script)
+    public function runScript($script, array $values = array())
     {
         $sql = $this->loadScript($script);
 
         $this->logger->notice("Run SQL script : $script");
 
-        $queries = explode(';' . PHP_EOL, $sql);
+        $queries = preg_split("/;(\\r\\n|\\r|\\n)/", $sql);;
 
         foreach ($queries as $query) {
             $query = trim($query);
 
-            if (!empty($query) && !$this->execute($query)) {
+            if (!empty($query) && !$this->execute($query, $values)) {
                 return false;
             }
         }
@@ -109,13 +110,14 @@ class PGFrameworkServicesHandlersDatabaseHandler
     }
 
     /**
-     * @param $sql
+     * @param string $sql
+     * @param array $values
      * @return string
      * @throws Exception
      */
-    public function parseQuery($sql)
+    public function parseQuery($sql, array $values = array())
     {
-        $sql = $this->parser->parseStringParameters($sql);
+        $sql = $this->parser->parseStringParameters($sql, $values);
         $sql = $this->parser->parseConstants($sql);
 
         return $sql;
@@ -123,13 +125,14 @@ class PGFrameworkServicesHandlersDatabaseHandler
 
     /**
      * @param string $sql
+     * @param array $values
      * @return bool
      * @throws Exception
      */
-    public function execute($sql)
+    public function execute($sql, array $values = array())
     {
         try {
-            $sql = $this->parseQuery($sql);
+            $sql = $this->parseQuery($sql, $values);
 
             $this->logger->debug("Execute query :", PHP_EOL . $sql);
 

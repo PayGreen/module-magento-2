@@ -15,17 +15,17 @@
  * @author    PayGreen <contact@paygreen.fr>
  * @copyright 2014 - 2020 Watt Is It
  * @license   https://creativecommons.org/licenses/by-nd/4.0/fr/ Creative Commons BY-ND 4.0
- * @version   1.0.1
+ * @version   1.1.0
  */
 
 class APPbackofficeServicesPluginsSmartyBool
 {
-    /** @var PGFrameworkServicesHandlersTranslatorHandler */
-    private $translatorHandler;
+    /** @var PGIntlServicesTranslator */
+    private $translator;
 
-    public function __construct(PGFrameworkServicesHandlersTranslatorHandler $translatorHandler)
+    public function __construct(PGIntlServicesTranslator $translator)
     {
-        $this->translatorHandler = $translatorHandler;
+        $this->translator = $translator;
     }
 
     /**
@@ -37,16 +37,16 @@ class APPbackofficeServicesPluginsSmartyBool
     {
         switch(true) {
             case ($bool === null):
-                $text = $this->translatorHandler->get('module.bool.null');
-                $html = '<span class="pg_bool_null">' . $text . '</span>';
+                $text = $this->translator->get('module.bool.null');
+                $html = '<span class="pgemphasis">' . $text . '</span>';
                 break;
             case ($bool === true):
-                $text = $this->translatorHandler->get('module.bool.true');
-                $html = '<span class="pg_bool_true">' . $text . '</span>';
+                $text = $this->translator->get('module.bool.true');
+                $html = '<span class="pgemphasis pgemphasis--success">' . $text . '</span>';
                 break;
             case ($bool === false):
-                $text = $this->translatorHandler->get('module.bool.false');
-                $html = '<span class="pg_bool_false">' . $text . '</span>';
+                $text = $this->translator->get('module.bool.false');
+                $html = '<span class="pgemphasis pgemphasis--danger">' . $text . '</span>';
                 break;
             default:
                 throw new Exception("Unknown bool type : '$bool'.");

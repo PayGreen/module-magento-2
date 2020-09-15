@@ -1,0 +1,6 @@
+{
+  "manager.translation": {
+    "class": "PGIntlServicesManagersTranslationManager",
+    "arguments": ["@repository.translation"]
+  }
+}

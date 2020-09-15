@@ -15,7 +15,7 @@
  * @author    PayGreen <contact@paygreen.fr>
  * @copyright 2014 - 2020 Watt Is It
  * @license   https://creativecommons.org/licenses/by-nd/4.0/fr/ Creative Commons BY-ND 4.0
- * @version   1.0.1
+ * @version   1.1.0
  */
 
 class PGFrameworkComponentsServiceBuilder
@@ -120,49 +120,59 @@ class PGFrameworkComponentsServiceBuilder
             throw new LogicException("Unable to implements abstract service : '$name'.");
         }
 
-        $this->underConstructionServices[] = $name;
+        try {
+            $this->underConstructionServices[] = $name;
 
-        $definition = $this->library[$name];
+            $definition = $this->library[$name];
 
-        if (!array_key_exists('class', $definition)) {
-            throw new LogicException("Target service definition has no class name : '$name'.");
-        }
-
-        $class = $definition['class'];
-        $arguments = array();
-
-        if (array_key_exists('arguments', $definition)) {
-            if (!is_array($definition['arguments'])) {
-                $message = "Target service definition has inconsistent argument list : '$name'.";
-                throw new LogicException($message);
+            if (!array_key_exists('class', $definition)) {
+                throw new LogicException("Target service definition has no class name : '$name'.");
             }
 
-            foreach ($definition['arguments'] as $argument) {
-                $arguments[] = $this->parser->parseAll($argument);
+            $class = $definition['class'];
+            $arguments = array();
+
+            if (array_key_exists('arguments', $definition)) {
+                if (!is_array($definition['arguments'])) {
+                    $message = "Target service definition has inconsistent argument list : '$name'.";
+                    throw new LogicException($message);
+                }
+
+                foreach ($definition['arguments'] as $argument) {
+                    $arguments[] = $this->parser->parseAll($argument);
+                }
             }
+
+            $reflexionClass = new ReflectionClass($class);
+
+            $service = $reflexionClass->newInstanceArgs($arguments);
+
+            if (array_key_exists('calls', $definition)) {
+                $subject = $this->library->isShared($name) ? null : $service;
+                $this->callDelayer->addCalls($name, $definition['calls'], $subject);
+            }
+
+            if (array_key_exists('catch', $definition)) {
+                $this->collectTaggedServices($service, $name, $definition);
+            }
+
+            if ($this->library->isShared($name)) {
+                $this->container->set($name, $service);
+            }
+
+            $this->finalizeServiceConstruction($name);
+        } catch (Exception $exception) {
+            $this->finalizeServiceConstruction($name);
+            throw $exception;
         }
-
-        $reflexionClass = new ReflectionClass($class);
-
-        $service = $reflexionClass->newInstanceArgs($arguments);
-
-        if (array_key_exists('calls', $definition)) {
-            $subject = $this->library->isShared($name) ? null : $service;
-            $this->callDelayer->addCalls($name, $definition['calls'], $subject);
-        }
-
-        if (array_key_exists('catch', $definition)) {
-            $this->collectTaggedServices($service, $name, $definition);
-        }
-
-        if ($this->library->isShared($name)) {
-            $this->container->set($name, $service);
-        }
-
-        $index = array_search($name, $this->underConstructionServices);
-        unset($this->underConstructionServices[$index]);
 
         return $service;
+    }
+
+    protected function finalizeServiceConstruction($name)
+    {
+        $index = array_search($name, $this->underConstructionServices);
+        unset($this->underConstructionServices[$index]);
     }
 
     /**

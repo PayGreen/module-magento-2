@@ -15,7 +15,7 @@
  * @author    PayGreen <contact@paygreen.fr>
  * @copyright 2014 - 2020 Watt Is It
  * @license   https://creativecommons.org/licenses/by-nd/4.0/fr/ Creative Commons BY-ND 4.0
- * @version   1.0.1
+ * @version   1.1.0
  */
 
 use Magento\Sales\Model\Order;
@@ -63,10 +63,15 @@ class PGModuleServicesControllersInvalidPaymentsController extends PGServerFound
         /** @var PGServerServicesLinker $linker */
         $linker = $this->getService('linker');
 
+        /** @var PGDomainServicesManagersOrderManager $orderManager */
+        $orderManager = $this->getService('manager.order');
+
         $return = 'order.history';
 
         /** @var PGDomainInterfacesEntitiesOrderInterface|null $order */
         $order = $this->getCurrentOrder();
+
+        $orderManager->updateOrder($order, 'CANCEL', 'CASH');
 
         if ($this->rebuildCart($order)) {
             $return = 'checkout';
@@ -74,7 +79,7 @@ class PGModuleServicesControllersInvalidPaymentsController extends PGServerFound
 
         return $this->forward('displayNotification@front.notification', array(
             'title' => 'frontoffice.payment.results.payment.refused.title',
-            'message' => '~notice_payment_refused',
+            'message' => '~message_payment_refused',
             'url' => array(
                 'link' => $linker->buildLocalUrl($return),
                 'text' => 'frontoffice.payment.results.payment.refused.link',

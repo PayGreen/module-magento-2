@@ -1,0 +1,23 @@
+{
+  "blocks": {
+    "logs": {
+      "title": "PayGreen module activity",
+      "subtitle": "List of log files",
+      "columns": {
+        "filename": "File name",
+        "size": "Size",
+        "last_update": "Last modification",
+        "actions": "Actions"
+      },
+      "actions": {
+        "delete": {
+          "button": "Delete",
+          "success": "The targeted file has been deleted."
+        },
+        "download": {
+          "button": "Download"
+        }
+      }
+    }
+  }
+}

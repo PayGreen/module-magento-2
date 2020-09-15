@@ -40,21 +40,6 @@
       "private_key": {
         "label": "Private key"
       },
-      "success_payment_text": {
-        "label": "Displayed text after a successful payment",
-        "placeholder": "Your payment was accepted",
-        "help": "This message is displayed after customers finalized a payment."
-      },
-      "failure_payment_text": {
-        "label": "Displayed text after a unsuccessful payment",
-        "placeholder": "Your payment was unsuccessful",
-        "help": "This message is displayed after customers failed to validate a payment."
-      },
-      "canceled_payment_text": {
-        "label": "Text displayed when canceling an order",
-        "placeholder": "Your order has been canceled",
-        "help": "This message is displayed when a customer cancels his payment."
-      },
       "display_footer_color": {
         "label": "PayGreen security logo's color",
         "values": {

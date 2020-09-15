@@ -17,11 +17,6 @@
     "arguments": ["%cache", "@pathfinder", "@settings", "@logger"]
   },
 
-  "handler.translator": {
-    "class": "PGFrameworkServicesHandlersTranslatorHandler",
-    "arguments": ["@handler.cache", "@pathfinder", "%translator"]
-  },
-
   "handler.setup": {
     "class": "PGFrameworkServicesHandlersSetupHandler",
     "arguments": ["@broadcaster", "@settings", "@logger", "%setup"]

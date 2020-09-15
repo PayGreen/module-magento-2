@@ -4,8 +4,8 @@
     "abstract": true,
     "calls": [
       {
-        "method": "setTranslatorHandler",
-        "arguments": ["@handler.translator"]
+        "method": "setTranslator",
+        "arguments": ["@translator"]
       }
     ],
     "tags": [

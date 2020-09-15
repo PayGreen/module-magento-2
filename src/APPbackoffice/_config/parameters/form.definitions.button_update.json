@@ -7,7 +7,12 @@
           "id": {
             "model": "hidden",
             "format": "int",
-            "required": true
+            "required": true,
+            "validators": {
+              "not_empty": {
+                "error": "button.actions.update.errors.id_not_found"
+              }
+            }
           }
         }
       }

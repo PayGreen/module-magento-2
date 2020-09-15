@@ -1,4 +1,9 @@
 {
+  "listener.database.runner": {
+    "abstract": true,
+    "class": "PGFrameworkServicesListenersGenericDatabaseRunnerListener",
+    "arguments": ["@handler.database"]
+  },
   "listener.settings.install_default": {
     "class": "PGFrameworkServicesListenersInstallDefaultSettingsListener",
     "arguments": [

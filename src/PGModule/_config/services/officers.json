@@ -12,5 +12,9 @@
   },
   "officer.setup": {
     "class": "PGModuleServicesOfficersSetupOfficer"
+  },
+  "officer.locale": {
+    "class": "PGModuleServicesOfficersLocaleOfficer",
+    "arguments": ["@magento"]
   }
 }

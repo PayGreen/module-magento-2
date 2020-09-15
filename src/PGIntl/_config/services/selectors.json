@@ -1,0 +1,7 @@
+{
+  "selector.language": {
+    "extends": "selector.abstract",
+    "class": "PGIntlServicesSelectorsLanguageSelector",
+    "arguments": ["%languages"]
+  }
+}

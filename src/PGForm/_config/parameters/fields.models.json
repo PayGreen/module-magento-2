@@ -12,8 +12,18 @@
           "template": "fields/input-bloc"
         }
       },
-      "array": {
-        "format": "array"
+      "collection": {
+        "type": "collection",
+        "format": "array",
+        "view": {
+          "name": "field.collection",
+          "data": {
+            "class": null,
+            "allowCreation": true,
+            "allowDeletion": true
+          },
+          "template": "fields/bloc-collection"
+        }
       },
       "int": {
         "format": "int",

@@ -32,18 +32,6 @@
         "type": "bool",
         "default": false
       },
-      "notice_payment_accepted": {
-        "type": "string",
-        "default": "Votre paiement a été accepté"
-      },
-      "notice_payment_refused": {
-        "type": "string",
-        "default": "Votre paiement a été refusé"
-      },
-      "notice_payment_canceled": {
-        "type": "string",
-        "default": "Votre commande a été annulée"
-      },
       "admin_only_visibility": {
         "type": "bool",
         "default": false

@@ -15,7 +15,7 @@
  * @author    PayGreen <contact@paygreen.fr>
  * @copyright 2014 - 2020 Watt Is It
  * @license   https://creativecommons.org/licenses/by-nd/4.0/fr/ Creative Commons BY-ND 4.0
- * @version   1.0.1
+ * @version   1.1.0
  */
 
 /**
@@ -27,12 +27,12 @@ abstract class PGFormFoundationsAbstractFieldChoice extends PGFormServicesViewsF
     /** @var PGFrameworkServicesHandlersSelectHandler */
     private $selectHandler;
 
-    /** @var PGFrameworkServicesHandlersTranslatorHandler */
+    /** @var PGIntlServicesTranslator */
     private $translator;
 
     public function __construct(
         PGFrameworkServicesHandlersSelectHandler $selectHandler,
-        PGFrameworkServicesHandlersTranslatorHandler $translator
+        PGIntlServicesTranslator $translator
     ) {
         $this->selectHandler = $selectHandler;
         $this->translator = $translator;
@@ -47,7 +47,7 @@ abstract class PGFormFoundationsAbstractFieldChoice extends PGFormServicesViewsF
     }
 
     /**
-     * @return PGFrameworkServicesHandlersTranslatorHandler
+     * @return PGIntlServicesTranslator
      */
     public function getTranslator()
     {

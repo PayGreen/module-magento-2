@@ -15,7 +15,7 @@
  * @author    PayGreen <contact@paygreen.fr>
  * @copyright 2014 - 2020 Watt Is It
  * @license   https://creativecommons.org/licenses/by-nd/4.0/fr/ Creative Commons BY-ND 4.0
- * @version   1.0.1
+ * @version   1.1.0
  */
 
 namespace Paygreen\Payment\Block;
@@ -46,7 +46,7 @@ class DisplayOutput extends Template
         $outputHandler = $this->getService('handler.output');
 
         /** @var PGFrameworkServicesLogger $outputHandler */
-        $logger = $this->getService('logger');
+        $logger = $this->getService('logger.view');
 
         $content = $outputHandler->getContent();
 

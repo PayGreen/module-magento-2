@@ -15,39 +15,45 @@
  * @author    PayGreen <contact@paygreen.fr>
  * @copyright 2014 - 2020 Watt Is It
  * @license   https://creativecommons.org/licenses/by-nd/4.0/fr/ Creative Commons BY-ND 4.0
- * @version   1.0.1
+ * @version   1.1.0
  */
 
-class PGFrameworkComponentsTranslation
+/**
+ * Class PGIntlEntitiesTranslation
+ *
+ * @package PGFramework\Entities
+ */
+class PGIntlEntitiesTranslation extends PGFrameworkFoundationsAbstractEntityPersisted implements PGIntlInterfacesEntitiesTranslationInterface
 {
-    private $key;
-
-    private $data = array();
-
-    public function __construct($key, array $data = array())
+    /**
+     * @inheritDoc
+     */
+    public function getCode()
     {
-        $this->key = $key;
-        $this->data = $data;
-    }
-
-    public function __toString()
-    {
-        return $this->key;
+        return (string) $this->get('code');
     }
 
     /**
-     * @return mixed
+     * @inheritDoc
      */
-    public function getKey()
+    public function getLanguage()
     {
-        return $this->key;
+        return (string) $this->get('language');
     }
 
     /**
-     * @return array
+     * @inheritDoc
      */
-    public function getData()
+    public function getText()
     {
-        return $this->data;
+        return (string) $this->get('text');
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function setText($text)
+    {
+        return $this->set('text', $text);
     }
 }

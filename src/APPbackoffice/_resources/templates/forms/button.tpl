@@ -14,7 +14,7 @@
  * @author    PayGreen <contact@paygreen.fr>
  * @copyright 2014 - 2020 Watt Is It
  * @license   https://creativecommons.org/licenses/by-nd/4.0/fr/ Creative Commons BY-ND 4.0
- * @version   1.0.1
+ * @version   1.1.0
  *}
 <form{foreach $attr as $key => $val} {$key}="{$val}"{/foreach}>
     {if isset($fields.id)}{$fields.id}{/if}
@@ -28,12 +28,6 @@
             {foreach $columns.appearance as $name}
                 {if isset($fields[$name])}{$fields[$name]}{/if}
             {/foreach}
-
-            <h3 class="pgpreview__title">
-                {'button.pages.general.design.preview'|pgtrans}
-            </h3>
-
-            {include file="../button/preview.tpl" id="buttonPreview"}
         </div>
 
         <div class="pgblock pg__flex-1 pgblock__md">

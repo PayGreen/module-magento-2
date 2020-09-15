@@ -4,33 +4,6 @@
       "settings_customization": {
         "model": "basic",
         "fields": {
-          "notice_payment_accepted": {
-            "model": "string",
-            "view": {
-              "data": {
-                "label": "config.fields.success_payment_text.label",
-                "help": "config.fields.success_payment_text.help"
-              }
-            }
-          },
-          "notice_payment_refused": {
-            "model": "string",
-            "view": {
-              "data": {
-                "label": "config.fields.failure_payment_text.label",
-                "help": "config.fields.failure_payment_text.help"
-              }
-            }
-          },
-          "notice_payment_canceled": {
-            "model": "string",
-            "view": {
-              "data": {
-                "label": "config.fields.canceled_payment_text.label",
-                "help": "config.fields.canceled_payment_text.help"
-              }
-            }
-          },
           "footer_display": {
             "model": "bool.switch",
             "view": {

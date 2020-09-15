@@ -15,6 +15,10 @@
     "extends": "controller.abstract",
     "class": "APPbackofficeControllersEligibleAmountsController"
   },
+  "controller.backoffice.translations": {
+    "extends": "controller.abstract",
+    "class": "APPbackofficeControllersTranslationsController"
+  },
   "controller.backoffice.buttons": {
     "extends": "controller.abstract",
     "class": "APPbackofficeControllersButtonsController",
@@ -26,13 +30,28 @@
   },
   "controller.backoffice.shop": {
     "extends": "controller.abstract",
-    "class": "APPbackofficeControllersShopController",
-    "tags": [
-      { "name": "controller" }
-    ]
+    "class": "APPbackofficeControllersShopController"
   },
   "controller.backoffice.error": {
     "extends": "controller.abstract",
     "class": "APPbackofficeControllersErrorController"
+  },
+  "controller.backoffice.diagnostic": {
+    "extends": "controller.abstract",
+    "class": "APPbackofficeControllersDiagnosticController",
+    "calls": [
+      {
+        "method": "setDiagnosticHandler",
+        "arguments": ["@handler.diagnostic"]
+      }
+    ]
+  },
+  "controller.backoffice.support": {
+    "extends": "controller.abstract",
+    "class": "APPbackofficeControllersSupportController"
+  },
+  "controller.backoffice.logs": {
+    "extends": "controller.abstract",
+    "class": "APPbackofficeControllersLogsController"
   }
 }

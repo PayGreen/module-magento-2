@@ -1,0 +1,14 @@
+{
+  "fields": {
+    "collection": {
+      "buttons": {
+        "add": {
+          "text": "Ajouter"
+        },
+        "remove": {
+          "text": "Retirer"
+        }
+      }
+    }
+  }
+}

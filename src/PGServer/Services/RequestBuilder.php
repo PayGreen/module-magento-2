@@ -15,7 +15,7 @@
  * @author    PayGreen <contact@paygreen.fr>
  * @copyright 2014 - 2020 Watt Is It
  * @license   https://creativecommons.org/licenses/by-nd/4.0/fr/ Creative Commons BY-ND 4.0
- * @version   1.0.1
+ * @version   1.1.0
  */
 
 class PGServerServicesRequestBuilder extends PGFrameworkFoundationsAbstractObject
@@ -194,7 +194,7 @@ class PGServerServicesRequestBuilder extends PGFrameworkFoundationsAbstractObjec
             $post = PGFrameworkToolsArray::stripSlashes($post);
         }
 
-        return $_POST;
+        return $post;
     }
 
     /**
@@ -209,6 +209,6 @@ class PGServerServicesRequestBuilder extends PGFrameworkFoundationsAbstractObjec
             $get = PGFrameworkToolsArray::stripSlashes($get);
         }
 
-        return $_GET;
+        return $get;
     }
 }

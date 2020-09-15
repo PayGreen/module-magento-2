@@ -11,12 +11,49 @@
   },
   "view.blocks": {
     "extends": "view.basic",
-    "class": "APPbackofficeServicesViewsBlocksView",
-    "arguments": ["@handler.block"]
+    "class": "APPbackofficeServicesViewsBlockView",
+    "calls": [
+      {
+        "method": "setBlockHandler",
+        "arguments": ["@handler.block"]
+      }
+    ]
   },
   "view.system.paths": {
     "extends": "view.basic",
     "class": "APPbackofficeServicesViewsSystemPathsView",
     "arguments": ["@pathfinder"]
+  },
+  "view.block.diagnostics": {
+    "extends": "view.basic",
+    "class": "APPbackofficeServicesViewsBlocksDiagnosticBlock",
+    "arguments": ["@handler.diagnostic"]
+  },
+  "view.block.logs": {
+    "extends": "view.basic",
+    "class": "APPbackofficeServicesViewsBlocksLogBlock",
+    "arguments": ["@pathfinder"]
+  },
+  "view.block.standardized.config_form": {
+    "extends": "view.basic",
+    "class": "APPbackofficeServicesViewsBlocksStandardizedConfigurationFormBlock",
+    "calls": [
+      {
+        "method": "setFormBuilder",
+        "arguments": ["@builder.form"]
+      },
+      {
+        "method": "setSettings",
+        "arguments": ["@settings"]
+      },
+      {
+        "method": "setParameters",
+        "arguments": ["@parameters"]
+      },
+      {
+        "method": "setLinker",
+        "arguments": ["@linker"]
+      }
+    ]
   }
 }

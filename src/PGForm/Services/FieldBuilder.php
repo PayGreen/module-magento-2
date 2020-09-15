@@ -15,7 +15,7 @@
  * @author    PayGreen <contact@paygreen.fr>
  * @copyright 2014 - 2020 Watt Is It
  * @license   https://creativecommons.org/licenses/by-nd/4.0/fr/ Creative Commons BY-ND 4.0
- * @version   1.0.1
+ * @version   1.1.0
  */
 
 class PGFormServicesFieldBuilder
@@ -35,6 +35,9 @@ class PGFormServicesFieldBuilder
     /** @var PGViewServicesBuildersViewBuilder */
     private $viewBuilder;
 
+    /** @var PGFrameworkServicesLogger */
+    private $logger;
+
     private $config;
 
     public function __construct(
@@ -43,6 +46,7 @@ class PGFormServicesFieldBuilder
         PGFormServicesFormatterBuilder $formatterBuilder,
         PGFrameworkServicesHandlersBehaviorHandler $behaviorHandler,
         PGViewServicesBuildersViewBuilder $viewBuilder,
+        PGFrameworkServicesLogger $logger,
         array $config
     ) {
         $this->container = $container;
@@ -50,6 +54,7 @@ class PGFormServicesFieldBuilder
         $this->formatterBuilder = $formatterBuilder;
         $this->behaviorHandler = $behaviorHandler;
         $this->viewBuilder = $viewBuilder;
+        $this->logger = $logger;
         $this->config = $config;
     }
 
@@ -77,13 +82,17 @@ class PGFormServicesFieldBuilder
 
         $field->setViewBuilder($this->viewBuilder);
 
+        if (array_key_exists('default', $config)) {
+            $field->setValue($config['default']);
+        }
+
+        $field->init();
+
         return $field;
     }
 
     protected function buildFieldConfiguration(array $config)
     {
-        $fieldConfig = $this->config['default'];
-
         if (array_key_exists('model', $config)) {
             $model = $config['model'];
 
@@ -91,7 +100,10 @@ class PGFormServicesFieldBuilder
                 throw new Exception("Field model '$model' not found.");
             }
 
-            PGFrameworkToolsArray::merge($fieldConfig, $this->config['models'][$model]);
+            $fieldConfig = $this->config['models'][$model];
+            $fieldConfig = $this->buildFieldConfiguration($fieldConfig);
+        } else {
+            $fieldConfig = $this->config['default'];
         }
 
         PGFrameworkToolsArray::merge($fieldConfig, $config);
@@ -132,6 +144,10 @@ class PGFormServicesFieldBuilder
 
         if (! $field instanceof PGFormInterfacesFieldInterface) {
             throw new Exception("$class must implements PGFormInterfacesFieldInterface interface.");
+        }
+
+        if ($field instanceof PGFormInterfacesFieldArrayInterface) {
+            $field->setFieldBuilder($this);
         }
 
         return $field;
@@ -179,8 +195,10 @@ class PGFormServicesFieldBuilder
     protected function insertFormatter(PGFormInterfacesFieldInterface $field, array $config)
     {
         if (!array_key_exists('format', $config)) {
+            $this->logger->alert("Invalid field configuration !!", $config);
             throw new Exception("Field key 'format' not found.");
         } elseif (!is_string($config['format'])) {
+            $this->logger->alert("Invalid field configuration !!", $config);
             throw new Exception("Field key 'format' must be a string.");
         }
 
@@ -193,6 +211,7 @@ class PGFormServicesFieldBuilder
     {
         if (array_key_exists('children', $config)) {
             if (!is_array($config['children'])) {
+                $this->logger->alert("Invalid field configuration !!", $config);
                 throw new Exception("Field key 'children' must be an array.");
             } elseif (! $field instanceof PGFormInterfacesFieldObjectInterface) {
                 throw new Exception("A child cannot be inserted into a field that does not implement the PGFormInterfacesFieldObjectInterface interface.");

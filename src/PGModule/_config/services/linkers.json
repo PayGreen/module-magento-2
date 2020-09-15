@@ -1,55 +1,40 @@
 {
-  "abstract.linker.front": {
+  "linker.abstract.front": {
     "abstract": "true",
+    "extends": "linker.abstract",
     "arguments": ["@magento"]
   },
-  "abstract.linker.order": {
+  "linker.abstract.order": {
     "abstract": "true",
-    "extends": "abstract.linker.front",
+    "extends": "linker.abstract.front",
     "arguments": ["@manager.order"]
   },
   "linker.backoffice": {
     "class": "PGModuleServicesLinkersBackofficeLinker",
-    "tags": [
-      {"name": "linker"}
-    ]
+    "extends": "linker.abstract"
   },
   "linker.frontoffice": {
     "class": "PGModuleServicesLinkersFrontBasicLinker",
-    "extends": "abstract.linker.front",
-    "arguments": ["pgfront/frontoffice/index"],
-    "tags": [
-      {"name": "linker"}
-    ]
+    "extends": "linker.abstract.front",
+    "arguments": ["pgfront/frontoffice/index"]
   },
   "linker.home": {
     "class": "PGModuleServicesLinkersHomeLinker",
-    "arguments": ["@magento"],
-    "tags": [
-      {"name": "linker"}
-    ]
+    "extends": "linker.abstract",
+    "arguments": ["@magento"]
   },
   "linker.order": {
     "class": "PGModuleServicesLinkersOrderLinker",
-    "extends": "abstract.linker.order",
-    "tags": [
-      {"name": "linker"}
-    ]
+    "extends": "linker.abstract.order"
   },
   "linker.order.history": {
     "class": "PGModuleServicesLinkersFrontBasicLinker",
-    "extends": "abstract.linker.front",
-    "arguments": ["sales/order/history"],
-    "tags": [
-      {"name": "linker"}
-    ]
+    "extends": "linker.abstract.front",
+    "arguments": ["sales/order/history"]
   },
   "linker.checkout": {
     "class": "PGModuleServicesLinkersFrontBasicLinker",
-    "extends": "abstract.linker.front",
-    "arguments": ["checkout"],
-    "tags": [
-      {"name": "linker"}
-    ]
+    "extends": "linker.abstract.front",
+    "arguments": ["checkout"]
   }
 }

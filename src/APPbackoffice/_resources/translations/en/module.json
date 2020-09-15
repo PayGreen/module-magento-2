@@ -18,7 +18,8 @@
       "buttons": {
         "validate": "Validate",
         "delete": "Delete",
-        "cancel": "Cancel"
+        "cancel": "Cancel",
+        "translation_add": "Add translation"
       }
     },
     "bool": {
@@ -31,7 +32,7 @@
     "menu": {
       "logo": "Open my PayGreen back-office",
       "shop_selector": {
-        "label": "You configure"
+        "label": "Shop configuration"
       }
     },
     "errors": {
@@ -148,22 +149,6 @@
       }
     },
     "logs": {
-      "title": "Logs files",
-      "columns": {
-        "filename": "File name",
-        "size": "Size",
-        "last_update": "Last modification",
-        "actions": "Actions"
-      },
-      "actions": {
-        "delete": {
-          "button": "Delete",
-          "success": "The targeted file has been deleted."
-        },
-        "download": {
-          "button": "Download"
-        }
-      },
       "errors": {
         "invalid_file": "The targeted file is not a valid logs file.",
         "file_not_found": "The targeted file does not exist."

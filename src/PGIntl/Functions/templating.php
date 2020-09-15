@@ -15,35 +15,35 @@
  * @author    PayGreen <contact@paygreen.fr>
  * @copyright 2014 - 2020 Watt Is It
  * @license   https://creativecommons.org/licenses/by-nd/4.0/fr/ Creative Commons BY-ND 4.0
- * @version   1.0.1
+ * @version   1.1.0
  */
 
 function pgTrans($key, $data = array())
 {
-    /** @var PGFrameworkServicesHandlersTranslatorHandler $translatorHandler */
-    $translatorHandler = PGFrameworkContainer::getInstance()->get('handler.translator');
+    /** @var PGIntlServicesTranslator $translator */
+    $translator = PGFrameworkContainer::getInstance()->get('translator');
 
-    $text = $translatorHandler->get($key, $data);
+    $text = $translator->get($key, $data);
 
     echo $text;
 }
 
 function pgTransEscaped($key, $data = array())
 {
-    /** @var PGFrameworkServicesHandlersTranslatorHandler $translatorHandler */
-    $translatorHandler = PGFrameworkContainer::getInstance()->get('handler.translator');
+    /** @var PGIntlServicesTranslator $translator */
+    $translator = PGFrameworkContainer::getInstance()->get('translator');
 
-    $text = $translatorHandler->get($key, $data);
+    $text = $translator->get($key, $data);
 
     echo addslashes($text);
 }
 
 function pgTransLines($key, $before = '<p>', $after = '</p>')
 {
-    /** @var PGFrameworkServicesHandlersTranslatorHandler $translatorHandler */
-    $translatorHandler = PGFrameworkContainer::getInstance()->get('handler.translator');
+    /** @var PGIntlServicesTranslator $translator */
+    $translator = PGFrameworkContainer::getInstance()->get('translator');
 
-    $lines = $translatorHandler->get($key);
+    $lines = $translator->get($key);
 
     if (!is_array($lines)) {
         $lines = array($lines);

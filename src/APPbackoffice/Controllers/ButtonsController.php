@@ -15,7 +15,7 @@
  * @author    PayGreen <contact@paygreen.fr>
  * @copyright 2014 - 2020 Watt Is It
  * @license   https://creativecommons.org/licenses/by-nd/4.0/fr/ Creative Commons BY-ND 4.0
- * @version   1.0.1
+ * @version   1.1.0
  */
 
 class APPbackofficeControllersButtonsController extends APPbackofficeFoundationsAbstractBackofficeController
@@ -72,6 +72,9 @@ class APPbackofficeControllersButtonsController extends APPbackofficeFoundations
         /** @var PGFrameworkServicesHandlersPictureHandler $mediaHandler */
         $mediaHandler = $this->getService('handler.picture');
 
+        /** @var PGIntlServicesManagersTranslationManager $translationManager */
+        $translationManager = $this->getService('manager.translation');
+
         $error = null;
         $button = null;
         $id = (int) $this->getRequest()->get('id');
@@ -109,7 +112,6 @@ class APPbackofficeControllersButtonsController extends APPbackofficeFoundations
 
                 $values = array(
                     'id' => $button->id(),
-                    'label' => $button->getLabel(),
                     'payment_type' => $button->getPaymentType(),
                     'display_type' => $button->getDisplayType(),
                     'position' => $button->getPosition(),
@@ -126,6 +128,11 @@ class APPbackofficeControllersButtonsController extends APPbackofficeFoundations
                     'order_repeated' => $button->isOrderRepeated(),
                     'payment_report' => $button->getPaymentReport()
                 );
+
+                $translations = $translationManager->getByCode('button-' . $button->id(), true);
+                if (!empty($translations)) {
+                    $values['label'] = $translations;
+                }
 
                 /** @var PGFormInterfacesFormViewInterface $view */
                 $view = $this->buildForm('button_update', $values)->buildView();
@@ -156,28 +163,30 @@ class APPbackofficeControllersButtonsController extends APPbackofficeFoundations
         /** @var PGFormInterfacesFormInterface $form */
         $form = $this->buildForm('button_update', $this->getRequest()->getAll());
 
-        if (!$form->isValid()) {
-            $this->failure('button.actions.update.result.invalid');
+        $result = null;
 
-            return $this->forward('displayUpdateForm@backoffice.buttons', array(
-                'id' => $form->getValue('id'),
-                'form' => $form
-            ));
-        } elseif (!$form->getValue('id')) {
-            $this->failure("button.actions.update.errors.id_not_found");
-        } else {
+        if ($form->isValid()) {
             $button = $this->buttonManager->getByPrimary($form->getValue('id'));
 
             if ($button === null) {
                 $this->failure("button.actions.update.errors.button_not_found");
-            } elseif (!$this->saveButton($button, $form)) {
-                $this->failure("button.actions.update.result.failure");
+                $result = $this->redirect($this->getLinker()->buildBackOfficeUrl('backoffice.buttons.display'));
+            } elseif ($this->saveButton($button, $form)) {
+                $this->success('button.actions.update.result.success');
+                $result = $this->redirect($this->getLinker()->buildBackOfficeUrl('backoffice.buttons.display'));
             } else {
-                $this->success("button.actions.update.result.success");
+                $this->failure('button.actions.update.result.failure');
             }
+        } else {
+            $this->failure('button.actions.update.result.invalid');
         }
 
-        return $this->redirect($this->getLinker()->buildBackOfficeUrl('backoffice.buttons.display'));
+        if ($result === null) {
+            $result = $this->forward('displayInsertForm@backoffice.buttons', array(
+                'form' => $form
+            ));
+        }
+        return $result;
     }
 
     /**
@@ -207,26 +216,34 @@ class APPbackofficeControllersButtonsController extends APPbackofficeFoundations
      * @return PGServerFoundationsAbstractResponse
      * @throws PGClientExceptionsPaymentRequestException
      * @throws Exception
-     * @todo Prendre en compte le retour de la méthode saveButton
      */
     public function insertButtonAction()
     {
         /** @var PGFormInterfacesFormInterface $form */
         $form = $this->buildForm('button', $this->getRequest()->getAll());
 
+        $result = null;
+
         if ($form->isValid()) {
             $button = $this->buttonManager->getNew();
 
-            $this->saveButton($button, $form);
+            if ($this->saveButton($button, $form)) {
+                $this->success('button.actions.insert.result.success');
+                $result = $this->redirect($this->getLinker()->buildBackOfficeUrl('backoffice.buttons.display'));
+            } else {
+                $this->failure('button.actions.insert.result.failure');
+            }
         } else {
             $this->failure('button.actions.insert.result.invalid');
+        }
 
-            return $this->forward('displayInsertForm@backoffice.buttons', array(
+        if ($result === null) {
+            $result = $this->forward('displayInsertForm@backoffice.buttons', array(
                 'form' => $form
             ));
         }
 
-        return $this->redirect($this->getLinker()->buildBackOfficeUrl('backoffice.buttons.display'));
+        return $result;
     }
 
     /**
@@ -241,8 +258,13 @@ class APPbackofficeControllersButtonsController extends APPbackofficeFoundations
         /** @var PGFrameworkServicesHandlersPictureHandler $mediaHandler */
         $mediaHandler = $this->getService('handler.picture');
 
+        /** @var PGIntlServicesManagersTranslationManager $translationManager */
+        $translationManager = $this->getService('manager.translation');
+
         /** @var PGFrameworkServicesHandlersUploadHandler $uploadHandler */
         $uploadHandler = $this->getService('handler.upload');
+
+        $success = false;
 
         $picture = $form->getValue('picture');
         $uploadedFile = $uploadHandler->getFile('picture.image');
@@ -264,7 +286,6 @@ class APPbackofficeControllersButtonsController extends APPbackofficeFoundations
         $cart_amount_limits = $form->getValue('cart_amount_limits');
 
         $button
-            ->setLabel($form->getValue('label'))
             ->setMinAmount($cart_amount_limits['min'])
             ->setMaxAmount($cart_amount_limits['max'])
             ->setIntegration($form->getValue('integration'))
@@ -289,16 +310,23 @@ class APPbackofficeControllersButtonsController extends APPbackofficeFoundations
             $button->setPosition($this->buttonManager->count() + 1);
         }
 
-        $errors = $this->buttonManager->check($button);
+        $skipCompositeTests = !$button->id();
+        $errors = $this->buttonManager->check($button, $skipCompositeTests);
         foreach ($errors as $error) {
             $this->failure($error);
         }
 
         if (count($errors) === 0) {
-            return $this->buttonManager->save($button);
+            $success = $this->buttonManager->save($button);
         }
 
-        return false;
+        if ($success) {
+            $code = 'button-' . $button->id();
+            $value = $form->getValue('label');
+            $translationManager->saveByCode($code, $value, null, true);
+        }
+
+        return $success;
     }
 
     public function deleteButtonAction()

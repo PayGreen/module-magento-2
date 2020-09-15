@@ -1,19 +1,4 @@
 {
-  "plugin.smarty.translator": {
-    "class": "PGViewServicesPluginsSmartyTranslator",
-    "arguments": ["@handler.translator"],
-    "tags": [
-      {
-        "name": "plugin.smarty",
-        "options": ["pgtrans", "translateExpression"]
-      },
-      {
-        "name": "plugin.smarty",
-        "options": ["pgtranslines", "translateParagraph"]
-      }
-    ]
-  },
-
   "plugin.smarty.designator": {
     "class": "PGViewServicesPluginsSmartyDesignator",
     "arguments": ["@selector.payment_mode", "@selector.payment_type"],

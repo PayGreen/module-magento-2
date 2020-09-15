@@ -15,7 +15,7 @@
  * @author    PayGreen <contact@paygreen.fr>
  * @copyright 2014 - 2020 Watt Is It
  * @license   https://creativecommons.org/licenses/by-nd/4.0/fr/ Creative Commons BY-ND 4.0
- * @version   1.0.1
+ * @version   1.1.0
  */
 
 /**
@@ -80,7 +80,24 @@ class PGDomainServicesManagersButtonManager extends PGFrameworkFoundationsAbstra
      */
     public function delete(PGDomainInterfacesEntitiesButtonInterface $button)
     {
-        return $this->getRepository()->delete($button);
+        /** @var PGIntlServicesManagersTranslationManager $translationManager */
+        $translationManager = $this->getService('manager.translation');
+
+        $result = $this->getRepository()->delete($button);
+
+        if ($result) {
+            try {
+                $code = 'button-' . $button->id();
+                $translationManager->deleteByCode($code);
+            } catch (Exception $exception) {
+                /** @var PGFrameworkServicesLogger $logger */
+                $logger = $this->getService('logger');
+
+                $logger->error("An error occurred during deletion of associated translations : " . $exception->getMessage(), $exception);
+            }
+        }
+
+        return $result;
     }
 
     /**
@@ -170,10 +187,11 @@ class PGDomainServicesManagersButtonManager extends PGFrameworkFoundationsAbstra
 
     /**
      * @param PGDomainInterfacesEntitiesButtonInterface $button
+     * @param bool $skipCompositeTests
      * @return array
      * @throws PGClientExceptionsPaymentRequestException
      */
-    public function check(PGDomainInterfacesEntitiesButtonInterface $button)
+    public function check(PGDomainInterfacesEntitiesButtonInterface $button, $skipCompositeTests = false)
     {
         /** @var PGDomainServicesPaygreenFacade $paygreenFacade */
         $paygreenFacade = $this->getService('paygreen.facade');
@@ -183,10 +201,12 @@ class PGDomainServicesManagersButtonManager extends PGFrameworkFoundationsAbstra
 
         $errors = array();
 
-        if (strlen($button->getLabel()) > 100) {
-            $errors[] = "button.errors.title_max_length";
-        } elseif (strlen($button->getLabel()) === 0) {
-            $errors[] = "button.errors.title_min_length";
+        if (!$skipCompositeTests) {
+            if (strlen($button->getLabel()) > 100) {
+                $errors[] = "button.errors.title_max_length";
+            } elseif (strlen($button->getLabel()) === 0) {
+                $errors[] = "button.errors.title_min_length";
+            }
         }
 
         if (

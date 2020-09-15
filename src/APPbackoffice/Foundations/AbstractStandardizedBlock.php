@@ -15,35 +15,38 @@
  * @author    PayGreen <contact@paygreen.fr>
  * @copyright 2014 - 2020 Watt Is It
  * @license   https://creativecommons.org/licenses/by-nd/4.0/fr/ Creative Commons BY-ND 4.0
- * @version   1.0.1
+ * @version   1.1.0
  */
 
-class APPbackofficeServicesViewsBlocksView extends PGViewServicesView
+/**
+ * Class APPbackofficeFoundationsAbstractStandardizedBlock
+ * @package APPbackoffice\Foundations
+ */
+abstract class APPbackofficeFoundationsAbstractStandardizedBlock extends PGViewServicesView
 {
-    /** @var PGViewServicesHandlersBlockHandler */
-    private $blockHandler;
-
-    public function __construct(PGViewServicesHandlersBlockHandler $blockHandler)
+    /**
+     * APPbackofficeFoundationsAbstractStandardizedBlock constructor.
+     */
+    public function __construct()
     {
-        $this->blockHandler = $blockHandler;
-
-        $this->setTemplate('block-blocks');
+        $this->setTemplate('blocks/layout');
     }
 
     /**
      * @return array
-     * @throws Exception
      */
     public function getData()
     {
-        $page = $this->get('page');
+        $data = parent::getData();
 
-        if (!$page) {
-            throw new Exception("BlocksView require 'page' attribut.");
-        }
+        $data['content'] = $this->buildContent($data);
 
-        return array(
-            'blocks' => $this->blockHandler->buildBlocks($page)
-        );
+        return $data;
     }
+
+    /**
+     * @param array $data
+     * @return PGViewComponentsBox
+     */
+    abstract protected function buildContent(array $data);
 }

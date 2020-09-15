@@ -1,0 +1,7 @@
+{
+  "repository.translation": {
+    "extends": "repository.abstract",
+    "class": "PGIntlServicesRepositoriesTranslationRepository",
+    "arguments": ["%database.entities.translation", "@handler.shop"]
+  }
+}

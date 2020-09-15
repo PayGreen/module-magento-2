@@ -15,7 +15,7 @@
  * @author    PayGreen <contact@paygreen.fr>
  * @copyright 2014 - 2020 Watt Is It
  * @license   https://creativecommons.org/licenses/by-nd/4.0/fr/ Creative Commons BY-ND 4.0
- * @version   1.0.1
+ * @version   1.1.0
  */
 
 class PGFrameworkServicesHandlersDiagnosticHandler extends PGFrameworkFoundationsAbstractObject
@@ -77,6 +77,23 @@ class PGFrameworkServicesHandlersDiagnosticHandler extends PGFrameworkFoundation
         } catch (Exception $exception) {
             $this->logger->critical("Critical error during diagnostic process : " . $exception->getMessage(), $exception);
         }
+    }
+
+    /**
+     * @param string $name
+     * @return PGFrameworkFoundationsAbstractDiagnostic
+     * @throws Exception
+     */
+    public function getDiagnostic($name)
+    {
+        /** @var PGFrameworkFoundationsAbstractDiagnostic $diagnostic */
+        $diagnostic = $this->container->get($name);
+
+        if (!$diagnostic instanceof PGFrameworkFoundationsAbstractDiagnostic) {
+            throw new Exception("'$name' is not a valid Diagnostic.");
+        }
+
+        return $diagnostic;
     }
 
     /**

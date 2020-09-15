@@ -15,7 +15,7 @@
  * @author    PayGreen <contact@paygreen.fr>
  * @copyright 2014 - 2020 Watt Is It
  * @license   https://creativecommons.org/licenses/by-nd/4.0/fr/ Creative Commons BY-ND 4.0
- * @version   1.0.1
+ * @version   1.1.0
  */
 
 /**
@@ -85,21 +85,26 @@ class PGFrameworkComponentsParser
 
     /**
      * @param string $var
+     * @param array $values
      * @return string
      * @throws PGFrameworkExceptionsParserParameterException
      */
-    public function parseStringParameters($var)
+    public function parseStringParameters($var, array $values = array())
     {
         if (is_string($var)) {
             while (preg_match(self::REGEX_PARAMETER_MATCH, $var, $matches)) {
                 $key = $matches['key'];
 
-                if (!isset($this->parameters[$key])) {
+                if (isset($this->parameters[$key])) {
+                    $value = $this->parameters[$key];
+                } elseif (array_keys($key, $values)) {
+                    $value = $values[$key];
+                } else {
                     throw new PGFrameworkExceptionsParserParameterException("Target parameters '$key' is not defined.");
                 }
 
                 $pattern = sprintf(self::REGEX_PARAMETER_REPLACE, preg_quote($key));
-                $var = preg_replace($pattern, '${1}' . $this->parameters[$key], $var);
+                $var = preg_replace($pattern, '${1}' . $value, $var);
             }
 
             $var = preg_replace(self::REGEX_PARAMETER_CLEANING, '$2', $var);

@@ -15,7 +15,7 @@
  * @author    PayGreen <contact@paygreen.fr>
  * @copyright 2014 - 2020 Watt Is It
  * @license   https://creativecommons.org/licenses/by-nd/4.0/fr/ Creative Commons BY-ND 4.0
- * @version   1.0.1
+ * @version   1.1.0
  */
 
 /**
@@ -29,8 +29,8 @@ abstract class PGFrameworkFoundationsAbstractSelector extends PGFrameworkFoundat
     /** @var PGFrameworkServicesLogger */
     protected $logger;
 
-    /** @var PGFrameworkServicesHandlersTranslatorHandler */
-    protected $translatorHandler;
+    /** @var PGIntlServicesTranslator */
+    protected $translator;
 
     public function __construct(PGFrameworkServicesLogger $logger)
     {
@@ -38,19 +38,19 @@ abstract class PGFrameworkFoundationsAbstractSelector extends PGFrameworkFoundat
     }
 
     /**
-     * @param PGFrameworkServicesHandlersTranslatorHandler $translatorHandler
+     * @param PGIntlServicesTranslator $translator
      */
-    public function setTranslatorHandler(PGFrameworkServicesHandlersTranslatorHandler $translatorHandler)
+    public function setTranslator(PGIntlServicesTranslator $translator)
     {
-        $this->translatorHandler = $translatorHandler;
+        $this->translator = $translator;
     }
 
     /**
-     * @return PGFrameworkServicesHandlersTranslatorHandler
+     * @return PGIntlServicesTranslator
      */
-    public function getTranslatorHandler()
+    public function getTranslator()
     {
-        return $this->translatorHandler;
+        return $this->translator;
     }
 
     /**
@@ -105,8 +105,8 @@ abstract class PGFrameworkFoundationsAbstractSelector extends PGFrameworkFoundat
 
         $path = "$root.$code";
 
-        if ($this->translatorHandler->has($path)) {
-            $name = $this->translatorHandler->get($path);
+        if ($this->translator->has($path)) {
+            $name = $this->translator->get($path);
         } else {
             $this->logger->warning("Label not found in '$path'.");
             $name = $code;

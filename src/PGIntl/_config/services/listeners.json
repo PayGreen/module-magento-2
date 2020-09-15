@@ -1,0 +1,14 @@
+{
+  "listener.setup.install_default_translations": {
+    "class": "PGIntlServicesListenersInsertDefaultTranslationsListener",
+    "arguments": ["@handler.translation", "@manager.shop"]
+  },
+  "listener.setup.create_translation_table": {
+    "extends": "listener.database.runner",
+    "arguments": [["PGIntl:translation/clean.sql", "PGIntl:translation/install.sql"]]
+  },
+  "listener.setup.reset_translation_cache": {
+    "class": "PGIntlServicesListenersResetTranslationCacheListener",
+    "arguments": ["@handler.cache.translation", "@logger"]
+  }
+}

@@ -1,0 +1,17 @@
+{
+  "listeners": {
+    "install_default_translations": {
+      "event": ["module.install"],
+      "service": "listener.setup.install_default_translations"
+    },
+    "create_translation_table": {
+      "event": ["module.install"],
+      "service": "listener.setup.create_translation_table",
+      "priority": 55
+    },
+    "reset_translation_cache": {
+      "event": ["module.upgrade"],
+      "service": "listener.setup.reset_translation_cache"
+    }
+  }
+}

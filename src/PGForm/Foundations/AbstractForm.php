@@ -15,7 +15,7 @@
  * @author    PayGreen <contact@paygreen.fr>
  * @copyright 2014 - 2020 Watt Is It
  * @license   https://creativecommons.org/licenses/by-nd/4.0/fr/ Creative Commons BY-ND 4.0
- * @version   1.0.1
+ * @version   1.1.0
  */
 
 abstract class PGFormFoundationsAbstractForm extends PGFormFoundationsAbstractElement implements ArrayAccess, PGFormInterfacesFormInterface
@@ -44,6 +44,16 @@ abstract class PGFormFoundationsAbstractForm extends PGFormFoundationsAbstractEl
     public function getFields()
     {
         return $this->fields;
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function addField($name, PGFormInterfacesFieldInterface $field)
+    {
+        $this->fields[$name] = $field;
+
+        return $this;
     }
 
     /**

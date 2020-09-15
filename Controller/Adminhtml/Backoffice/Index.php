@@ -15,7 +15,7 @@
  * @author    PayGreen <contact@paygreen.fr>
  * @copyright 2014 - 2020 Watt Is It
  * @license   https://creativecommons.org/licenses/by-nd/4.0/fr/ Creative Commons BY-ND 4.0
- * @version   1.0.1
+ * @version   1.1.0
  */
 
 namespace Paygreen\Payment\Controller\Adminhtml\Backoffice;
@@ -28,7 +28,7 @@ use Magento\Framework\View\Result\PageFactory;
 use PGFrameworkContainer;
 use PGFrameworkServicesHandlersCacheHandler;
 use PGFrameworkServicesHandlersSetupHandler;
-use PGFrameworkServicesHandlersTranslatorHandler;
+use PGIntlServicesTranslator;
 use PGFrameworkServicesLogger;
 use PGServerServicesServer;
 
@@ -152,8 +152,8 @@ class Index extends Action
      */
     private function buildErrorOutput()
     {
-        /** @var PGFrameworkServicesHandlersTranslatorHandler $translator */
-        $translator = $this->getService('handler.translator');
+        /** @var PGIntlServicesTranslator $translator */
+        $translator = $this->getService('translator');
 
         $error = $translator->get('backoffice.errors.interface_construction');
 

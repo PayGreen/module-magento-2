@@ -1,0 +1,18 @@
+{
+  "blocks": {
+    "diagnostic": {
+      "title": "Réparation automatique du module",
+      "subtitle": "Liste des diagnostiques",
+      "columns": {
+        "name": "Nom",
+        "state": "Validité"
+      },
+      "links": {
+        "run": {
+          "text": "Corriger les diagnostiques invalides",
+          "title": "Tente de corriger tous les diagnostiques marqués comme invalide."
+        }
+      }
+    }
+  }
+}

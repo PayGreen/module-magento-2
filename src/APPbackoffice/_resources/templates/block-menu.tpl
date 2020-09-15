@@ -14,7 +14,7 @@
  * @author    PayGreen <contact@paygreen.fr>
  * @copyright 2014 - 2020 Watt Is It
  * @license   https://creativecommons.org/licenses/by-nd/4.0/fr/ Creative Commons BY-ND 4.0
- * @version   1.0.1
+ * @version   1.1.0
  *}
 <div class="pgnavbar">
     <a
@@ -27,12 +27,52 @@
     </a>
 
     <ul class="pgnavbar__menu">
-        {foreach from=$entries key=code item=entry}
-        <li class="pgnavbar__menu__element{if $code === $selected} pgnavbar__menu__element--selected{/if}">
-            <a href="{$entry['href']}" title="{$entry['title']|pgtrans}">
-                {$entry['name']|pgtrans}
-            </a>
-        </li>
+        {foreach from=$entries item=entry}
+            {if isset($entry['children'])}
+                {foreach from=$entry['children'] item=child}
+                    {if $child['code'] === $selected}
+                        {assign var="selectedChild" value=true}
+                        {break}
+                    {else}
+                        {assign var="selectedChild" value=false}
+                    {/if}
+                {/foreach}
+            {else}
+                {assign var="selectedChild" value=false}
+            {/if}
+
+            {if isset($selectedChild) && $selectedChild || $entry['code'] === $selected}
+                {assign var="selectedCss" value=" pgnavbar__menu__element--selected"}
+            {else}
+                {assign var="selectedCss" value=""}
+            {/if}
+
+            <li class="pgnavbar__menu__element{$selectedCss}{if isset($entry['children'])} pgnavbar__menu__element--submenu{/if}">
+                {if isset($entry['href'])}
+                    <a href="{$entry['href']}" title="{$entry['title']|pgtrans}">
+                        {$entry['name']|pgtrans}
+                    </a>
+                {else}
+                    <span title="{$entry['title']|pgtrans}">
+                        {$entry['name']|pgtrans}
+                    </span>
+                {/if}
+
+                {if isset($entry['children'])}
+                    <ul>
+                        {foreach from=$entry['children'] item=child}
+                            <li class="{if $child['code'] === $selected}pg-selected{/if}">
+                                <a
+                                    href="{$child['href']}"
+                                    title="{$child['title']|pgtrans}"
+                                >
+                                    {$child['name']|pgtrans}
+                                </a>
+                            </li>
+                        {/foreach}
+                    </ul>
+                {/if}
+            </li>
         {/foreach}
     </ul>
 

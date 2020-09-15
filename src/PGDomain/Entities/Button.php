@@ -15,7 +15,7 @@
  * @author    PayGreen <contact@paygreen.fr>
  * @copyright 2014 - 2020 Watt Is It
  * @license   https://creativecommons.org/licenses/by-nd/4.0/fr/ Creative Commons BY-ND 4.0
- * @version   1.0.1
+ * @version   1.1.0
  */
 
 /**
@@ -25,22 +25,28 @@
  */
 class PGDomainEntitiesButton extends PGFrameworkFoundationsAbstractEntityPersisted implements PGDomainInterfacesEntitiesButtonInterface
 {
-    /**
-     * @inheritdoc
-     */
-    public function getLabel()
+    private $label = null;
+
+    public function toArray()
     {
-        return $this->get('label');
+        $data = parent::toArray();
+
+        $data['label'] = $this->getLabel();
+
+        return $data;
     }
 
-    /**
-     * @inheritdoc
-     */
-    public function setLabel($label)
+    public function getLabel()
     {
-        $this->set('label', $label);
+        if (($this->label === null) && ($this->id() > 0)) {
+            /** @var PGIntlServicesHandlersTranslationHandler $translationHandler */
+            $translationHandler = $this->getService('handler.translation');
 
-        return $this;
+            $key = 'button-' . $this->id();
+            $this->label = $translationHandler->translate($key);
+        }
+
+        return (string) $this->label;
     }
 
     /**

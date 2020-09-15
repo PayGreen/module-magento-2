@@ -24,7 +24,7 @@
         "payment_refused": {
           "type": "message",
           "title": "frontoffice.payment.results.payment.refused.title",
-          "message": "~notice_payment_refused",
+          "message": "~message_payment_refused",
           "link": {
             "name": "checkout",
             "text": "frontoffice.payment.results.payment.refused.link"
@@ -69,7 +69,7 @@
         "validate": {
           "type": "message",
           "title": "frontoffice.payment.results.order.validate.title",
-          "message": "~notice_payment_accepted",
+          "message": "~message_payment_success",
           "link": {
             "name": "order",
             "text": "frontoffice.payment.results.order.validate.link"
@@ -90,7 +90,7 @@
         "cancel": {
           "type": "message",
           "title": "frontoffice.payment.results.order.cancel.title",
-          "message": "~notice_payment_canceled",
+          "message": "~message_order_canceled",
           "link": {
             "name": "order",
             "text": "frontoffice.payment.results.order.cancel.link"

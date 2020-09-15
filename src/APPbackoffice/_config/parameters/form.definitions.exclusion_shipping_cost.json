@@ -6,6 +6,7 @@
         "fields": {
           "payment_types": {
             "model": "choice.expanded.multiple",
+            "default": [],
             "view": {
               "data": {
                 "choices": "payment_type",

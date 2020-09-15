@@ -79,8 +79,7 @@
       },
       "fields": {
         "label": {
-          "label": "Button's label",
-          "placeholder": "Ex: Pay with American Express"
+          "label": "Button's label"
         },
         "cart_amount": {
           "label": "Cart amount",

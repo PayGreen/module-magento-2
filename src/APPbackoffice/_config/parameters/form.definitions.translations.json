@@ -1,0 +1,15 @@
+{
+  "form": {
+    "definitions": {
+      "translations": {
+        "model": "basic",
+        "fields": {},
+        "view": {
+          "data": {
+            "validate": "config.buttons.save"
+          }
+        }
+      }
+    }
+  }
+}

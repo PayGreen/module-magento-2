@@ -1,0 +1,6 @@
+{
+  "translator": {
+    "class": "PGIntlServicesTranslator",
+    "arguments": ["@handler.cache.translation", "@pathfinder", "@handler.locale", "@logger", "%translator"]
+  }
+}

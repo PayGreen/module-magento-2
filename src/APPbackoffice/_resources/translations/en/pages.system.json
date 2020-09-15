@@ -1,8 +1,8 @@
 {
   "pages": {
     "system": {
-      "name": "Support",
-      "title": "System information",
+      "name": "System information",
+      "title": "Information about the module and your system",
       "advanced": {
         "title": "Advanced PayGreen API configuration"
       },

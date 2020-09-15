@@ -1,7 +1,6 @@
 CREATE TABLE `%{database.entities.button.table}`
 (
     `id`               INT              NOT NULL AUTO_INCREMENT PRIMARY KEY,
-    `label`            VARCHAR(100)     NULL,
     `paymentType`      VARCHAR(50)               DEFAULT 'CB',
     `image`            VARCHAR(250)              DEFAULT NULL,
     `height`           INT              NULL,

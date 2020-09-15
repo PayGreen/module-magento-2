@@ -15,15 +15,12 @@
  * @author    PayGreen <contact@paygreen.fr>
  * @copyright 2014 - 2020 Watt Is It
  * @license   https://creativecommons.org/licenses/by-nd/4.0/fr/ Creative Commons BY-ND 4.0
- * @version   1.0.1
+ * @version   1.1.0
  */
 
 namespace Paygreen\Payment\Model;
 
 use Magento\Checkout\Model\ConfigProviderInterface;
-use Magento\Framework\App\ObjectManager;
-use Magento\Framework\UrlInterface;
-use PGDomainServicesPaygreenFacade;
 use PGFrameworkContainer;
 use PGServerServicesLinker;
 use PGFrameworkServicesHandlersPictureHandler;
@@ -49,6 +46,9 @@ class ConfigProvider implements ConfigProviderInterface
         /** @var PGFrameworkServicesHandlersPictureHandler $pictureHandler */
         $pictureHandler = $this->getService('handler.picture');
 
+        /** @var \PGIntlServicesTranslatior $translator */
+        $translator = $this->getService('translator');
+
         /** @var PGServerServicesLinker $linker */
         $linker = $this->getService('linker');
 
@@ -72,8 +72,9 @@ class ConfigProvider implements ConfigProviderInterface
 
         return [
             'paygreen' => [
-                'title' => $this->getService('settings')->get('title'),
-                'confirmation' => $this->getService('settings')->get('payment_confirmation_button'),
+                'title' => $translator->get('~payment_bloc'),
+                'submitTitle' => $translator->get('frontoffice.payment.link.title'),
+                'confirmation' => $translator->get('~payment_link'),
                 'buttons' => $formatedButtons
             ]
         ];

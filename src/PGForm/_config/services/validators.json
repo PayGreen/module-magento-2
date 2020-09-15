@@ -22,5 +22,9 @@
     "extends": "validator.abstract",
     "class": "PGFormServicesValidatorsArrayInValidator",
     "arguments": ["@handler.select"]
+  },
+  "validator.not_empty": {
+    "extends": "validator.abstract",
+    "class": "PGFormServicesValidatorsNotEmptyValidator"
   }
 }

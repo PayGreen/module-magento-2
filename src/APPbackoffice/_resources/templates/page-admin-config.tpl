@@ -14,39 +14,13 @@
  * @author    PayGreen <contact@paygreen.fr>
  * @copyright 2014 - 2020 Watt Is It
  * @license   https://creativecommons.org/licenses/by-nd/4.0/fr/ Creative Commons BY-ND 4.0
- * @version   1.0.1
+ * @version   1.1.0
  *}
 <div class="pglayout">
-    {view name="menu" selected="config"}
+    {view name="menu" selected="module"}
     {view name="notifications"}
 
     <div class="pgcontainer">
-        <div class="pgblock pgblock__md">
-            <h2>
-                {'pages.config.module.title'|pgtrans}
-            </h2>
-            
-            {$configFormView}
-        </div>
-
-        <div class="pgblock pgblock__md">
-            <h2>
-                {'pages.config.customization.title'|pgtrans}
-            </h2>
-
-            {$customizationFormView}
-        </div>
-
-        <div class="pgblock pgblock__md pg__default">
-            <h2 class="pg__default">
-                {'pages.config.paymentTypes.title'|pgtrans}
-            </h2>
-            
-            <p>
-                {'pages.config.paymentTypes.description'|pgtrans}
-            </p>
-        </div>
+        {view name="blocks" page="config"}
     </div>
-
-    {view name="blocks" page="config"}
 </div>

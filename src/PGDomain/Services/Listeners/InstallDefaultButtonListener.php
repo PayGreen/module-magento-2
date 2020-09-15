@@ -15,7 +15,7 @@
  * @author    PayGreen <contact@paygreen.fr>
  * @copyright 2014 - 2020 Watt Is It
  * @license   https://creativecommons.org/licenses/by-nd/4.0/fr/ Creative Commons BY-ND 4.0
- * @version   1.0.1
+ * @version   1.1.0
  */
 
 class PGDomainServicesListenersInstallDefaultButtonListener
@@ -23,12 +23,19 @@ class PGDomainServicesListenersInstallDefaultButtonListener
     /** @var PGDomainServicesManagersButtonManager */
     private $buttonManager;
 
+    /** @var PGIntlServicesManagersTranslationManager */
+    private $translationManager;
+
     /** @var PGFrameworkServicesLogger */
     private $logger;
 
-    public function __construct(PGDomainServicesManagersButtonManager $buttonManager, PGFrameworkServicesLogger $logger)
-    {
+    public function __construct(
+        PGDomainServicesManagersButtonManager $buttonManager,
+        PGIntlServicesManagersTranslationManager $translationManager,
+        PGFrameworkServicesLogger $logger
+    ) {
         $this->buttonManager = $buttonManager;
+        $this->translationManager = $translationManager;
         $this->logger = $logger;
     }
 
@@ -36,7 +43,6 @@ class PGDomainServicesListenersInstallDefaultButtonListener
     {
         if ($this->buttonManager->count() === 0) {
             $button = $this->buttonManager->getNew()
-                ->setLabel("Payer par carte bancaire")
                 ->setPaymentType('CB')
                 ->setPosition(1)
                 ->setImageHeight(60)
@@ -48,6 +54,12 @@ class PGDomainServicesListenersInstallDefaultButtonListener
             if (!$this->buttonManager->save($button)) {
                 throw new Exception("Unable to create default button.");
             } else {
+                $key = 'button-' . $button->id();
+                $this->translationManager->saveByCode($key, array(
+                    'fr' => "Payer par carte bancaire",
+                    'en' => "Pay by credit card"
+                ));
+
                 $this->logger->info("Default button successfully created.");
             }
         } else {

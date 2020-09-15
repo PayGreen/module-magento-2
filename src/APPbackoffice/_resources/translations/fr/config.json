@@ -40,21 +40,6 @@
       "private_key": {
         "label": "Clé privée"
       },
-      "success_payment_text": {
-        "label": "Texte affiché après un paiement accepté",
-        "placeholder": "Votre paiement a été accepté",
-        "help": "Ce message est affiché à vos clients après un paiement validé."
-      },
-      "failure_payment_text": {
-        "label": "Texte affiché après un paiement échoué",
-        "placeholder": "Votre paiement a échoué",
-        "help": "Ce message est affiché à vos clients après un paiement refusé."
-      },
-      "canceled_payment_text": {
-        "label": "Texte affiché à l'annulation d'une commande",
-        "placeholder": "Votre commande a été annulée",
-        "help": "Ce message est affiché lorsqu'un client annule son paiement."
-      },
       "display_footer_color": {
         "label": "Couleur du logo de sécurité PayGreen",
         "values": {

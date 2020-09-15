@@ -5,32 +5,49 @@
       "account": {
         "action": "backoffice.account.display",
         "name": "pages.account.name",
-        "title": "pages.account.title",
-        "icon": "user"
+        "title": "pages.account.title"
       },
       "config": {
-        "action": "backoffice.config.display",
         "name": "pages.config.name",
         "title": "pages.config.title",
-        "icon": "cogs"
+        "children": {
+          "module": {
+            "action": "backoffice.config.display",
+            "name": "pages.config.name",
+            "title": "pages.config.title"
+          },
+          "buttons": {
+            "action": "backoffice.buttons.display",
+            "name": "pages.buttons.name",
+            "title": "pages.buttons.title"
+          },
+          "translations": {
+            "action": "backoffice.translations.display",
+            "name": "pages.translations.name",
+            "title": "pages.translations.title"
+          },
+          "eligible_amounts": {
+            "action": "backoffice.eligible_amounts.display",
+            "name": "pages.eligible_amounts.name",
+            "title": "pages.eligible_amounts.title"
+          }
+        }
       },
-      "buttons": {
-        "action": "backoffice.buttons.display",
-        "name": "pages.buttons.name",
-        "title": "pages.buttons.title",
-        "icon": "credit-card"
-      },
-      "eligible_amounts": {
-        "action": "backoffice.eligible_amounts.display",
-        "name": "pages.eligible_amounts.name",
-        "title": "pages.eligible_amounts.title",
-        "icon": "truck"
-      },
-      "system": {
-        "action": "backoffice.system.display",
-        "name": "pages.system.name",
-        "title": "pages.system.title",
-        "icon": "bug"
+      "help": {
+        "name": "menu.help.name",
+        "title": "menu.help.title",
+        "children": {
+          "system": {
+            "action": "backoffice.system.display",
+            "name": "pages.system.name",
+            "title": "pages.system.title"
+          },
+          "support": {
+            "action": "backoffice.support.display",
+            "name": "pages.support.name",
+            "title": "pages.support.title"
+          }
+        }
       },
       "error": {
         "title": "pages.error.title"

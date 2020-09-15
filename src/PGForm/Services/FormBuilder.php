@@ -15,7 +15,7 @@
  * @author    PayGreen <contact@paygreen.fr>
  * @copyright 2014 - 2020 Watt Is It
  * @license   https://creativecommons.org/licenses/by-nd/4.0/fr/ Creative Commons BY-ND 4.0
- * @version   1.0.1
+ * @version   1.1.0
  */
 
 class PGFormServicesFormBuilder
@@ -51,6 +51,20 @@ class PGFormServicesFormBuilder
      */
     public function build($name, array $values = array())
     {
+        $form = $this->buildForm($name);
+
+        $form->setValues($values);
+
+        return $form;
+    }
+
+    /**
+     * @param string $name
+     * @return PGFormInterfacesFormInterface
+     * @throws Exception
+     */
+    public function buildForm($name)
+    {
         $this->logger->debug("Build form : '$name'.");
 
         $formConfig = $this->buildFormDefinition($name);
@@ -59,8 +73,6 @@ class PGFormServicesFormBuilder
         $fields = $this->buildFields($formConfig);
 
         $form = new PGFormComponentsForm($name, $formConfig, $fields);
-
-        $form->setValues($values);
 
         $form->setViewBuilder($this->viewBuilder);
 

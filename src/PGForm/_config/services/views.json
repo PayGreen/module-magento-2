@@ -14,7 +14,7 @@
   "view.field.choice.abstract": {
     "extends": "view.basic",
     "abstract": true,
-    "arguments": ["@handler.select", "@handler.translator"]
+    "arguments": ["@handler.select", "@translator"]
   },
   "view.field.choice.expanded": {
     "extends": "view.field.choice.abstract",
@@ -32,6 +32,10 @@
   "view.field.object": {
     "extends": "view.basic",
     "class": "PGFormServicesViewsFieldObjectView"
+  },
+  "view.field.collection": {
+    "extends": "view.basic",
+    "class": "PGFormServicesViewsFieldCollectionView"
   },
   "view.field.choice.double.bool": {
     "extends": "view.field.choice.abstract",

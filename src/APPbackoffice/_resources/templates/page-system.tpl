@@ -14,7 +14,7 @@
  * @author    PayGreen <contact@paygreen.fr>
  * @copyright 2014 - 2020 Watt Is It
  * @license   https://creativecommons.org/licenses/by-nd/4.0/fr/ Creative Commons BY-ND 4.0
- * @version   1.0.1
+ * @version   1.1.0
  *}
 <div class="pglayout">
     {view name="menu" selected="system"}
@@ -41,23 +41,7 @@
 
         </div>
 
-        <div class="pgblock pgblock__xl">
-            <h2 class="pg__default">
-                {'system.logs.title'|pgtrans}
-            </h2>
-
-            {include file="system/table-log.tpl" logs=$log_data}
-        </div>
-
         {view name="system.paths"}
-
-        <div class="pgblock pgblock__md">
-            <h2>
-                {'pages.system.support.title'|pgtrans}
-            </h2>
-
-            {$supportFormView}
-        </div>
 
         {view name="blocks" page="system"}
     </div>

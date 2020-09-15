@@ -3,6 +3,7 @@
     "class": "PGDomainServicesListenersInstallDefaultButtonListener",
     "arguments": [
       "@manager.button",
+      "@manager.translation",
       "@logger"
     ]
   },

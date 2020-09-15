@@ -14,7 +14,7 @@
  * @author    PayGreen <contact@paygreen.fr>
  * @copyright 2014 - 2020 Watt Is It
  * @license   https://creativecommons.org/licenses/by-nd/4.0/fr/ Creative Commons BY-ND 4.0
- * @version   1.0.1
+ * @version   1.1.0
  *}
 <fieldset
     {if isset($id)}id="{$id}"{/if}
@@ -28,6 +28,14 @@
 
     {$children.reset}
     {$children.image}
+
+    <div class="pgpreview__container" id="buttonPreview" title="{'button.pages.general.design.preview'|pgtrans}">
+        <img
+                src=""
+                alt="{'button.pages.general.design.previewImageAlt'|pgtrans}"
+                class="pg__height-lg pg__width-md pg__mbottom-xxs"
+        />
+    </div>
 
     {if isset($help)}
         {include file="fields/partials/help.tpl" help=$help}

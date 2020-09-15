@@ -15,7 +15,7 @@
  * @author    PayGreen <contact@paygreen.fr>
  * @copyright 2014 - 2020 Watt Is It
  * @license   https://creativecommons.org/licenses/by-nd/4.0/fr/ Creative Commons BY-ND 4.0
- * @version   1.0.1
+ * @version   1.1.0
  */
 
 use Magento\Framework\App\ObjectManager;
@@ -30,16 +30,31 @@ class PGModuleServicesUpgradesRestoreSettingsUpgrade implements PGFrameworkInter
     /** @var ConfigInterface */
     private $resourceConfig;
 
-    /** @var PGFrameworkServicesSettings */
-    private $settings;
+    /** @var PGFrameworkInterfacesRepositoriesSettingRepositoryInterface */
+    private $settingRepository;
+
+    /** @var PGDomainInterfacesShopHandlerInterface */
+    private $shopHandler;
+
+    /** @var PGFrameworkServicesOfficersSettingsDatabaseOfficer */
+    private $basicOfficer;
+
+    /** @var PGFrameworkServicesOfficersSettingsDatabaseOfficer */
+    private $globalOfficer;
 
     public function __construct(
         ObjectManager $objectManager,
-        PGFrameworkServicesSettings $settings
+        PGFrameworkInterfacesRepositoriesSettingRepositoryInterface $settingRepository,
+        PGDomainInterfacesShopHandlerInterface $shopHandler,
+        PGFrameworkServicesOfficersSettingsDatabaseOfficer $basicOfficer,
+        PGFrameworkServicesOfficersSettingsDatabaseOfficer $globalOfficer
     ) {
         $this->scopeConfig = $objectManager->get('Magento\Framework\App\Config\ScopeConfigInterface');
         $this->resourceConfig = $objectManager->get('Magento\Framework\App\Config\ConfigResource\ConfigInterface');
-        $this->settings = $settings;
+        $this->settingRepository = $settingRepository;
+        $this->shopHandler = $shopHandler;
+        $this->basicOfficer = $basicOfficer;
+        $this->globalOfficer = $globalOfficer;
     }
 
     /**
@@ -48,18 +63,30 @@ class PGModuleServicesUpgradesRestoreSettingsUpgrade implements PGFrameworkInter
      */
     public function apply(PGFrameworkComponentsUpgradeStage $upgradeStage)
     {
+        /** @var PGDomainInterfacesEntitiesShopInterface $shop */
+        $shop = $this->shopHandler->getCurrentShop();
         $keys = $upgradeStage->getConfig('keys');
 
         foreach ($keys as $oldKey => $newKey) {
-            if ($this->settings->isDefined($newKey)) {
+            $setting = $this->settingRepository->findOneByNameAndPrimaryShop($newKey);
+
+            if ($setting === null) {
                     $value = $this->scopeConfig->getValue("payment/paygreen/$oldKey");
 
                     if ($value) {
-                        $this->settings->set($newKey, $value);
-                        $this->resourceConfig->deleteConfig("payment/paygreen/$oldKey");
+                        $setting = $this->settingRepository->create($newKey, $shop->id());
+
+                        $setting->setValue($value);
+
+                        if ($this->settingRepository->insert($setting)) {
+                            $this->resourceConfig->deleteConfig("payment/paygreen/$oldKey");
+                        }
                     }
             }
         }
+
+        $this->basicOfficer->clear();
+        $this->globalOfficer->clear();
 
         return true;
     }

@@ -15,7 +15,7 @@
  * @author    PayGreen <contact@paygreen.fr>
  * @copyright 2014 - 2020 Watt Is It
  * @license   https://creativecommons.org/licenses/by-nd/4.0/fr/ Creative Commons BY-ND 4.0
- * @version   1.0.1
+ * @version   1.1.0
  */
 
 /**
@@ -36,8 +36,8 @@ class PGViewServicesHandlersBlockHandler
     ) {
         $this->viewHandler = $viewHandler;
 
-        foreach ($config as $block) {
-            $this->config[] = new PGFrameworkComponentsBag($block);
+        foreach ($config as $name => $block) {
+            $this->config[$name] = new PGFrameworkComponentsBag($block);
         }
     }
 
@@ -51,16 +51,15 @@ class PGViewServicesHandlersBlockHandler
         $blocks = array();
 
         foreach ($this->config as $config) {
-            if ($config['target'] === $target) {
+            $isEnabled = in_array($config['enabled'], array(null, true), true);
+
+            if ($isEnabled && ($config['target'] === $target)) {
                 $data = $config['data'] ? $config['data'] : array();
                 if ($config['view']) {
                     $blocks[] = $this->viewHandler->renderView($config['view'], $data);
                 } elseif ($config['template']) {
-                    $block = $this->viewHandler->renderTemplate($config['template'], $data);
-                    $blocks[] = $this->viewHandler->renderTemplate('layout-block', array(
-                        'title' => $config['title'],
-                        'block' => $block
-                    ));
+                    $data['content'] = $this->viewHandler->renderTemplate($config['template'], $data);
+                    $blocks[] = $this->viewHandler->renderTemplate('blocks/layout', $data);
                 } else {
                     throw new Exception("Block configuration must contain 'view' or 'template' key.");
                 }

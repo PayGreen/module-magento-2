@@ -2,17 +2,17 @@
   "upgrade.database.multishop": {
     "class": "PGModuleServicesUpgradesDatabaseMultiShopUpgrade",
     "extends": "upgrade.abstract",
-    "arguments": ["@handler.database", "@handler.shop"],
-    "tags": [
-      { "name": "upgrade" }
-    ]
+    "arguments": ["@handler.database", "@handler.shop"]
   },
   "upgrade.settings.restore": {
     "class": "PGModuleServicesUpgradesRestoreSettingsUpgrade",
     "extends": "upgrade.abstract",
-    "arguments": ["@magento", "@settings"],
-    "tags": [
-      { "name": "upgrade" }
+    "arguments": [
+      "@magento",
+      "@repository.setting",
+      "@handler.shop",
+      "@officer.settings.database.basic",
+      "@officer.settings.database.global"
     ]
   }
 }
