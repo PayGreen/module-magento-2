@@ -15,7 +15,7 @@
  * @author    PayGreen <contact@paygreen.fr>
  * @copyright 2014 - 2020 Watt Is It
  * @license   https://creativecommons.org/licenses/by-nd/4.0/fr/ Creative Commons BY-ND 4.0
- * @version   1.1.0
+ * @version   1.1.1
  */
 
 /**
@@ -24,9 +24,9 @@
  */
 class PGIntlServicesTranslator extends PGFrameworkFoundationsAbstractObject
 {
-    private $defaultLanguage;
+    private $shopLanguage;
 
-    private $language;
+    private $userLanguage;
 
     private $sources;
 
@@ -43,6 +43,8 @@ class PGIntlServicesTranslator extends PGFrameworkFoundationsAbstractObject
     private $logger;
 
     private $translations = array();
+
+    const DEFAULT_TRANSLATION_LANGUAGE = 'en';
 
     const REGEX_TRANSLATION_KEY = "/^[0-9a-zA-Z_-]+(\.[0-9a-zA-Z_-]*)*$/";
 
@@ -75,8 +77,8 @@ class PGIntlServicesTranslator extends PGFrameworkFoundationsAbstractObject
         $this->localeHandler = $localeHandler;
         $this->logger = $logger;
 
-        $this->language = $localeHandler->getLanguage();
-        $this->defaultLanguage = $localeHandler->getDefaultLanguage();
+        $this->userLanguage = $localeHandler->getLanguage();
+        $this->shopLanguage = $localeHandler->getDefaultLanguage();
         $this->sources = $config['sources'];
     }
 
@@ -167,38 +169,54 @@ class PGIntlServicesTranslator extends PGFrameworkFoundationsAbstractObject
                 return $this->getCustomTranslation(substr($translation->getKey(), 1));
             }
 
-            $language = ($language === null) ? $this->language : $language;
+            $translatedText = $this->translate($translation);
 
-            if (preg_match(self::REGEX_TRANSLATION_KEY, $translation->getKey())) {
-                $translatedText = $this->getTranslation($translation->getKey(), $language);
-
-                if (is_null($translatedText)) {
-                    if ($language !== $this->defaultLanguage) {
-                        $translatedText = $this->get($translation, $this->defaultLanguage);
-                    } else {
-                        $translatedText = "Missing translation";
-                    }
-                }
-
-                if (!is_null($translatedText) && $translation->hasData()) {
-                    try {
-                        $parser = new PGFrameworkComponentsParser($translation->getData());
-
-                        $translatedText = $parser->parseStringParameters($translatedText);
-                    } catch (PGFrameworkExceptionsParserParameterException $exception) {
-                        $this->logger->warning("Missing data for translation '{$translation->getKey()}'.", $exception);
-                        $translatedText = "Invalid translation";
-                    }
-                }
-            } else {
-                $this->logger->warning("Unrecognized translation key : '{$translation->getKey()}'.");
-
-                $translatedText = $translation->getKey();
-            }
         } catch (Exception $exception) {
             $this->logger->error("Error during translation for key '{$translation->getKey()}' : " . $exception->getMessage(), $exception);
 
             $translatedText = "Failed translation";
+        }
+
+        return $translatedText;
+    }
+
+    /**
+     * @param PGIntlComponentsTranslation $translation
+     * @return string
+     */
+    protected function translate(PGIntlComponentsTranslation $translation)
+    {
+        if (preg_match(self::REGEX_TRANSLATION_KEY, $translation->getKey())) {
+            $languages = array_unique(array(
+                $this->userLanguage,
+                $this->shopLanguage,
+                self::DEFAULT_TRANSLATION_LANGUAGE
+            ));
+
+            $translatedText = null;
+
+            foreach ($languages as $language) {
+                $translatedText = $this->getTranslation($translation->getKey(), $language);
+                if (!is_null($translatedText)) {
+                    break;
+                }
+            }
+
+            if (is_null($translatedText)) {
+                $translatedText = "Missing translation";
+            } elseif ($translation->hasData()) {
+                try {
+                    $parser = new PGFrameworkComponentsParser($translation->getData());
+                    $translatedText = $parser->parseStringParameters($translatedText);
+                } catch (PGFrameworkExceptionsParserParameterException $exception) {
+                    $this->logger->warning("Missing data for translation '{$translation->getKey()}'.", $exception);
+                    $translatedText = "Invalid translation";
+                }
+            }
+        } else {
+            $this->logger->warning("Unrecognized translation key : '{$translation->getKey()}'.");
+
+            $translatedText = $translation->getKey();
         }
 
         return $translatedText;
@@ -228,7 +246,7 @@ class PGIntlServicesTranslator extends PGFrameworkFoundationsAbstractObject
             throw new Exception("Bad format for translation component.");
         }
 
-        $language = ($language === null) ? $this->language : $language;
+        $language = ($language === null) ? $this->userLanguage : $language;
 
         $result = false;
 
@@ -236,8 +254,8 @@ class PGIntlServicesTranslator extends PGFrameworkFoundationsAbstractObject
             $translatedText = $this->getTranslation($translation->getKey(), $language, false);
 
             if (is_null($translatedText)) {
-                if ($language !== $this->defaultLanguage) {
-                    $result = $this->has($translation, $this->defaultLanguage);
+                if ($language !== $this->shopLanguage) {
+                    $result = $this->has($translation, $this->shopLanguage);
                 }
             } else {
                 $result = true;

@@ -15,14 +15,19 @@
  * @author    PayGreen <contact@paygreen.fr>
  * @copyright 2014 - 2020 Watt Is It
  * @license   https://creativecommons.org/licenses/by-nd/4.0/fr/ Creative Commons BY-ND 4.0
- * @version   1.1.0
+ * @version   1.1.1
  */
 
 class PGServerServicesCleanersForwardCleaner implements PGServerInterfacesCleanerInterface
 {
+    const FORWARD_RESPONSE_LIMIT = 3;
+
     private $target;
 
     private $data = array();
+
+    /** @var PGServerComponentsResponsesForwardResponse[] */
+    private $forwardResponses = array();
 
     public function __construct($target)
     {
@@ -47,13 +52,19 @@ class PGServerServicesCleanersForwardCleaner implements PGServerInterfacesCleane
      */
     public function processError(PGServerFoundationsAbstractRequest $request, Exception $exception)
     {
+        if (count($this->forwardResponses) >= self::FORWARD_RESPONSE_LIMIT) {
+            throw $exception;
+        }
+
         $data = array_merge(array(
             'request' => $request,
             'exception' => $exception
         ), $this->data);
 
         $subRequest = new PGServerComponentsRequestsForwardRequest($this->target, $data);
+        
+        $this->forwardResponses[] = new PGServerComponentsResponsesForwardResponse($subRequest);
 
-        return new PGServerComponentsResponsesForwardResponse($subRequest);
+        return end($this->forwardResponses);
     }
 }

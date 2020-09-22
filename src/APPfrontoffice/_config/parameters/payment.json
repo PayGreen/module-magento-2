@@ -87,6 +87,10 @@
         "wait": {
           "extends": "validate"
         },
+        "unknown": {
+          "type": "redirect",
+          "link": "order"
+        },
         "cancel": {
           "type": "message",
           "title": "frontoffice.payment.results.order.cancel.title",
