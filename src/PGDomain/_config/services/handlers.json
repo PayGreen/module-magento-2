@@ -9,6 +9,11 @@
     "arguments": ["@logger", "@logger.api", "@pathfinder"]
   },
 
+  "handler.payment_button": {
+    "class": "PGDomainServicesHandlersPaymentButtonHandler",
+    "arguments": ["@logger", "@handler.picture", "@handler.static_file", "%payment.pictures"]
+  },
+
   "handler.fingerprint": {
     "class": "PGDomainServicesHandlersFingerprintHandler",
     "arguments": ["@manager.fingerprint", "@handler.cookie", "@logger"]

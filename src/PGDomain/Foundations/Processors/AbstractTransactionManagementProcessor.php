@@ -15,7 +15,7 @@
  * @author    PayGreen <contact@paygreen.fr>
  * @copyright 2014 - 2020 Watt Is It
  * @license   https://creativecommons.org/licenses/by-nd/4.0/fr/ Creative Commons BY-ND 4.0
- * @version   1.1.1
+ * @version   1.2.0
  */
 
 /**
@@ -80,16 +80,22 @@ class PGDomainFoundationsProcessorsAbstractTransactionManagementProcessor extend
         $transactionManager = $this->getService('manager.transaction');
 
         try {
-            /** @var PGDomainInterfacesEntitiesTransactionInterface $transaction */
-            $transaction = $transactionManager->create(
-                $task->getPid(),
-                $task->getOrder(),
-                $task->getOrderStatus(),
-                $task->getTransaction()->getMode(),
-                $task->getTransaction()->getAmount()
-            );
+            /** @var PGDomainInterfacesEntitiesTransactionInterface|null $transaction */
+            $transaction = $transactionManager->getByPid($task->getPid());
 
-            $transactionManager->save($transaction);
+            if ($transaction === null) {
+                $transaction = $transactionManager->create(
+                    $task->getPid(),
+                    $task->getOrder(),
+                    $task->getOrderStatus(),
+                    $task->getTransaction()->getMode(),
+                    $task->getTransaction()->getAmount()
+                );
+
+                $transactionManager->save($transaction);
+            } else {
+                $logger->warning("Transaction already exists for PID : " . $task->getPid());
+            }
         } catch (Exception $exception) {
             $this->addException($exception);
             $logger->error('Error on insert transaction: ' . $exception->getMessage(), $exception);

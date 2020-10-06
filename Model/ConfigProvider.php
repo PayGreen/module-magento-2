@@ -15,7 +15,7 @@
  * @author    PayGreen <contact@paygreen.fr>
  * @copyright 2014 - 2020 Watt Is It
  * @license   https://creativecommons.org/licenses/by-nd/4.0/fr/ Creative Commons BY-ND 4.0
- * @version   1.1.1
+ * @version   1.2.0
  */
 
 namespace Paygreen\Payment\Model;
@@ -23,7 +23,7 @@ namespace Paygreen\Payment\Model;
 use Magento\Checkout\Model\ConfigProviderInterface;
 use PGFrameworkContainer;
 use PGServerServicesLinker;
-use PGFrameworkServicesHandlersPictureHandler;
+use PGDomainServicesHandlersPaymentButtonHandler;
 use PGDomainInterfacesEntitiesButtonInterface;
 use PGModuleProvisionersCheckoutProvisioner;
 
@@ -43,8 +43,8 @@ class ConfigProvider implements ConfigProviderInterface
     {
         $this->getService('logger')->debug("ConfigProvider called.");
 
-        /** @var PGFrameworkServicesHandlersPictureHandler $pictureHandler */
-        $pictureHandler = $this->getService('handler.picture');
+        /** @var PGDomainServicesHandlersPaymentButtonHandler $paymentButtonHandler */
+        $paymentButtonHandler = $this->getService('handler.payment_button');
 
         /** @var \PGIntlServicesTranslatior $translator */
         $translator = $this->getService('translator');
@@ -64,7 +64,7 @@ class ConfigProvider implements ConfigProviderInterface
             $formatedButtons[] = array_merge(
                 $button->toArray(),
                 [
-                    'imageUrl' => $pictureHandler->getUrl($button->getImageSrc()),
+                    'imageUrl' => $paymentButtonHandler->getButtonFinalUrl($button),
                     'url' => $linker->buildFrontOfficeUrl('front.payment.validation', ['id' => $button->id()])
                 ]
             );

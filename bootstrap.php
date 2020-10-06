@@ -15,7 +15,7 @@
  * @author    PayGreen <contact@paygreen.fr>
  * @copyright 2014 - 2020 Watt Is It
  * @license   https://creativecommons.org/licenses/by-nd/4.0/fr/ Creative Commons BY-ND 4.0
- * @version   1.1.1
+ * @version   1.2.0
  */
 
 // #############################################################################################
@@ -27,7 +27,7 @@ try {
         define('DS', DIRECTORY_SEPARATOR);
     }
 
-    define('PAYGREEN_MODULE_VERSION', '1.1.1');
+    define('PAYGREEN_MODULE_VERSION', '1.2.0');
 
     $objectManager = \Magento\Framework\App\ObjectManager::getInstance();
 

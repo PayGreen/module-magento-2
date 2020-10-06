@@ -1,0 +1,14 @@
+{
+    "payment": {
+        "pictures": {
+            "default": "default-payment-button.png",
+            "amex": "logo-ligne-amex.png",
+            "ancv": "logo-ligne-ancv.png",
+            "cb": "logo-ligne-cb-visa-mastercard.png",
+            "trd": "logo-ligne-conecs.png",
+            "lunchr": "logo-ligne-lunchr.png",
+            "restoflash": "logo-ligne-restoflash.png",
+            "sepa": "logo-ligne-sepa.png"
+        }
+    }   
+}

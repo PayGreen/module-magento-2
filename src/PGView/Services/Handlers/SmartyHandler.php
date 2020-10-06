@@ -15,7 +15,7 @@
  * @author    PayGreen <contact@paygreen.fr>
  * @copyright 2014 - 2020 Watt Is It
  * @license   https://creativecommons.org/licenses/by-nd/4.0/fr/ Creative Commons BY-ND 4.0
- * @version   1.1.1
+ * @version   1.2.0
  */
 
 /**
@@ -78,11 +78,7 @@ class PGViewServicesHandlersSmartyHandler extends PGFrameworkFoundationsAbstract
             $smarty->setCacheDir($path);
 
             if (PAYGREEN_ENV !== 'DEV') {
-                $smarty->compile_check = false;
-                $smarty->force_compile = false;
-            } else {
-                $smarty->caching = Smarty::CACHING_OFF;
-                $smarty->force_compile = true;
+                $smarty->setCompileCheck(false);
             }
         } else {
             $this->logger->warning("Smarty configured without cache folders.");
@@ -95,10 +91,9 @@ class PGViewServicesHandlersSmartyHandler extends PGFrameworkFoundationsAbstract
 
             $smarty->setCompileDir('pgnull://');
             $smarty->setCacheDir('pgnull://');
-
-            $smarty->caching = Smarty::CACHING_OFF;
-            $smarty->force_compile = true;
         }
+
+        $smarty->setCaching(Smarty::CACHING_OFF);
     }
 
     /**

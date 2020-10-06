@@ -15,7 +15,7 @@
  * @author    PayGreen <contact@paygreen.fr>
  * @copyright 2014 - 2020 Watt Is It
  * @license   https://creativecommons.org/licenses/by-nd/4.0/fr/ Creative Commons BY-ND 4.0
- * @version   1.1.1
+ * @version   1.2.0
  */
 
 namespace Paygreen\Payment\Controller\Frontoffice;
@@ -28,6 +28,9 @@ use Paygreen;
 use PGFrameworkContainer;
 use PGServerServicesServer;
 use PGFrameworkServicesLogger;
+use PGFrameworkServicesHandlersOutputHandler;
+use PGServerComponentsResourcesScriptFileResource;
+use PGServerComponentsResourcesStyleFileResource;
 
 class Index extends Action
 {
@@ -81,10 +84,18 @@ class Index extends Action
         /** @var PGServerServicesServer $server */
         $server = $this->getService('server.front');
 
+        /** @var PGFrameworkServicesHandlersOutputHandler $outputHandler */
+        $outputHandler = $this->getService('handler.output');
+
         try {
             $logger->debug("Building frontoffice output.");
 
             $server->run();
+
+            $outputHandler->addResource(new PGServerComponentsResourcesScriptFileResource('/js/frontoffice.js'));
+            $outputHandler->addResource(new PGServerComponentsResourcesStyleFileResource('/css/frontoffice.css'));
+
+            $logger->debug("Frontoffice output successfully built.");
         } catch (Exception $exception) {
             $logger->error("Error during frontoffice building : " . $exception->getMessage(), $exception);
 

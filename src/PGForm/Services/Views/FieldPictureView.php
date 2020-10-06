@@ -15,26 +15,16 @@
  * @author    PayGreen <contact@paygreen.fr>
  * @copyright 2014 - 2020 Watt Is It
  * @license   https://creativecommons.org/licenses/by-nd/4.0/fr/ Creative Commons BY-ND 4.0
- * @version   1.1.1
+ * @version   1.2.0
  */
 
 class PGFormServicesViewsFieldPictureView extends PGFormServicesViewsFieldObjectView
 {
-    /** @var PGFrameworkServicesHandlersPictureHandler $mediaHandler */
-    private $mediaHandler;
-
-    public function __construct(PGFrameworkServicesHandlersPictureHandler $mediaHandler)
-    {
-        $this->mediaHandler = $mediaHandler;
-    }
-
     public function getData()
     {
         $data = parent::getData();
 
-        $image = $this->getField()->getChild('image')->getValue();
-
-        $data['url'] = $this->mediaHandler->getUrl($image);
+        $data['url'] = $this->getField()->getChild('image')->getValue();
 
         return $data;
     }

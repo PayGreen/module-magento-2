@@ -21,5 +21,10 @@
   "provisioner.pre_payment": {
     "class": "PGModuleProvisionersPrePaymentProvisioner",
     "arguments": ["@magento"]
+  },
+
+  "compiler.resource.magento": {
+    "class": "PGModuleServicesMagentoResourceCompiler",
+    "arguments": ["@handler.static_file"]
   }
 }

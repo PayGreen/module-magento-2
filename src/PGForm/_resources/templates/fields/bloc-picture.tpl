@@ -14,13 +14,12 @@
  * @author    PayGreen <contact@paygreen.fr>
  * @copyright 2014 - 2020 Watt Is It
  * @license   https://creativecommons.org/licenses/by-nd/4.0/fr/ Creative Commons BY-ND 4.0
- * @version   1.1.1
+ * @version   1.2.0
  *}
 <fieldset
     {if isset($id)}id="{$id}"{/if}
     class="pgform__field{if isset($fieldsetClasses)} {' '|join:$fieldsetClasses}{/if}{if isset($class)} {$class}{/if}"
-    data-preview-default="{'PGDomain:default-payment-button.png'|picture}"
-    {if isset($id)}data-preview-original="{$url}"{/if}
+    {if isset($url)}data-preview-original="{$url}"{/if}
 >
     {if isset($label)}
         {include file="fields/partials/label.tpl" label=$label attr=$attr}

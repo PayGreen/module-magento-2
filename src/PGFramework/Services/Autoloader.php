@@ -15,7 +15,7 @@
  * @author    PayGreen <contact@paygreen.fr>
  * @copyright 2014 - 2020 Watt Is It
  * @license   https://creativecommons.org/licenses/by-nd/4.0/fr/ Creative Commons BY-ND 4.0
- * @version   1.1.1
+ * @version   1.2.0
  */
 
 /**
@@ -30,9 +30,13 @@ class PGFrameworkServicesAutoloader
     /** @var PGFrameworkInterfacesStorageInterface  */
     private $classNames;
 
-    public function __construct(PGFrameworkInterfacesStorageInterface $storage)
+    /** @var PGFrameworkServicesPathfinder */
+    private $pathfinder;
+
+    public function __construct(PGFrameworkInterfacesStorageInterface $storage, PGFrameworkServicesPathfinder $pathfinder)
     {
         $this->classNames = $storage;
+        $this->pathfinder = $pathfinder;
     }
 
     /**
@@ -67,10 +71,9 @@ class PGFrameworkServicesAutoloader
     public function autoload($className)
     {
         if (isset($this->classNames[$className])) {
-            $src = $this->classNames[$className];
+            $path = $this->classNames[$className];
 
-            if (file_exists($src)) {
-                $this->loadFile($src);
+            if ((strstr($path, ':') !== false) && $this->loadFile($path, false)) {
                 return true;
             }
         }
@@ -82,11 +85,13 @@ class PGFrameworkServicesAutoloader
                 $formatedClassName = substr($className, strlen($name));
                 $formatedClassName = $this->snakify($formatedClassName);
 
-                $src = $this->getFilename($formatedClassName, $vendor['path']);
+                $relativePath = $this->getRelativePath($formatedClassName, $vendor['path']);
 
-                $this->loadFile($src);
+                $path = "$name:$relativePath";
 
-                $this->extendCache($className, $src);
+                $this->loadFile($path);
+
+                $this->extendCache($className, $path);
 
                 return true;
             }
@@ -96,16 +101,26 @@ class PGFrameworkServicesAutoloader
     }
 
     /**
-     * @param $src string
+     * @param string $path
+     * @param bool $isStrict
+     * @return bool
      * @throws Exception
      */
-    protected function loadFile($src)
+    protected function loadFile($path, $isStrict = true)
     {
+        $src = $this->pathfinder->toAbsolutePath($path);
+
         if (!is_file($src)) {
+            if (!$isStrict) {
+                return false;
+            }
+
             throw new Exception("File not found : '$src'.");
         }
 
         require_once($src);
+
+        return true;
     }
 
     protected function snakify($className)
@@ -113,15 +128,13 @@ class PGFrameworkServicesAutoloader
         return preg_replace("/([a-z0-9])([A-Z])/", '$1_$2', $className);
     }
 
-    protected function getFilename($className, $basePath)
+    protected function getRelativePath($className, $basePath)
     {
         $tokens = explode('_', $className);
 
         $tokens = $this->pathFinderTokenParse($tokens, $basePath);
 
-        array_unshift($tokens, $basePath);
-
-        return implode(DIRECTORY_SEPARATOR, $tokens) . '.php';
+        return '/' . implode('/', $tokens) . '.php';
     }
 
     protected function pathFinderTokenParse($tokens, $folder)

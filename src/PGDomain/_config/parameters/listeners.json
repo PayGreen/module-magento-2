@@ -1,11 +1,6 @@
 {
   "listeners": {
-    "install_default_button_picture_bis": {
-      "event": "module.install",
-      "service": "diagnostic.default_button_picture",
-      "method": "installDefaultButtonPicture"
-    },
-    "install_default_button_picture": {
+    "install_default_button": {
       "event": "module.install",
       "service": "listener.setup.install_default_button"
     },

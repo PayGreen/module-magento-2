@@ -1,0 +1,8 @@
+{
+  "listeners": {
+    "clear_smarty_cache": {
+      "event": "module.upgrade",
+      "service": "listener.upgrade.clear_smarty_cache"
+    }
+  }
+}

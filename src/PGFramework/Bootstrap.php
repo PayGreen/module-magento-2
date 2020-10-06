@@ -15,7 +15,7 @@
  * @author    PayGreen <contact@paygreen.fr>
  * @copyright 2014 - 2020 Watt Is It
  * @license   https://creativecommons.org/licenses/by-nd/4.0/fr/ Creative Commons BY-ND 4.0
- * @version   1.1.1
+ * @version   1.2.0
  */
 
 /**
@@ -288,7 +288,7 @@ class PGFrameworkBootstrap
 
         require_once $this->pathfinder->toAbsolutePath('PGFramework', '/Services/Autoloader.php');
 
-        $this->autoloader = new PGFrameworkServicesAutoloader($storage);
+        $this->autoloader = new PGFrameworkServicesAutoloader($storage, $this->pathfinder);
 
         foreach ($this->appliance->getVendors() as $vendor) {
             $path = $this->pathfinder->toAbsolutePath($vendor);

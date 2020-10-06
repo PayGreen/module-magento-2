@@ -1,12 +1,11 @@
 <?xml version="1.0"?>
-<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" layout="1column" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
-    <head>
-        <css src="Paygreen_Payment::static/css/frontoffice.css"/>
-        <script src="Paygreen_Payment::static/js/frontoffice.js"/>
-    </head>
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd" layout="1column">
     <body>
+        <referenceBlock name="head.additional">
+            <block class="Paygreen\Payment\Block\DisplayFrontofficeHeader" name="paygreen_payment_block_displayfrontofficeheader" cacheable="false" />
+        </referenceBlock>
         <referenceContainer name="content">
-            <block class="Paygreen\Payment\Block\DisplayOutput" name="pgfront" as="custom" cacheable="false" />
+            <block class="Paygreen\Payment\Block\DisplayFrontofficeOutput" name="pgfront" as="custom" cacheable="false" />
         </referenceContainer>
     </body>
 </page>

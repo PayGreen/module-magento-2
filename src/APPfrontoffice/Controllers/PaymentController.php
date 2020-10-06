@@ -15,7 +15,7 @@
  * @author    PayGreen <contact@paygreen.fr>
  * @copyright 2014 - 2020 Watt Is It
  * @license   https://creativecommons.org/licenses/by-nd/4.0/fr/ Creative Commons BY-ND 4.0
- * @version   1.1.1
+ * @version   1.2.0
  */
 
 class APPfrontofficeControllersPaymentController extends PGServerFoundationsAbstractController
@@ -39,14 +39,19 @@ class APPfrontofficeControllersPaymentController extends PGServerFoundationsAbst
             /** @var PGDomainInterfacesEntitiesButtonInterface $button */
             $button = $this->retrieveButtonFromRequest();
 
+            $this->getLogger()->info("Begin payment with button #{$button->id()} in mode {$button->getPaymentMode()} and type {$button->getPaymentType()}.");
+
             $url = $paymentCreationHandler->buildPayment($button);
+            $this->getLogger()->debug("Payment URL generated : " . $url);
 
             $insite = (($button->getIntegration() === 'INSITE') && $paygreenFacade->verifyInsiteValidity());
 
             if ($insite) {
                 $response = $this->buildIFramePaymentResponse($button, $url);
+                $this->getLogger()->notice("Display insite payment form.");
             } else {
                 $response = $this->redirect($url);
+                $this->getLogger()->notice("Redirect to PayGreen payment form.");
             }
         } catch (Exception $exception) {
             $this->getLogger()->critical("Validation payment error : " . $exception->getMessage(), $exception);

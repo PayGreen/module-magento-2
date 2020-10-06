@@ -26,8 +26,8 @@
   },
   "view.field.picture": {
     "extends": "view.basic",
-    "class": "PGFormServicesViewsFieldPictureView",
-    "arguments": ["@handler.picture"]
+    "class": "PGFormServicesViewsFieldPictureView"
+
   },
   "view.field.object": {
     "extends": "view.basic",

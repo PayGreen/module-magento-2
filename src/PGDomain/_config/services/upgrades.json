@@ -1,0 +1,7 @@
+{
+    "upgrade.media_delete": {
+        "class": "PGDomainServicesUpgradesMediaDeleteUpgrade",
+        "extends": "upgrade.abstract",
+        "arguments": ["@handler.picture"]
+      }
+}

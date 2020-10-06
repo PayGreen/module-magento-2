@@ -15,7 +15,7 @@
  * @author    PayGreen <contact@paygreen.fr>
  * @copyright 2014 - 2020 Watt Is It
  * @license   https://creativecommons.org/licenses/by-nd/4.0/fr/ Creative Commons BY-ND 4.0
- * @version   1.1.1
+ * @version   1.2.0
  */
 
 /**
@@ -121,18 +121,27 @@ class PGIntlServicesTranslator extends PGFrameworkFoundationsAbstractObject
         $paths = $this->pathfinder->reviewVendorPaths('/_resources/translations/' . strtolower($language));
 
         foreach ($paths as $path) {
-            foreach (glob($path . DIRECTORY_SEPARATOR . '*.json') as $filename) {
-                $data = json_decode(file_get_contents($filename), true);
-
-                if ($data === null) {
-                    throw new Exception("Invalid translation file : '$filename'.");
-                }
-
-                $this->flatenize($translations, $data);
-            }
+            $this->handleEachTranslationFile($translations, $path);
         }
 
         return $translations;
+    }
+
+    protected function handleEachTranslationFile(array &$translations, $path)
+    {
+        foreach (glob($path . DIRECTORY_SEPARATOR . '*.json') as $filename) {
+            $data = json_decode(file_get_contents($filename), true);
+
+            if ($data === null) {
+                throw new Exception("Invalid translation file : '$filename'.");
+            }
+
+            $this->flatenize($translations, $data);
+        }
+
+        foreach(glob($path . DIRECTORY_SEPARATOR . '*', GLOB_ONLYDIR) as $subDirectory) {
+            $this->handleEachTranslationFile($translations, $subDirectory);
+        }
     }
 
     protected function flatenize(array &$translations, array $data, $base = null)

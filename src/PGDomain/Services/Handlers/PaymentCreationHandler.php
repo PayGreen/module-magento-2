@@ -15,7 +15,7 @@
  * @author    PayGreen <contact@paygreen.fr>
  * @copyright 2014 - 2020 Watt Is It
  * @license   https://creativecommons.org/licenses/by-nd/4.0/fr/ Creative Commons BY-ND 4.0
- * @version   1.1.1
+ * @version   1.2.0
  */
 
 /**
@@ -247,6 +247,9 @@ class PGDomainServicesHandlersPaymentCreationHandler extends PGFrameworkFoundati
         array &$data,
         PGDomainInterfacesPrePaymentProvisionerInterface $prePaymentProvisioner
     ) {
+        /** @var PGFrameworkServicesLogger $logger */
+        $logger = $this->getService('logger');
+
         $id_user = $prePaymentProvisioner->getCustomerId();
 
         $data['buyer'] = array(
@@ -256,6 +259,8 @@ class PGDomainServicesHandlersPaymentCreationHandler extends PGFrameworkFoundati
             'email' => $prePaymentProvisioner->getMail(),
             'country' => $prePaymentProvisioner->getCountry()
         );
+
+        $logger->notice("Generating customer data with mail : '{$prePaymentProvisioner->getMail()}'.");
     }
 
     /**
@@ -284,6 +289,7 @@ class PGDomainServicesHandlersPaymentCreationHandler extends PGFrameworkFoundati
                 if ($carbon instanceof PGClientEntitiesResponse) {
                     if (isset($carbon->data) && $carbon->data->idFingerprint) {
                         $data['idFingerprint'] = $carbon->data->idFingerprint;
+                        $logger->notice("Using fingerprint data with ID : '{$carbon->data->idFingerprint}'.");
                     } else {
                         $logger->error("Unable to get fingerprint ID in server response.");
                     }
@@ -307,6 +313,9 @@ class PGDomainServicesHandlersPaymentCreationHandler extends PGFrameworkFoundati
         PGDomainInterfacesPrePaymentProvisionerInterface $prePaymentProvisioner,
         $type
     ) {
+        /** @var PGFrameworkServicesLogger $logger */
+        $logger = $this->getService('logger');
+
         /** @var PGDomainServicesManagersProductManager $productManager */
         $productManager = $this->getService('manager.product');
 
@@ -328,6 +337,8 @@ class PGDomainServicesHandlersPaymentCreationHandler extends PGFrameworkFoundati
         $data['eligibleAmount'] = array(
             $type => $eligible_amount
         );
+
+        $logger->notice("Computing eligible amount for type '$type' and amount '$eligible_amount'.");
     }
 
     /**

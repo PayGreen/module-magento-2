@@ -15,7 +15,7 @@
  * @author    PayGreen <contact@paygreen.fr>
  * @copyright 2014 - 2020 Watt Is It
  * @license   https://creativecommons.org/licenses/by-nd/4.0/fr/ Creative Commons BY-ND 4.0
- * @version   1.1.1
+ * @version   1.2.0
  */
 
 /**
@@ -29,8 +29,6 @@ class PGFrameworkServicesHandlersPictureHandler extends PGFrameworkFoundationsAb
 
     /** @var string */
     private $baseUrl;
-
-    const DEFAULT_PICTURE = 'default-payment-button.png';
 
     const MEDIA_FOLDER_CHMOD = 0775;
     const MEDIA_FILE_CHMOD = 0664;
@@ -61,13 +59,13 @@ class PGFrameworkServicesHandlersPictureHandler extends PGFrameworkFoundationsAb
 
     /**
      * @param string $filename
-     * @param string|null $base
      * @return string
+     * @throws Exception
      */
-    public function getUrl($filename, $base = null)
+    public function getUrl($filename)
     {
         if (!$filename) {
-            $filename = self::DEFAULT_PICTURE;
+            throw new Exception("A filename must be provided.");
         }
 
         if (!$this->isStored($filename)) {
@@ -77,44 +75,17 @@ class PGFrameworkServicesHandlersPictureHandler extends PGFrameworkFoundationsAb
             $logger->alert("Unknown media file : '$filename'.");
         }
 
-        $url = $this->baseUrl . '/' . $filename;
-
-        if ($base !== null) {
-            if ((substr($base, -1, 1) === '/') && (substr($url, 0, 1) === '/')) {
-                $url = substr($url, 1);
-            } elseif ((substr($base, -1, 1) !== '/') && (substr($url, 0, 1) !== '/')) {
-                $url = '/' . $url;
-            }
-
-            $url = $base . $url;
-        }
-
-        return $url;
-    }
-
-    /**
-     * @param PGDomainInterfacesEntitiesButtonInterface $button
-     * @return string
-     */
-    public function getButtonFinalUrl(PGDomainInterfacesEntitiesButtonInterface $button)
-    {
-        $filename = $button->getImageSrc();
-
-        if (!empty($filename) && !$this->isStored($filename)) {
-            $filename = self::DEFAULT_PICTURE;
-        }
-
-        return $this->getUrl($filename);
+        return $this->baseUrl . '/' . $filename;
     }
 
     /**
      * @param string $source
      * @param string $name
-     * @param bool $keepOriginalName
+     * @param bool $keepOriginal
      * @return PGFrameworkEntitiesPicture
      * @throws Exception
      */
-    public function store($source, $name, $keepOriginalName = false)
+    public function store($source, $name, $keepOriginal = false)
     {
         /** @var PGFrameworkServicesLogger $logger */
         $logger = $this->getService('logger');
@@ -123,7 +94,7 @@ class PGFrameworkServicesHandlersPictureHandler extends PGFrameworkFoundationsAb
             throw new Exception("Source file not found : '$source'.");
         }
 
-        if (!$keepOriginalName) {
+        if (!$keepOriginal) {
             $name = $this->getHashFilename($source, $name);
         }
 
@@ -131,7 +102,7 @@ class PGFrameworkServicesHandlersPictureHandler extends PGFrameworkFoundationsAb
 
         if (file_exists($path)) {
             $logger->warning("Target file already stored : '$path'.");
-        } elseif (is_writable($source)) {
+        } elseif (is_writable($source) && !$keepOriginal) {
             rename($source, $path);
         } else {
             copy($source, $path);
@@ -140,6 +111,32 @@ class PGFrameworkServicesHandlersPictureHandler extends PGFrameworkFoundationsAb
         chmod($path, self::MEDIA_FILE_CHMOD);
 
         return $this->getPicture($name);
+    }
+
+    /**
+     * @param string $filename
+     * @throws Exception
+     * @return bool
+     */
+    public function removeFromStore($filename)
+    {
+        /** @var PGFrameworkServicesLogger $logger */
+        $logger = $this->getService('logger');
+
+        if (!$this->isStored($filename)) {
+            throw new Exception("Unknown media file : '$filename'.");
+        }
+
+        $path = $this->getPath($filename);
+
+        if (unlink($path)) {
+            $logger->debug("File '$path' removed successfully.");
+            return true;
+        } else {
+            throw new Exception("Something went wrong when trying to remove '$path'.");
+        }
+
+        return false;
     }
 
     protected function getHashFilename($source, $name)

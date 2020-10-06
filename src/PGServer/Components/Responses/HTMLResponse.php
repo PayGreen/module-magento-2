@@ -15,16 +15,22 @@
  * @author    PayGreen <contact@paygreen.fr>
  * @copyright 2014 - 2020 Watt Is It
  * @license   https://creativecommons.org/licenses/by-nd/4.0/fr/ Creative Commons BY-ND 4.0
- * @version   1.1.1
+ * @version   1.2.0
  */
 
 class PGServerComponentsResponsesHTMLResponse extends PGServerFoundationsAbstractResponse
 {
-    private static $VALID_RESOURCE_TYPES = array('JS', 'CSS');
-
-    private $resources = array();
+    /** @var PGServerComponentsResourceBag */
+    private $resources;
 
     private $content = '';
+
+    public function __construct($previous)
+    {
+        parent::__construct($previous);
+
+        $this->resources = new PGServerComponentsResourceBag();
+    }
 
     /**
      * @param string $content
@@ -48,72 +54,21 @@ class PGServerComponentsResponsesHTMLResponse extends PGServerFoundationsAbstrac
     }
 
     /**
-     * @param string $type
-     * @param string $src
+     * @param PGServerFoundationsAbstractResource $resource
      * @return self
      */
-    public function addResource($type, $src)
+    public function addResource(PGServerFoundationsAbstractResource $resource)
     {
-        $this->validResourceType($type);
-
-        $this->resources[] = array(
-            'type' => strtoupper($type),
-            'src' => $src
-        );
+        $this->resources->add($resource);
 
         return $this;
     }
 
     /**
-     * @param string|null $type
-     * @return array
+     * @return PGServerComponentsResourceBag
      */
-    public function getResources($type = null)
+    public function getResources()
     {
-        if ($type === null) {
-            return $this->resources;
-        } else {
-            $this->validResourceType($type);
-
-            $resources = array();
-
-            foreach ($this->resources as $resource) {
-                if ($resource['type'] === $type) {
-                    $resources[] = $resource;
-                }
-            }
-
-            return $resources;
-        }
-    }
-
-    /**
-     * @param string|null $type
-     * @return int
-     */
-    public function count($type = null)
-    {
-        if ($type === null) {
-            return count($this->resources);
-        } else {
-            $this->validResourceType($type);
-
-            $nb = 0;
-
-            foreach ($this->resources as $resource) {
-                if ($resource['type'] === $type) {
-                    $nb++;
-                }
-            }
-
-            return $nb;
-        }
-    }
-
-    protected function validResourceType($type)
-    {
-        if (!in_array(strtoupper($type), self::$VALID_RESOURCE_TYPES)) {
-            throw new LogicException("Unrecognized link type : '$type'.");
-        }
+        return $this->resources;
     }
 }

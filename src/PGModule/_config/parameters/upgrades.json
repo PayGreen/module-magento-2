@@ -75,6 +75,13 @@
       "config": {
         "script": "PGDomain:button/001-remove-label.sql"
       }
+    },
+    "1_2_0_remove_button_default_picture": {
+      "version": "1.2.0",
+      "type": "media_delete",
+      "config": {
+        "media": "default-payment-button.png"
+      }
     }
   }
 }

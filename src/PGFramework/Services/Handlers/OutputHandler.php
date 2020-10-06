@@ -15,7 +15,7 @@
  * @author    PayGreen <contact@paygreen.fr>
  * @copyright 2014 - 2020 Watt Is It
  * @license   https://creativecommons.org/licenses/by-nd/4.0/fr/ Creative Commons BY-ND 4.0
- * @version   1.1.1
+ * @version   1.2.0
  */
 
 /**
@@ -24,7 +24,8 @@
  */
 class PGFrameworkServicesHandlersOutputHandler
 {
-    private $resources = array();
+    /** @var PGServerComponentsResourceBag */
+    private $resources;
 
     private $content = '';
 
@@ -33,22 +34,19 @@ class PGFrameworkServicesHandlersOutputHandler
     public function __construct(PGFrameworkServicesHandlersStaticFileHandler $staticFileHandler)
     {
         $this->staticFileHandler = $staticFileHandler;
+
+        $this->resources = new PGServerComponentsResourceBag();
     }
 
     /**
-     * @param string $type
-     * @param string $src
+     * @param PGServerFoundationsAbstractResource $resource
      * @return $this
      * @throws Exception
      */
-    public function addResource($type, $src)
+    public function addResource(PGServerFoundationsAbstractResource $resource)
     {
-        $url = $this->staticFileHandler->getUrl($src);
 
-        $this->resources[] = array(
-            'type' => $type,
-            'url' => $url
-        );
+        $this->resources->add($resource);
 
         return $this;
     }
@@ -58,30 +56,19 @@ class PGFrameworkServicesHandlersOutputHandler
      * @return $this
      * @throws Exception
      */
-    public function addResources(array $resources)
+    public function addResources(PGServerComponentsResourceBag $resources)
     {
-        foreach ($resources as $resource) {
-            $this->addResource($resource['type'], $resource['src']);
-        }
+        $this->resources->merge($resources);
 
         return $this;
     }
 
     /**
-     * @param string $type
-     * @return array
+     * @return PGServerComponentsResourceBag
      */
-    public function getResources($type)
+    public function getResources()
     {
-        $resources = array();
-
-        foreach ($this->resources as $resource) {
-            if ($resource['type'] === $type) {
-                $resources[] = $resource['url'];
-            }
-        }
-
-        return $resources;
+        return $this->resources;
     }
 
     /**

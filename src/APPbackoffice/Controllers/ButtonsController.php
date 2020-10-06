@@ -15,7 +15,7 @@
  * @author    PayGreen <contact@paygreen.fr>
  * @copyright 2014 - 2020 Watt Is It
  * @license   https://creativecommons.org/licenses/by-nd/4.0/fr/ Creative Commons BY-ND 4.0
- * @version   1.1.1
+ * @version   1.2.0
  */
 
 class APPbackofficeControllersButtonsController extends APPbackofficeFoundationsAbstractBackofficeController
@@ -40,8 +40,8 @@ class APPbackofficeControllersButtonsController extends APPbackofficeFoundations
      */
     public function displayListAction()
     {
-        /** @var PGFrameworkServicesHandlersPictureHandler $mediaHandler */
-        $mediaHandler = $this->getService('handler.picture');
+        /** @var PGFrameworkServicesHandlersPaymentButtonHandler $paymentButtonHandler */
+        $paymentButtonHandler = $this->getService('handler.payment_button');
 
         $buttons = array();
 
@@ -53,7 +53,7 @@ class APPbackofficeControllersButtonsController extends APPbackofficeFoundations
             $data = $button->toArray();
 
             $data['errors'] = $this->buttonManager->check($button);
-            $data['imageUrl'] = $mediaHandler->getUrl($button->getImageSrc());
+            $data['imageUrl'] = $paymentButtonHandler->getButtonFinalUrl($button);
 
             $buttons[] = $data;
         }
@@ -69,8 +69,8 @@ class APPbackofficeControllersButtonsController extends APPbackofficeFoundations
      */
     public function displayUpdateFormAction()
     {
-        /** @var PGFrameworkServicesHandlersPictureHandler $mediaHandler */
-        $mediaHandler = $this->getService('handler.picture');
+        /** @var PGFrameworkServicesHandlersPictureHandler $pictureHandler */
+        $pictureHandler = $this->getService('handler.picture');
 
         /** @var PGIntlServicesManagersTranslationManager $translationManager */
         $translationManager = $this->getService('manager.translation');
@@ -105,7 +105,7 @@ class APPbackofficeControllersButtonsController extends APPbackofficeFoundations
                     );
                 } else {
                     $picture = array(
-                        'image' => $button->getImageSrc(),
+                        'image' => $pictureHandler->getUrl($imageSrc),
                         'reset' => false
                     );
                 }
@@ -145,9 +145,10 @@ class APPbackofficeControllersButtonsController extends APPbackofficeFoundations
             $response = $this->buildTemplateResponse('page-button-update', array(
                 'button' => $button->toArray(),
                 'errors' => $this->buttonManager->check($button),
-                'imageUrl' => $mediaHandler->getUrl($button->getImageSrc()),
                 'form' => new PGViewComponentsBox($view)
             ));
+
+            $response->addResource($this->createDefaultButtonPicturesResource());
         }
 
         return $response;
@@ -199,17 +200,28 @@ class APPbackofficeControllersButtonsController extends APPbackofficeFoundations
             /** @var PGFormInterfacesFormViewInterface $view */
             $view = $this->getRequest()->get('form')->buildView();
         } else {
+            $defaultValues = array(
+                'picture' => array(
+                    'image' => '',
+                    'reset' => true
+                )
+            );
+
             /** @var PGFormInterfacesFormViewInterface $view */
-            $view = $this->buildForm('button')->buildView();
+            $view = $this->buildForm('button', $defaultValues)->buildView();
         }
 
         $action = $this->getLinker()->buildBackOfficeUrl('backoffice.buttons.insert');
 
         $view->setAction($action);
 
-        return $this->buildTemplateResponse('page-button-insert', array(
+        $response = $this->buildTemplateResponse('page-button-insert', array(
             'form' => new PGViewComponentsBox($view)
         ));
+
+        $response->addResource($this->createDefaultButtonPicturesResource());
+
+        return $response;
     }
 
     /**
@@ -329,6 +341,10 @@ class APPbackofficeControllersButtonsController extends APPbackofficeFoundations
         return $success;
     }
 
+    /**
+     * @return PGServerComponentsResponsesRedirectionResponse
+     * @throws Exception
+     */
     public function deleteButtonAction()
     {
         $id = (int) $this->getRequest()->get('id');
@@ -348,5 +364,27 @@ class APPbackofficeControllersButtonsController extends APPbackofficeFoundations
         }
 
         return $this->redirect($this->getLinker()->buildBackOfficeUrl('backoffice.buttons.display'));
+    }
+
+    /**
+     * @return PGServerComponentsResourcesDataResource
+     */
+    protected function createDefaultButtonPicturesResource()
+    {
+        /** @var PGFrameworkComponentsBag $parameters */
+        $parameters = $this->getService('parameters');
+
+        /** @var PGFrameworkServicesHandlersStaticFileHandler $staticFileHandler */
+        $staticFileHandler = $this->getService('handler.static_file');
+
+        $defaultButtonPictures = array();
+
+        foreach($parameters['payment.pictures'] as $type => $filename) {
+            $defaultButtonPictures[$type] = $staticFileHandler->getUrl("/pictures/PGDomain/payment-buttons/$filename");
+        }
+
+        return new PGServerComponentsResourcesDataResource(array(
+            'default_button_pictures' => $defaultButtonPictures
+        ));
     }
 }

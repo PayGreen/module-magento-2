@@ -14,8 +14,9 @@
  * @author    PayGreen <contact@paygreen.fr>
  * @copyright 2014 - 2020 Watt Is It
  * @license   https://creativecommons.org/licenses/by-nd/4.0/fr/ Creative Commons BY-ND 4.0
- * @version   1.1.1
+ * @version   1.2.0
  *}
+{if !empty($notifications)}
 <ul class="pgnotification">
     {foreach from=$notifications item=notification}
     <li class="pgnotification__{$notification.type}">
@@ -23,3 +24,4 @@
     </li>
     {/foreach}
 </ul>
+{/if}
