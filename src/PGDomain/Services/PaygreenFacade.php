@@ -15,7 +15,7 @@
  * @author    PayGreen <contact@paygreen.fr>
  * @copyright 2014 - 2021 Watt Is It
  * @license   https://opensource.org/licenses/mit-license.php MIT License X11
- * @version   1.2.1
+ * @version   1.2.2
  *
  */
 
@@ -25,7 +25,7 @@
  */
 class PGDomainServicesPaygreenFacade extends PGFrameworkFoundationsAbstractObject
 {
-    const VERSION = '2.9.1';
+    const VERSION = '2.9.2';
     const CURRENCY_EUR = 'EUR';
 
     const STATUS_WAITING = 'WAITING';

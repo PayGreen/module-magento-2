@@ -15,7 +15,7 @@
  * @author    PayGreen <contact@paygreen.fr>
  * @copyright 2014 - 2021 Watt Is It
  * @license   https://opensource.org/licenses/mit-license.php MIT License X11
- * @version   1.2.1
+ * @version   1.2.2
  *
  */
 
@@ -106,8 +106,11 @@ class PGClientEntitiesPaygreenTransaction extends PGClientFoundationsAbstractPay
             ->setObject('result', 'result', 'PGClientEntitiesPaygreenTransactionResult')
         ;
 
-        if ($this->hasRaw('paymentFolder') and (!empty($this->getRaw('paymentFolder')))) {
-            $this->setScalar('paymentFolder', 'paymentFolder');
+        if ($this->hasRaw('paymentFolder')) {
+            $paymentFolder = $this->getRaw('paymentFolder');
+            if (!empty($paymentFolder)) {
+                $this->setScalar('paymentFolder', 'paymentFolder');
+            }
         }
 
         $this->metadata = $this->hasRaw('metadata') ?

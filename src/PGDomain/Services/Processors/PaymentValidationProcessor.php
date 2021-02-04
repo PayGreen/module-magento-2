@@ -15,7 +15,7 @@
  * @author    PayGreen <contact@paygreen.fr>
  * @copyright 2014 - 2021 Watt Is It
  * @license   https://opensource.org/licenses/mit-license.php MIT License X11
- * @version   1.2.1
+ * @version   1.2.2
  *
  */
 
@@ -26,6 +26,8 @@
 class PGDomainServicesProcessorsPaymentValidationProcessor extends PGFrameworkFoundationsAbstractProcessor
 {
     const PROCESSOR_NAME = 'PaymentValidation';
+
+    private static $USE_PARENT_PAYMENT_RECORD_BY_PAYMENT_MODE = array('CASH');
 
     /** @var PGDomainInterfacesOfficersPostPaymentOfficerInterface */
     protected $officer;
@@ -111,8 +113,10 @@ class PGDomainServicesProcessorsPaymentValidationProcessor extends PGFrameworkFo
             /** @var PGClientEntitiesPaygreenTransaction $transaction */
             $transaction = $apiFacade->getTransactionInfo($task->getPid());
 
-            if ($transaction->getPaymentFolder() !== null) {
-                /** @var APIPaymentComponentsRepliesTransaction $transaction */
+            $usePaymentRecord = in_array($transaction->getMode(), self::$USE_PARENT_PAYMENT_RECORD_BY_PAYMENT_MODE);
+
+            if ($usePaymentRecord && ($transaction->getPaymentFolder() !== null)) {
+                /** @var PGClientEntitiesPaygreenTransaction $transaction */
                 $transaction = $apiFacade->getTransactionInfo($transaction->getPaymentFolder());
             }
 

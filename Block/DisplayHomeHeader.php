@@ -15,7 +15,7 @@
  * @author    PayGreen <contact@paygreen.fr>
  * @copyright 2014 - 2021 Watt Is It
  * @license   https://opensource.org/licenses/mit-license.php MIT License X11
- * @version   1.2.1
+ * @version   1.2.2
  *
  */
 
@@ -90,8 +90,11 @@ class DisplayHomeHeader extends Template
         /** @var PGDomainServicesPaygreenFacade $paygreenFacade */
         $paygreenFacade = $this->getService('paygreen.facade');
 
+        /** @var PGFrameworkServicesLogger $outputHandler */
+        $logger = $this->getService('logger.view');
+
         if (!$paygreenFacade->isConfigured()) {
-            $this->logger->info("Paygreen Facade is not configured yet, we can't proceed the request now.");
+            $logger->info("Paygreen Facade is not configured yet, we can't proceed the request now.");
             return false;
         }
 
