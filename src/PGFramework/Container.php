@@ -15,7 +15,7 @@
  * @author    PayGreen <contact@paygreen.fr>
  * @copyright 2014 - 2021 Watt Is It
  * @license   https://opensource.org/licenses/mit-license.php MIT License X11
- * @version   1.2.2
+ * @version   1.2.3
  *
  */
 
@@ -77,7 +77,6 @@ class PGFrameworkContainer
     public function reset(array $additionalServices = array())
     {
         $defaultServices = array(
-            'autoloader' => $this->get('autoloader'),
             'pathfinder' => $this->get('pathfinder'),
             'bootstrap' => $this->get('bootstrap'),
             'container' => $this,
@@ -86,6 +85,10 @@ class PGFrameworkContainer
             'service.library' => $this->library,
             'service.builder' => $this->builder
         );
+
+        if ($this->has('autoloader')) {
+            $defaultServices['autoloader'] = $this->get('autoloader');
+        }
 
         $services = array_merge(
             $defaultServices,

@@ -15,7 +15,7 @@
  * @author    PayGreen <contact@paygreen.fr>
  * @copyright 2014 - 2021 Watt Is It
  * @license   https://opensource.org/licenses/mit-license.php MIT License X11
- * @version   1.2.2
+ * @version   1.2.3
  *
  */
 
@@ -28,7 +28,7 @@ try {
         define('DS', DIRECTORY_SEPARATOR);
     }
 
-    define('PAYGREEN_MODULE_VERSION', '1.2.2');
+    define('PAYGREEN_MODULE_VERSION', '1.2.3');
 
     $objectManager = \Magento\Framework\App\ObjectManager::getInstance();
 
@@ -44,7 +44,9 @@ try {
 // Running Bootstrap
 // #############################################################################################
 
-    require_once PAYGREEN_VENDOR_DIR . DS . 'PGFramework' . DS . 'Bootstrap.php';
+    if (PAYGREEN_AUTOLOADING) {
+        require_once PAYGREEN_VENDOR_DIR . DS . 'PGFramework' . DS . 'Bootstrap.php';
+    }
 
     $bootstrap = new PGFrameworkBootstrap(PAYGREEN_VENDOR_DIR);
 
@@ -60,9 +62,15 @@ try {
             'media' => PAYGREEN_MEDIA_DIR,
             'config' => PAYGREEN_CONFIG_DIR
         ))
+    ;
+
+    if (PAYGREEN_AUTOLOADING) {
+        $bootstrap->registerAutoloader();
+    }
+
+    $bootstrap
         ->preloadFunctions()
         ->createVarFolder()
-        ->registerAutoloader()
         ->buildContainer()
         ->insertStaticServices(array(
             'magento' => $objectManager

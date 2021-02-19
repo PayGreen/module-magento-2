@@ -15,7 +15,7 @@
  * @author    PayGreen <contact@paygreen.fr>
  * @copyright 2014 - 2021 Watt Is It
  * @license   https://opensource.org/licenses/mit-license.php MIT License X11
- * @version   1.2.2
+ * @version   1.2.3
  *
  */
 
@@ -23,8 +23,9 @@ if (!defined('DS')) {
     define('DS', DIRECTORY_SEPARATOR);
 }
 
-define('PAYGREEN_MODULE_DIR', getcwd() . DS . 'app' . DS . 'code' . DS . 'Paygreen' . DS . 'Payment');
+define('PAYGREEN_MODULE_DIR', BP . DS . 'app' . DS . 'code' . DS . 'Paygreen' . DS . 'Payment');
 define('PAYGREEN_BOOTSTRAP_SRC', PAYGREEN_MODULE_DIR . DS . 'bootstrap.php');
+define('PAYGREEN_AUTOLOADING', true);
 
 \Magento\Framework\Component\ComponentRegistrar::register(
     \Magento\Framework\Component\ComponentRegistrar::MODULE,

@@ -15,7 +15,7 @@
  * @author    PayGreen <contact@paygreen.fr>
  * @copyright 2014 - 2021 Watt Is It
  * @license   https://opensource.org/licenses/mit-license.php MIT License X11
- * @version   1.2.2
+ * @version   1.2.3
  *
  */
 
@@ -28,18 +28,18 @@ class PGFrameworkBootstrap
     const VAR_FOLDER_CHMOD = 0775;
 
     /** @var PGFrameworkServicesAutoloader */
-    private $autoloader;
+    private $autoloader = null;
 
     /** @var PGFrameworkServicesPathfinder */
-    private $pathfinder;
+    private $pathfinder = null;
 
     /** @var PGFrameworkContainer */
-    private $container;
-
-    private $path;
+    private $container = null;
 
     /** @var PGFrameworkComponentsAppliance */
-    private $appliance;
+    private $appliance = null;
+
+    private $path;
 
     private static $required_paths = array(
         'module',
@@ -311,8 +311,6 @@ class PGFrameworkBootstrap
     {
         if ($this->pathfinder === null) {
             throw new Exception("PathFinder must be initialized before loading functions.");
-        } elseif ($this->autoloader === null) {
-            throw new Exception("Autoloader must be initialized before loading functions.");
         }
 
         $this->container = PGFrameworkContainer::getInstance();
@@ -389,10 +387,13 @@ class PGFrameworkBootstrap
 
         $defaultServices = array(
             'appliance' => $this->appliance,
-            'autoloader' => $this->autoloader,
             'pathfinder' => $this->pathfinder,
             'bootstrap' => $this
         );
+
+        if (!empty($this->autoloader)) {
+            $defaultServices['autoloader'] = $this->autoloader;
+        }
 
         $services = array_merge(
             $defaultServices,
