@@ -15,7 +15,7 @@
  * @author    PayGreen <contact@paygreen.fr>
  * @copyright 2014 - 2021 Watt Is It
  * @license   https://opensource.org/licenses/mit-license.php MIT License X11
- * @version   1.2.3
+ * @version   1.2.4
  *
  */
 
@@ -28,7 +28,7 @@ try {
         define('DS', DIRECTORY_SEPARATOR);
     }
 
-    define('PAYGREEN_MODULE_VERSION', '1.2.3');
+    define('PAYGREEN_MODULE_VERSION', '1.2.4');
 
     $objectManager = \Magento\Framework\App\ObjectManager::getInstance();
 
@@ -51,7 +51,7 @@ try {
     $bootstrap = new PGFrameworkBootstrap(PAYGREEN_VENDOR_DIR);
 
     $bootstrap
-        ->buildAppliance('Paygreen payment module for Prestashop')
+        ->buildAppliance('Paygreen payment module for Magento 2')
         ->addVendors(array())
         ->buildPathfinder(array(
             'static' => PAYGREEN_MODULE_DIR . '/view/base/web/static',
@@ -75,8 +75,19 @@ try {
         ->insertStaticServices(array(
             'magento' => $objectManager
         ))
-        ->setup(PGFrameworkServicesHandlersSetupHandler::UPGRADE)
     ;
+
+    /** @var PGDomainInterfacesShopHandlerInterface $shopHandler */
+    $shopHandler = $bootstrap->getContainer()->get('handler.shop');
+
+    /** @var PGDomainInterfacesEntitiesShopInterface $shop */
+    $shop = $shopHandler->getCurrentShop();
+
+    if ($shopHandler->isMultiShopActivated()) {
+        define('PAYGREEN_CACHE_PREFIX', 'shop-' . $shop->id());
+    }
+
+    $bootstrap->setup(PGFrameworkServicesHandlersSetupHandler::UPGRADE);
 
     // #############################################################################################
     // Logging End of bootstrap
@@ -84,12 +95,6 @@ try {
 
     /** @var PGFrameworkServicesLogger $logger */
     $logger = $bootstrap->getContainer()->get('logger');
-
-    /** @var PGDomainInterfacesShopHandlerInterface $shopHandler */
-    $shopHandler = $bootstrap->getContainer()->get('handler.shop');
-
-    /** @var PGDomainInterfacesEntitiesShopInterface $shop */
-    $shop = $shopHandler->getCurrentShop();
 
     $logger->debug("Current shop detected : {$shop->getName()} #{$shop->id()}.");
 
