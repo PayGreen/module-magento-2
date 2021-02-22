@@ -15,7 +15,7 @@
  * @author    PayGreen <contact@paygreen.fr>
  * @copyright 2014 - 2021 Watt Is It
  * @license   https://opensource.org/licenses/mit-license.php MIT License X11
- * @version   1.2.4
+ * @version   1.2.5
  *
  */
 
@@ -28,7 +28,7 @@ try {
         define('DS', DIRECTORY_SEPARATOR);
     }
 
-    define('PAYGREEN_MODULE_VERSION', '1.2.4');
+    define('PAYGREEN_MODULE_VERSION', '1.2.5');
 
     $objectManager = \Magento\Framework\App\ObjectManager::getInstance();
 
