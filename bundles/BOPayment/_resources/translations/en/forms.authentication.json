@@ -1,0 +1,18 @@
+{
+  "forms": {
+    "authentication": {
+      "fields": {
+        "shop_token": {
+          "label": "Unique identifier"
+        },
+        "private_key": {
+          "label": "Private key"
+        }
+      },
+      "errors": {
+        "private_key_bad_format": "Your private key is wrong.",
+        "identifier_bad_format": "Your unique Identifier is wrong."
+      }
+    }
+  }   
+}

@@ -1,0 +1,9 @@
+{
+  "actions": {
+    "logs": {
+      "download": {
+        "button": "Download"
+      }
+    }
+  }
+}

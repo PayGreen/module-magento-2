@@ -1,0 +1,56 @@
+{
+  "forms":{
+    "config": {
+      "fields": {
+        "active": {
+          "label": "Activer les paiements",
+          "help": "Activer les paiements avec le module PayGreen."
+        },
+        "behavior_payment_refused": {
+          "label": "Action après un paiement refusé",
+          "help": "Définit le comportement du module PayGreen en cas de paiement refusé.",
+          "values": {
+            "yes": "Annulation de la commande",
+            "no": "Redirection sur la page de paiement"
+          }
+        },
+        "visibility": {
+          "label": "Visibilité du module",
+          "help": "Permet à l'administrateur de tester le module avant de l'activer pour ses clients.",
+          "values": {
+            "yes": "Visible par les clients",
+            "no": "Visible uniquement par l'administrateur"
+          }
+        },
+        "behavior_transmit_refund": {
+          "label": "Synchroniser les remboursements",
+          "help": "Si vous activez cette option, alors dès que vous effecturez un remboursement depuis le back-office de votre boutique, une notification sera automatiquement envoyée au serveur PayGreen afin de procéder au remboursement de la transaction."
+        },
+        "behavior_transmit_delivering": {
+          "label": "Synchroniser les confirmations de livraison",
+          "help": "Si vous activez cette option, alors dès qu'une commande payable à la livraison sera marquée comme 'terminée', une notification sera automatiquement envoyée au serveur PayGreen afin de valider le paiement."
+        },
+        "behavior_display_footer": {
+          "label": "Afficher le logo de sécurité PayGreen",
+          "help": "Si cette option est activée, le logo Paiement sécurisé par PayGreen sera affiché en bas de votre site."
+        },
+        "display_footer_color": {
+          "label": "Couleur du logo de sécurité PayGreen",
+          "values": {
+            "white": "Blanc",
+            "green": "Vert",
+            "black": "Noir"
+          }
+        },
+        "regenerate_cart_on_cancelled_payment": {
+          "label": "Régénérer le panier à l'annulation d'un paiement",
+          "help": "Si cette option est activée et qu'un client annule son paiement, son panier sera régénéré."
+        },
+        "regenerate_cart_on_refused_payment": {
+          "label": "Régénérer le panier après un paiement refusé",
+          "help": "Si cette option est activée et qu'un client voit son paiement être refusé, son panier sera régénéré."
+        }
+      }
+    }
+  }
+}

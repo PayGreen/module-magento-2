@@ -1,0 +1,9 @@
+{
+  "blocks": {
+    "tree_account_login": {
+      "title": "Connexion à PayGreen ClimateKit",
+      "description": "Renseignez vos identifiants ClimateKit.",
+      "action": "Me connecter"
+    }
+  }
+}

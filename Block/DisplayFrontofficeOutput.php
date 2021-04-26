@@ -15,7 +15,7 @@
  * @author    PayGreen <contact@paygreen.fr>
  * @copyright 2014 - 2021 Watt Is It
  * @license   https://opensource.org/licenses/mit-license.php MIT License X11
- * @version   1.2.5
+ * @version   2.0.0
  *
  */
 
@@ -23,8 +23,8 @@ namespace Paygreen\Payment\Block;
 
 use Magento\Framework\View\Element\Template;
 use Magento\Framework\View\Element\Template\Context;
-use PGFrameworkContainer;
-use PGFrameworkServicesLogger;
+use PGSystemServicesContainer;
+use PGModuleServicesLogger;
 use PGFrameworkServicesHandlersOutputHandler;
 
 class DisplayFrontofficeOutput extends Template
@@ -38,7 +38,7 @@ class DisplayFrontofficeOutput extends Template
 
     protected function getService($name)
     {
-        return PGFrameworkContainer::getInstance()->get($name);
+        return PGSystemServicesContainer::getInstance()->get($name);
     }
 
     protected function _toHtml()
@@ -46,7 +46,7 @@ class DisplayFrontofficeOutput extends Template
         /** @var PGFrameworkServicesHandlersOutputHandler $outputHandler */
         $outputHandler = $this->getService('handler.output');
 
-        /** @var PGFrameworkServicesLogger $outputHandler */
+        /** @var PGModuleServicesLogger $outputHandler */
         $logger = $this->getService('logger.view');
 
         $content = $outputHandler->getContent();

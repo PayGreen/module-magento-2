@@ -15,7 +15,7 @@
  * @author    PayGreen <contact@paygreen.fr>
  * @copyright 2014 - 2021 Watt Is It
  * @license   https://opensource.org/licenses/mit-license.php MIT License X11
- * @version   1.2.5
+ * @version   2.0.0
  *
  */
 
@@ -26,11 +26,10 @@ use Magento\Framework\App\Action\Context;
 use Magento\Framework\App\Action\Action;
 use Magento\Framework\View\Result\PageFactory;
 use Paygreen;
-use PGFrameworkContainer;
+use PGSystemServicesContainer;
 use PGServerServicesServer;
-use PGFrameworkServicesLogger;
+use PGModuleServicesLogger;
 use PGFrameworkServicesHandlersOutputHandler;
-use PGServerComponentsResourcesScriptFileResource;
 use PGServerComponentsResourcesStyleFileResource;
 
 class Index extends Action
@@ -70,7 +69,7 @@ class Index extends Action
      */
     protected function getService(string $name)
     {
-        return PGFrameworkContainer::getInstance()->get($name);
+        return PGSystemServicesContainer::getInstance()->get($name);
     }
 
     /**
@@ -79,7 +78,7 @@ class Index extends Action
      */
     public function execute()
     {
-        /** @var PGFrameworkServicesLogger $logger */
+        /** @var PGModuleServicesLogger $logger */
         $logger = $this->getService('logger');
 
         /** @var PGServerServicesServer $server */

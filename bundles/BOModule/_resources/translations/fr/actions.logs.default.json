@@ -1,0 +1,10 @@
+{
+  "actions": {
+    "logs": {
+      "errors": {
+        "invalid_file": "Le fichier ciblé n'est pas un fichier de logd valide.",
+        "file_not_found": "Le fichier ciblé n'existe pas."
+      }
+    }
+  }
+}

@@ -1,0 +1,56 @@
+{
+  "frontoffice": {
+    "payment": {
+      "results": {
+        "payment": {
+          "fatal_error": {
+            "error": "Une erreur inconnue est survenue."
+          },
+          "inconsistent_context": {
+            "error": "Impossible de trouver votre commande."
+          },
+          "pid_not_found": {
+            "error": "Impossible de trouver l'identifiant de votre paiement."
+          },
+          "workflow_error": {
+            "error": "L'état de votre commande ne permet pas de valider votre paiement."
+          },
+          "paygreen_unavailable": {
+            "title": "Les serveurs de PayGreen ne répondent pas.",
+            "message": "Vous êtes sans doute très nombreux à faire appel à nos services en ce moment. Nous nous excusons pour la gène occasionnée.",
+            "link": "Retenter de valider ma commande"
+          },
+          "refused_without_regenerate_cart": {
+            "title": "Votre paiement a été refusé par votre banque.",
+            "link": "Consulter l'historique de vos commandes",
+            "details": "Votre commande a donc été annulée."
+          },
+          "refused_with_regenerate_cart": {
+            "title": "Votre paiement a été refusé par votre banque.",
+            "link": "Choisir un autre moyen de paiement"
+          }
+        },
+        "order": {
+          "validate": {
+            "title": "Votre commande a été validée.",
+            "link": "Consulter les détails de votre commande"
+          },
+          "cancel": {
+            "title": "Votre commande a été annulée.",
+            "link": "Consulter les détails de votre commande"
+          },
+          "error": {
+            "title": "Votre commande présente une erreur.",
+            "message": "Merci de contacter l'administrateur de la boutique.",
+            "link": "Consulter les détails de votre commande"
+          },
+          "new": {
+            "title": "Votre commande n'a pas été traitée.",
+            "message": "Merci de contacter l'administrateur de la boutique.",
+            "link": "Consulter les détails de votre commande"
+          }
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,20 @@
+{
+  "actions": {
+    "authentication": {
+      "save": {
+        "result": {
+          "success": "Vos identifiants de connexion ont été sauvegardés avec succès.",
+          "failure": "Une erreur s'est produite lors de la sauvegarde de vos identifiants de connexion."
+        },
+        "errors": {
+          "oauth": "Erreur durant la gestion de votre connexion.",
+          "oauth_server_address_missmatch": "L'adresse ip de connexion fournie ne correspond pas à l'adresse ip de la boutique enregistrée dans le backoffice PayGreen. Veuillez vérifier vos informations.",
+          "oauth_data_validation": "Données de connexion OAuth non valides. Veuillez vérifier vos données de connexion avant de réessayer.",
+          "account_not_found": "Impossible de se connecter à votre compte PayGreen.",
+          "invalid_public_key": "Votre identifiant unique n'est pas valide.",
+          "invalid_private_key": "Votre clé privée n'est pas valide."
+        }
+      }
+    }
+  }
+}

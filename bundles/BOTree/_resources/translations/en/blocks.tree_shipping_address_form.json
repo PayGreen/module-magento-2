@@ -1,0 +1,9 @@
+{
+  "blocks": {
+    "tree_shipping_address_form": {
+      "title": "Shipping address",
+      "description": "This address will be used to calculate the carbon footprint of a transaction.",
+      "action": "Save"
+    }
+  }
+}

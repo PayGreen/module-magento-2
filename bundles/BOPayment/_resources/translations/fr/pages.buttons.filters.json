@@ -1,0 +1,17 @@
+{
+  "pages": {
+    "buttons": {
+      "filters": {
+        "title": "Filtrer mon bouton de paiement",
+        "columns": {
+          "categories_filtering": {
+            "title": "Filtrage par catégorie"
+          },
+          "other_filtering": {
+            "title": "Autres filtres"
+          }
+        }
+      }
+    }
+  }
+}

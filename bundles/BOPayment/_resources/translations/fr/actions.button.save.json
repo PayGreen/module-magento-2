@@ -1,0 +1,17 @@
+{
+  "actions": {
+    "button": {
+      "save": {
+        "result": {
+          "success": {
+            "button": "Bouton enregistré avec succès.",
+            "picture": "Image téléchargée avec succès."
+          }
+        },
+        "errors": {
+          "upload_picture_error": "Impossible de changer l'image."
+        }
+      }
+    }
+  }
+}

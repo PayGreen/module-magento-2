@@ -15,7 +15,7 @@
  * @author    PayGreen <contact@paygreen.fr>
  * @copyright 2014 - 2021 Watt Is It
  * @license   https://opensource.org/licenses/mit-license.php MIT License X11
- * @version   1.2.5
+ * @version   2.0.0
  *
  */
 
@@ -23,14 +23,14 @@ namespace Paygreen\Payment\Block;
 
 use Magento\Framework\View\Element\Template;
 use Magento\Framework\View\Element\Template\Context;
-use PGFrameworkContainer;
-use PGFrameworkServicesLogger;
+use PGSystemServicesContainer;
+use PGModuleServicesLogger;
 use PGServerServicesLinker;
 use PGServerComponentsResourceBag;
 use PGServerComponentsResourcesScriptFileResource;
-use PGModuleServicesMagentoResourceCompiler;
+use PGMagentoServicesMagentoResourceCompiler;
 use PGServerComponentsResourcesDataResource;
-use PGDomainServicesPaygreenFacade;
+use PGTreeCommonInterfacesTreeActivationBehavior;
 
 class DisplayHomeHeader extends Template
 {
@@ -45,7 +45,7 @@ class DisplayHomeHeader extends Template
 
         require_once PAYGREEN_BOOTSTRAP_SRC;
 
-        /** @var PGFrameworkServicesLogger $logger */
+        /** @var PGModuleServicesLogger $logger */
         $logger = $this->getService('logger.view');
 
         $logger->debug('Successfully init home page header block.');
@@ -53,25 +53,28 @@ class DisplayHomeHeader extends Template
 
     protected function getService($name)
     {
-        return PGFrameworkContainer::getInstance()->get($name);
+        return PGSystemServicesContainer::getInstance()->get($name);
     }
 
     protected function _toHtml()
     {
-        /** @var PGModuleServicesMagentoResourceCompiler $magentoResourceCompiler */
+        /** @var PGMagentoServicesMagentoResourceCompiler $magentoResourceCompiler */
         $magentoResourceCompiler = $this->getService('compiler.resource.magento');
 
-        /** @var PGFrameworkServicesLogger $outputHandler */
+        /** @var PGModuleServicesLogger $outputHandler */
         $logger = $this->getService('logger.view');
 
         /** @var PGServerServicesLinker $linker */
         $linker = $this->getService('linker');
 
+        /** @var PGTreeCommonInterfacesTreeActivationBehavior $treeActivationBehavior */
+        $treeActivationBehavior = $this->getService('behavior.tree_activation');
+
         $logger->debug("Writing home page header output.");
 
         $resources = new PGServerComponentsResourceBag();
 
-        if ($this->isTreeActivated()) {
+        if ($treeActivationBehavior->isActivated()) {
             $resources->add(new PGServerComponentsResourcesScriptFileResource('/js/clientjs.js'));
             $resources->add(new PGServerComponentsResourcesScriptFileResource('/js/tree.js'));
             $resources->add(new PGServerComponentsResourcesDataResource(array(
@@ -81,26 +84,4 @@ class DisplayHomeHeader extends Template
 
         return $magentoResourceCompiler->compileResources($resources);
     }
-
-    /**
-     * @return boolean
-     */
-    protected function isTreeActivated()
-    {
-        /** @var PGDomainServicesPaygreenFacade $paygreenFacade */
-        $paygreenFacade = $this->getService('paygreen.facade');
-
-        /** @var PGFrameworkServicesLogger $outputHandler */
-        $logger = $this->getService('logger.view');
-
-        if (!$paygreenFacade->isConfigured()) {
-            $logger->info("Paygreen Facade is not configured yet, we can't proceed the request now.");
-            return false;
-        }
-
-        $shopInfos = $paygreenFacade->getAccountInfos();
-
-        return (isset($shopInfos->solidarityType) && ($shopInfos->solidarityType == 'CCARBONE'));
-    }
-
 }

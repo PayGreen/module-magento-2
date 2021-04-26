@@ -1,6 +1,0 @@
-{
-  "controller.front.invalid_payments": {
-    "extends": "controller.abstract",
-    "class": "PGModuleServicesControllersInvalidPaymentsController"
-  }
-}

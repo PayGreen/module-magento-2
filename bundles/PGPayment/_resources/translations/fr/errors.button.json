@@ -1,0 +1,26 @@
+{
+  "errors": {
+    "button": {
+      "payment_number_with_cash": "Le paiement comptant ne peut être exécuté qu'une seule fois.",
+      "payment_number_with_tokenize": "Le paiement à la livraison ne peut être exécuté qu'une seule fois.",
+      "not_payment_number_with_xtime": "Le paiement en plusieurs fois doit être composé de plusieurs échéances.",
+      "not_payment_number_with_recurring": "Le paiement par abonnement doit être composé de plusieurs échéances.",
+      "payment_report_with_cash": "Le paiement comptant ne peut pas être décalé.",
+      "payment_report_with_tokenize": "Le paiement à la livraison ne peut pas être décalé.",
+      "payment_report_with_xtime": "Le paiement en plusieurs fois ne peut pas être décalé.",
+      "first_payment_part_range": "La première partie du paiement doit être un nombre compris entre 1 et 99.",
+      "first_payment_part_without_xtime": "L'option de premier paiement est uniquement disponible pour les paiements en plusieurs fois.",
+      "order_repeated_without_recurring": "L'option de commande répétée n'est disponible que pour le paiement par abonnement.",
+      "xtime_fewer_than_max_commitments": "Le paiement en plusieurs fois ne peut pas comporter plus de 4 échéances.",
+      "title_min_length": "Le libelé du bouton de paiement ne doit pas être vide.",
+      "title_max_length": "Le libelé du bouton de paiement ne doit pas comporter plus de 100 caractères.",
+      "image_height_positive": "La hauteur de l'image doit être un nombre entier positif.",
+      "min_amount_greater_than_max_amount": "Le montant minimum du panier doit être inférieur au montant maximum du panier.",
+      "min_amount_positive": "Le montant minimum du panier doit être un nombre entier positif.",
+      "max_amount_positive": "Le montant maximum du panier doit être un nombre entier positif.",
+      "position_positive": "La position du bouton de paiement doit être un nombre entier positif.",
+      "unavailable_payment_mode": "Le mode de paiement sélectionné n'est pas activé pour votre boutique.",
+      "unavailable_payment_type": "Le moyen de paiement sélectionné n'est pas activé pour votre boutique."
+    }
+  }
+}

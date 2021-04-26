@@ -1,0 +1,9 @@
+{
+  "blocks": {
+    "account_login": {
+      "title": "You still have a PayGreen account?",
+      "description": "&hellip;or fill your PayGreen IDs:",
+      "action": "Login"
+    }
+  }
+}

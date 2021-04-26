@@ -1,0 +1,10 @@
+{
+  "translations": {
+    "message_carbone_offsetting": {
+      "field": {
+        "label": "Carbon footprint of your order",
+        "help": "This message is displayed to your customers after a validated payment."
+      }
+    }
+  }
+}

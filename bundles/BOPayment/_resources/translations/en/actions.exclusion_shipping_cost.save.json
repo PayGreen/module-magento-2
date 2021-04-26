@@ -1,0 +1,12 @@
+{
+  "actions": {
+    "exclusion_shipping_cost": {
+      "save": {
+        "result": {
+          "success": "Shipping exclusion configuration saved successfully.",
+          "failure": "The form is not valid."
+        }
+      }
+    }
+  }
+}

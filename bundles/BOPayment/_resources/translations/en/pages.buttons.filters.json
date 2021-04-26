@@ -1,0 +1,17 @@
+{
+  "pages": {
+    "buttons": {
+      "filters": {
+        "title": "Filter my payment button",
+        "columns": {
+          "categories_filtering": {
+            "title": "Filtering by category"
+          },
+          "other_filtering": {
+            "title": "Other filters"
+          }
+        }
+      }
+    }
+  }
+}

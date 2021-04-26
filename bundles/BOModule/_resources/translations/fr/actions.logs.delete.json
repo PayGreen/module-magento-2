@@ -1,0 +1,13 @@
+{
+  "actions": {
+    "logs": {
+      "delete": {
+        "button": "Effacer",
+        "confirmation": "Êtes-vous certain de vouloir supprimer ce fichier de log ?",
+        "result": {
+          "success": "Le fichier ciblé a bien été effacé."
+        }
+      }
+    }
+  }
+}

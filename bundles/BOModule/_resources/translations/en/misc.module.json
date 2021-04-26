@@ -1,0 +1,15 @@
+{
+  "misc": {
+    "module": {
+      "description": "The french payment solution that has a positive impact on society and the environment",
+      "uninstall": {
+        "confirmation": "Are you sure you want to uninstall the PayGreen module?"
+      },
+      "bool": {
+        "null": "N/A",
+        "true": "Yes",
+        "false": "No"
+      }
+    }
+  }
+}

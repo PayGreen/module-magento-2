@@ -1,0 +1,10 @@
+{
+  "translations": {
+    "message_carbone_offsetting": {
+      "field": {
+        "label": "Empreinte carbone de votre commande",
+        "help": "Ce message est affiché à vos clients après un paiement validé."
+      }
+    }
+  }
+}

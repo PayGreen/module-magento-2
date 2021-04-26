@@ -1,0 +1,13 @@
+{
+  "forms": {
+    "translations": {
+      "buttons": {
+        "translation_add": "Ajouter une traduction"
+      },
+      "placeholder": {
+        "text": "Votre traduction",
+        "lang": "Langue..."
+      }
+    }
+  }   
+}

@@ -1,8 +1,0 @@
-{
-  "log": {
-    "api": {
-      "format": "<datetime> | *<type>* | <text>",
-      "file": "log:/api.log"
-    }
-  }
-}

@@ -15,7 +15,7 @@
  * @author    PayGreen <contact@paygreen.fr>
  * @copyright 2014 - 2021 Watt Is It
  * @license   https://opensource.org/licenses/mit-license.php MIT License X11
- * @version   1.2.5
+ * @version   2.0.0
  *
  */
 
@@ -23,10 +23,10 @@ namespace Paygreen\Payment\Block;
 
 use Magento\Framework\View\Element\Template;
 use Magento\Framework\View\Element\Template\Context;
-use PGFrameworkContainer;
-use PGFrameworkServicesLogger;
+use PGSystemServicesContainer;
+use PGModuleServicesLogger;
 use PGFrameworkServicesHandlersOutputHandler;
-use PGModuleServicesMagentoResourceCompiler;
+use PGMagentoServicesMagentoResourceCompiler;
 
 class DisplayFrontofficeHeader extends Template
 {
@@ -41,7 +41,7 @@ class DisplayFrontofficeHeader extends Template
 
         require_once PAYGREEN_BOOTSTRAP_SRC;
 
-        /** @var PGFrameworkServicesLogger $outputHandler */
+        /** @var PGModuleServicesLogger $outputHandler */
         $logger = $this->getService('logger.view');
 
         $logger->debug('Successfully init frontoffice header block.');
@@ -49,7 +49,7 @@ class DisplayFrontofficeHeader extends Template
 
     protected function getService($name)
     {
-        return PGFrameworkContainer::getInstance()->get($name);
+        return PGSystemServicesContainer::getInstance()->get($name);
     }
 
     protected function _toHtml()
@@ -57,10 +57,10 @@ class DisplayFrontofficeHeader extends Template
         /** @var PGFrameworkServicesHandlersOutputHandler $outputHandler */
         $outputHandler = $this->getService('handler.output');
 
-        /** @var PGModuleServicesMagentoResourceCompiler $magentoResourceCompiler */
+        /** @var PGMagentoServicesMagentoResourceCompiler $magentoResourceCompiler */
         $magentoResourceCompiler = $this->getService('compiler.resource.magento');
 
-        /** @var PGFrameworkServicesLogger $outputHandler */
+        /** @var PGModuleServicesLogger $outputHandler */
         $logger = $this->getService('logger.view');
 
         $logger->debug("Writing header output.");

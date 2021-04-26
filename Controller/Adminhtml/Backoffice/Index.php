@@ -15,22 +15,22 @@
  * @author    PayGreen <contact@paygreen.fr>
  * @copyright 2014 - 2021 Watt Is It
  * @license   https://opensource.org/licenses/mit-license.php MIT License X11
- * @version   1.2.5
+ * @version   2.0.0
  *
  */
 
 namespace Paygreen\Payment\Controller\Adminhtml\Backoffice;
 
-use APPbackofficeServicesHandlersMenuHandler;
+use BOModuleServicesHandlersMenuHandler;
 use Exception;
 use Magento\Backend\App\Action;
 use Magento\Backend\App\Action\Context;
 use Magento\Framework\View\Result\PageFactory;
-use PGFrameworkContainer;
+use PGSystemServicesContainer;
 use PGFrameworkServicesHandlersCacheHandler;
-use PGFrameworkServicesHandlersSetupHandler;
+use PGModuleServicesHandlersSetup;
 use PGIntlServicesTranslator;
-use PGFrameworkServicesLogger;
+use PGModuleServicesLogger;
 use PGServerServicesServer;
 
 class Index extends Action
@@ -55,7 +55,7 @@ class Index extends Action
 
         $this->resultPageFactory = $resultPageFactory;
 
-        /** @var PGFrameworkServicesLogger $logger */
+        /** @var PGModuleServicesLogger $logger */
         $logger = $this->getService('logger');
 
         $logger->debug("Request incoming in back office endpoint.");
@@ -78,7 +78,7 @@ class Index extends Action
      */
     protected function getService(string $name)
     {
-        return PGFrameworkContainer::getInstance()->get($name);
+        return PGSystemServicesContainer::getInstance()->get($name);
     }
 
     /**
@@ -96,13 +96,13 @@ class Index extends Action
      */
     private function cleanModule()
     {
-        /** @var PGFrameworkServicesLogger $logger */
+        /** @var PGModuleServicesLogger $logger */
         $logger = $this->getService('logger');
 
         /** @var PGFrameworkServicesHandlersCacheHandler $cacheHandler */
         $cacheHandler = $this->getService('handler.cache');
 
-        /** @var PGFrameworkServicesHandlersSetupHandler $setupHandler */
+        /** @var PGModuleServicesHandlersSetup $setupHandler */
         $setupHandler = $this->getService('handler.setup');
 
         $logger->debug("Cleaning module.");
@@ -118,13 +118,13 @@ class Index extends Action
      */
     public function execute()
     {
-        /** @var PGFrameworkServicesLogger $logger */
+        /** @var PGModuleServicesLogger $logger */
         $logger = $this->getService('logger');
 
         /** @var PGServerServicesServer $server */
         $server = $this->getService('server.backoffice');
 
-        /** @var APPbackofficeServicesHandlersMenuHandler $menuHandler */
+        /** @var BOModuleServicesHandlersMenuHandler $menuHandler */
         $menuHandler = $this->getService('handler.menu');
 
         try {

@@ -1,0 +1,12 @@
+{
+  "actions": {
+    "tree_activation": {
+      "toggle": {
+        "result": {
+          "success": "The ClimateKit module activation has been successfully updated.",
+          "failure": "An error occurred when updating the activation of the ClimateKit module."
+        }
+      }
+    }
+  }
+}

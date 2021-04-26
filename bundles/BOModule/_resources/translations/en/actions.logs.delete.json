@@ -1,0 +1,13 @@
+{
+  "actions": {
+    "logs": {
+      "delete": {
+        "button": "Delete",
+        "confirmation": "Are you sure you want to delete this log file?",
+        "result": {
+          "success": "The targeted file has been deleted."
+        }
+      }
+    }
+  }
+}

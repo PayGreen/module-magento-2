@@ -1,0 +1,16 @@
+{
+  "forms": {
+    "exclusion_shipping_cost": {
+      "title": "Management of delivery costs by means of payment",
+      "explain": "Some payment methods don't legally allow to pay shipping costs. You can select the payment methods which don't allow to pay these shipping costs. If a customer chooses one of theses payment methods, he will pay his shipping costs with an another payment method.",
+      "fields": {
+        "label": {
+          "label": "Payment methods not compatible with shipping costs"
+        }
+      },
+      "errors": {
+        "display_form": "An error occurred while building shipping payments form."
+      }
+    }
+  }   
+}

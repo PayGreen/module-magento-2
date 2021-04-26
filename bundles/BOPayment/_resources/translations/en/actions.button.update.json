@@ -1,0 +1,18 @@
+{
+  "actions": {
+    "button": {
+      "update": {
+        "button": "Edit",
+        "result": {
+          "success": "Button updated successfully.",
+          "failure": "En error occurred while updating the button.",
+          "invalid": "Your payment button is not valid."
+        },
+        "errors": {
+          "id_not_found": "ID button not found.",
+          "button_not_found": "Button not found."
+        }
+      }
+    }
+  }
+}

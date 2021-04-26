@@ -1,0 +1,8 @@
+{
+  "blocks": {
+    "payment_disclaimer": {
+      "title": "Activation du module Paiement",
+      "description": "En activant le module Paiement vous aurez accès à toutes les configurations nécessaires pour mettre en place le paiement via PayGreen."
+    }
+  }
+}

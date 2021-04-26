@@ -1,0 +1,8 @@
+{
+  "blocks": {
+    "config_disclaimer": {
+      "title": "Payment methods configuration",
+      "description": "If you want to configure eligible amounts and shipping costs for each payment method, go on Payment methods' page."
+    }
+  }
+}

@@ -1,0 +1,14 @@
+{
+  "blocks": {
+    "account_infos": {
+      "title": "My informations",
+      "description": "The informations below are required for activating your PayGreen account. You can fill it on your PayGreen back-office.",
+      "descriptionLink": "Open my back-office",
+      "form": {
+        "url": "Your website URL",
+        "siret": "SIRET number",
+        "iban": "IBAN"
+      }
+    }
+  }
+}

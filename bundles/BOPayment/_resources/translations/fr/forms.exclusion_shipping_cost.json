@@ -1,0 +1,16 @@
+{
+  "forms": {
+    "exclusion_shipping_cost": {
+      "title": "Paiement des frais de livraison par moyen de paiement",
+      "explain": "Certains moyens de paiement ne permettent pas de régler les frais de livraison (exemple&nbsp;: légalement, les Titres Restaurant Dématérialisés ne doivent pas être utilisés pour payer les frais de livraison). Vous avez donc la possibilité de sélectionner les moyens de paiement qui ne permettent PAS de régler ces frais de livraison.",
+      "fields": {
+        "label": {
+          "label": "Moyens de paiement non-compatibles avec les frais de livraison"
+        }
+      },
+      "errors": {
+        "display_form": "Une erreur s'est produite lors de la création du formulaire d'exclusion des modes d'expédition."
+      }
+    }
+  }   
+}

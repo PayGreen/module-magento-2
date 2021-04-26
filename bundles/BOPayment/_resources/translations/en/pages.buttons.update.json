@@ -1,0 +1,9 @@
+{
+  "pages": {
+    "buttons": {
+      "update": {
+        "title": "Edit my payment button"
+      }
+    }
+  }
+}

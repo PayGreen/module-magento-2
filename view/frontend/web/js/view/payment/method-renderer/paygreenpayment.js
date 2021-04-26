@@ -14,7 +14,7 @@
  * @author    PayGreen <contact@paygreen.fr>
  * @copyright 2014 - 2021 Watt Is It
  * @license   https://opensource.org/licenses/mit-license.php MIT License X11
- * @version   1.2.5
+ * @version   2.0.0
  *
  */
 define(
@@ -60,6 +60,14 @@ define(
                 return buttons;
             },
 
+            getFirstButton: function () {
+                return buttons[0];
+            },
+
+            hasManyButtons: function () {
+                return (buttons.length > 1);
+            },
+
             computeButtonPictureHeight: function(buttonHeight) {
                 if (buttonHeight > 0) {
                     return buttonHeight + 'px';
@@ -81,12 +89,16 @@ define(
             },
 
             selectButton: function(event, obj) {
-                selectedButton(event.id);
+                if (buttons.length === 1) {
+                    selectedButton(this.getFirstButton().id);
+                } else {
+                    selectedButton(event.id);
 
-                obj.currentTarget
+                    obj.currentTarget
                     .closest('#paygreen-payment-list-container')
                     .querySelector('.radio')
                     .click();
+                }
 
                 return true;
             },

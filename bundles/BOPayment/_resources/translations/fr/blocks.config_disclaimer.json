@@ -1,0 +1,8 @@
+{
+  "blocks": {
+    "config_disclaimer": {
+      "title": "Configuration des moyens de paiement",
+      "description": "Pour configurer les montants éligibles et les frais de livraison par moyen de paiement, rendez-vous sur la page Moyens de paiement."
+    }
+  }
+}

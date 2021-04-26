@@ -1,0 +1,14 @@
+{
+  "blocks": {
+    "logs": {
+      "title": "Activité du module PayGreen",
+      "subtitle": "Liste des fichiers de log",
+      "columns": {
+        "filename": "Nom du fichier",
+        "size": "Taille",
+        "last_update": "Dernière modification",
+        "actions": "Actions"
+      }
+    }
+  }
+}

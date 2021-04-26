@@ -1,0 +1,36 @@
+{
+  "forms":{
+    "button_filters": {
+      "fields": {
+        "categories_filtering_mode": {
+          "label": "Type de filtrage",
+          "help": "Permet de définir quel type de filtrage vous souhaitez utiliser.",
+          "values": {
+            "NONE": "Pas de filtrage",
+            "STRICT": "Filtrage strict",
+            "FLEXIBLE": "Filtrage souple"
+          }
+        },
+        "filtered_categories": {
+          "column": "Filtrer",
+          "label": "Activation des boutons de paiement par catégorie",
+          "help": "Sélectionnez les boutons de paiement disponibles pour chacune de vos catégories de produit. Si aucune case n'est cochée dans une colonne, cela signifie qu'aucunes catégorie n'est éligible et le filtrage sera automatiquement désactivé."
+        },
+        "search": {
+          "placeholder": "Catégorie&hellip;"
+        },
+        "cart_amount": {
+          "label": "Montant du panier",
+          "helper": "Votre bouton ne s'affichera que pour les clients dont le panier est compris entre ces 2 montants. Indiquez 0 pour ne pas mettre de montant minimum ou maximum."
+        }
+      },
+      "information": {
+        "helper": "Le filtrage strict vous permettra de voir le bouton uniquement si tous les articles dans le panier appartiennent aux catégories sélectionnées, contrairement aux filtrage souple qui affichera le bouton lorsqu'un seul article du panier appartient aux catégories sélectionnées."
+      },
+      "errors": {
+        "display_error": "Une erreur s'est produite lors de la création du formulaire de filtrage des boutons.",
+        "id_not_found": "Identifiant du bouton non trouvé."
+      }
+    }
+  }
+}

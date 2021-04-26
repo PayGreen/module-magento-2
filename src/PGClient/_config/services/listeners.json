@@ -1,6 +1,0 @@
-{
-  "listener.setup.client_compatibility_checker": {
-    "class": "PGClientServicesListenersInstallCompatibilityCheckListener",
-    "arguments": ["@paygreen.facade"]
-  }
-}

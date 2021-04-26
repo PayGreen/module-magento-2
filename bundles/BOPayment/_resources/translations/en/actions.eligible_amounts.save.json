@@ -1,0 +1,12 @@
+{
+  "actions": {
+    "eligible_amounts": {
+      "save": {
+        "result": {
+          "success": "Category configuration saved successfully.",
+          "failure": "An error occurred when saving the configuration of the payment categories."
+        }
+      }
+    }
+  }
+}

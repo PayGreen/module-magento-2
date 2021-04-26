@@ -1,0 +1,11 @@
+{
+  "actions": {
+    "server": {
+      "notices": {
+        "result": {
+          "success": "L'action s'est déroulée avec succès."
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,20 @@
+{
+  "actions": {
+    "authentication": {
+      "save": {
+        "result": {
+          "success": "Credentials saved successfully.",
+          "failure": "An error occured during saving credentials !"
+        },
+        "errors": {
+          "oauth": "Error while managing your connection.",
+          "oauth_server_address_missmatch": "The login IP address provided does not match the store's IP address registered in PayGreen backoffice. Please check your information.",
+          "oauth_data_validation": "Invalid OAuth login data. Please check your login data before trying again.",
+          "account_not_found": "Can not connect to your PayGreen account.",
+          "invalid_public_key": "Your unique ID is invalid",
+          "invalid_private_key": "Your private key is invalid"
+        }
+      }
+    }
+  }
+}

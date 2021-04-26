@@ -15,7 +15,7 @@
  * @author    PayGreen <contact@paygreen.fr>
  * @copyright 2014 - 2021 Watt Is It
  * @license   https://opensource.org/licenses/mit-license.php MIT License X11
- * @version   1.2.5
+ * @version   2.0.0
  *
  */
 
@@ -23,15 +23,15 @@ namespace Paygreen\Payment\Model;
 
 use Magento\Payment\Model\Method\AbstractMethod;
 use Magento\Payment\Model\InfoInterface;
-use PGFrameworkContainer;
-use PGModuleEntitiesOrder;
-use PGFrameworkServicesHandlersBehaviorHandler;
-use PGDomainComponentsEventsRefundEvent;
-use PGFrameworkServicesBroadcaster;
-use PGDomainInterfacesCheckoutProvisionerInterface;
-use PGModuleProvisionersCheckoutProvisioner;
-use PGDomainServicesHandlersCheckoutHandler;
-use PGFrameworkInterfacesModuleFacadeInterface;
+use PGSystemServicesContainer;
+use PGMagentoEntitiesOrder;
+use PGModuleServicesHandlersBehavior;
+use PGPaymentComponentsEventsRefundEvent;
+use PGModuleServicesBroadcaster;
+use PGShopInterfacesProvisionersCheckout;
+use PGMagentoProvisionersCheckoutProvisioner;
+use PGPaymentServicesHandlersCheckoutHandler;
+use PGModuleInterfacesModuleFacade;
 
 require_once PAYGREEN_BOOTSTRAP_SRC;
 
@@ -54,7 +54,7 @@ class PaygreenPayment extends AbstractMethod
 
     protected function getService ($name)
     {
-        return PGFrameworkContainer::getInstance()->get($name);
+        return PGSystemServicesContainer::getInstance()->get($name);
     }
 
     public function getTitle()
@@ -64,7 +64,7 @@ class PaygreenPayment extends AbstractMethod
 
     public function isActive($storeId = null)
     {
-        /** @var PGFrameworkInterfacesModuleFacadeInterface $moduleFacade */
+        /** @var PGModuleInterfacesModuleFacade $moduleFacade */
         $moduleFacade = $this->getService('facade.module');
 
         return parent::isActive($storeId) && $moduleFacade->isActive();
@@ -72,7 +72,7 @@ class PaygreenPayment extends AbstractMethod
 
     public function canRefund()
     {
-        /** @var PGFrameworkServicesHandlersBehaviorHandler $behaviorHandler */
+        /** @var PGModuleServicesHandlersBehavior $behaviorHandler */
         $behaviorHandler = $this->getService('handler.behavior');
 
         $canRefund = parent::canRefund();
@@ -84,12 +84,12 @@ class PaygreenPayment extends AbstractMethod
     {
         $this->getService('logger')->debug("PaygreenPayment::refund", $amount);
 
-        /** @var PGFrameworkServicesBroadcaster $broadcaster */
+        /** @var PGModuleServicesBroadcaster $broadcaster */
         $broadcaster = $this->getService('broadcaster');
 
-        $order = new PGModuleEntitiesOrder($payment->getOrder());
+        $order = new PGMagentoEntitiesOrder($payment->getOrder());
 
-        $event = new PGDomainComponentsEventsRefundEvent($order, $amount);
+        $event = new PGPaymentComponentsEventsRefundEvent($order, $amount);
 
         $broadcaster->fire($event);
 
@@ -121,11 +121,11 @@ class PaygreenPayment extends AbstractMethod
 
     public function canUseCheckout()
     {
-        /** @var PGDomainServicesHandlersCheckoutHandler $checkoutHandler */
+        /** @var PGPaymentServicesHandlersCheckoutHandler $checkoutHandler */
         $checkoutHandler = $this->getService('handler.checkout');
 
-        /** @var PGDomainInterfacesCheckoutProvisionerInterface $checkoutProvisioner */
-        $checkoutProvisioner = new PGModuleProvisionersCheckoutProvisioner();
+        /** @var PGShopInterfacesProvisionersCheckout $checkoutProvisioner */
+        $checkoutProvisioner = new PGMagentoProvisionersCheckoutProvisioner();
 
         return $checkoutHandler->isCheckoutAvailable($checkoutProvisioner);
     }

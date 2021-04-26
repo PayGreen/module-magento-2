@@ -1,6 +1,0 @@
-{
-  "behavior.detailed_logs": {
-    "class": "PGFrameworkServicesBehaviorsDetailedLogsBehavior",
-    "arguments": ["@settings"]
-  }
-}

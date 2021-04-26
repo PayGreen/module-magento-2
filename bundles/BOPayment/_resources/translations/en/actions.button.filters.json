@@ -1,0 +1,18 @@
+{
+  "actions": {
+    "button": {
+      "filters": {
+        "button": "Filter",
+        "result": {
+          "success": "Successfully applied filters.",
+          "failure": "An error occurred while saving the filters.",
+          "invalid": "Your configuration is not valid."
+        },
+        "errors": {
+          "id_not_found": "ID button not found.",
+          "button_not_found": "Button not found."
+        }
+      }
+    }
+  }
+}

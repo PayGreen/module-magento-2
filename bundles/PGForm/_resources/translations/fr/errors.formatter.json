@@ -1,0 +1,12 @@
+{
+  "errors": {
+    "formatter": {
+      "string": "La valeur n'est pas une chaine de caractère valide.",
+      "integer": "La valeur n'est pas un entier valide.",
+      "array": "La valeur n'est pas un tableau valide.",
+      "boolean": "La valeur n'est pas une booléen valide.",
+      "float": "La valeur n'est pas un nombre à virgule valide.",
+      "object": "La valeur n'est pas un objet valide."
+    }
+  }
+}

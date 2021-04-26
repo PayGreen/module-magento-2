@@ -1,0 +1,9 @@
+{
+  "blocks": {
+    "account_status": {
+      "title": "My account status",
+      "footer": "* By activating your account, you submit to the PayGreen's pricing policy.",
+      "footerLink": "See our pricing policy"
+    }
+  }
+}

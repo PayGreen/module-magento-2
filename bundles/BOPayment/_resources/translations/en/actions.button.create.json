@@ -1,0 +1,14 @@
+{
+  "actions": {
+    "button": {
+      "insert": {
+        "button": "New button",
+        "result": {
+          "success": "Button created successfully.",
+          "failure": "En error occurred while create the button.",
+          "invalid": "Your payment button is not valid."
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,11 @@
+{
+  "actions": {
+    "diagnostic": {
+      "correction": {
+        "result": {
+          "success": "Toutes les erreurs trouvées ont été corrigées avec succès."
+        }
+      }
+    }
+  }
+}

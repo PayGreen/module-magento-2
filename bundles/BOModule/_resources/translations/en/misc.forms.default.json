@@ -1,0 +1,32 @@
+{
+  "misc": {
+    "forms": {
+      "default": {
+        "input": {
+          "empty": "Not specified",
+          "range": {
+            "from": "From",
+            "to": "to"
+          },
+          "search": {
+            "placeholder": "Search&hellip;"
+          }
+        },
+        "buttons": {
+          "save": "Save",
+          "enabled": "Enabled",
+          "disabled": "Disabled",
+          "yes": "Yes",
+          "no": "No",
+          "validate": "Validate",
+          "delete": "Delete",
+          "cancel": "Cancel",
+          "translation_add": "Add translation"
+        },
+        "errors": {
+          "display_form": "An error occurred while building config form."
+        }
+      }
+    }
+  }
+}

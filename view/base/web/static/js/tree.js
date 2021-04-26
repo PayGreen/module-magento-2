@@ -14,7 +14,7 @@
  * @author    PayGreen <contact@paygreen.fr>
  * @copyright 2014 - 2021 Watt Is It
  * @license   https://opensource.org/licenses/mit-license.php MIT License X11
- * @version   1.2.5
+ * @version   2.0.0
  *
  */
 let start = new Date().getTime();
@@ -37,11 +37,7 @@ let tree = {
     sendRequest() {
         let url = window['paygreen_tree_computing_url'];
 
-        if (!url) {
-            console.log("PayGreen fingerprint url not found.");
-        } else {
-            this.makeXmlHttpRequest('POST', url, this.buildData());
-        }
+        this.makeXmlHttpRequest('POST', url, this.buildData());
     },
 
     makeXmlHttpRequest(method, url, data, async = true) {
@@ -50,12 +46,6 @@ let tree = {
         xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded; charset=UTF-8');
         xhr.setRequestHeader("X-Requested-With", "XMLHttpRequest");
         xhr.send(new URLSearchParams(data));
-
-        if (xhr.readyState === 4) { // State 4 means the request is done
-            if (xhr.status !== 200) {
-                console.log("PayGreen fingerprint computing error.");
-            }
-        }
     },
 
     buildData() {

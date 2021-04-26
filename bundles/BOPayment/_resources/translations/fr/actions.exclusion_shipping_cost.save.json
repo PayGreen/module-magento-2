@@ -1,0 +1,12 @@
+{
+  "actions": {
+    "exclusion_shipping_cost": {
+      "save": {
+        "result": {
+          "success": "La configuration de l'exclusion des modes d'expédition a été enregistrée avec succès.",
+          "failure": "Le formulaire n'est pas valide."
+        }
+      }
+    }
+  }
+}

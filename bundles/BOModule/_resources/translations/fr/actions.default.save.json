@@ -1,0 +1,14 @@
+{
+  "actions": {
+    "default": {
+      "save": {
+        "result": {
+          "success": "Configuration enregistrée avec succès."
+        },
+        "errors": {
+          "processing_form": "Une erreur s'est produite lors du traitement du formulaire de configuration."
+        }
+      }
+    }
+  }
+}

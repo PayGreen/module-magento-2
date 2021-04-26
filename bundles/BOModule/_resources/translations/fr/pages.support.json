@@ -1,0 +1,11 @@
+{
+  "pages": {
+    "support": {
+      "name": "Support",
+      "title": "Correction des problèmes techniques.",
+      "notices": {
+        "global_settings": "En mode multi-boutique, les paramètres de la page Support sont globaux à toutes les boutiques."
+      }
+    }
+  }
+}

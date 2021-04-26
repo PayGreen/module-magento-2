@@ -1,0 +1,16 @@
+{
+  "misc": {
+    "backoffice": {
+      "menu": {
+        "logo": "Open my PayGreen back-office",
+        "shop_selector": {
+          "label": "Shop configuration"
+        }
+      },
+      "errors": {
+        "interface_construction": "Error during the generation of the configuration interface.",
+        "shop_context_needed": "The PayGreen module is only fully configurable at the store level."
+      }
+    }
+  }
+}

@@ -1,0 +1,18 @@
+{
+  "forms": {
+    "authentication": {
+      "fields": {
+        "shop_token": {
+          "label": "Identifiant unique"
+        },
+        "private_key": {
+          "label": "Clé privée"
+        }
+      },
+      "errors": {
+        "private_key_bad_format": "Votre clé privée n'est pas valable.",
+        "identifier_bad_format": "Votre identifiant unique n'est pas valable."
+      }
+    }
+  }   
+}

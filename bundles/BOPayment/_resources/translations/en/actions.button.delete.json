@@ -1,0 +1,18 @@
+{
+  "actions": {
+    "button": {
+      "delete": {
+        "button": "Delete",
+        "confirmation": "Are you sure you want to delete this payment button?",
+        "result": {
+          "success": "Button deleted successfully.",
+          "failure": "En error occurred while deleting the button."
+        },
+        "errors": {
+          "id_not_found": "ID button not found.",
+          "button_not_found": "Button not found."
+        }
+      }
+    }
+  }
+}

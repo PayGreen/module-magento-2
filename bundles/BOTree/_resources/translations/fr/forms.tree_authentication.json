@@ -1,0 +1,17 @@
+{
+  "forms":{
+    "tree_authentication": {
+      "fields": {
+        "login": {
+          "label": "Identifiant"
+        },
+        "password": {
+          "label": "Mot de passe"
+        },
+        "client_id": {
+          "label": "ID client"
+        }
+      }
+    }
+  }
+}

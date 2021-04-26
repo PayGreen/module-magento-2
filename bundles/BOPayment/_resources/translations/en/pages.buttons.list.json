@@ -1,0 +1,12 @@
+{
+  "pages": {
+    "buttons": {
+      "list": {
+        "breadcrumb": "All my buttons",
+        "title": "All my payment buttons",
+        "error": "Your payment button's config is incorrect.",
+        "image": "Your payment button's picture"
+      }
+    }
+  }
+}

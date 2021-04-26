@@ -1,0 +1,11 @@
+{
+  "pages": {
+    "support": {
+      "name": "Support",
+      "title": "Correction of technical problems",
+      "notices": {
+        "global_settings": "In multishop mode, the settings on the Support page are global to all stores."
+      }
+    }
+  }
+}

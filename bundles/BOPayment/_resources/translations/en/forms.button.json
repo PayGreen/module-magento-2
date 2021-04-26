@@ -1,0 +1,81 @@
+{
+  "forms":{
+    "button": {
+      "title" : "Configuration payment buttons",
+      "title_new_button": "New button",
+      "fields": {
+        "label": {
+          "label": "Button's label"
+        },
+        "integration": {
+          "label": "Payment interface",
+          "helper": "In order to enable in site payment interface, In Site module must be activated on your PayGreen back-office. What's more, your shop URL must be in HTTPS (SSL enabled): if not, your payment button will be disabled.",
+          "values": {
+            "external": "External payment page",
+            "insite": "In site payment interface"
+          }
+        },
+        "image": {
+          "label": "Button's picture",
+          "default": "Use default picture"
+        },
+        "height": {
+          "label": "Picture height",
+          "helper": "Picture height in your button.",
+          "append": "pixels"
+        },
+        "display_type": {
+          "label": "Button display style",
+          "values": {
+            "all": "Title and picture",
+            "picture": "Only picture",
+            "text": "Only title"
+          }
+        },
+        "position": {
+          "label": "Button display order",
+          "helper": "Choose your button order compared to your other PayGreen payment buttons. Use 0 to let your button order be defined automatically."
+        },
+        "payment_mode": {
+          "label": "Payment mode"
+        },
+        "payment_type": {
+          "label": "Payment method"
+        },
+        "payment_number": {
+          "label": "Number of installments",
+          "warning": "Warning: the current legislation on payments in installments does not allow payments with more than 4 installments. Unless the product/service is delivered after payment."
+        },
+        "first_payment_part": {
+          "label": "First installment's amount",
+          "helper": "Choose the percentage of the total amount to pay at the first installment. Let 0 to calculate first installment's amount automatically.",
+          "append": "% of total"
+        },
+        "payment_report": {
+          "label": "Postponement of first installment",
+          "values": {
+            "none": "No postponement (immediat payment)",
+            "1week": "Postponed by one week",
+            "2week": "Postponed by 2 weeks",
+            "1month": "Postponed by one month",
+            "2month": "Postponed by 2 months",
+            "3month": "Postponed by 3 months"
+          },
+          "helper": "You can postpone first installment to allow your clients not pay it immediatly."
+        },
+        "order_repeated": {
+          "label": "Renew previous order",
+          "helper": "At each due payment, the previous order is recreated automatically."
+        },
+        "discount": {
+          "label": "Discount",
+          "helper": "Non visible cart rule."
+        }
+      },
+      "errors": {
+        "display_error": "An error occurred while building button form.",
+        "id_not_found": "ID button not found."
+      }
+    }
+  }
+}

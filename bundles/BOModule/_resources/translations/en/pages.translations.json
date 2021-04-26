@@ -1,0 +1,12 @@
+{
+  "pages": {
+    "translations": {
+      "name": "Translation management",
+      "title": "Translation of dynamic elements of the front office",
+      "frontoffice": {
+        "title": "Front-office translation",
+        "description": "Custom all texts displayed to your customers in each available language on your shop."
+      }
+    }
+  }
+}

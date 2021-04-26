@@ -1,0 +1,12 @@
+{
+  "actions": {
+    "account_activation": {
+      "toggle": {
+        "result": {
+          "success": "Account activation updated successfully.",
+          "failure": "An error occurred during account activation updating."
+        }
+      }
+    }
+  }
+}

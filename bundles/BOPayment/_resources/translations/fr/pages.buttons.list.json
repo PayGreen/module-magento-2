@@ -1,0 +1,12 @@
+{
+  "pages": {
+    "buttons": {
+      "list": {
+        "breadcrumb": "Tous mes boutons",
+        "title": "Tous mes boutons de paiement",
+        "error": "La configuration de ce bouton de paiement est incorrecte.",
+        "image": "Image de votre bouton de paiement"
+      }
+    }
+  }
+}

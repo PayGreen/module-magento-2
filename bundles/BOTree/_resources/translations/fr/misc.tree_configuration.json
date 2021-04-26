@@ -1,0 +1,9 @@
+{
+  "misc": {
+    "tree_configuration": {
+      "notifications": {
+        "needShippingAddress": "Pour profiter des services de compensation carbone, veuillez renseigner une adresse d'expédition."
+      }
+    }
+  }
+}

@@ -1,0 +1,32 @@
+{
+  "misc": {
+    "forms": {
+      "default": {
+        "input": {
+          "empty": "Non renseigné",
+          "range": {
+            "from": "De",
+            "to": "à"
+          },
+          "search": {
+            "placeholder": "Rechercher&hellip;"
+          }
+        },
+        "buttons": {
+          "save": "Sauvegarder",
+          "enabled": "Activer",
+          "disabled": "Désactiver",
+          "yes": "Oui",
+          "no": "Non",
+          "validate": "Valider",
+          "delete": "Effacer",
+          "cancel": "Annuler",
+          "translation_add": "Ajouter une traduction"
+        },
+        "errors": {
+          "display_form": "Une erreur s'est produite lors de la création du formulaire de configuration."
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,9 @@
+{
+  "blocks": {
+    "account_login": {
+      "title": "Déjà un compte PayGreen&nbsp;?",
+      "description": "&hellip;ou renseignez vos identifiants PayGreen&nbsp;:",
+      "action": "Me connecter"
+    }
+  }
+}

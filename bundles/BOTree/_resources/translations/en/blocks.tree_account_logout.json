@@ -1,0 +1,9 @@
+{
+  "blocks": {
+    "tree_account_logout": {
+      "title": "Logout",
+      "description": "Warning&nbsp;: if you logout, you won't be able to accept payments with the PayGreen module.",
+      "action": "Logout"
+    }
+  }
+}

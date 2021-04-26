@@ -1,0 +1,22 @@
+{
+  "misc": {
+    "error": {
+      "title": "Une erreur interne s'est produite",
+      "text": [
+        "Merci de contacter le support PayGreen en lui fournissant les informations indiquées ci-dessous&nbsp;:"
+      ],
+      "exception": {
+        "type": "Type d'exception&nbsp;:",
+        "text": "Message&nbsp;:",
+        "code": "Code&nbsp;:",
+        "file": "Survenue dans le fichier",
+        "line": "à la ligne",
+        "traces": "Pile des appels"
+      },
+      "trace": {
+        "file": "Dans",
+        "line": "à la ligne"
+      }
+    }
+  }
+}

@@ -1,0 +1,18 @@
+{
+  "actions": {
+    "button": {
+      "delete": {
+        "button": "Supprimer",
+        "confirmation": "Êtes-vous certain de vouloir supprimer ce bouton de paiement ?",
+        "result": {
+          "success": "Bouton supprimé avec succès.",
+          "failure": "Une erreur s'est produite lors de la suppression du bouton."
+        },
+        "errors": {
+          "id_not_found": "Identifiant du bouton non trouvé.",
+          "button_not_found": "Bouton non trouvé."
+        }
+      }
+    }
+  }
+}

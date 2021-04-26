@@ -15,18 +15,19 @@
  * @author    PayGreen <contact@paygreen.fr>
  * @copyright 2014 - 2021 Watt Is It
  * @license   https://opensource.org/licenses/mit-license.php MIT License X11
- * @version   1.2.5
+ * @version   2.0.0
  *
  */
 
 namespace Paygreen\Payment\Model;
 
 use Magento\Checkout\Model\ConfigProviderInterface;
-use PGFrameworkContainer;
+use PGIntlServicesTranslator;
+use PGSystemServicesContainer;
 use PGServerServicesLinker;
-use PGDomainServicesHandlersPaymentButtonHandler;
-use PGDomainInterfacesEntitiesButtonInterface;
-use PGModuleProvisionersCheckoutProvisioner;
+use PGPaymentServicesHandlersPaymentButtonHandler;
+use PGPaymentInterfacesEntitiesButtonInterface;
+use PGMagentoProvisionersCheckoutProvisioner;
 
 class ConfigProvider implements ConfigProviderInterface
 {
@@ -37,30 +38,30 @@ class ConfigProvider implements ConfigProviderInterface
 
     protected function getService($name)
     {
-        return PGFrameworkContainer::getInstance()->get($name);
+        return PGSystemServicesContainer::getInstance()->get($name);
     }
 
     public function getConfig()
     {
         $this->getService('logger')->debug("ConfigProvider called.");
 
-        /** @var PGDomainServicesHandlersPaymentButtonHandler $paymentButtonHandler */
+        /** @var PGPaymentServicesHandlersPaymentButtonHandler $paymentButtonHandler */
         $paymentButtonHandler = $this->getService('handler.payment_button');
 
-        /** @var \PGIntlServicesTranslatior $translator */
+        /** @var PGIntlServicesTranslator $translator */
         $translator = $this->getService('translator');
 
         /** @var PGServerServicesLinker $linker */
         $linker = $this->getService('linker');
 
-        /** @var PGModuleProvisionersCheckoutProvisioner $checkoutProvisioner */
-        $checkoutProvisioner = new PGModuleProvisionersCheckoutProvisioner();
+        /** @var PGMagentoProvisionersCheckoutProvisioner $checkoutProvisioner */
+        $checkoutProvisioner = new PGMagentoProvisionersCheckoutProvisioner();
 
         $buttons = $this->getService('manager.button')->getValidButtons($checkoutProvisioner);
 
         $formatedButtons = [];
 
-        /** @var PGDomainInterfacesEntitiesButtonInterface $button */
+        /** @var PGPaymentInterfacesEntitiesButtonInterface $button */
         foreach ($buttons as $button) {
             $formatedButtons[] = array_merge(
                 $button->toArray(),

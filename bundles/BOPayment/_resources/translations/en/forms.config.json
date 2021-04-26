@@ -1,0 +1,56 @@
+{
+  "forms":{
+    "config": {
+      "fields": {
+        "active": {
+          "label": "Activate payments",
+          "help": "Activate payments with the PayGreen module."
+        },
+        "behavior_payment_refused": {
+          "label": "Action following a failed payment",
+          "help": "Define the behavior of the PayGreen module when a payment fail.",
+          "values": {
+            "yes": "Order cancellation",
+            "no": "Redirection to the payment page"
+          }
+        },
+        "visibility": {
+          "label": "Module's visibility",
+          "help": "Allows the administrator to test the module before activating it for his clients.",
+          "values": {
+            "yes": "Visible by clients",
+            "no": "Visible only by administrator"
+          }
+        },
+        "behavior_transmit_refund": {
+          "label": "Synchronize refunds",
+          "help": "If you activate this option, then as soon as you make a refund from the back office of your shop, a notification will be automatically sent to the PayGreen server in order to proceed with the refund of the transaction."
+        },
+        "behavior_transmit_delivering": {
+          "label": "Synchronize delivery confirmations",
+          "help": "If you activate this option, then as soon as an order payable on delivery is marked as 'completed', a notification will be automatically sent to the PayGreen server in order to validate the payment."
+        },
+        "behavior_display_footer": {
+          "label": "Display PayGreen security logo",
+          "help": "If this option is activated, the PayGreen security logo will be displayed in the bottom of your website."
+        },
+        "display_footer_color": {
+          "label": "PayGreen security logo's color",
+          "values": {
+            "white": "White",
+            "green": "Green",
+            "black": "Black"
+          }
+        },
+        "regenerate_cart_on_cancelled_payment": {
+          "label": "Regenerate cart if payment is cancelled",
+          "help": "If this option is activated and a customer cancels his payment, his cart will be regenerated."
+        },
+        "regenerate_cart_on_refused_payment": {
+          "label": "Regenerate cart if payment is refused",
+          "help": "If this option is activated and a customer's payment is refused, his cart will be regenerated."
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,8 @@
+{
+  "blocks": {
+    "account_subscription": {
+      "title": "You don't have a PayGreen account?",
+      "action": "Subscribe"
+    }
+  }
+}

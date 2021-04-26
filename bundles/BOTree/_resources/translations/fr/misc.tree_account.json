@@ -1,0 +1,9 @@
+{
+  "misc": {
+    "tree_account": {
+      "notifications": {
+        "needLogin": "Pour profiter des services de compensation carbone, veuillez vous connecter à votre compte PayGreen ClimateKit."
+      }
+    }
+  }
+}

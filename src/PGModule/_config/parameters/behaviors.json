@@ -1,8 +1,0 @@
-{
-  "behaviors": {
-    "transmission_on_refund": {
-      "type": "user",
-      "key": "behavior_payment_refund"
-    }
-  }
-}

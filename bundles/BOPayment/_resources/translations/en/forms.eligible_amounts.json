@@ -1,0 +1,21 @@
+{
+  "forms": {
+    "eligible_amounts": {
+      "title": "Activation of payment methods by category",
+      "explain": "Select the available payment methods for each product category. If none of the checkbox is checked inside a column, it means that all categories are eligible for this payment method.",
+      "footerTitle": "What is an eligible amount/product/category?",
+      "footer": [
+        "Some payment methods only can be used to pay some kinds of products (food products, etc). You can enable and disable each payment method for each products' category in order to filter what payment methods are available for each product's type.",
+        "If a cart contains both eligible and non-eligible products for the payment method chosen by a customer, an another payment method will be used to pay non-eligible amount part."
+      ],
+      "fields": {
+        "search": {
+          "placeholder": "Category&hellip;"
+        }
+      },
+      "errors": {
+        "display_form": "An error occurred while building category payments form."
+      }
+    }
+  }   
+}

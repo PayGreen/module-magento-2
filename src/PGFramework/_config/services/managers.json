@@ -1,6 +1,0 @@
-{
-  "manager.setting": {
-    "class": "PGFrameworkServicesManagersSettingManager",
-    "arguments": ["@repository.setting"]
-  }
-}

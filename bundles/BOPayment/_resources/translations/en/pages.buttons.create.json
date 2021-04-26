@@ -1,0 +1,9 @@
+{
+  "pages": {
+    "buttons": {
+      "create": {
+        "title": "New payment button"
+      }
+    }
+  }
+}

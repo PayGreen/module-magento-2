@@ -1,0 +1,12 @@
+{
+  "forms":{
+    "tree_activation": {
+      "fields": {
+        "activation": {
+          "label": "ClimateKit activation",
+          "help": "If ClimateKit is activated, you or your customers will be able to offset the carbon cost of a transaction."
+        }
+      }
+    }
+  }
+}

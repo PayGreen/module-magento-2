@@ -1,0 +1,19 @@
+{
+  "pages": {
+    "buttons": {
+      "shared": {
+        "design": {
+          "title": "Apparence du bouton",
+          "preview": "Aperçu de votre bouton",
+          "previewImageAlt": "Image de votre bouton"
+        },
+        "payment": {
+          "title": "Type de paiement"
+        },
+        "other": {
+          "title": "Autres réglages"
+        }
+      }
+    }
+  }
+}

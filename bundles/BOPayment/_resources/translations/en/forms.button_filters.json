@@ -1,0 +1,36 @@
+{
+  "forms":{
+    "button_filters": {
+      "fields": {
+        "categories_filtering_mode": {
+          "label": "Type of filtering",
+          "help": "Allows you to define which type of filtering you want to use.",
+          "values": {
+            "NONE": "No filtering",
+            "STRICT": "Strict filtering",
+            "FLEXIBLE": "Flexible filtering"
+          }
+        },
+        "filtered_categories": {
+          "column": "Filter",
+          "label": "Activation of payment buttons by category",
+          "help": "Select the payment buttons available for each of your product categories. If there is no checkbox in a column, it means that no category is eligible and the filtering will be automatically disabled."
+        },
+        "search": {
+          "placeholder": "Category&hellip;"
+        },
+        "cart_amount": {
+          "label": "Cart amount",
+          "helper": "Your button will be visible only for customers with cart which amount is between these two amounts. Let 0 if you don't want to add min or max amount(s)."
+        }
+      },
+      "information": {
+        "helper": "Strict filtering will allow you to see the button only if all the items in the cart belong to the selected categories, unlike soft filtering which will display the button when a single item in the cart belongs to the selected categories."
+      },
+      "errors": {
+        "display_error": "An error occurred while constructing the button filter form.",
+        "id_not_found": "ID button not found."
+      }
+    }
+  }
+}

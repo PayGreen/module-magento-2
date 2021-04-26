@@ -1,0 +1,34 @@
+{
+  "data": {
+    "payment": {
+      "payment_types": {
+        "CB": "CB/Visa/MasterCard",
+        "AMEX": "American Express",
+        "ANCV": "e-Chèques-Vacances",
+        "ECV": "e-Chèques-Vacances",
+        "RESTOFLASH": "Restoflash",
+        "LUNCHR": "Swile",
+        "CBTRD": "CB TRD",
+        "TRD": "Titres Restaurant Dématérialisés",
+        "SEPA": "Prélèvement SEPA"
+      },
+      "payment_types_short": {
+        "CB": "CB/Visa/MasterCard",
+        "AMEX": "American Express",
+        "ANCV": "e-Chèques-Vacances",
+        "ECV": "e-Chèques-Vacances",
+        "RESTOFLASH": "Restoflash",
+        "LUNCHR": "Swile",
+        "CBTRD": "CB TRD",
+        "TRD": "Titres Restaurant",
+        "SEPA": "Prélèvement SEPA"
+      },
+      "payment_modes": {
+        "CASH": "Cash",
+        "RECURRING": "Subscription",
+        "XTIME": "In installments",
+        "TOKENIZE": "At the delivery"
+      }
+    }
+  }
+}

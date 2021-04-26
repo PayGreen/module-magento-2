@@ -1,0 +1,21 @@
+{
+  "forms": {
+    "eligible_amounts": {
+      "title": "Activation des moyens de paiement par catégorie",
+      "explain": "Sélectionnez les moyens de paiement disponibles pour chacune de vos catégories de produit. Si aucune case n'est cochée dans une colonne, cela signifie que toutes les catégories sont éligibles pour ce moyen de paiement.",
+      "footerTitle": "Qu'est-ce qu'un montant/un produit/une catégorie éligible&nbsp;?",
+      "footer": [
+        "Certains moyens de paiement ne peuvent être utilisés que pour certains types de produits. Par exemple, les Titres Restaurant Dématérialisés ne peuvent permettre de payer que des produits alimentaires, alcool exclu. Il est donc de votre responsabilité de n'activer ce moyen de paiement que pour les catégories de produits qui contiennent exclusivement des produits alimentaires.",
+        "Si un panier contient à la fois des produits éligibles et des produits non éligibles au moyen de paiement choisi par le consommateur, un second moyen de paiement lui sera proposé pour régler le montant non éligible."
+      ],
+      "fields": {
+        "search": {
+          "placeholder": "Catégorie&hellip;"
+        }
+      },
+      "errors": {
+        "display_form": "Une erreur s'est produite lors de la création du formulaire de configuration des catégories de paiement."
+      }
+    }
+  }   
+}

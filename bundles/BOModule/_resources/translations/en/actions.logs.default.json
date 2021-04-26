@@ -1,0 +1,12 @@
+{
+  "actions": {
+    "logs": {
+      "default": {
+        "errors": {
+          "invalid_file": "The targeted file is not a valid logs file.",
+          "file_not_found": "The targeted file does not exist."
+        }
+      }
+    }
+  }
+}

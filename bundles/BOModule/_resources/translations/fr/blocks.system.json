@@ -1,0 +1,28 @@
+{
+  "blocks": {
+    "system": {
+      "title": "Informations système sur le module PayGreen",
+      "platform": {
+        "title": "Plateforme d'exécution",
+        "fields": {
+          "platform": "Plateforme",
+          "php": "PHP",
+          "module": "Module PayGreen",
+          "framework": "Framework PayGreen",
+          "curl": "Version de cURL",
+          "ssl": "Version de OpenSSL"
+        }
+      },
+      "filesystem": {
+        "title": "Informations sur le système de fichiers",
+        "subtitle": "Emplacements physiques",
+        "columns": {
+          "name": "Nom",
+          "path": "Chemin physique",
+          "exists": "Existe&nbsp;?",
+          "writable": "Inscriptible&nbsp;?"
+        }
+      }
+    }
+  }
+}

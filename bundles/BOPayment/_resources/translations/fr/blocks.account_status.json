@@ -1,0 +1,9 @@
+{
+  "blocks": {
+    "account_status": {
+      "title": "Statut de mon compte",
+      "footer": "* En passant votre compte en production, vous acceptez les conditions tarifaires PayGreen.",
+      "footerLink": "Voir les conditions tarifaires"
+    }
+  }
+}

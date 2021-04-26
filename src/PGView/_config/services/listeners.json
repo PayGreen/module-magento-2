@@ -1,9 +1,0 @@
-{
-  "listener.upgrade.clear_smarty_cache": {
-    "class": "PGViewServicesListenersClearSmartyCacheListener",
-    "arguments": [
-      "@handler.smarty",
-      "@logger"
-    ]
-  }
-}

@@ -1,0 +1,15 @@
+{
+  "misc": {
+    "module": {
+      "description": "La solution de paiement française à impact positif sur la société et l'environnement",
+      "uninstall": {
+        "confirmation": "Êtes-vous sûr de vouloir désinstaller le module PayGreen ?"
+      },
+      "bool": {
+        "null": "NA",
+        "true": "Oui",
+        "false": "Non"
+      }
+    }
+  }
+}

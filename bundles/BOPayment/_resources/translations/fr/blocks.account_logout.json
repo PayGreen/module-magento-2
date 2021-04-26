@@ -1,0 +1,9 @@
+{
+  "blocks": {
+    "account_logout": {
+      "title": "Déconnexion",
+      "description": "Attention&nbsp;: si vous vous déconnectez, vous ne serez plus en mesure d'accepter des paiements via le module PayGreen.",
+      "action": "Me déconnecter"
+    }
+  }
+}

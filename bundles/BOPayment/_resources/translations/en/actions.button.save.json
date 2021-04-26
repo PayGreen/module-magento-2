@@ -1,0 +1,17 @@
+{
+  "actions": {
+    "button": {
+      "save": {
+        "result": {
+          "success": {
+            "button": "Button saved successfully.",
+            "picture": "Image uploaded successfully."
+          }
+        },
+        "errors": {
+          "upload_picture_error": "Can not upload the image."
+        }
+      }
+    }
+  }
+}

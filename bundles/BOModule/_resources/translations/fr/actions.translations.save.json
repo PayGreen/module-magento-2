@@ -1,0 +1,12 @@
+{
+  "actions": {
+    "translations": {
+      "save": {
+        "result": {
+          "success": "Traductions enregistrées avec succès.",
+          "failure": "Une erreur s'est produite lors de l'enregistrement des traductions'."
+        }
+      }
+    }
+  }
+}

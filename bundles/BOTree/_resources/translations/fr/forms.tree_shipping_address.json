@@ -1,0 +1,23 @@
+{
+  "forms":{
+    "tree_shipping_address": {
+      "fields": {
+        "line_1": {
+          "label": "Adresse"
+        },
+        "line_2": {
+          "label": "Complément d'adresse"
+        },
+        "zipcode": {
+          "label": "Code postal"
+        },
+        "city": {
+          "label": "Ville"
+        },
+        "country": {
+          "label": "Pays"
+        }
+      }
+    }
+  }
+}

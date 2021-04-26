@@ -1,0 +1,14 @@
+{
+  "misc": {
+    "account": {
+      "errors": {
+        "empty_bank_data": "Your bank details are incomplete.",
+        "empty_shop_data": "The data of your shop are incomplete."
+      },
+      "notification": {
+        "needLogin": "Please login to use PayGreen module.",
+        "incorrectKey": "The unique ID and/or private key are incorrect."
+      }
+    }
+  }
+}

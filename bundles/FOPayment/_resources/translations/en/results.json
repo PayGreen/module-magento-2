@@ -1,0 +1,56 @@
+{
+  "frontoffice": {
+    "payment": {
+      "results": {
+        "payment": {
+          "fatal_error": {
+            "error": "An unknown error has occurred."
+          },
+          "inconsistent_context": {
+            "error": "Unable to find your order."
+          },
+          "pid_not_found": {
+            "error": "Unable to find the identifier of your payment."
+          },
+          "workflow_error": {
+            "error": "The state of your order does not allows to validate your payment."
+          },
+          "paygreen_unavailable": {
+            "title": "PayGreen servers are not responding.",
+            "message": "You are undoubtedly very numerous to call upon our services at this moment. We apologize for the inconvenience.",
+            "link": "Retry to validate my order"
+          },
+          "refused_without_regenerate_cart": {
+            "title": "Your payment has been declined by your bank.",
+            "link": "View your order history",
+            "details": "Your order has been cancelled."
+          },
+          "refused_with_regenerate_cart": {
+            "title": "Your payment has been declined by your bank.",
+            "link": "Choose another payment method"
+          }
+        },
+        "order": {
+          "validate": {
+            "title": "Your order has been confirmed.",
+            "link": "View your order details"
+          },
+          "cancel": {
+            "title": "Your order has been canceled.",
+            "link": "View your order details"
+          },
+          "error": {
+            "title": "Your order has an error.",
+            "message": "Please contact the store administrator.",
+            "link": "View your order details"
+          },
+          "new": {
+            "title": "Your order has not been processed.",
+            "message": "Please contact the store administrator.",
+            "link": "View your order details"
+          }
+        }
+      }
+    }
+  }
+}

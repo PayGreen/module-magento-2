@@ -1,0 +1,34 @@
+{
+  "translations": {
+    "payment_bloc": {
+      "field": {
+        "label": "Presentation of payment buttons",
+        "help": "Title used to present the payment buttons."
+      }
+    },
+    "payment_link": {
+      "field": {
+        "label": "Payment confirmation button",
+        "help": "Button text for choosing PayGreen payment options."
+      }
+    },
+    "message_payment_success": {
+      "field": {
+        "label": "Message for accepted payment",
+        "help": "This message is displayed to your customers after a validated payment."
+      }
+    },
+    "message_payment_refused": {
+      "field": {
+        "label": "Message for refused payment",
+        "help": "This message is displayed to your customers after a declined payment."
+      }
+    },
+    "message_order_canceled": {
+      "field": {
+        "label": "Message for canceled order",
+        "help": "This message is displayed to your customers when their order is canceled."
+      }
+    }
+  }
+}

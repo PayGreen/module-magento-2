@@ -1,0 +1,12 @@
+{
+  "frontoffice": {
+    "payment": {
+      "insite": {
+        "return": {
+          "link": "Annuler mon paiement"
+        },
+        "bottom": "Service proposé par PayGreen"
+      }
+    }
+  }
+}

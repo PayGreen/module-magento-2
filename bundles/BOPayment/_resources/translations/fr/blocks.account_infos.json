@@ -1,0 +1,14 @@
+{
+  "blocks": {
+    "account_infos": {
+      "title": "Mes informations",
+      "description": "Les informations ci-dessous sont indispensables à la mise en production de votre compte PayGreen. Vous pouvez les renseigner et les modifier sur votre back-office PayGreen.",
+      "descriptionLink": "Ouvrir mon back-office",
+      "form": {
+        "url": "URL de votre e-commerce",
+        "siret": "N° SIRET",
+        "iban": "IBAN"
+      }
+    }
+  }
+}

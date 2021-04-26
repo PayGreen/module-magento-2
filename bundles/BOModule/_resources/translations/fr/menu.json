@@ -1,0 +1,16 @@
+{
+  "menu": {
+    "config": {
+      "name": "Configuration",
+      "title": "Configurer le module PayGreen."
+    },
+    "help": {
+      "name": "Aide",
+      "title": "Pour trouver de l'aide en cas de besoin."
+    },
+    "payment": {
+      "name": "Paiement",
+      "title": "Configuration du paiement"
+    }
+  }
+}

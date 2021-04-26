@@ -1,0 +1,12 @@
+{
+  "errors": {
+    "validator": {
+      "min_length": "The string must contain at least %{min} characters.",
+      "max_length": "The string must not contain more than %{max} characters.",
+      "regexp": "The character string does not respect the expected format.",
+      "array_in": "The selected value must be one of the following: [%{values}]",
+      "empty": "This field must not be empty.",
+      "range": "The minimum must be less than the maximum."
+    }
+  }
+}

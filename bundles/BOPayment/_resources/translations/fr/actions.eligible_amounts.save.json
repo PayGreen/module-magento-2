@@ -1,0 +1,12 @@
+{
+  "actions": {
+    "eligible_amounts": {
+      "save": {
+        "result": {
+          "success": "Configuration des catégories de paiement enregistrée avec succès.",
+          "failure": "Une erreur s'est produite lors de l'enregistrement de la configuration des catégories de paiements."
+        }
+      }
+    }
+  }
+}

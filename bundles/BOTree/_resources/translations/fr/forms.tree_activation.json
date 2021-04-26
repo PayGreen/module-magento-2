@@ -1,0 +1,12 @@
+{
+  "forms":{
+    "tree_activation": {
+      "fields": {
+        "activation": {
+          "label": "Activation du module ClimateKit",
+          "help": "Si le module ClimateKit est activé, vous ou vos clients pourront compenser le coût carbone d'une transaction."
+        }
+      }
+    }
+  }
+}
