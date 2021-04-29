@@ -15,7 +15,7 @@
  * @author    PayGreen <contact@paygreen.fr>
  * @copyright 2014 - 2021 Watt Is It
  * @license   https://opensource.org/licenses/mit-license.php MIT License X11
- * @version   2.0.0
+ * @version   2.0.1
  *
  */
 
@@ -90,7 +90,11 @@ class FOPaymentControllersPayment extends PGServerFoundationsAbstractController
             $response = $this->forward('displayNotification@front.notification', array(
                 'title' => 'frontoffice.payment.errors.creation.title',
                 'message' => 'frontoffice.payment.errors.creation.message',
-                'url' => 'frontoffice.payment.errors.creation.link',
+                'url' => array(
+                        'link' => $this->getLinker()->buildLocalUrl('checkout'),
+                        'text' => 'frontoffice.payment.errors.creation.link',
+                        'reload' => false
+                    ),
                 'exceptions' => array($exception)
             ));
         }

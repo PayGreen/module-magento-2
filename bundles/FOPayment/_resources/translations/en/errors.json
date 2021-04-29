@@ -4,7 +4,8 @@
       "errors": {
         "creation": {
           "title": "An error occurred during the preparation of your payment.",
-          "message": "Try to validate your order again and if the problem persists, please contact the site administrator to inform it."
+          "message": "Try to validate your order again and if the problem persists, please contact the site administrator to inform it.",
+          "link": "Join the payment page"
         },
         "redirection": {
           "title": "An error occurred during the redirect to our payment provider.",

@@ -15,7 +15,7 @@
  * @author    PayGreen <contact@paygreen.fr>
  * @copyright 2014 - 2021 Watt Is It
  * @license   https://opensource.org/licenses/mit-license.php MIT License X11
- * @version   2.0.0
+ * @version   2.0.1
  *
  */
 
@@ -37,11 +37,23 @@ class PGClientServicesRequestersFopen extends PGClientFoundationsRequester
 
     public function sendRequest(PGClientComponentsRequest $request)
     {
+        $rawRequestContent = $request->getContent();
+        $encodedRequestContent = json_encode($rawRequestContent);
+
+        $contentLength = 0;
+        if (!empty($rawRequestContent)) {
+            $contentLength = strlen($encodedRequestContent);
+        }
+
+        $request->addHeaders(array(
+            "Content-Length: $contentLength"
+        ));
+
         $options = array(
             'http' => array(
                 'method'  => $request->getMethod(),
                 'header'  => join("\r\n", $request->getHeaders()),
-                'content' => $request->getContent()
+                'content' => $encodedRequestContent
             )
         );
 

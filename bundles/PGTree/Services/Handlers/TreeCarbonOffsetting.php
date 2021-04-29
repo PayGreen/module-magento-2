@@ -15,7 +15,7 @@
  * @author    PayGreen <contact@paygreen.fr>
  * @copyright 2014 - 2021 Watt Is It
  * @license   https://opensource.org/licenses/mit-license.php MIT License X11
- * @version   2.0.0
+ * @version   2.0.1
  *
  */
 
@@ -114,11 +114,11 @@ class PGTreeServicesHandlersTreeCarbonOffsetting
                 }
                 
                 if ($this->isResponseValid($response, 201)) {
-                    $response = $this->treeFacade->getAPIFacade()->closeCarbonFootprint(
+                    $response = $this->treeFacade->getAPIFacade()->createCarbonFootprintPurchase(
                         $response->data->fingerprint
                     );
 
-                    $this->logger->debug('Closing carbon footprint.');
+                    $this->logger->debug('Create carbon footprint purchase.');
                 }
 
                 if ($this->isResponseValid($response, 200)) {

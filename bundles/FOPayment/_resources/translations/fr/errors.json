@@ -4,7 +4,8 @@
       "errors": {
         "creation": {
           "title": "Une erreur est survenue durant la préparation de votre paiement.",
-          "message": "Essayez de valider à nouveau votre commande et si le problème persiste, merci de contacter l'administrateur du site pour l'en informer."
+          "message": "Essayez de valider à nouveau votre commande et si le problème persiste, merci de contacter l'administrateur du site pour l'en informer.",
+          "link": "Rejoindre la page de paiement"
         },
         "redirection": {
           "title": "Une erreur est survenue durant la redirection vers notre prestataire de paiement.",

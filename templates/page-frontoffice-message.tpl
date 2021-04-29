@@ -14,7 +14,7 @@
  * @author    PayGreen <contact@paygreen.fr>
  * @copyright 2014 - 2021 Watt Is It
  * @license   https://opensource.org/licenses/mit-license.php MIT License X11
- * @version   2.0.0
+ * @version   2.0.1
  *
  *}
 
@@ -43,7 +43,7 @@
 		{if !empty($url)}
 			<div>
 				<a href="{$url.link|escape:'html':'UTF-8'}" id="redirect_link">{$url.text|pgtrans}</a>
-				{if $url.reload == true}
+				{if isset($url.reload) && ($url.reload == true)}
 					<script type="text/javascript">
 						setTimeout(function() {
 							let url = document.getElementById('redirect_link').attributes['href'].value;

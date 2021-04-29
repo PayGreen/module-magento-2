@@ -23,6 +23,6 @@
  * Class PGClientExceptionsResponseFailed
  * @package PGClient\Exceptions
  */
-class PGClientExceptionsResponseFailed extends PGClientExceptionsResponse
+class PGClientExceptionsResponseHTTPError extends PGClientExceptionsResponse
 {
 }

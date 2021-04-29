@@ -15,7 +15,7 @@
  * @author    PayGreen <contact@paygreen.fr>
  * @copyright 2014 - 2021 Watt Is It
  * @license   https://opensource.org/licenses/mit-license.php MIT License X11
- * @version   2.0.0
+ * @version   2.0.1
  *
  */
 
@@ -99,6 +99,7 @@ return array (
 'PGClientComponentsResponse' => 'PGClient/Components/Response.php',
 'PGClientExceptionsResponse' => 'PGClient/Exceptions/Response.php',
 'PGClientExceptionsResponseFailed' => 'PGClient/Exceptions/ResponseFailed.php',
+'PGClientExceptionsResponseHTTPError' => 'PGClient/Exceptions/ResponseHTTPError.php',
 'PGClientExceptionsResponseMalformed' => 'PGClient/Exceptions/ResponseMalformed.php',
 'PGClientFoundationsReply' => 'PGClient/Foundations/Reply.php',
 'PGClientFoundationsRequester' => 'PGClient/Foundations/Requester.php',

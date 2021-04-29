@@ -15,7 +15,7 @@
  * @author    PayGreen <contact@paygreen.fr>
  * @copyright 2014 - 2021 Watt Is It
  * @license   https://opensource.org/licenses/mit-license.php MIT License X11
- * @version   2.0.0
+ * @version   2.0.1
  *
  */
 
@@ -1078,90 +1078,108 @@ array (
 ),
 98 =>
 array (
-'type' => 'PERF',
-'text' => 'Optimisations mineures.',
+'type' => 'FIX',
+'code' => 'PGI-2751',
+'text' => 'Correction de la configuration de l\'url de retour utilisée en cas d\'erreur lors de la création d\'un paiement.',
 ),
 99 =>
 array (
-'type' => 'PERF',
-'text' => 'Amélioration du service Parser.',
+'type' => 'FIX',
+'code' => 'PGI-2729',
+'text' => 'Complétion des entêtes envoyées par le Requester Fopen.',
 ),
 100 =>
 array (
-'type' => 'PERF',
-'text' => 'Optimisation globale du framework.',
+'type' => 'FIX',
+'code' => 'PGI-2761',
+'text' => 'Correction du statut final utilisé pour cloturé un dossier de paiement ClimateKit.',
 ),
 101 =>
 array (
 'type' => 'PERF',
-'text' => 'Factorisation des limitations de montant du panier.',
+'text' => 'Optimisations mineures.',
 ),
 102 =>
 array (
 'type' => 'PERF',
-'text' => 'Optimisation de l\'autoloader.',
+'text' => 'Amélioration du service Parser.',
 ),
 103 =>
 array (
 'type' => 'PERF',
-'text' => 'Amélioration de l\'enregistrement des settings.',
+'text' => 'Optimisation globale du framework.',
 ),
 104 =>
 array (
 'type' => 'PERF',
-'text' => 'Amélioration de la gestion des erreurs liées au mode Insite.',
+'text' => 'Factorisation des limitations de montant du panier.',
 ),
 105 =>
 array (
 'type' => 'PERF',
-'text' => 'Meilleure gestion des upgrades.',
+'text' => 'Optimisation de l\'autoloader.',
 ),
 106 =>
 array (
 'type' => 'PERF',
-'text' => 'Amélioration de la gestion des settings.',
+'text' => 'Amélioration de l\'enregistrement des settings.',
 ),
 107 =>
 array (
 'type' => 'PERF',
-'text' => 'Amélioration de la résilience du système de cache du module et de Smarty.',
+'text' => 'Amélioration de la gestion des erreurs liées au mode Insite.',
 ),
 108 =>
 array (
 'type' => 'PERF',
-'text' => 'Amélioration de la résilience de l\'autoloader.',
+'text' => 'Meilleure gestion des upgrades.',
 ),
 109 =>
 array (
 'type' => 'PERF',
-'text' => 'Amélioration du cache Smarty.',
+'text' => 'Amélioration de la gestion des settings.',
 ),
 110 =>
 array (
 'type' => 'PERF',
-'text' => 'Amélioration des logs sur la page de paiement.',
+'text' => 'Amélioration de la résilience du système de cache du module et de Smarty.',
 ),
 111 =>
 array (
 'type' => 'PERF',
-'text' => 'On affiche plus la balise \'ul\' de notifications si il n\'y a pas de notifications.',
+'text' => 'Amélioration de la résilience de l\'autoloader.',
 ),
 112 =>
 array (
 'type' => 'PERF',
-'text' => 'Réduction du temps du PID Locking: 30sec -> 3sec.',
+'text' => 'Amélioration du cache Smarty.',
 ),
 113 =>
 array (
 'type' => 'PERF',
-'text' => 'Utilisation de la route /availablepaymenttype pour la récupération des moyens de paiement.',
+'text' => 'Amélioration des logs sur la page de paiement.',
 ),
 114 =>
 array (
 'type' => 'PERF',
-'text' => 'Utilisation de l\'index d\'autoloading pré-compilé.',
+'text' => 'On affiche plus la balise \'ul\' de notifications si il n\'y a pas de notifications.',
 ),
 115 =>
+array (
+'type' => 'PERF',
+'text' => 'Réduction du temps du PID Locking: 30sec -> 3sec.',
+),
+116 =>
+array (
+'type' => 'PERF',
+'text' => 'Utilisation de la route /availablepaymenttype pour la récupération des moyens de paiement.',
+),
+117 =>
+array (
+'type' => 'PERF',
+'text' => 'Utilisation de l\'index d\'autoloading pré-compilé.',
+),
+118 =>
 array (
 'type' => 'PERF',
 'text' => 'Utilisation d\'un includer pré-compilé.',
@@ -1871,7 +1889,7 @@ array (
 22 =>
 array (
 'version' => '2.0.0',
-'date' => '25/03/2021',
+'date' => '26/04/2021',
 'description' => 'Nouveau builder, release-notes et filtrage des boutons de paiement.',
 'notes' =>
 array (
@@ -2110,6 +2128,41 @@ array (
 array (
 'version' => '3.2.6',
 'from' => '2.9.3',
+),
+),
+),
+23 =>
+array (
+'version' => '2.0.1',
+'date' => '29/04/2021',
+'description' => 'Améliorations divers',
+'notes' =>
+array (
+0 =>
+array (
+'type' => 'FIX',
+'code' => 'PGI-2751',
+'text' => 'Correction de la configuration de l\'url de retour utilisée en cas d\'erreur lors de la création d\'un paiement.',
+),
+1 =>
+array (
+'type' => 'FIX',
+'code' => 'PGI-2729',
+'text' => 'Complétion des entêtes envoyées par le Requester Fopen.',
+),
+2 =>
+array (
+'type' => 'FIX',
+'code' => 'PGI-2761',
+'text' => 'Correction du statut final utilisé pour cloturé un dossier de paiement ClimateKit.',
+),
+),
+'dependencies' =>
+array (
+'framework' =>
+array (
+'version' => '3.2.7',
+'from' => '3.2.6',
 ),
 ),
 ),

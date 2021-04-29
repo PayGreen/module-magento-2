@@ -15,7 +15,7 @@
  * @author    PayGreen <contact@paygreen.fr>
  * @copyright 2014 - 2021 Watt Is It
  * @license   https://opensource.org/licenses/mit-license.php MIT License X11
- * @version   2.0.0
+ * @version   2.0.1
  *
  */
 
@@ -32,9 +32,8 @@ class PGPaymentServicesProcessorsPaymentValidationProcessor extends PGFrameworkF
     /** @var PGShopInterfacesOfficersPostPayment */
     protected $officer;
 
-    public function __construct(PGModuleServicesBroadcaster $broadcaster)
+    public function __construct()
     {
-        $this->broadcaster = $broadcaster;
         $this->setSteps(array(
             'verifyPIDValidity',
             'verifyModuleActivation',

@@ -15,7 +15,7 @@
  * @author    PayGreen <contact@paygreen.fr>
  * @copyright 2014 - 2021 Watt Is It
  * @license   https://opensource.org/licenses/mit-license.php MIT License X11
- * @version   2.0.0
+ * @version   2.0.1
  *
  */
 
@@ -3749,10 +3749,18 @@ array (
 ),
 'processor.payment_validation' =>
 array (
-'class' => 'PGPaymentServicesProcessorsPaymentValidationProcessor',
+'abstract' => false,
 'calls' =>
 array (
 0 =>
+array (
+'method' => 'setBroadcaster',
+'arguments' =>
+array (
+0 => '@broadcaster',
+),
+),
+1 =>
 array (
 'method' => 'setPostPaymentOfficer',
 'arguments' =>
@@ -3761,10 +3769,8 @@ array (
 ),
 ),
 ),
-'arguments' =>
-array (
-0 => '@broadcaster',
-),
+'class' => 'PGPaymentServicesProcessorsPaymentValidationProcessor',
+'extends' => 'processor.abstract',
 ),
 'processor.transaction_management.cash' =>
 array (
@@ -3773,6 +3779,14 @@ array (
 array (
 0 =>
 array (
+'method' => 'setBroadcaster',
+'arguments' =>
+array (
+0 => '@broadcaster',
+),
+),
+1 =>
+array (
 'method' => 'setPostPaymentOfficer',
 'arguments' =>
 array (
@@ -3780,12 +3794,8 @@ array (
 ),
 ),
 ),
-'arguments' =>
-array (
-0 => '@broadcaster',
-),
-'class' => 'PGPaymentServicesProcessorsManageCashTransactionProcessor',
 'extends' => 'processor.transaction_management.abstract',
+'class' => 'PGPaymentServicesProcessorsManageCashTransactionProcessor',
 ),
 'processor.transaction_management.tokenize' =>
 array (
@@ -3794,6 +3804,14 @@ array (
 array (
 0 =>
 array (
+'method' => 'setBroadcaster',
+'arguments' =>
+array (
+0 => '@broadcaster',
+),
+),
+1 =>
+array (
 'method' => 'setPostPaymentOfficer',
 'arguments' =>
 array (
@@ -3801,12 +3819,8 @@ array (
 ),
 ),
 ),
-'arguments' =>
-array (
-0 => '@broadcaster',
-),
-'class' => 'PGPaymentServicesProcessorsManageTokenizeTransactionProcessor',
 'extends' => 'processor.transaction_management.abstract',
+'class' => 'PGPaymentServicesProcessorsManageTokenizeTransactionProcessor',
 ),
 'processor.transaction_management.recurring' =>
 array (
@@ -3815,6 +3829,14 @@ array (
 array (
 0 =>
 array (
+'method' => 'setBroadcaster',
+'arguments' =>
+array (
+0 => '@broadcaster',
+),
+),
+1 =>
+array (
 'method' => 'setPostPaymentOfficer',
 'arguments' =>
 array (
@@ -3822,12 +3844,8 @@ array (
 ),
 ),
 ),
-'arguments' =>
-array (
-0 => '@broadcaster',
-),
-'class' => 'PGPaymentServicesProcessorsManageRecurringTransactionProcessor',
 'extends' => 'processor.transaction_management.abstract',
+'class' => 'PGPaymentServicesProcessorsManageRecurringTransactionProcessor',
 ),
 'processor.transaction_management.xtime' =>
 array (
@@ -3836,6 +3854,14 @@ array (
 array (
 0 =>
 array (
+'method' => 'setBroadcaster',
+'arguments' =>
+array (
+0 => '@broadcaster',
+),
+),
+1 =>
+array (
 'method' => 'setPostPaymentOfficer',
 'arguments' =>
 array (
@@ -3843,12 +3869,8 @@ array (
 ),
 ),
 ),
-'arguments' =>
-array (
-0 => '@broadcaster',
-),
-'class' => 'PGPaymentServicesProcessorsManageXTimeTransactionProcessor',
 'extends' => 'processor.transaction_management.abstract',
+'class' => 'PGPaymentServicesProcessorsManageXTimeTransactionProcessor',
 ),
 'upgrade.media_delete' =>
 array (

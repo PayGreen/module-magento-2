@@ -15,7 +15,7 @@
  * @author    PayGreen <contact@paygreen.fr>
  * @copyright 2014 - 2021 Watt Is It
  * @license   https://opensource.org/licenses/mit-license.php MIT License X11
- * @version   2.0.0
+ * @version   2.0.1
  *
  */
 
@@ -114,12 +114,8 @@ abstract class PGClientFoundationsRequester implements PGClientInterfacesRequest
      */
     protected function buildResponse(PGClientComponentsRequest $request, $code, $rawResult, $details)
     {
-        $result = @json_decode($rawResult);
-
-        try {
-            if (!$result instanceof stdClass) {
-                throw new PGClientExceptionsResponseMalformed("Invalid JSON result.");
-            }
+        if ($code >= 200 && ($code < 300)) {
+            $result = $this->decodeResponseRawResult($rawResult, $details);
 
             $responseClass = (string) $this->getConfig('response_class');
             if (empty($responseClass)) {
@@ -136,18 +132,39 @@ abstract class PGClientFoundationsRequester implements PGClientInterfacesRequest
             $response = new $responseClass($result, $code);
 
             $response->setRequest($request);
-        } catch (PGClientExceptionsResponseMalformed $exception) {
-            $text = $exception->getMessage() . " (HTTP : $code)";
+
+            return $response;
+        } else {
+            $text = "Request not successed. (HTTP : $code)";
+            $this->log('critical', $text, $rawResult, $details);
+
+            try {
+                $result = $this->decodeResponseRawResult($rawResult, $details);
+                throw new PGClientExceptionsResponseFailed($result->message, $result->code);
+            } catch (PGClientExceptionsResponseMalformed $exception) {
+                throw new PGClientExceptionsResponseHTTPError($text, $code);
+            }
+        }
+    }
+
+    /**
+     * @param string $rawResult
+     * @param array $details
+     * @return stdClass
+     * @throws PGClientExceptionsResponseMalformed
+     */
+    protected function decodeResponseRawResult($rawResult, $details)
+    {
+        $result = @json_decode($rawResult);
+
+        if (!$result instanceof stdClass) {
+            $text = "Invalid JSON result.";
 
             $this->log('critical', $text, $rawResult, $details);
 
-            throw new PGClientExceptionsResponse($text, null);
+            throw new PGClientExceptionsResponseMalformed($text);
+        } else {
+            return $result;
         }
-
-        if ($code !== 200) {
-            $this->log('warning', 'Request not successed.', $result);
-        }
-
-        return $response;
     }
 }
