@@ -15,7 +15,7 @@
  * @author    PayGreen <contact@paygreen.fr>
  * @copyright 2014 - 2021 Watt Is It
  * @license   https://opensource.org/licenses/mit-license.php MIT License X11
- * @version   2.0.1
+ * @version   2.0.2
  *
  */
 
@@ -109,23 +109,21 @@ class APIPaymentServicesApiFacade extends PGSystemFoundationsObject
             "name" => $name
         ));
 
-        try {
-            $response = $this->getRequestSender()->sendRequest($request);
-        } catch (PGClientExceptionsResponse $exception) {
+        /** @var APIPaymentComponentsResponse $response */
+        $response = $this->getRequestSender()->sendRequest($request);
+
+        if (!$response->isSuccess()) {
             /** @var APIPaymentServicesHandlersOAuth $oauthHandler */
             $oauthHandler = $this->getService('handler.oauth');
 
-            $code = $oauthHandler->computeExceptionCode($exception->getCode());
+            $code = $oauthHandler->computeExceptionCode($response->getCode());
 
             if ($code !== null) {
                 throw new APIPaymentExceptionsOAuth(
-                    $exception->getMessage(),
-                    $code,
-                    $exception
+                    $response->getMessage(),
+                    $code
                 );
             }
-
-            throw $exception;
         }
 
         return $response;

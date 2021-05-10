@@ -15,7 +15,7 @@
  * @author    PayGreen <contact@paygreen.fr>
  * @copyright 2014 - 2021 Watt Is It
  * @license   https://opensource.org/licenses/mit-license.php MIT License X11
- * @version   2.0.1
+ * @version   2.0.2
  *
  */
 
@@ -61,10 +61,13 @@ class APIPaymentServicesApiFactory implements PGFrameworkInterfacesApiFactoryInt
 
         $requestSender
             ->addRequesters(
-                new PGClientServicesRequestersCurl($this->settings, $this->logger, $this->parameters['client.curl'])
+                new PGClientServicesRequestersCurl($this->settings, $this->logger, $this->parameters['api.payment.clients.curl'])
             )
             ->addRequesters(
-                new PGClientServicesRequestersFopen($this->settings, $this->logger, $this->parameters['client.fopen'])
+                new PGClientServicesRequestersFopen($this->settings, $this->logger, $this->parameters['api.payment.clients.fopen'])
+            )
+            ->setResponseFactory(
+                new PGClientServicesResponseFactory($this->logger, $this->parameters['api.payment.requests'], $this->parameters['api.payment.responses'])
             )
         ;
 
@@ -104,7 +107,7 @@ class APIPaymentServicesApiFactory implements PGFrameworkInterfacesApiFactoryInt
             'host' => $host
         );
 
-        return new PGClientServicesRequestFactory($this->parameters['api.requests'], $sharedHeaders, $sharedParameters);
+        return new PGClientServicesRequestFactory($this->parameters['api.payment.requests'], $sharedHeaders, $sharedParameters);
     }
 
     protected function buildUserAgentHeader()

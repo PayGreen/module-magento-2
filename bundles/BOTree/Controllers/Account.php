@@ -15,7 +15,7 @@
  * @author    PayGreen <contact@paygreen.fr>
  * @copyright 2014 - 2021 Watt Is It
  * @license   https://opensource.org/licenses/mit-license.php MIT License X11
- * @version   2.0.1
+ * @version   2.0.2
  *
  */
 
@@ -42,7 +42,7 @@ class BOTreeControllersAccount extends BOModuleFoundationsAbstractBackofficeCont
         /** @var PGModuleServicesSettings $settings */
         $settings = $this->getSettings();
 
-        $action = $this->getLinker()->buildBackOfficeUrl('backoffice.tree_account.save');
+        $action = $this->getLinkHandler()->buildBackOfficeUrl('backoffice.tree_account.save');
 
         $values = array(
             'client_id' => $settings->get('tree_client_id')
@@ -66,7 +66,7 @@ class BOTreeControllersAccount extends BOModuleFoundationsAbstractBackofficeCont
 
         $this->success('actions.tree_authentication.reset.result.success');
 
-        return $this->redirect($this->getLinker()->buildBackOfficeUrl('backoffice.tree_account.display'));
+        return $this->redirect($this->getLinkHandler()->buildBackOfficeUrl('backoffice.tree_account.display'));
     }
 
     /**
@@ -88,7 +88,7 @@ class BOTreeControllersAccount extends BOModuleFoundationsAbstractBackofficeCont
 
             if ($isConnected) {
                 $this->success('actions.tree_authentication.save.result.success');
-                $result = $this->redirect($this->getLinker()->buildBackOfficeUrl('backoffice.tree_account.display'));
+                $result = $this->redirect($this->getLinkHandler()->buildBackOfficeUrl('backoffice.tree_account.display'));
             } else {
                 $this->failure('actions.tree_authentication.save.result.failure');
             }

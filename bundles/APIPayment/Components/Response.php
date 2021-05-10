@@ -15,7 +15,7 @@
  * @author    PayGreen <contact@paygreen.fr>
  * @copyright 2014 - 2021 Watt Is It
  * @license   https://opensource.org/licenses/mit-license.php MIT License X11
- * @version   2.0.1
+ * @version   2.0.2
  *
  */
 
@@ -23,7 +23,7 @@
  * Class APIPaymentComponentsResponse
  * @package APIPayment\Components
  */
-class APIPaymentComponentsResponse extends PGClientComponentsResponse
+class APIPaymentComponentsResponse extends PGClientComponentsResponseJSON
 {
     /** @var int */
     private $code;
@@ -34,15 +34,14 @@ class APIPaymentComponentsResponse extends PGClientComponentsResponse
     /** @var string */
     private $message = null;
 
-
     /**
-     * APIPaymentComponentsResponse constructor.
-     * @param stdClass $data
-     * @param int $httpCode
+     * @inheritDoc
      * @throws PGClientExceptionsResponseMalformed
      */
-    public function __construct(stdClass $data, $httpCode)
+    public function format($data)
     {
+        $data = parent::format($data);
+
         if (empty($data)
             || !property_exists($data, 'success')
             || !property_exists($data, 'message')
@@ -52,11 +51,11 @@ class APIPaymentComponentsResponse extends PGClientComponentsResponse
             throw new PGClientExceptionsResponseMalformed("Malformed response.");
         }
 
-        parent::__construct($data->data, $httpCode);
-
         $this->code = (int) $data->code;
         $this->success = (bool) $data->success;
         $this->message = (string) $data->message;
+
+        return $data->data;
     }
 
     /**
@@ -81,5 +80,17 @@ class APIPaymentComponentsResponse extends PGClientComponentsResponse
     public function getMessage()
     {
         return $this->message;
+    }
+
+    public function toArray()
+    {
+        return array_merge(
+            array(
+                'message' => $this->getMessage(),
+                'success' => $this->isSuccess(),
+                'code' => $this->getCode()
+            ),
+            parent::toArray()
+        );
     }
 }

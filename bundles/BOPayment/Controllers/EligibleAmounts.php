@@ -15,7 +15,7 @@
  * @author    PayGreen <contact@paygreen.fr>
  * @copyright 2014 - 2021 Watt Is It
  * @license   https://opensource.org/licenses/mit-license.php MIT License X11
- * @version   2.0.1
+ * @version   2.0.2
  *
  */
 
@@ -56,7 +56,7 @@ class BOPaymentControllersEligibleAmounts extends BOModuleFoundationsAbstractBac
             $this->failure('actions.eligible_amounts.save.result.failure');
         }
 
-        return $this->redirect($this->getLinker()->buildBackOfficeUrl('backoffice.eligible_amounts.display'));
+        return $this->redirect($this->getLinkHandler()->buildBackOfficeUrl('backoffice.eligible_amounts.display'));
     }
 
     /**
@@ -79,7 +79,7 @@ class BOPaymentControllersEligibleAmounts extends BOModuleFoundationsAbstractBac
             $this->failure('actions.exclusion_shipping_cost.save.result.failure');
         }
 
-        return $this->redirect($this->getLinker()->buildBackOfficeUrl('backoffice.eligible_amounts.display'));
+        return $this->redirect($this->getLinkHandler()->buildBackOfficeUrl('backoffice.eligible_amounts.display'));
     }
 
     /**
@@ -120,7 +120,7 @@ class BOPaymentControllersEligibleAmounts extends BOModuleFoundationsAbstractBac
             ->buildView();
 
         $eligibleAmountsViewForm->setAction(
-            $this->getLinker()->buildBackOfficeUrl('backoffice.eligible_amounts.categories.save')
+            $this->getLinkHandler()->buildBackOfficeUrl('backoffice.eligible_amounts.categories.save')
         );
 
         return new PGViewComponentsBox($eligibleAmountsViewForm);
@@ -142,7 +142,7 @@ class BOPaymentControllersEligibleAmounts extends BOModuleFoundationsAbstractBac
             ->buildView();
 
         $shippingCostViewForm->setAction(
-            $this->getLinker()->buildBackOfficeUrl('backoffice.eligible_amounts.shipping.save')
+            $this->getLinkHandler()->buildBackOfficeUrl('backoffice.eligible_amounts.shipping.save')
         );
 
         return new PGViewComponentsBox($shippingCostViewForm);

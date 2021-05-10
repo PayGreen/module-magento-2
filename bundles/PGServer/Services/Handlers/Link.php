@@ -15,15 +15,15 @@
  * @author    PayGreen <contact@paygreen.fr>
  * @copyright 2014 - 2021 Watt Is It
  * @license   https://opensource.org/licenses/mit-license.php MIT License X11
- * @version   2.0.1
+ * @version   2.0.2
  *
  */
 
 /**
- * Class PGServerServicesLinker
- * @package PGServer\Services
+ * Class PGServerServicesHandlersLink
+ * @package PGServer\Services\Handlers
  */
-class PGServerServicesLinker extends PGSystemFoundationsObject
+class PGServerServicesHandlersLink extends PGSystemFoundationsObject
 {
     /** @var PGModuleServicesLogger */
     private $logger;

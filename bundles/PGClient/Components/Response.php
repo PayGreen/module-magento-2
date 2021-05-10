@@ -15,7 +15,7 @@
  * @author    PayGreen <contact@paygreen.fr>
  * @copyright 2014 - 2021 Watt Is It
  * @license   https://opensource.org/licenses/mit-license.php MIT License X11
- * @version   2.0.1
+ * @version   2.0.2
  *
  */
 
@@ -23,24 +23,43 @@
  * Class PGClientComponentsResponse
  * @package PGClient\Components
  */
-class PGClientComponentsResponse extends PGClientFoundationsResponse
+class PGClientComponentsResponse
 {
-    /** @var int */
-    private $httpCode;
+    /** @var PGClientComponentsRequest The original request. */
+    private $request;
 
     /** @var mixed Data of the response.*/
     public $data;
 
+    /** @var int */
+    private $httpCode;
+
     /**
      * PGClientComponentsResponse constructor.
-     * @param mixed $data
-     * @param int $httpCode
+     * @param PGClientComponentsFeedback $feedback
      */
-    public function __construct($data, $httpCode)
+    public function __construct(PGClientComponentsFeedback $feedback)
     {
-        $this->httpCode = (int) $httpCode;
+        $this->request = $feedback->getRequest();
+        $this->httpCode = (int) $feedback->getCode();
+        $this->data = $this->format($feedback->getContent());
+    }
 
-        $this->data = $data;
+    /**
+     * @param $data
+     * @return mixed
+     */
+    protected function format($data)
+    {
+        return $data;
+    }
+
+    /**
+     * @return PGClientComponentsRequest
+     */
+    public function getRequest()
+    {
+        return $this->request;
     }
 
     /**
@@ -49,5 +68,13 @@ class PGClientComponentsResponse extends PGClientFoundationsResponse
     public function getHTTPCode()
     {
         return $this->httpCode;
+    }
+
+    public function toArray()
+    {
+        return array(
+            'http_code' => $this->getHTTPCode(),
+            'data' => $this->data
+        );
     }
 }

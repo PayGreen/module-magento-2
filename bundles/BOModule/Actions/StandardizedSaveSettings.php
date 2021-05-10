@@ -15,7 +15,7 @@
  * @author    PayGreen <contact@paygreen.fr>
  * @copyright 2014 - 2021 Watt Is It
  * @license   https://opensource.org/licenses/mit-license.php MIT License X11
- * @version   2.0.1
+ * @version   2.0.2
  *
  */
 
@@ -64,7 +64,7 @@ class BOModuleActionsStandardizedSaveSettings extends PGServerFoundationsAbstrac
             $this->notifyFailure($form);
         }
 
-        $redirectionURI = $this->getLinker()->buildBackOfficeUrl($this->getConfig('redirection'));
+        $redirectionURI = $this->getLinkHandler()->buildBackOfficeUrl($this->getConfig('redirection'));
 
         return $this->redirect($redirectionURI);
     }

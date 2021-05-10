@@ -15,7 +15,7 @@
  * @author    PayGreen <contact@paygreen.fr>
  * @copyright 2014 - 2021 Watt Is It
  * @license   https://opensource.org/licenses/mit-license.php MIT License X11
- * @version   2.0.1
+ * @version   2.0.2
  *
  */
 
@@ -31,8 +31,8 @@ class BOModuleServicesHandlersMenuHandler
     /** @var PGServerServicesHandlersRouteHandler */
     private $routeHandler;
 
-    /** @var PGServerServicesLinker */
-    private $linker;
+    /** @var PGServerServicesHandlersLink */
+    private $linkHandler;
 
     private $entries = array();
 
@@ -40,11 +40,11 @@ class BOModuleServicesHandlersMenuHandler
 
     public function __construct(
         PGServerServicesHandlersRouteHandler $routeHandler,
-        PGServerServicesLinker $linker,
+        PGServerServicesHandlersLink $linkHandler,
         array $config
     ) {
         $this->routeHandler = $routeHandler;
-        $this->linker = $linker;
+        $this->linkHandler = $linkHandler;
 
         $this->config = $config;
     }
@@ -83,7 +83,7 @@ class BOModuleServicesHandlersMenuHandler
                         $this->default = $entry['action'];
                     }
 
-                    $compiledEntry['href'] = $this->linker->buildBackofficeUrl($entry['action']);
+                    $compiledEntry['href'] = $this->linkHandler->buildBackofficeUrl($entry['action']);
                 } elseif ($entry['children']) {
                     $compiledEntry['children'] = $this->compileEntries($entry['children']);
                 }

@@ -15,7 +15,7 @@
  * @author    PayGreen <contact@paygreen.fr>
  * @copyright 2014 - 2021 Watt Is It
  * @license   https://opensource.org/licenses/mit-license.php MIT License X11
- * @version   2.0.1
+ * @version   2.0.2
  *
  */
 
@@ -1096,90 +1096,102 @@ array (
 ),
 101 =>
 array (
-'type' => 'PERF',
-'text' => 'Optimisations mineures.',
+'type' => 'FIX',
+'code' => 'PGI-2794',
+'text' => 'Correction de la configuration des clients Curl.',
 ),
 102 =>
 array (
-'type' => 'PERF',
-'text' => 'Amélioration du service Parser.',
+'type' => 'FIX',
+'code' => 'PGI-2764',
+'text' => 'Correction de la gestion de l\'orderId avec l\'API de paiement.',
 ),
 103 =>
 array (
 'type' => 'PERF',
-'text' => 'Optimisation globale du framework.',
+'text' => 'Optimisations mineures.',
 ),
 104 =>
 array (
 'type' => 'PERF',
-'text' => 'Factorisation des limitations de montant du panier.',
+'text' => 'Amélioration du service Parser.',
 ),
 105 =>
 array (
 'type' => 'PERF',
-'text' => 'Optimisation de l\'autoloader.',
+'text' => 'Optimisation globale du framework.',
 ),
 106 =>
 array (
 'type' => 'PERF',
-'text' => 'Amélioration de l\'enregistrement des settings.',
+'text' => 'Factorisation des limitations de montant du panier.',
 ),
 107 =>
 array (
 'type' => 'PERF',
-'text' => 'Amélioration de la gestion des erreurs liées au mode Insite.',
+'text' => 'Optimisation de l\'autoloader.',
 ),
 108 =>
 array (
 'type' => 'PERF',
-'text' => 'Meilleure gestion des upgrades.',
+'text' => 'Amélioration de l\'enregistrement des settings.',
 ),
 109 =>
 array (
 'type' => 'PERF',
-'text' => 'Amélioration de la gestion des settings.',
+'text' => 'Amélioration de la gestion des erreurs liées au mode Insite.',
 ),
 110 =>
 array (
 'type' => 'PERF',
-'text' => 'Amélioration de la résilience du système de cache du module et de Smarty.',
+'text' => 'Meilleure gestion des upgrades.',
 ),
 111 =>
 array (
 'type' => 'PERF',
-'text' => 'Amélioration de la résilience de l\'autoloader.',
+'text' => 'Amélioration de la gestion des settings.',
 ),
 112 =>
 array (
 'type' => 'PERF',
-'text' => 'Amélioration du cache Smarty.',
+'text' => 'Amélioration de la résilience du système de cache du module et de Smarty.',
 ),
 113 =>
 array (
 'type' => 'PERF',
-'text' => 'Amélioration des logs sur la page de paiement.',
+'text' => 'Amélioration de la résilience de l\'autoloader.',
 ),
 114 =>
 array (
 'type' => 'PERF',
-'text' => 'On affiche plus la balise \'ul\' de notifications si il n\'y a pas de notifications.',
+'text' => 'Amélioration du cache Smarty.',
 ),
 115 =>
 array (
 'type' => 'PERF',
-'text' => 'Réduction du temps du PID Locking: 30sec -> 3sec.',
+'text' => 'Amélioration des logs sur la page de paiement.',
 ),
 116 =>
 array (
 'type' => 'PERF',
-'text' => 'Utilisation de la route /availablepaymenttype pour la récupération des moyens de paiement.',
+'text' => 'On affiche plus la balise \'ul\' de notifications si il n\'y a pas de notifications.',
 ),
 117 =>
 array (
 'type' => 'PERF',
-'text' => 'Utilisation de l\'index d\'autoloading pré-compilé.',
+'text' => 'Réduction du temps du PID Locking: 30sec -> 3sec.',
 ),
 118 =>
+array (
+'type' => 'PERF',
+'text' => 'Utilisation de la route /availablepaymenttype pour la récupération des moyens de paiement.',
+),
+119 =>
+array (
+'type' => 'PERF',
+'text' => 'Utilisation de l\'index d\'autoloading pré-compilé.',
+),
+120 =>
 array (
 'type' => 'PERF',
 'text' => 'Utilisation d\'un includer pré-compilé.',
@@ -2163,6 +2175,35 @@ array (
 array (
 'version' => '3.2.7',
 'from' => '3.2.6',
+),
+),
+),
+24 =>
+array (
+'version' => '2.0.2',
+'date' => '05/05/2021',
+'description' => 'Améliorations divers',
+'notes' =>
+array (
+0 =>
+array (
+'type' => 'FIX',
+'code' => 'PGI-2794',
+'text' => 'Correction de la configuration des clients Curl.',
+),
+1 =>
+array (
+'type' => 'FIX',
+'code' => 'PGI-2764',
+'text' => 'Correction de la gestion de l\'orderId avec l\'API de paiement.',
+),
+),
+'dependencies' =>
+array (
+'framework' =>
+array (
+'version' => '3.2.8',
+'from' => '3.2.7',
 ),
 ),
 ),

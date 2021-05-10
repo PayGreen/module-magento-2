@@ -15,7 +15,7 @@
  * @author    PayGreen <contact@paygreen.fr>
  * @copyright 2014 - 2021 Watt Is It
  * @license   https://opensource.org/licenses/mit-license.php MIT License X11
- * @version   2.0.1
+ * @version   2.0.2
  *
  */
 
@@ -29,12 +29,12 @@ class PGPaymentServicesChainLinksAddFrontofficeEntrypoint extends PGPaymentFound
 
     private $key;
 
-    /** @var PGServerServicesLinker */
-    private $linker;
+    /** @var PGServerServicesHandlersLink */
+    private $linkHandler;
 
-    public function __construct(PGServerServicesLinker $linker, $link, $key)
+    public function __construct(PGServerServicesHandlersLink $linkHandler, $link, $key)
     {
-        $this->linker = $linker;
+        $this->linkHandler = $linkHandler;
         $this->link = $link;
         $this->key = $key;
     }
@@ -45,6 +45,6 @@ class PGPaymentServicesChainLinksAddFrontofficeEntrypoint extends PGPaymentFound
      */
     protected function process(PGPaymentComponentsPaymentProject $paymentProject)
     {
-        $paymentProject[$this->key] = $this->linker->buildFrontOfficeUrl($this->link);
+        $paymentProject[$this->key] = $this->linkHandler->buildFrontOfficeUrl($this->link);
     }
 }

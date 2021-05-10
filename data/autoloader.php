@@ -15,7 +15,7 @@
  * @author    PayGreen <contact@paygreen.fr>
  * @copyright 2014 - 2021 Watt Is It
  * @license   https://opensource.org/licenses/mit-license.php MIT License X11
- * @version   2.0.1
+ * @version   2.0.2
  *
  */
 
@@ -95,20 +95,23 @@ return array (
 'OAuthClient' => 'PGClient/_vendors/OAuth2/OAuthClient.php',
 'OAuthException' => 'PGClient/_vendors/OAuth2/OAuthException.php',
 'OAuthInvalidArgumentException' => 'PGClient/_vendors/OAuth2/OAuthInvalidArgumentException.php',
+'PGClientComponentsFeedback' => 'PGClient/Components/Feedback.php',
 'PGClientComponentsRequest' => 'PGClient/Components/Request.php',
 'PGClientComponentsResponse' => 'PGClient/Components/Response.php',
+'PGClientComponentsResponseJSON' => 'PGClient/Components/ResponseJSON.php',
+'PGClientComponentsValidityRangeList' => 'PGClient/Components/ValidityRangeList.php',
 'PGClientExceptionsResponse' => 'PGClient/Exceptions/Response.php',
 'PGClientExceptionsResponseFailed' => 'PGClient/Exceptions/ResponseFailed.php',
 'PGClientExceptionsResponseHTTPError' => 'PGClient/Exceptions/ResponseHTTPError.php',
 'PGClientExceptionsResponseMalformed' => 'PGClient/Exceptions/ResponseMalformed.php',
 'PGClientFoundationsReply' => 'PGClient/Foundations/Reply.php',
 'PGClientFoundationsRequester' => 'PGClient/Foundations/Requester.php',
-'PGClientFoundationsResponse' => 'PGClient/Foundations/Response.php',
 'PGClientInterfacesRequester' => 'PGClient/Interfaces/Requester.php',
 'PGClientServicesRequestFactory' => 'PGClient/Services/RequestFactory.php',
 'PGClientServicesRequestSender' => 'PGClient/Services/RequestSender.php',
 'PGClientServicesRequestersCurl' => 'PGClient/Services/Requesters/Curl.php',
 'PGClientServicesRequestersFopen' => 'PGClient/Services/Requesters/Fopen.php',
+'PGClientServicesResponseFactory' => 'PGClient/Services/ResponseFactory.php',
 'PGDatabaseFoundationsEntity' => 'PGDatabase/Foundations/Entity.php',
 'PGDatabaseFoundationsEntityArray' => 'PGDatabase/Foundations/EntityArray.php',
 'PGDatabaseFoundationsEntityPersisted' => 'PGDatabase/Foundations/EntityPersisted.php',
@@ -445,8 +448,8 @@ return array (
 'PGServerServicesFactoriesStageFactory' => 'PGServer/Services/Factories/StageFactory.php',
 'PGServerServicesFactoriesTriggerFactory' => 'PGServer/Services/Factories/TriggerFactory.php',
 'PGServerServicesHandlersAreaHandler' => 'PGServer/Services/Handlers/AreaHandler.php',
+'PGServerServicesHandlersLink' => 'PGServer/Services/Handlers/Link.php',
 'PGServerServicesHandlersRouteHandler' => 'PGServer/Services/Handlers/RouteHandler.php',
-'PGServerServicesLinker' => 'PGServer/Services/Linker.php',
 'PGServerServicesRenderersProcessorsOutputTemplateProcessor' => 'PGServer/Services/Renderers/Processors/OutputTemplateProcessor.php',
 'PGServerServicesRenderersProcessorsWriteHTTPProcessor' => 'PGServer/Services/Renderers/Processors/WriteHTTPProcessor.php',
 'PGServerServicesRenderersTransformersArrayToHttpTransformer' => 'PGServer/Services/Renderers/Transformers/ArrayToHttpTransformer.php',

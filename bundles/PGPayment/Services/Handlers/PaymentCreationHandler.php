@@ -15,7 +15,7 @@
  * @author    PayGreen <contact@paygreen.fr>
  * @copyright 2014 - 2021 Watt Is It
  * @license   https://opensource.org/licenses/mit-license.php MIT License X11
- * @version   2.0.1
+ * @version   2.0.2
  *
  */
 
@@ -44,12 +44,12 @@ class PGPaymentServicesHandlersPaymentCreationHandler extends PGSystemFoundation
      */
     public function buildCustomerEntrypointURL()
     {
-        /** @var PGServerServicesLinker $linker */
-        $linker = $this->getService('linker');
+        /** @var PGServerServicesHandlersLink $linkHandler */
+        $linkHandler = $this->getService('handler.link');
 
         $customerEntrypoint = $this->config['entrypoints.customer'];
 
-        return $linker->buildFrontOfficeUrl($customerEntrypoint);
+        return $linkHandler->buildFrontOfficeUrl($customerEntrypoint);
     }
 
     /**
@@ -58,12 +58,12 @@ class PGPaymentServicesHandlersPaymentCreationHandler extends PGSystemFoundation
      */
     public function buildIPNEntrypointURL()
     {
-        /** @var PGServerServicesLinker $linker */
-        $linker = $this->getService('linker');
+        /** @var PGServerServicesHandlersLink $linkHandler */
+        $linkHandler = $this->getService('handler.link');
 
         $ipnEntrypoint = $this->config['entrypoints.ipn'];
 
-        return $linker->buildFrontOfficeUrl($ipnEntrypoint);
+        return $linkHandler->buildFrontOfficeUrl($ipnEntrypoint);
     }
 
     /**

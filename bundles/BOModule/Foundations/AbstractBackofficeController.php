@@ -15,7 +15,7 @@
  * @author    PayGreen <contact@paygreen.fr>
  * @copyright 2014 - 2021 Watt Is It
  * @license   https://opensource.org/licenses/mit-license.php MIT License X11
- * @version   2.0.1
+ * @version   2.0.2
  *
  */
 
@@ -46,7 +46,7 @@ abstract class BOModuleFoundationsAbstractBackofficeController extends PGServerF
         /** @var PGFormServicesViewsFormView $view */
         $view = $this->buildForm($name, $values)->buildView();
 
-        $url = $this->getLinker()->buildBackOfficeUrl($action);
+        $url = $this->getLinkHandler()->buildBackOfficeUrl($action);
 
         $view->setAction($url);
 

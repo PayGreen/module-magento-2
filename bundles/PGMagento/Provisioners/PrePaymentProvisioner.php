@@ -15,7 +15,7 @@
  * @author    PayGreen <contact@paygreen.fr>
  * @copyright 2014 - 2021 Watt Is It
  * @license   https://opensource.org/licenses/mit-license.php MIT License X11
- * @version   2.0.1
+ * @version   2.0.2
  *
  */
 
@@ -73,9 +73,7 @@ class PGMagentoProvisionersPrePaymentProvisioner extends PGSystemFoundationsObje
 
     public function getReference()
     {
-        $suffix = (PAYGREEN_ENV === 'DEV') ? '-' . mt_rand(10000, 99999) : '';
-
-        return $this->order->getId() . $suffix;
+        return $this->order->getId();
     }
 
     public function getCurrency()

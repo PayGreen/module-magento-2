@@ -15,7 +15,7 @@
  * @author    PayGreen <contact@paygreen.fr>
  * @copyright 2014 - 2021 Watt Is It
  * @license   https://opensource.org/licenses/mit-license.php MIT License X11
- * @version   2.0.1
+ * @version   2.0.2
  *
  */
 
@@ -107,7 +107,7 @@ class BOPaymentControllersButtons extends BOModuleFoundationsAbstractBackofficeC
 
         if ($button === null) {
             $this->failure($error);
-            $response =  $this->redirect($this->getLinker()->buildBackOfficeUrl('backoffice.buttons.display'));
+            $response =  $this->redirect($this->getLinkHandler()->buildBackOfficeUrl('backoffice.buttons.display'));
         } else {
             if ($this->getRequest()->has('form')) {
                 /** @var PGFormInterfacesFormViewInterface $view */
@@ -150,7 +150,7 @@ class BOPaymentControllersButtons extends BOModuleFoundationsAbstractBackofficeC
                 $view = $this->buildForm('button_update', $values)->buildView();
             }
 
-            $action = $this->getLinker()->buildBackOfficeUrl('backoffice.buttons.update');
+            $action = $this->getLinkHandler()->buildBackOfficeUrl('backoffice.buttons.update');
 
             $view->setAction($action);
 
@@ -182,13 +182,13 @@ class BOPaymentControllersButtons extends BOModuleFoundationsAbstractBackofficeC
         $button = $this->buttonManager->getByPrimary($form->getValue('id'));
         if ($button === null) {
             $this->failure("actions.button.update.errors.button_not_found");
-            $result = $this->redirect($this->getLinker()->buildBackOfficeUrl('backoffice.buttons.display'));
+            $result = $this->redirect($this->getLinkHandler()->buildBackOfficeUrl('backoffice.buttons.display'));
         }
 
         if ($form->isValid()) {
             if ($this->saveButton($button, $form)) {
                 $this->success('actions.button.update.result.success');
-                $result = $this->redirect($this->getLinker()->buildBackOfficeUrl('backoffice.buttons.display'));
+                $result = $this->redirect($this->getLinkHandler()->buildBackOfficeUrl('backoffice.buttons.display'));
             } else {
                 $this->failure('actions.button.update.result.failure');
             }
@@ -227,7 +227,7 @@ class BOPaymentControllersButtons extends BOModuleFoundationsAbstractBackofficeC
             $view = $this->buildForm('button', $defaultValues)->buildView();
         }
 
-        $action = $this->getLinker()->buildBackOfficeUrl('backoffice.buttons.insert');
+        $action = $this->getLinkHandler()->buildBackOfficeUrl('backoffice.buttons.insert');
 
         $view->setAction($action);
 
@@ -258,7 +258,7 @@ class BOPaymentControllersButtons extends BOModuleFoundationsAbstractBackofficeC
 
             if ($this->saveButton($button, $form)) {
                 $this->success('actions.button.insert.result.success');
-                $result = $this->redirect($this->getLinker()->buildBackOfficeUrl('backoffice.buttons.display'));
+                $result = $this->redirect($this->getLinkHandler()->buildBackOfficeUrl('backoffice.buttons.display'));
             } else {
                 $this->failure('actions.button.insert.result.failure');
             }
@@ -297,7 +297,7 @@ class BOPaymentControllersButtons extends BOModuleFoundationsAbstractBackofficeC
 
         if ($button === null) {
             $this->failure($error);
-            $response =  $this->redirect($this->getLinker()->buildBackOfficeUrl('backoffice.buttons.display'));
+            $response =  $this->redirect($this->getLinkHandler()->buildBackOfficeUrl('backoffice.buttons.display'));
         } else {
             if ($this->getRequest()->has('form')) {
                 /** @var PGFormInterfacesFormViewInterface $view */
@@ -316,7 +316,7 @@ class BOPaymentControllersButtons extends BOModuleFoundationsAbstractBackofficeC
                 $view = $this->buildForm('button_filters', $data)->buildView();
             }
 
-            $action = $this->getLinker()->buildBackOfficeUrl('backoffice.buttons.update_filters');
+            $action = $this->getLinkHandler()->buildBackOfficeUrl('backoffice.buttons.update_filters');
             $view->setAction($action);
 
             $scriptResource = new PGServerComponentsResourcesScriptFileResource('/js/page-buttons-filters.js');
@@ -353,13 +353,13 @@ class BOPaymentControllersButtons extends BOModuleFoundationsAbstractBackofficeC
         }
 
         if ($button === null) {
-            return $this->redirect($this->getLinker()->buildBackOfficeUrl('backoffice.buttons.display'));
+            return $this->redirect($this->getLinkHandler()->buildBackOfficeUrl('backoffice.buttons.display'));
         }
 
         if ($form->isValid()) {
             if ($this->saveButtonFilter($button, $form)) {
                 $this->success('actions.button.filters.result.success');
-                $result = $this->redirect($this->getLinker()->buildBackOfficeUrl('backoffice.buttons.display'));
+                $result = $this->redirect($this->getLinkHandler()->buildBackOfficeUrl('backoffice.buttons.display'));
             } else {
                 $this->failure('actions.button.filters.result.failure');
             }
@@ -516,7 +516,7 @@ class BOPaymentControllersButtons extends BOModuleFoundationsAbstractBackofficeC
             }
         }
 
-        return $this->redirect($this->getLinker()->buildBackOfficeUrl('backoffice.buttons.display'));
+        return $this->redirect($this->getLinkHandler()->buildBackOfficeUrl('backoffice.buttons.display'));
     }
 
     /**

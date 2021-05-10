@@ -15,7 +15,7 @@
  * @author    PayGreen <contact@paygreen.fr>
  * @copyright 2014 - 2021 Watt Is It
  * @license   https://opensource.org/licenses/mit-license.php MIT License X11
- * @version   2.0.1
+ * @version   2.0.2
  *
  */
 
@@ -63,7 +63,7 @@ class PGMagentoPaymentServicesControllersInvalidPaymentsController extends PGSer
             $return = ($this->rebuildCart($order)) ? 'checkout' : $return;
         }
 
-        $url = $this->getLinker()->buildLocalUrl($return);
+        $url = $this->getLinkHandler()->buildLocalUrl($return);
 
         return $this->redirect($url);
     }
@@ -98,7 +98,7 @@ class PGMagentoPaymentServicesControllersInvalidPaymentsController extends PGSer
             "message" => "~message_payment_refused",
             "details" => $details,
             "url" => array(
-                "link" => $this->getLinker()->buildLocalUrl($return),
+                "link" => $this->getLinkHandler()->buildLocalUrl($return),
                 "text" => "frontoffice.payment.results.payment.{$result}.link",
                 'reload' => true,
             )

@@ -15,7 +15,7 @@
  * @author    PayGreen <contact@paygreen.fr>
  * @copyright 2014 - 2021 Watt Is It
  * @license   https://opensource.org/licenses/mit-license.php MIT License X11
- * @version   2.0.1
+ * @version   2.0.2
  *
  */
 
@@ -58,12 +58,17 @@ class APITreeServicesApiFactory implements PGFrameworkInterfacesApiFactoryInterf
             ->addRequesters(new PGClientServicesRequestersCurl(
                 $this->settings,
                 $this->logger,
-                $this->parameters['tree_client.curl']
+                $this->parameters['api.tree.clients.curl']
             ))
             ->addRequesters(new PGClientServicesRequestersFopen(
                 $this->settings,
                 $this->logger,
-                $this->parameters['tree_client.fopen']
+                $this->parameters['api.tree.clients.fopen']
+            ))
+            ->setResponseFactory(new PGClientServicesResponseFactory(
+                $this->logger,
+                $this->parameters['api.tree.requests'],
+                $this->parameters['api.tree.responses']
             ))
         ;
 
@@ -122,7 +127,7 @@ class APITreeServicesApiFactory implements PGFrameworkInterfacesApiFactoryInterf
         );
 
         return new PGClientServicesRequestFactory(
-            $this->parameters['tree_api.requests'],
+            $this->parameters['api.tree.requests'],
             $sharedHeaders,
             $sharedParameters
         );

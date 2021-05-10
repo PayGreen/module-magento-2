@@ -15,7 +15,7 @@
  * @author    PayGreen <contact@paygreen.fr>
  * @copyright 2014 - 2021 Watt Is It
  * @license   https://opensource.org/licenses/mit-license.php MIT License X11
- * @version   2.0.1
+ * @version   2.0.2
  *
  */
 
@@ -655,6 +655,16 @@ array (
 0 => '%routing.areas',
 ),
 ),
+'handler.link' =>
+array (
+'class' => 'PGServerServicesHandlersLink',
+'arguments' =>
+array (
+0 => '@aggregator.linker',
+1 => '@logger',
+2 => '@facade.module',
+),
+),
 'renderer.transformer.paygreen_module_2_array' =>
 array (
 'class' => 'PGServerServicesRenderersTransformersPaygreenModuleToArrayTransformer',
@@ -742,16 +752,6 @@ array (
 array (
 0 => '@aggregator.deflector',
 1 => '@logger',
-),
-),
-'linker' =>
-array (
-'class' => 'PGServerServicesLinker',
-'arguments' =>
-array (
-0 => '@aggregator.linker',
-1 => '@logger',
-2 => '@facade.module',
 ),
 ),
 'factory.trigger' =>
@@ -1136,7 +1136,7 @@ array (
 'class' => 'PGViewServicesPluginsSmartyLinker',
 'arguments' =>
 array (
-0 => '@linker',
+0 => '@handler.link',
 ),
 'tags' =>
 array (
@@ -2090,10 +2090,10 @@ array (
 ),
 2 =>
 array (
-'method' => 'setLinker',
+'method' => 'setLinkHandler',
 'arguments' =>
 array (
-0 => '@linker',
+0 => '@handler.link',
 ),
 ),
 ),
@@ -2134,10 +2134,10 @@ array (
 ),
 2 =>
 array (
-'method' => 'setLinker',
+'method' => 'setLinkHandler',
 'arguments' =>
 array (
-0 => '@linker',
+0 => '@handler.link',
 ),
 ),
 ),
@@ -2176,10 +2176,10 @@ array (
 ),
 2 =>
 array (
-'method' => 'setLinker',
+'method' => 'setLinkHandler',
 'arguments' =>
 array (
-0 => '@linker',
+0 => '@handler.link',
 ),
 ),
 ),
@@ -2218,10 +2218,10 @@ array (
 ),
 2 =>
 array (
-'method' => 'setLinker',
+'method' => 'setLinkHandler',
 'arguments' =>
 array (
-0 => '@linker',
+0 => '@handler.link',
 ),
 ),
 ),
@@ -2260,10 +2260,10 @@ array (
 ),
 2 =>
 array (
-'method' => 'setLinker',
+'method' => 'setLinkHandler',
 'arguments' =>
 array (
-0 => '@linker',
+0 => '@handler.link',
 ),
 ),
 ),
@@ -2302,10 +2302,10 @@ array (
 ),
 2 =>
 array (
-'method' => 'setLinker',
+'method' => 'setLinkHandler',
 'arguments' =>
 array (
-0 => '@linker',
+0 => '@handler.link',
 ),
 ),
 ),
@@ -2344,10 +2344,10 @@ array (
 ),
 2 =>
 array (
-'method' => 'setLinker',
+'method' => 'setLinkHandler',
 'arguments' =>
 array (
-0 => '@linker',
+0 => '@handler.link',
 ),
 ),
 3 =>
@@ -2415,10 +2415,10 @@ array (
 ),
 2 =>
 array (
-'method' => 'setLinker',
+'method' => 'setLinkHandler',
 'arguments' =>
 array (
-0 => '@linker',
+0 => '@handler.link',
 ),
 ),
 3 =>
@@ -2486,10 +2486,10 @@ array (
 ),
 2 =>
 array (
-'method' => 'setLinker',
+'method' => 'setLinkHandler',
 'arguments' =>
 array (
-0 => '@linker',
+0 => '@handler.link',
 ),
 ),
 3 =>
@@ -2551,10 +2551,10 @@ array (
 ),
 2 =>
 array (
-'method' => 'setLinker',
+'method' => 'setLinkHandler',
 'arguments' =>
 array (
-0 => '@linker',
+0 => '@handler.link',
 ),
 ),
 3 =>
@@ -2624,10 +2624,10 @@ array (
 ),
 2 =>
 array (
-'method' => 'setLinker',
+'method' => 'setLinkHandler',
 'arguments' =>
 array (
-0 => '@linker',
+0 => '@handler.link',
 ),
 ),
 3 =>
@@ -2693,10 +2693,10 @@ array (
 ),
 2 =>
 array (
-'method' => 'setLinker',
+'method' => 'setLinkHandler',
 'arguments' =>
 array (
-0 => '@linker',
+0 => '@handler.link',
 ),
 ),
 3 =>
@@ -2763,10 +2763,10 @@ array (
 ),
 2 =>
 array (
-'method' => 'setLinker',
+'method' => 'setLinkHandler',
 'arguments' =>
 array (
-0 => '@linker',
+0 => '@handler.link',
 ),
 ),
 3 =>
@@ -2815,7 +2815,7 @@ array (
 'arguments' =>
 array (
 0 => '@handler.route',
-1 => '@linker',
+1 => '@handler.link',
 2 => '%menu',
 ),
 ),
@@ -2862,10 +2862,10 @@ array (
 ),
 2 =>
 array (
-'method' => 'setLinker',
+'method' => 'setLinkHandler',
 'arguments' =>
 array (
-0 => '@linker',
+0 => '@handler.link',
 ),
 ),
 ),
@@ -3185,10 +3185,10 @@ array (
 ),
 4 =>
 array (
-'method' => 'setLinker',
+'method' => 'setLinkHandler',
 'arguments' =>
 array (
-0 => '@linker',
+0 => '@handler.link',
 ),
 ),
 ),
@@ -3226,10 +3226,10 @@ array (
 ),
 2 =>
 array (
-'method' => 'setLinker',
+'method' => 'setLinkHandler',
 'arguments' =>
 array (
-0 => '@linker',
+0 => '@handler.link',
 ),
 ),
 3 =>
@@ -3563,7 +3563,7 @@ array (
 'class' => 'PGPaymentServicesChainLinksAddFrontofficeEntrypoint',
 'arguments' =>
 array (
-0 => '@linker',
+0 => '@handler.link',
 1 => '%payment.entrypoints.customer',
 2 => 'returned_url',
 ),
@@ -3593,7 +3593,7 @@ array (
 'class' => 'PGPaymentServicesChainLinksAddFrontofficeEntrypoint',
 'arguments' =>
 array (
-0 => '@linker',
+0 => '@handler.link',
 1 => '%payment.entrypoints.ipn',
 2 => 'notified_url',
 ),
@@ -4118,7 +4118,7 @@ array (
 1 => '@settings',
 2 => '@pathfinder',
 3 => '@handler.shop',
-4 => '@linker',
+4 => '@handler.link',
 ),
 ),
 'api.factory' =>
@@ -4186,10 +4186,10 @@ array (
 ),
 2 =>
 array (
-'method' => 'setLinker',
+'method' => 'setLinkHandler',
 'arguments' =>
 array (
-0 => '@linker',
+0 => '@handler.link',
 ),
 ),
 3 =>
@@ -4246,10 +4246,10 @@ array (
 ),
 2 =>
 array (
-'method' => 'setLinker',
+'method' => 'setLinkHandler',
 'arguments' =>
 array (
-0 => '@linker',
+0 => '@handler.link',
 ),
 ),
 ),
@@ -4290,10 +4290,10 @@ array (
 ),
 2 =>
 array (
-'method' => 'setLinker',
+'method' => 'setLinkHandler',
 'arguments' =>
 array (
-0 => '@linker',
+0 => '@handler.link',
 ),
 ),
 ),
@@ -4334,10 +4334,10 @@ array (
 ),
 2 =>
 array (
-'method' => 'setLinker',
+'method' => 'setLinkHandler',
 'arguments' =>
 array (
-0 => '@linker',
+0 => '@handler.link',
 ),
 ),
 ),
@@ -4378,10 +4378,10 @@ array (
 ),
 2 =>
 array (
-'method' => 'setLinker',
+'method' => 'setLinkHandler',
 'arguments' =>
 array (
-0 => '@linker',
+0 => '@handler.link',
 ),
 ),
 ),
@@ -4420,10 +4420,10 @@ array (
 ),
 2 =>
 array (
-'method' => 'setLinker',
+'method' => 'setLinkHandler',
 'arguments' =>
 array (
-0 => '@linker',
+0 => '@handler.link',
 ),
 ),
 ),
@@ -4463,10 +4463,10 @@ array (
 ),
 2 =>
 array (
-'method' => 'setLinker',
+'method' => 'setLinkHandler',
 'arguments' =>
 array (
-0 => '@linker',
+0 => '@handler.link',
 ),
 ),
 3 =>
@@ -4527,10 +4527,10 @@ array (
 ),
 2 =>
 array (
-'method' => 'setLinker',
+'method' => 'setLinkHandler',
 'arguments' =>
 array (
-0 => '@linker',
+0 => '@handler.link',
 ),
 ),
 3 =>
@@ -4591,10 +4591,10 @@ array (
 ),
 2 =>
 array (
-'method' => 'setLinker',
+'method' => 'setLinkHandler',
 'arguments' =>
 array (
-0 => '@linker',
+0 => '@handler.link',
 ),
 ),
 3 =>
@@ -4654,10 +4654,10 @@ array (
 ),
 2 =>
 array (
-'method' => 'setLinker',
+'method' => 'setLinkHandler',
 'arguments' =>
 array (
-0 => '@linker',
+0 => '@handler.link',
 ),
 ),
 3 =>
@@ -4717,10 +4717,10 @@ array (
 ),
 2 =>
 array (
-'method' => 'setLinker',
+'method' => 'setLinkHandler',
 'arguments' =>
 array (
-0 => '@linker',
+0 => '@handler.link',
 ),
 ),
 ),
@@ -4760,10 +4760,10 @@ array (
 ),
 2 =>
 array (
-'method' => 'setLinker',
+'method' => 'setLinkHandler',
 'arguments' =>
 array (
-0 => '@linker',
+0 => '@handler.link',
 ),
 ),
 ),
@@ -4803,10 +4803,10 @@ array (
 ),
 2 =>
 array (
-'method' => 'setLinker',
+'method' => 'setLinkHandler',
 'arguments' =>
 array (
-0 => '@linker',
+0 => '@handler.link',
 ),
 ),
 3 =>
@@ -4873,10 +4873,10 @@ array (
 ),
 2 =>
 array (
-'method' => 'setLinker',
+'method' => 'setLinkHandler',
 'arguments' =>
 array (
-0 => '@linker',
+0 => '@handler.link',
 ),
 ),
 3 =>
@@ -4943,10 +4943,10 @@ array (
 ),
 2 =>
 array (
-'method' => 'setLinker',
+'method' => 'setLinkHandler',
 'arguments' =>
 array (
-0 => '@linker',
+0 => '@handler.link',
 ),
 ),
 3 =>
@@ -5013,10 +5013,10 @@ array (
 ),
 2 =>
 array (
-'method' => 'setLinker',
+'method' => 'setLinkHandler',
 'arguments' =>
 array (
-0 => '@linker',
+0 => '@handler.link',
 ),
 ),
 3 =>
@@ -5087,10 +5087,10 @@ array (
 ),
 2 =>
 array (
-'method' => 'setLinker',
+'method' => 'setLinkHandler',
 'arguments' =>
 array (
-0 => '@linker',
+0 => '@handler.link',
 ),
 ),
 3 =>
@@ -5156,10 +5156,10 @@ array (
 ),
 2 =>
 array (
-'method' => 'setLinker',
+'method' => 'setLinkHandler',
 'arguments' =>
 array (
-0 => '@linker',
+0 => '@handler.link',
 ),
 ),
 ),
@@ -5261,10 +5261,10 @@ array (
 ),
 2 =>
 array (
-'method' => 'setLinker',
+'method' => 'setLinkHandler',
 'arguments' =>
 array (
-0 => '@linker',
+0 => '@handler.link',
 ),
 ),
 3 =>
@@ -5334,10 +5334,10 @@ array (
 ),
 2 =>
 array (
-'method' => 'setLinker',
+'method' => 'setLinkHandler',
 'arguments' =>
 array (
-0 => '@linker',
+0 => '@handler.link',
 ),
 ),
 3 =>
@@ -5454,10 +5454,10 @@ array (
 ),
 2 =>
 array (
-'method' => 'setLinker',
+'method' => 'setLinkHandler',
 'arguments' =>
 array (
-0 => '@linker',
+0 => '@handler.link',
 ),
 ),
 3 =>
@@ -5584,10 +5584,10 @@ array (
 ),
 2 =>
 array (
-'method' => 'setLinker',
+'method' => 'setLinkHandler',
 'arguments' =>
 array (
-0 => '@linker',
+0 => '@handler.link',
 ),
 ),
 ),
@@ -5628,10 +5628,10 @@ array (
 ),
 2 =>
 array (
-'method' => 'setLinker',
+'method' => 'setLinkHandler',
 'arguments' =>
 array (
-0 => '@linker',
+0 => '@handler.link',
 ),
 ),
 ),
@@ -5672,10 +5672,10 @@ array (
 ),
 2 =>
 array (
-'method' => 'setLinker',
+'method' => 'setLinkHandler',
 'arguments' =>
 array (
-0 => '@linker',
+0 => '@handler.link',
 ),
 ),
 ),
@@ -5716,10 +5716,10 @@ array (
 ),
 2 =>
 array (
-'method' => 'setLinker',
+'method' => 'setLinkHandler',
 'arguments' =>
 array (
-0 => '@linker',
+0 => '@handler.link',
 ),
 ),
 ),
@@ -5758,10 +5758,10 @@ array (
 ),
 2 =>
 array (
-'method' => 'setLinker',
+'method' => 'setLinkHandler',
 'arguments' =>
 array (
-0 => '@linker',
+0 => '@handler.link',
 ),
 ),
 ),
@@ -5800,10 +5800,10 @@ array (
 ),
 2 =>
 array (
-'method' => 'setLinker',
+'method' => 'setLinkHandler',
 'arguments' =>
 array (
-0 => '@linker',
+0 => '@handler.link',
 ),
 ),
 3 =>
@@ -5863,10 +5863,10 @@ array (
 ),
 2 =>
 array (
-'method' => 'setLinker',
+'method' => 'setLinkHandler',
 'arguments' =>
 array (
-0 => '@linker',
+0 => '@handler.link',
 ),
 ),
 3 =>
@@ -5926,10 +5926,10 @@ array (
 ),
 2 =>
 array (
-'method' => 'setLinker',
+'method' => 'setLinkHandler',
 'arguments' =>
 array (
-0 => '@linker',
+0 => '@handler.link',
 ),
 ),
 3 =>
@@ -5999,10 +5999,10 @@ array (
 ),
 2 =>
 array (
-'method' => 'setLinker',
+'method' => 'setLinkHandler',
 'arguments' =>
 array (
-0 => '@linker',
+0 => '@handler.link',
 ),
 ),
 3 =>
@@ -6349,10 +6349,10 @@ array (
 ),
 2 =>
 array (
-'method' => 'setLinker',
+'method' => 'setLinkHandler',
 'arguments' =>
 array (
-0 => '@linker',
+0 => '@handler.link',
 ),
 ),
 3 =>

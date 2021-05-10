@@ -15,7 +15,7 @@
  * @author    PayGreen <contact@paygreen.fr>
  * @copyright 2014 - 2021 Watt Is It
  * @license   https://opensource.org/licenses/mit-license.php MIT License X11
- * @version   2.0.1
+ * @version   2.0.2
  *
  */
 
@@ -31,6 +31,9 @@ class PGClientServicesRequestSender
     /** @var array List of available requesters. */
     private $requesters = array();
 
+    /** @var PGClientServicesResponseFactory */
+    private $responseFactory;
+
     /**
      * RequestSender constructor.
      * @param callable|null $logger
@@ -42,6 +45,7 @@ class PGClientServicesRequestSender
 
     /**
      * @param PGClientInterfacesRequester $requester
+     * @return self
      */
     public function addRequesters(PGClientInterfacesRequester $requester)
     {
@@ -51,14 +55,27 @@ class PGClientServicesRequestSender
     }
 
     /**
+     * @param PGClientServicesResponseFactory $responseFactory
+     * @return self
+     */
+    public function setResponseFactory($responseFactory)
+    {
+        $this->responseFactory = $responseFactory;
+
+        return $this;
+    }
+
+    /**
      * @param PGClientComponentsRequest $request
      * @return PGClientComponentsResponse
      * @throws PGClientExceptionsResponse
-     * @throws PGClientExceptionsResponseFailed
+     * @throws Exception
      */
     public function sendRequest(PGClientComponentsRequest $request)
     {
-        $this->log('debug', 'Sending an api request.', $request);
+        $this->log('info', 'Sending an HTTP request.', $request);
+
+        $feedback = null;
 
         $microtime = $this->getMicroTime();
 
@@ -69,18 +86,13 @@ class PGClientServicesRequestSender
                     $requesterName = get_class($requester);
                     $this->logger->debug("Send request with requester : '$requesterName'.");
 
-                    /** @var PGClientComponentsResponse $data */
-                    $response = $requester->send($request);
+                    /** @var PGClientComponentsFeedback $feedback */
+                    $feedback = $requester->send($request);
                 }
             }
         } catch (Exception $exception) {
             $this->log('critical', 'Request error : ' . $exception->getMessage(), $request);
-
-            throw new PGClientExceptionsResponse(
-                $exception->getMessage(),
-                $exception->getCode(),
-                $exception
-            );
+            throw $exception;
         }
 
         $duration = $this->getMicroTime() - $microtime;
@@ -90,18 +102,12 @@ class PGClientServicesRequestSender
 
             $this->log('critical', $message, $request);
 
-            throw new PGClientExceptionsResponse($message);
+            throw new Exception($message);
         }
 
-        if (method_exists($response, 'isSuccess')) {
-            if (!$response->isSuccess()) {
-                throw new PGClientExceptionsResponseFailed($response->getMessage(), $response->getCode());
-            }
-        }
+        $this->log('debug', 'Receive an HTTP response.', $request, $feedback, $duration);
 
-        $this->log('info', 'Receive an api response.', $request, $response, $duration);
-
-        return $response;
+        return $this->responseFactory->build($feedback);
     }
 
     private function getMicroTime()
@@ -115,14 +121,14 @@ class PGClientServicesRequestSender
      * @param string $level
      * @param string $message
      * @param PGClientComponentsRequest $request
-     * @param PGClientComponentsResponse|null $response
+     * @param PGClientComponentsFeedback|null $feedback
      * @param int $duration
      */
     private function log(
         $level,
         $message,
         PGClientComponentsRequest $request,
-        PGClientComponentsResponse $response = null,
+        PGClientComponentsFeedback $feedback = null,
         $duration = 0
     ) {
         if ($this->logger !== null) {
@@ -136,24 +142,12 @@ class PGClientServicesRequestSender
                 'final_url' => $request->getFinalUrl()
             );
 
-            if ($response !== null) {
-                $data = array_merge($data, array(
+            if ($feedback !== null) {
+                $data['response'] = array(
                     'duration' => $duration,
-                    'http' => $response->getHTTPCode(),
-                    'response' => $response->data
-                ));
-
-                if (method_exists($response, 'getCode')) {
-                    $data['code'] = $response->getCode();
-                }
-
-                if (method_exists($response, 'isSuccess')) {
-                    $data['success'] = $response->isSuccess();
-                }
-
-                if (method_exists($response, 'getMessage')) {
-                    $data['message'] = $response->getMessage();
-                }
+                    'code' => $feedback->getCode(),
+                    'content' => $feedback->getContent()
+                );
             }
 
             call_user_func(array($this->logger, $level), $message, $data);

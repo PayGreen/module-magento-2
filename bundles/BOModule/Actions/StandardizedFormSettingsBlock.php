@@ -15,7 +15,7 @@
  * @author    PayGreen <contact@paygreen.fr>
  * @copyright 2014 - 2021 Watt Is It
  * @license   https://opensource.org/licenses/mit-license.php MIT License X11
- * @version   2.0.1
+ * @version   2.0.2
  *
  */
 
@@ -66,7 +66,7 @@ class BOModuleActionsStandardizedFormSettingsBlock extends PGServerFoundationsAb
         /** @var PGFormServicesViewsFormView $view */
         $view = $this->buildForm($form_name, $values)->buildView();
 
-        $url = $this->getLinker()->buildBackOfficeUrl($form_action);
+        $url = $this->getLinkHandler()->buildBackOfficeUrl($form_action);
 
         $view->setAction($url);
 

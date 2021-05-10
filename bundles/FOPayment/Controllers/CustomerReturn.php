@@ -15,7 +15,7 @@
  * @author    PayGreen <contact@paygreen.fr>
  * @copyright 2014 - 2021 Watt Is It
  * @license   https://opensource.org/licenses/mit-license.php MIT License X11
- * @version   2.0.1
+ * @version   2.0.2
  *
  */
 
@@ -105,7 +105,7 @@ class FOPaymentControllersCustomerReturn extends PGServerFoundationsAbstractCont
                 'message' => 'frontoffice.payment.errors.customer_return.message',
                 'exceptions' => array($exception),
                 'url' => array(
-                    'link' => $this->getLinker()->buildLocalUrl('home'),
+                    'link' => $this->getLinkHandler()->buildLocalUrl('home'),
                     'text' => 'frontoffice.payment.errors.customer_return.link',
                     'reload' => false,
                 )
@@ -141,7 +141,7 @@ class FOPaymentControllersCustomerReturn extends PGServerFoundationsAbstractCont
                 break;
 
             case 'redirect':
-                $url = $this->getLinker()->buildLocalUrl($config['link'], $data);
+                $url = $this->getLinkHandler()->buildLocalUrl($config['link'], $data);
 
                 $response = $this->redirect($url);
 
@@ -160,7 +160,7 @@ class FOPaymentControllersCustomerReturn extends PGServerFoundationsAbstractCont
                     'title' => $config['title'],
                     'message' => $config['message'],
                     'url' => array(
-                        'link' => $this->getLinker()->buildLocalUrl($config['link.name'], $data),
+                        'link' => $this->getLinkHandler()->buildLocalUrl($config['link.name'], $data),
                         'text' => $config['link.text'],
                         'reload' => $reload,
                     )
@@ -174,7 +174,7 @@ class FOPaymentControllersCustomerReturn extends PGServerFoundationsAbstractCont
                     'message' => 'frontoffice.payment.errors.validation.message',
                     'errors' => array($config['error']),
                     'url' => array(
-                        'link' => $this->getLinker()->buildLocalUrl('home'),
+                        'link' => $this->getLinkHandler()->buildLocalUrl('home'),
                         'text' => 'frontoffice.payment.errors.validation.link',
                         'reload' => false,
                     )

@@ -15,7 +15,7 @@
  * @author    PayGreen <contact@paygreen.fr>
  * @copyright 2014 - 2021 Watt Is It
  * @license   https://opensource.org/licenses/mit-license.php MIT License X11
- * @version   2.0.1
+ * @version   2.0.2
  *
  */
 
@@ -100,71 +100,6 @@ abstract class PGClientFoundationsRequester implements PGClientInterfacesRequest
             }
 
             call_user_func(array($this->logger, $level), $message, $data);
-        }
-    }
-
-    /**
-     * @param PGClientComponentsRequest $request
-     * @param int $code
-     * @param string $rawResult
-     * @param array $details
-     * @return PGClientFoundationsResponse
-     * @throws PGClientExceptionsResponse
-     * @throws Exception
-     */
-    protected function buildResponse(PGClientComponentsRequest $request, $code, $rawResult, $details)
-    {
-        if ($code >= 200 && ($code < 300)) {
-            $result = $this->decodeResponseRawResult($rawResult, $details);
-
-            $responseClass = (string) $this->getConfig('response_class');
-            if (empty($responseClass)) {
-                $responseClass = self::DEFAULT_RESPONSE_COMPONENT;
-            }
-
-            if (!is_subclass_of($responseClass, 'PGClientFoundationsResponse')) {
-                throw new Exception(
-                    "Response component must inherit from PGClientFoundationsResponse. '$responseClass' class defined."
-                );
-            }
-
-            /** @var PGClientFoundationsResponse $response */
-            $response = new $responseClass($result, $code);
-
-            $response->setRequest($request);
-
-            return $response;
-        } else {
-            $text = "Request not successed. (HTTP : $code)";
-            $this->log('critical', $text, $rawResult, $details);
-
-            try {
-                $result = $this->decodeResponseRawResult($rawResult, $details);
-                throw new PGClientExceptionsResponseFailed($result->message, $result->code);
-            } catch (PGClientExceptionsResponseMalformed $exception) {
-                throw new PGClientExceptionsResponseHTTPError($text, $code);
-            }
-        }
-    }
-
-    /**
-     * @param string $rawResult
-     * @param array $details
-     * @return stdClass
-     * @throws PGClientExceptionsResponseMalformed
-     */
-    protected function decodeResponseRawResult($rawResult, $details)
-    {
-        $result = @json_decode($rawResult);
-
-        if (!$result instanceof stdClass) {
-            $text = "Invalid JSON result.";
-
-            $this->log('critical', $text, $rawResult, $details);
-
-            throw new PGClientExceptionsResponseMalformed($text);
-        } else {
-            return $result;
         }
     }
 }

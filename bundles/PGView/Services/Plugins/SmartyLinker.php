@@ -15,7 +15,7 @@
  * @author    PayGreen <contact@paygreen.fr>
  * @copyright 2014 - 2021 Watt Is It
  * @license   https://opensource.org/licenses/mit-license.php MIT License X11
- * @version   2.0.1
+ * @version   2.0.2
  *
  */
 
@@ -25,21 +25,21 @@
  */
 class PGViewServicesPluginsSmartyLinker
 {
-    /** @var PGServerServicesLinker */
-    private $linker;
+    /** @var PGServerServicesHandlersLink */
+    private $linkHandler;
 
-    public function __construct(PGServerServicesLinker $linker)
+    public function __construct(PGServerServicesHandlersLink $linkHandler)
     {
-        $this->linker = $linker;
+        $this->linkHandler = $linkHandler;
     }
 
     public function buildBackOfficeUrl($action = null, array $data = array())
     {
-        return $this->linker->buildBackOfficeUrl($action, $data);
+        return $this->linkHandler->buildBackOfficeUrl($action, $data);
     }
 
     public function buildFrontOfficeUrl($action = null, array $data = array())
     {
-        return $this->linker->buildFrontOfficeUrl($action, $data);
+        return $this->linkHandler->buildFrontOfficeUrl($action, $data);
     }
 }

@@ -15,32 +15,31 @@
  * @author    PayGreen <contact@paygreen.fr>
  * @copyright 2014 - 2021 Watt Is It
  * @license   https://opensource.org/licenses/mit-license.php MIT License X11
- * @version   2.0.1
+ * @version   2.0.2
  *
  */
 
 /**
- * Class PGClientFoundationsResponse
- * @package PGClient\Foundations
+ * Class PGClientComponentsResponseJSON
+ * @package PGClient\Components\Responses
  */
-abstract class PGClientFoundationsResponse
+class PGClientComponentsResponseJSON extends PGClientComponentsResponse
 {
-    /** @var PGClientComponentsRequest The original request. */
-    private $request;
-
     /**
-     * @param PGClientComponentsRequest $request
+     * @param string $data
+     * @return stdClass
+     * @throws PGClientExceptionsResponseMalformed
      */
-    public function setRequest($request)
+    protected function format($data)
     {
-        $this->request = $request;
-    }
+        $data = parent::format($data);
 
-    /**
-     * @return PGClientComponentsRequest
-     */
-    public function getRequest()
-    {
-        return $this->request;
+        $decodedata = @json_decode($data);
+
+        if (!$decodedata instanceof stdClass) {
+            throw new PGClientExceptionsResponseMalformed("Invalid JSON result.");
+        }
+
+        return $decodedata;
     }
 }

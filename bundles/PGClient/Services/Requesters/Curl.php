@@ -15,7 +15,7 @@
  * @author    PayGreen <contact@paygreen.fr>
  * @copyright 2014 - 2021 Watt Is It
  * @license   https://opensource.org/licenses/mit-license.php MIT License X11
- * @version   2.0.1
+ * @version   2.0.2
  *
  */
 
@@ -90,7 +90,7 @@ class PGClientServicesRequestersCurl extends PGClientFoundationsRequester
             throw new PGClientExceptionsResponse("[CURL error #$errno] $error");
         }
 
-        return $this->buildResponse($request, $code, $rawResult, $details);
+        return new PGClientComponentsFeedback($request, $code, $rawResult, $details);
     }
 
     /**

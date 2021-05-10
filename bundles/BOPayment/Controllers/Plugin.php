@@ -15,7 +15,7 @@
  * @author    PayGreen <contact@paygreen.fr>
  * @copyright 2014 - 2021 Watt Is It
  * @license   https://opensource.org/licenses/mit-license.php MIT License X11
- * @version   2.0.1
+ * @version   2.0.2
  *
  */
 
@@ -75,7 +75,7 @@ class BOPaymentControllersPlugin extends BOModuleFoundationsAbstractBackofficeCo
 
         $isActive = $settings->get('active');
 
-        $action = $this->getLinker()->buildBackOfficeUrl('backoffice.payment.activation');
+        $action = $this->getLinkHandler()->buildBackOfficeUrl('backoffice.payment.activation');
 
         $values = array(
             'active' => $isActive
@@ -111,6 +111,6 @@ class BOPaymentControllersPlugin extends BOModuleFoundationsAbstractBackofficeCo
             $this->failure('actions.payment_activation.toggle.result.failure');
         }
 
-        return $this->redirect($this->getLinker()->buildBackOfficeUrl('backoffice.home.display'));
+        return $this->redirect($this->getLinkHandler()->buildBackOfficeUrl('backoffice.home.display'));
     }
 }

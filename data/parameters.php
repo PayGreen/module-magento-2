@@ -15,7 +15,7 @@
  * @author    PayGreen <contact@paygreen.fr>
  * @copyright 2014 - 2021 Watt Is It
  * @license   https://opensource.org/licenses/mit-license.php MIT License X11
- * @version   2.0.1
+ * @version   2.0.2
  *
  */
 
@@ -4376,8 +4376,26 @@ array (
 'TEXT' => 'forms.button.fields.display_type.values.text',
 ),
 ),
+'oauth_exceptions_messages' =>
+array (
+1 => 'actions.authentication.save.errors.oauth_server_address_missmatch',
+2 => 'actions.authentication.save.errors.oauth_data_validation',
+),
 'api' =>
 array (
+'payment' =>
+array (
+'clients' =>
+array (
+'curl' =>
+array (
+'allow_redirection' => true,
+'verify_peer' => true,
+'verify_host' => 2,
+'timeout' => 30,
+'http_version' => '1.1',
+),
+),
 'requests' =>
 array (
 'oauth_access' =>
@@ -4385,6 +4403,8 @@ array (
 'method' => 'POST',
 'url' => '{host}/api/auth',
 'private' => false,
+'validity' => '200,500',
+'strict' => false,
 ),
 'validate_shop' =>
 array (
@@ -4477,39 +4497,19 @@ array (
 'private' => true,
 ),
 ),
-),
-'oauth_exceptions_messages' =>
+'responses' =>
 array (
-1 => 'actions.authentication.save.errors.oauth_server_address_missmatch',
-2 => 'actions.authentication.save.errors.oauth_data_validation',
-),
-'client' =>
-array (
-'curl' =>
-array (
-'response_class' => 'APIPaymentComponentsResponse',
-'allow_redirection' => true,
-'verify_peer' => false,
-'verify_host' => 2,
-'timeout' => 30,
-'http_version' => 1.1,
-),
-'fopen' =>
-array (
-'response_class' => 'APIPaymentComponentsResponse',
+'class' => 'APIPaymentComponentsResponse',
+'strict' => true,
 ),
 ),
-'urls' =>
+'tree' =>
 array (
-'climatekit' =>
+'responses' =>
 array (
-'PROD' => 'solidaire.paygreen.fr',
-'SANDBOX' => 'sb-api-climatekit.paygreen.fr',
-'RECETTE' => 'rc-api-climatekit.paygreen.fr',
+'class' => 'PGClientComponentsResponseJSON',
+'validity' => '200-299',
 ),
-),
-'tree_api' =>
-array (
 'requests' =>
 array (
 'oauth_access' =>
@@ -4517,12 +4517,14 @@ array (
 'method' => 'POST',
 'url' => '{host}/login',
 'private' => false,
+'validity' => '200,400',
 ),
 'oauth_refresh_access' =>
 array (
 'method' => 'POST',
 'url' => '{host}/login',
 'private' => false,
+'validity' => '200,400',
 ),
 'get_account_infos' =>
 array (
@@ -4615,8 +4617,7 @@ array (
 'private' => true,
 ),
 ),
-),
-'tree_client' =>
+'clients' =>
 array (
 'curl' =>
 array (
@@ -4624,7 +4625,25 @@ array (
 'verify_peer' => true,
 'verify_host' => 2,
 'timeout' => 30,
-'http_version' => 1.1,
+'http_version' => '1.1',
+),
+),
+),
+),
+'urls' =>
+array (
+'climatekit' =>
+array (
+'PROD' => 'solidaire.paygreen.fr',
+'SANDBOX' => 'sb-api-climatekit.paygreen.fr',
+'RECETTE' => 'rc-api-climatekit.paygreen.fr',
+),
+),
+'client' =>
+array (
+'curl' =>
+array (
+'verify_peer' => false,
 ),
 ),
 );

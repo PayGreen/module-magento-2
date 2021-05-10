@@ -15,7 +15,7 @@
  * @author    PayGreen <contact@paygreen.fr>
  * @copyright 2014 - 2021 Watt Is It
  * @license   https://opensource.org/licenses/mit-license.php MIT License X11
- * @version   2.0.1
+ * @version   2.0.2
  *
  */
 
@@ -25,7 +25,7 @@ use Magento\Framework\View\Element\Template;
 use Magento\Framework\View\Element\Template\Context;
 use PGSystemServicesContainer;
 use PGModuleServicesLogger;
-use PGServerServicesLinker;
+use PGServerServicesHandlersLink;
 use PGServerComponentsResourceBag;
 use PGServerComponentsResourcesScriptFileResource;
 use PGMagentoServicesMagentoResourceCompiler;
@@ -64,8 +64,8 @@ class DisplayHomeHeader extends Template
         /** @var PGModuleServicesLogger $outputHandler */
         $logger = $this->getService('logger.view');
 
-        /** @var PGServerServicesLinker $linker */
-        $linker = $this->getService('linker');
+        /** @var PGServerServicesHandlersLink $linkHandler */
+        $linkHandler = $this->getService('handler.link');
 
         /** @var PGTreeCommonInterfacesTreeActivationBehavior $treeActivationBehavior */
         $treeActivationBehavior = $this->getService('behavior.tree_activation');
@@ -78,7 +78,7 @@ class DisplayHomeHeader extends Template
             $resources->add(new PGServerComponentsResourcesScriptFileResource('/js/clientjs.js'));
             $resources->add(new PGServerComponentsResourcesScriptFileResource('/js/tree.js'));
             $resources->add(new PGServerComponentsResourcesDataResource(array(
-                'paygreen_tree_computing_url' => $linker->buildFrontOfficeUrl('front.tree.save')
+                'paygreen_tree_computing_url' => $linkHandler->buildFrontOfficeUrl('front.tree.save')
             )));
         }
 

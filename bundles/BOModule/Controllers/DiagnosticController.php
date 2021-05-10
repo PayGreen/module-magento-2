@@ -15,7 +15,7 @@
  * @author    PayGreen <contact@paygreen.fr>
  * @copyright 2014 - 2021 Watt Is It
  * @license   https://opensource.org/licenses/mit-license.php MIT License X11
- * @version   2.0.1
+ * @version   2.0.2
  *
  */
 
@@ -46,7 +46,7 @@ class BOModuleControllersDiagnosticController extends BOModuleFoundationsAbstrac
 
         $this->success('actions.diagnostic.correction.result.success');
 
-        $url = $this->getLinker()->buildBackOfficeUrl('backoffice.support.display');
+        $url = $this->getLinkHandler()->buildBackOfficeUrl('backoffice.support.display');
 
         return $this->redirect($url);
     }

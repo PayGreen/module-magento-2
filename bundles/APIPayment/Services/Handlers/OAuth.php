@@ -15,7 +15,7 @@
  * @author    PayGreen <contact@paygreen.fr>
  * @copyright 2014 - 2021 Watt Is It
  * @license   https://opensource.org/licenses/mit-license.php MIT License X11
- * @version   2.0.1
+ * @version   2.0.2
  *
  */
 
@@ -37,8 +37,8 @@ class APIPaymentServicesHandlersOAuth extends PGSystemFoundationsObject
     /** @var PGShopServicesHandlersShopHandler */
     private $shopHandler;
 
-    /** @var PGServerServicesLinker */
-    private $linker;
+    /** @var PGServerServicesHandlersLink */
+    private $linkHandler;
 
     private static $OAUTH_KNOWN_EXCEPTION_CODES = array(
         "1" => APIPaymentExceptionsOAuth::ADDRESS_MISMATCH,
@@ -51,7 +51,7 @@ class APIPaymentServicesHandlersOAuth extends PGSystemFoundationsObject
      * @param PGModuleServicesSettings $settings
      * @param PGSystemServicesPathfinder $pathfinder
      * @param PGShopServicesHandlersShopHandler $shopHandler
-     * @param PGServerServicesLinker $linker
+     * @param PGServerServicesHandlersLink $linkHandler
      * @throws Exception
      */
     public function __construct(
@@ -59,13 +59,13 @@ class APIPaymentServicesHandlersOAuth extends PGSystemFoundationsObject
         PGModuleServicesSettings $settings,
         PGSystemServicesPathfinder $pathfinder,
         PGShopServicesHandlersShopHandler $shopHandler,
-        PGServerServicesLinker $linker
+        PGServerServicesHandlersLink $linkHandler
     ) {
         $this->apiFacade = $paygreenFacade->getApiFacade();
         $this->settings = $settings;
         $this->pathfinder = $pathfinder;
         $this->shopHandler = $shopHandler;
-        $this->linker = $linker;
+        $this->linkHandler = $linkHandler;
 
         $this->loadVendor();
     }
@@ -116,7 +116,7 @@ class APIPaymentServicesHandlersOAuth extends PGSystemFoundationsObject
 
         return $client->getAuthenticationUrl(
             $this->apiFacade->getOAuthAutorizeEndpoint(),
-            $this->linker->buildBackofficeUrl('backoffice.account.oauth.response')
+            $this->linkHandler->buildBackofficeUrl('backoffice.account.oauth.response')
         );
     }
 
@@ -131,7 +131,7 @@ class APIPaymentServicesHandlersOAuth extends PGSystemFoundationsObject
 
         $params = array(
             'code' => $code,
-            'redirect_uri' => $this->linker->buildBackofficeUrl('backoffice.account.oauth.response')
+            'redirect_uri' => $this->linkHandler->buildBackofficeUrl('backoffice.account.oauth.response')
         );
 
         $response = $client->getAccessToken(

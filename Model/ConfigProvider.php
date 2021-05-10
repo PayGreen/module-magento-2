@@ -15,7 +15,7 @@
  * @author    PayGreen <contact@paygreen.fr>
  * @copyright 2014 - 2021 Watt Is It
  * @license   https://opensource.org/licenses/mit-license.php MIT License X11
- * @version   2.0.1
+ * @version   2.0.2
  *
  */
 
@@ -24,7 +24,7 @@ namespace Paygreen\Payment\Model;
 use Magento\Checkout\Model\ConfigProviderInterface;
 use PGIntlServicesTranslator;
 use PGSystemServicesContainer;
-use PGServerServicesLinker;
+use PGServerServicesHandlersLink;
 use PGPaymentServicesHandlersPaymentButtonHandler;
 use PGPaymentInterfacesEntitiesButtonInterface;
 use PGMagentoProvisionersCheckoutProvisioner;
@@ -51,8 +51,8 @@ class ConfigProvider implements ConfigProviderInterface
         /** @var PGIntlServicesTranslator $translator */
         $translator = $this->getService('translator');
 
-        /** @var PGServerServicesLinker $linker */
-        $linker = $this->getService('linker');
+        /** @var PGServerServicesHandlersLink $linkHandler */
+        $linkHandler = $this->getService('handler.link');
 
         /** @var PGMagentoProvisionersCheckoutProvisioner $checkoutProvisioner */
         $checkoutProvisioner = new PGMagentoProvisionersCheckoutProvisioner();
@@ -67,7 +67,7 @@ class ConfigProvider implements ConfigProviderInterface
                 $button->toArray(),
                 [
                     'imageUrl' => $paymentButtonHandler->getButtonFinalUrl($button),
-                    'url' => $linker->buildFrontOfficeUrl('front.payment.validation', ['id' => $button->id()])
+                    'url' => $linkHandler->buildFrontOfficeUrl('front.payment.validation', ['id' => $button->id()])
                 ]
             );
         }

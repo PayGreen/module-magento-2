@@ -15,7 +15,7 @@
  * @author    PayGreen <contact@paygreen.fr>
  * @copyright 2014 - 2021 Watt Is It
  * @license   https://opensource.org/licenses/mit-license.php MIT License X11
- * @version   2.0.1
+ * @version   2.0.2
  *
  */
 
@@ -34,8 +34,8 @@ class BOModuleServicesViewsBlocksStandardizedConfigurationFormBlock extends BOMo
     /** @var PGSystemComponentsParameters */
     protected $parameters;
 
-    /** @var PGServerServicesLinker */
-    protected $linker;
+    /** @var PGServerServicesHandlersLink */
+    protected $linkHandler;
 
     /** @var PGSystemComponentsBag */
     protected $config;
@@ -65,11 +65,11 @@ class BOModuleServicesViewsBlocksStandardizedConfigurationFormBlock extends BOMo
     }
 
     /**
-     * @param PGServerServicesLinker $linker
+     * @param PGServerServicesHandlersLink $linkHandler
      */
-    public function setLinker(PGServerServicesLinker $linker)
+    public function setLinkHandler(PGServerServicesHandlersLink $linkHandler)
     {
-        $this->linker = $linker;
+        $this->linkHandler = $linkHandler;
     }
 
     /**
@@ -99,7 +99,7 @@ class BOModuleServicesViewsBlocksStandardizedConfigurationFormBlock extends BOMo
         /** @var PGFormServicesViewsFormView $view */
         $view = $this->formBuilder->build($name, $values)->buildView();
 
-        $url = $this->linker->buildBackOfficeUrl($data['action']);
+        $url = $this->linkHandler->buildBackOfficeUrl($data['action']);
 
         $view->setAction($url);
 

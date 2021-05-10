@@ -15,7 +15,7 @@
  * @author    PayGreen <contact@paygreen.fr>
  * @copyright 2014 - 2021 Watt Is It
  * @license   https://opensource.org/licenses/mit-license.php MIT License X11
- * @version   2.0.1
+ * @version   2.0.2
  *
  */
 
@@ -62,7 +62,7 @@ class BOPaymentControllersAccount extends BOModuleFoundationsAbstractBackofficeC
             $this->failure('actions.account_activation.toggle.result.failure');
         }
 
-        return $this->redirect($this->getLinker()->buildBackOfficeUrl('backoffice.account.display'));
+        return $this->redirect($this->getLinkHandler()->buildBackOfficeUrl('backoffice.account.display'));
     }
 
     /**
@@ -79,7 +79,7 @@ class BOPaymentControllersAccount extends BOModuleFoundationsAbstractBackofficeC
 
         $this->success('actions.authentication.reset.result.success');
 
-        return $this->redirect($this->getLinker()->buildBackOfficeUrl('backoffice.account.display'));
+        return $this->redirect($this->getLinkHandler()->buildBackOfficeUrl('backoffice.account.display'));
     }
 
     /**
@@ -89,7 +89,7 @@ class BOPaymentControllersAccount extends BOModuleFoundationsAbstractBackofficeC
      */
     protected function buildActivationFormView($infoAccount)
     {
-        $action = $this->getLinker()->buildBackOfficeUrl('backoffice.account.activation');
+        $action = $this->getLinkHandler()->buildBackOfficeUrl('backoffice.account.activation');
 
         $values = array(
             'activation' => ($infoAccount ? $infoAccount->activate : false)

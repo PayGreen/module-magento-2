@@ -15,7 +15,7 @@
  * @author    PayGreen <contact@paygreen.fr>
  * @copyright 2014 - 2021 Watt Is It
  * @license   https://opensource.org/licenses/mit-license.php MIT License X11
- * @version   2.0.1
+ * @version   2.0.2
  *
  */
 
@@ -31,18 +31,18 @@ abstract class PGServerFoundationsAbstractDeflector implements PGServerInterface
     /** @var PGModuleServicesLogger */
     private $logger;
 
-    /** @var PGServerServicesLinker */
-    private $linker;
+    /** @var PGServerServicesHandlersLink */
+    private $linkHandler;
 
     /** @var PGServerFoundationsAbstractRequest */
     private $request;
 
     /**
-     * @param PGServerServicesLinker $linker
+     * @param PGServerServicesHandlersLink $linkHandler
      */
-    public function setLinker(PGServerServicesLinker $linker)
+    public function setLinkHandler(PGServerServicesHandlersLink $linkHandler)
     {
-        $this->linker = $linker;
+        $this->linkHandler = $linkHandler;
     }
 
     /**
@@ -90,11 +90,11 @@ abstract class PGServerFoundationsAbstractDeflector implements PGServerInterface
     }
 
     /**
-     * @return PGServerServicesLinker
+     * @return PGServerServicesHandlersLink
      */
-    protected function getLinker()
+    protected function getLinkHandler()
     {
-        return $this->linker;
+        return $this->linkHandler;
     }
 
     /**

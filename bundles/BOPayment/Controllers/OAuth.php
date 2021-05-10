@@ -15,7 +15,7 @@
  * @author    PayGreen <contact@paygreen.fr>
  * @copyright 2014 - 2021 Watt Is It
  * @license   https://opensource.org/licenses/mit-license.php MIT License X11
- * @version   2.0.1
+ * @version   2.0.2
  *
  */
 
@@ -78,7 +78,7 @@ class BOPaymentControllersOAuth extends BOModuleFoundationsAbstractBackofficeCon
             $this->failure('actions.authentication.save.errors.oauth');
         }
 
-        return $this->redirect($this->getLinker()->buildBackOfficeUrl('backoffice.account.display'));
+        return $this->redirect($this->getLinkHandler()->buildBackOfficeUrl('backoffice.account.display'));
     }
 
     /**
@@ -104,6 +104,6 @@ class BOPaymentControllersOAuth extends BOModuleFoundationsAbstractBackofficeCon
 
         $this->getNotifier()->add(PGFrameworkServicesNotifier::STATE_FAILURE, $notification_message);
 
-        return $this->redirect($this->getLinker()->buildBackOfficeUrl('backoffice.account.display'));
+        return $this->redirect($this->getLinkHandler()->buildBackOfficeUrl('backoffice.account.display'));
     }
 }

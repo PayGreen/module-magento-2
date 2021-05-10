@@ -15,7 +15,7 @@
  * @author    PayGreen <contact@paygreen.fr>
  * @copyright 2014 - 2021 Watt Is It
  * @license   https://opensource.org/licenses/mit-license.php MIT License X11
- * @version   2.0.1
+ * @version   2.0.2
  *
  */
 
@@ -63,7 +63,7 @@ class BOModuleControllersTranslationsController extends BOModuleFoundationsAbstr
         /** @var PGFormInterfacesFormViewInterface $formView */
         $formView = $form->buildView();
 
-        $formView->setAction($this->getLinker()->buildBackOfficeUrl('backoffice.translations.save'));
+        $formView->setAction($this->getLinkHandler()->buildBackOfficeUrl('backoffice.translations.save'));
 
         return $this->buildTemplateResponse('translations/block-form-translations-management', array(
             'formView' => new PGViewComponentsBox($formView)
@@ -103,7 +103,7 @@ class BOModuleControllersTranslationsController extends BOModuleFoundationsAbstr
 
             $this->success('actions.translations.save.result.success');
 
-            return $this->redirect($this->getLinker()->buildBackOfficeUrl('backoffice.translations.display'));
+            return $this->redirect($this->getLinkHandler()->buildBackOfficeUrl('backoffice.translations.display'));
         } else {
             $this->failure('actions.translations.save.result.failure');
 
