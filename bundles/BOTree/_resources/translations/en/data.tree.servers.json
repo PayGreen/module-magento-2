@@ -1,0 +1,10 @@
+{
+  "data":{
+    "tree_api_server": {
+      "values": {
+        "PROD": "Production",
+        "SANDBOX": "Sandbox"
+      }
+    }
+  }
+}

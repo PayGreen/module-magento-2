@@ -15,7 +15,7 @@
  * @author    PayGreen <contact@paygreen.fr>
  * @copyright 2014 - 2021 Watt Is It
  * @license   https://opensource.org/licenses/mit-license.php MIT License X11
- * @version   2.0.2
+ * @version   2.1.0
  *
  */
 
@@ -43,6 +43,9 @@ class APITreeComponentsRepliesCarbonFootprint extends PGClientFoundationsReply
     /** @var string */
     protected $estimatedPrice;
 
+    /** @var stdClass */
+    protected $emissionDistribution;
+
     /** @var DateTime */
     protected $createdAt;
 
@@ -66,6 +69,10 @@ class APITreeComponentsRepliesCarbonFootprint extends PGClientFoundationsReply
             ->setScalar('estimatedPrice', 'estimatedPrice')
             ->setScalar('status', 'status')
         ;
+        
+        if ($this->hasRaw('emissionDistribution')) {
+            $this->setScalar('emissionDistribution', 'emissionDistribution');
+        }
 
         if ($this->hasRaw('createdAt') and ($this->getRaw('createdAt') > 0)) {
             $this->createdAt = $this->createDateTimeFromTimestamp($this->getRaw('createdAt'));
@@ -76,6 +83,11 @@ class APITreeComponentsRepliesCarbonFootprint extends PGClientFoundationsReply
         }
     }
 
+    /**
+     * @param string $timestamp
+     * @return DateTime
+     * @throws Exception
+     */
     protected function createDateTimeFromTimestamp($timestamp)
     {
         if ($timestamp <= 0) {
@@ -133,6 +145,50 @@ class APITreeComponentsRepliesCarbonFootprint extends PGClientFoundationsReply
     public function getEstimatedPrice()
     {
         return $this->estimatedPrice;
+    }
+
+    /**
+     * @return stdClass
+     */
+    public function getEmissionDistribution()
+    {
+        return $this->emissionDistribution;
+    }
+
+    /**
+     * @return float
+     */
+    public function getCarbonEmittedFromDigital()
+    {
+        if ($this->emissionDistribution !== null) {
+            return $this->emissionDistribution->carbonEmittedFromDigital;
+        }
+
+        return 0;
+    }
+
+    /**
+     * @return float
+     */
+    public function getCarbonEmittedFromTransportation()
+    {
+        if ($this->emissionDistribution !== null) {
+            return $this->emissionDistribution->carbonEmittedFromTransportation;
+        }
+
+        return 0;
+    }
+
+    /**
+     * @return float
+     */
+    public function getCarbonEmittedFromProduct()
+    {
+        if ($this->emissionDistribution !== null) {
+            return $this->emissionDistribution->carbonEmittedFromProduct;
+        }
+
+        return 0;
     }
 
     /**

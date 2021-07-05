@@ -15,7 +15,7 @@
  * @author    PayGreen <contact@paygreen.fr>
  * @copyright 2014 - 2021 Watt Is It
  * @license   https://opensource.org/licenses/mit-license.php MIT License X11
- * @version   2.0.2
+ * @version   2.1.0
  *
  */
 
@@ -43,6 +43,14 @@ class PGMagentoEntitiesProduct extends PGShopFoundationsEntitiesProduct implemen
     public function getWeight()
     {
         return $this->getLocalEntity()->getWeight();
+    }
+
+    /**
+     * @return int
+     */
+    public function getReference()
+    {
+        return $this->getLocalEntity()->getSku();
     }
 
     /**

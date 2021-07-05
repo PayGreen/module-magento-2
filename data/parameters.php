@@ -15,11 +15,54 @@
  * @author    PayGreen <contact@paygreen.fr>
  * @copyright 2014 - 2021 Watt Is It
  * @license   https://opensource.org/licenses/mit-license.php MIT License X11
- * @version   2.0.2
+ * @version   2.1.0
  *
  */
 
 return array (
+'translator' =>
+array (
+'sources' =>
+array (
+0 => 'bundles-resources',
+1 => 'module-resources',
+),
+),
+'cache' =>
+array (
+'entries' =>
+array (
+'translations-fr' =>
+array (
+'ttl' => 86400,
+'format' => 'array',
+),
+'translations-en' =>
+array (
+'ttl' => 86400,
+'format' => 'array',
+),
+'account-infos' =>
+array (
+'ttl' => 300,
+'format' => 'object',
+),
+'status-shop' =>
+array (
+'ttl' => 300,
+'format' => 'object',
+),
+'payment-types' =>
+array (
+'ttl' => 3600,
+'format' => 'object',
+),
+),
+),
+'media' =>
+array (
+'baseurl' => '/pub/media/paygreen',
+),
 'settings' =>
 array (
 'entries' =>
@@ -58,7 +101,12 @@ array (
 array (
 ),
 ),
-'active' =>
+'payment_activation' =>
+array (
+'type' => 'bool',
+'default' => true,
+),
+'payment_kit_activation' =>
 array (
 'type' => 'bool',
 'default' => true,
@@ -133,12 +181,22 @@ array (
 'global' => true,
 'default' => null,
 ),
-'tree_active' =>
+'tree_activation' =>
+array (
+'type' => 'bool',
+'default' => true,
+),
+'tree_kit_activation' =>
 array (
 'type' => 'bool',
 'default' => true,
 ),
 'tree_client_id' =>
+array (
+'type' => 'string',
+'private' => true,
+),
+'tree_client_username' =>
 array (
 'type' => 'string',
 'private' => true,
@@ -172,6 +230,41 @@ array (
 array (
 'type' => 'string',
 'default' => 'fr',
+),
+'tree_details_url' =>
+array (
+'type' => 'string',
+'default' => '',
+),
+'tree_bot_activated' =>
+array (
+'type' => 'bool',
+'default' => false,
+),
+'tree_bot_color' =>
+array (
+'type' => 'string',
+'default' => '#33AD73',
+),
+'tree_bot_side' =>
+array (
+'type' => 'string',
+'default' => 'RIGHT',
+),
+'tree_bot_details_activated' =>
+array (
+'type' => 'bool',
+'default' => true,
+),
+'tree_bot_corner' =>
+array (
+'type' => 'string',
+'default' => 'ROUND',
+),
+'tree_bot_mobile_activated' =>
+array (
+'type' => 'bool',
+'default' => true,
 ),
 'tree_access_token' =>
 array (
@@ -255,45 +348,18 @@ array (
 'service' => 'behavior.tree_activation',
 'method' => 'isActivated',
 ),
+'tree_bot_activation' =>
+array (
+'type' => 'requirement',
+'requirements' =>
+array (
+'tree_bot_activation' => true,
+),
+),
 'transmission_on_refund' =>
 array (
 'type' => 'user',
 'key' => 'behavior_payment_refund',
-),
-),
-'media' =>
-array (
-'baseurl' => '/pub/media/paygreen',
-),
-'cache' =>
-array (
-'entries' =>
-array (
-'translations-fr' =>
-array (
-'ttl' => 86400,
-'format' => 'array',
-),
-'translations-en' =>
-array (
-'ttl' => 86400,
-'format' => 'array',
-),
-'account-infos' =>
-array (
-'ttl' => 300,
-'format' => 'object',
-),
-'status-shop' =>
-array (
-'ttl' => 300,
-'format' => 'object',
-),
-'payment-types' =>
-array (
-'ttl' => 3600,
-'format' => 'object',
-),
 ),
 ),
 'listeners' =>
@@ -400,6 +466,20 @@ array (
 'event' => 'order.refund',
 'service' => 'listener.refund.update_transaction',
 ),
+'install_processing_database' =>
+array (
+'event' => 'module.install',
+'service' => 'listener.setup.processing_database',
+'method' => 'install',
+'priority' => 50,
+),
+'uninstall_processing_database' =>
+array (
+'event' => 'module.uninstall',
+'service' => 'listener.setup.processing_database',
+'method' => 'uninstall',
+'priority' => 950,
+),
 'payment_check_client_compatibility' =>
 array (
 'event' => 'module.install',
@@ -415,6 +495,40 @@ array (
 1 => 'action.backoffice.system.display',
 ),
 'service' => 'listener.action.display_backoffice',
+),
+'adding_web_carbon_offsetting' =>
+array (
+'event' => 'carbon_offsetting_computing',
+'service' => 'listener.carbon_offsetting_computing.adding_web_data',
+),
+'setting_transport_carbon_offsetting' =>
+array (
+'event' => 'carbon_offsetting_computing',
+'service' => 'listener.carbon_offsetting_computing.setting_transport_data',
+),
+'setting_product_carbon_offsetting' =>
+array (
+'event' => 'carbon_offsetting_computing',
+'service' => 'listener.carbon_offsetting_computing.setting_product_data',
+),
+'tree.page_counting' =>
+array (
+'event' => 'display.frontoffice',
+'service' => 'listener.tree.page_counting',
+),
+'install_tree_carbon_data_database' =>
+array (
+'event' => 'module.install',
+'service' => 'listener.setup.tree_carbon_data_database',
+'method' => 'install',
+'priority' => 50,
+),
+'uninstall_tree_carbon_data_database' =>
+array (
+'event' => 'module.uninstall',
+'service' => 'listener.setup.tree_carbon_data_database',
+'method' => 'uninstall',
+'priority' => 950,
 ),
 'tree_check_client_compatibility' =>
 array (
@@ -440,6 +554,11 @@ array (
 1 => 'action.backoffice.tree_config.display',
 ),
 'service' => 'listener.tree_action.shipping_address',
+),
+'carbon_footprint_finalization' =>
+array (
+'event' => 'LOCAL.ORDER.VALIDATION',
+'service' => 'listener.carbon_footprint.finalization',
 ),
 'create_database' =>
 array (
@@ -503,18 +622,6 @@ array (
 'priority' => 65,
 ),
 ),
-'translator' =>
-array (
-'sources' =>
-array (
-0 => 'bundles-resources',
-1 => 'module-resources',
-),
-),
-'setup' =>
-array (
-'older' => null,
-),
 'static' =>
 array (
 'public' => null,
@@ -531,6 +638,439 @@ array (
 ),
 'module' => 'Paygreen_Payment',
 'folder' => 'static',
+),
+'translations' =>
+array (
+'payment_bloc' =>
+array (
+'label' => 'payment_translations.payment_bloc.field.label',
+'help' => 'payment_translations.payment_bloc.field.help',
+'tags' =>
+array (
+0 => 'payment',
+),
+'default' =>
+array (
+'fr' => 'PayGreen : paiement solidaire et responsable',
+'en' => 'PayGreen: green & sustainable payment',
+),
+),
+'payment_link' =>
+array (
+'label' => 'payment_translations.payment_link.field.label',
+'help' => 'payment_translations.payment_link.field.help',
+'tags' =>
+array (
+0 => 'payment',
+),
+'default' =>
+array (
+'fr' => 'Payer avec PayGreen',
+'en' => 'Pay with PayGreen',
+),
+),
+'message_payment_success' =>
+array (
+'label' => 'payment_translations.message_payment_success.field.label',
+'help' => 'payment_translations.message_payment_success.field.help',
+'tags' =>
+array (
+0 => 'payment',
+),
+'default' =>
+array (
+'fr' => 'Votre paiement a été enregistré avec succès.',
+'en' => 'Your payment has been successfully registered.',
+),
+),
+'message_payment_refused' =>
+array (
+'label' => 'payment_translations.message_payment_refused.field.label',
+'help' => 'payment_translations.message_payment_refused.field.help',
+'tags' =>
+array (
+0 => 'payment',
+),
+'default' =>
+array (
+'fr' => 'Votre paiement n\'a pas abouti.',
+'en' => 'Your payment is unsuccessful.',
+),
+),
+'message_order_canceled' =>
+array (
+'label' => 'payment_translations.message_order_canceled.field.label',
+'help' => 'payment_translations.message_order_canceled.field.help',
+'tags' =>
+array (
+0 => 'payment',
+),
+'default' =>
+array (
+'fr' => 'Votre commande a été annulée.',
+'en' => 'Your order has been canceled.',
+),
+'enabled' => false,
+),
+'message_carbon_offsetting' =>
+array (
+'label' => 'translations.message_carbon_offsetting.field.label',
+'help' => 'translations.message_carbon_offsetting.field.help',
+'tags' =>
+array (
+0 => 'tree',
+),
+'default' =>
+array (
+'fr' => 'Cette empreinte carbone sera intégralement prise en charge par votre commerçant.',
+'en' => 'This carbon footprint will be fully supported by your merchant.',
+),
+),
+'message_carbon_footprint' =>
+array (
+'label' => 'translations.message_carbon_footprint.field.label',
+'help' => 'translations.message_carbon_footprint.field.help',
+'tags' =>
+array (
+0 => 'tree_bot',
+),
+'default' =>
+array (
+'fr' => 'Impact carbone de mon parcours d\'achat',
+'en' => 'Carbon impact of my purchasing journey',
+),
+),
+'message_find_out_more' =>
+array (
+'label' => 'translations.message_find_out_more.field.label',
+'help' => 'translations.message_find_out_more.field.help',
+'tags' =>
+array (
+0 => 'tree_bot',
+),
+'default' =>
+array (
+'fr' => 'En savoir plus sur nos engagements',
+'en' => 'Find out more about our commitments',
+),
+),
+),
+'setup' =>
+array (
+'older' => null,
+),
+'upgrades' =>
+array (
+'1_0_0_upgrade_tables' =>
+array (
+'version' => '1.0.0',
+'type' => 'database',
+'config' =>
+array (
+'script' => 'PGMagento:upgrades/1.0.0-upgrade-tables.sql',
+),
+),
+'1_0_0_restore_settings' =>
+array (
+'version' => '1.0.0',
+'type' => 'settings.restore',
+'priority' => 750,
+'config' =>
+array (
+'keys' =>
+array (
+'active' => 'active',
+'title' => 'title',
+),
+),
+),
+'1_1_0_add_translations_table' =>
+array (
+'version' => '1.1.0',
+'type' => 'database',
+'priority' => 100,
+'config' =>
+array (
+'script' => 'PGIntl:translation/updates/001-creation-table.sql',
+),
+),
+'2_1_0_rename_active_setting' =>
+array (
+'version' => '2.1.0',
+'type' => 'rename_settings',
+'config' =>
+array (
+'mapping' =>
+array (
+'active' => 'payment_activation',
+),
+),
+),
+'1_0_0_database_multishop' =>
+array (
+'version' => '1.0.0',
+'type' => 'database.multishop',
+'priority' => 100,
+),
+'1_0_0_upgrade_payment_tables' =>
+array (
+'version' => '1.0.0',
+'type' => 'database',
+'config' =>
+array (
+'script' => 'PGMagentoPayment:upgrades/1.0.0-upgrade-payment-tables.sql',
+),
+),
+'1_0_0_restore_payment_settings' =>
+array (
+'version' => '1.0.0',
+'type' => 'settings.restore',
+'priority' => 750,
+'config' =>
+array (
+'keys' =>
+array (
+'visibility' => 'admin_only_visibility',
+'payment_confirmation_button' => 'payment_confirmation_button',
+'payment_success_text' => 'notice_payment_accepted',
+'payment_error_text' => 'notice_payment_refused',
+'behavior_transmit_refund' => 'behavior_payment_refund',
+'behavior_transmit_delivering' => 'behavior_delivery_confirmation',
+),
+),
+),
+'1_1_0_restore_button_labels' =>
+array (
+'version' => '1.1.0',
+'type' => 'button_labels.restore',
+'priority' => 500,
+),
+'1_1_0_insert_default_translations' =>
+array (
+'version' => '1.1.0',
+'type' => 'translations.install_default_values',
+'priority' => 900,
+'config' =>
+array (
+'codes' =>
+array (
+0 => 'payment_bloc',
+1 => 'payment_link',
+2 => 'message_payment_success',
+3 => 'message_payment_refused',
+),
+),
+),
+'1_1_0_restore_translations' =>
+array (
+'version' => '1.1.0',
+'type' => 'translations.restore',
+'priority' => 950,
+'config' =>
+array (
+'keys' =>
+array (
+'payment_bloc' => 'title',
+'payment_link' => 'payment_confirmation_button',
+'message_payment_success' => 'notice_payment_accepted',
+'message_payment_refused' => 'notice_payment_refused',
+),
+),
+),
+'1_1_0_remove_button_label' =>
+array (
+'version' => '1.1.0',
+'type' => 'database',
+'priority' => 950,
+'config' =>
+array (
+'script' => 'PGPayment:button/001-remove-label.sql',
+),
+),
+'1_2_0_remove_button_default_picture' =>
+array (
+'version' => '1.2.0',
+'type' => 'media_delete',
+'config' =>
+array (
+'media' => 'default-payment-button.png',
+),
+),
+'2_0_0_add_filters_fields_in_button_table' =>
+array (
+'version' => '2.0.0',
+'type' => 'database',
+'config' =>
+array (
+'script' =>
+array (
+0 => 'PGPayment:button/002-add-filters-fields-in-button-table.sql',
+1 => 'PGPayment:button/004-update-filtered-category-primaries-remove-default-value.sql',
+),
+),
+),
+'2_1_0_create_processing_table' =>
+array (
+'version' => '2.1.0',
+'type' => 'database',
+'config' =>
+array (
+'script' =>
+array (
+0 => 'PGPayment:processing/upgrades/001-creation-table.sql',
+),
+),
+),
+'2_1_0_creation_carbon_data_table' =>
+array (
+'version' => '2.1.0',
+'type' => 'database',
+'config' =>
+array (
+'script' =>
+array (
+0 => 'PGTree:carbon_data/upgrades/001-creation-carbon-data-table.sql',
+),
+),
+),
+'2_1_0_rename_tree_active_setting' =>
+array (
+'version' => '2.1.0',
+'type' => 'rename_settings',
+'config' =>
+array (
+'mapping' =>
+array (
+'tree_active' => 'tree_kit_activation',
+),
+),
+),
+'2_1_0_fix_carbon_offsetting_translations' =>
+array (
+'version' => '2.1.0',
+'type' => 'database',
+'config' =>
+array (
+'script' =>
+array (
+0 => 'PGTree:upgrades/002-fix-carbon-offsetting-translations.sql',
+),
+),
+),
+'2_1_0_remove_fingerprint_table' =>
+array (
+'version' => '2.1.0',
+'type' => 'database',
+'config' =>
+array (
+'script' =>
+array (
+0 => 'PGTree:fingerprint/upgrades/002-remove-fingerprint-table.sql',
+),
+),
+),
+'2_1_0_add_carbon_bot_translations' =>
+array (
+'version' => '2.1.0',
+'type' => 'translations.install_default_values',
+'config' =>
+array (
+'codes' =>
+array (
+0 => 'message_carbon_footprint',
+1 => 'message_find_out_more',
+),
+),
+),
+'2_1_0_add_unique_index_carbon_data' =>
+array (
+'version' => '2.1.0',
+'type' => 'database',
+'config' =>
+array (
+'script' =>
+array (
+0 => 'PGTree:carbon_data/upgrades/002-add-unique-index-on-id-order-column.sql',
+),
+),
+),
+),
+'outputs' =>
+array (
+'payment_footer' =>
+array (
+'target' => 'footer',
+'builder' => 'payment_footer',
+'clean' => true,
+'requirements' =>
+array (
+'footer_displayed' => true,
+),
+),
+'success_payment_message' =>
+array (
+'target' => 'FUNNEL.CONFIRMATION',
+'builder' => 'success_payment_message',
+'clean' => true,
+'requirements' =>
+array (
+'payment_activation' => true,
+'payment_kit_activation' => true,
+),
+),
+'carbon_bot' =>
+array (
+'target' => 'FRONT',
+'builder' => 'carbon_bot',
+'clean' => true,
+'requirements' =>
+array (
+'tree_activation' => true,
+'tree_bot_activation' => true,
+),
+),
+'carbon_footprint' =>
+array (
+'target' => 'funnel.confirmation',
+'builder' => 'carbon_footprint',
+'clean' => true,
+'requirements' =>
+array (
+'tree_activation' => true,
+'tree_connexion' => true,
+),
+),
+'carbon_bot_css' =>
+array (
+'target' => 'FRONT',
+'builder' => 'carbon_bot_css',
+'clean' => true,
+'requirements' =>
+array (
+'tree_activation' => true,
+'tree_bot_activation' => true,
+),
+),
+),
+'log' =>
+array (
+'format' => '<datetime> | *<type>* | <text>',
+'file' => 'log:/module.log',
+'view' =>
+array (
+'format' => '<datetime> | *<type>* | <text>',
+'file' => 'log:/view.log',
+),
+'api' =>
+array (
+'format' => '<datetime> | *<type>* | <text>',
+'file' => 'log:/api.log',
+),
+'api_tree' =>
+array (
+'format' => '<datetime> | *<type>* | <text>',
+'file' => 'log:/api.log',
+),
 ),
 'database' =>
 array (
@@ -809,10 +1349,10 @@ array (
 ),
 ),
 ),
-'fingerprint' =>
+'processing' =>
 array (
-'class' => 'PGTreeCommonEntitiesFingerPrint',
-'table' => 'paygreen_fingerprint',
+'class' => 'PGPaymentEntitiesProcessing',
+'table' => 'paygreen_processing',
 'primary' => 'id',
 'fields' =>
 array (
@@ -820,29 +1360,93 @@ array (
 array (
 'type' => 'int',
 ),
-'session' =>
-array (
-'type' => 'string',
-),
-'browser' =>
-array (
-'type' => 'string',
-),
-'device' =>
-array (
-'type' => 'string',
-),
-'pictures' =>
+'id_shop' =>
 array (
 'type' => 'int',
 ),
-'pages' =>
+'reference' =>
+array (
+'type' => 'string',
+),
+'success' =>
+array (
+'type' => 'string',
+),
+'status' =>
+array (
+'type' => 'string',
+),
+'pid' =>
+array (
+'type' => 'string',
+),
+'pid_status' =>
+array (
+'type' => 'string',
+),
+'created_at' =>
+array (
+'type' => 'datetime',
+),
+'echoes' =>
+array (
+'type' => 'array',
+'default' =>
+array (
+),
+),
+'amount' =>
 array (
 'type' => 'int',
 ),
-'time' =>
+'id_order' =>
+array (
+'type' => 'string',
+),
+'state_from' =>
+array (
+'type' => 'string',
+),
+'state_to' =>
+array (
+'type' => 'string',
+),
+),
+),
+'fingerprint' =>
+array (
+'table' => 'paygreen_fingerprint',
+),
+'carbon_data' =>
+array (
+'class' => 'PGTreeEntitiesCarbonData',
+'table' => 'paygreen_carbon_data',
+'primary' => 'id',
+'fields' =>
+array (
+'id' =>
 array (
 'type' => 'int',
+),
+'id_order' =>
+array (
+'type' => 'int',
+),
+'id_user' =>
+array (
+'type' => 'int',
+),
+'id_fingerprint' =>
+array (
+'type' => 'string',
+),
+'footprint' =>
+array (
+'type' => 'float',
+),
+'carbon_offset' =>
+array (
+'type' => 'float',
 ),
 'created_at' =>
 array (
@@ -850,229 +1454,6 @@ array (
 ),
 ),
 ),
-),
-),
-'translations' =>
-array (
-'payment_bloc' =>
-array (
-'label' => 'translations.payment_bloc.field.label',
-'help' => 'translations.payment_bloc.field.help',
-'default' =>
-array (
-'fr' => 'PayGreen : paiement solidaire et responsable',
-'en' => 'PayGreen: green & sustainable payment',
-),
-),
-'payment_link' =>
-array (
-'label' => 'translations.payment_link.field.label',
-'help' => 'translations.payment_link.field.help',
-'default' =>
-array (
-'fr' => 'Payer avec PayGreen',
-'en' => 'Pay with PayGreen',
-),
-),
-'message_payment_success' =>
-array (
-'label' => 'translations.message_payment_success.field.label',
-'help' => 'translations.message_payment_success.field.help',
-'default' =>
-array (
-'fr' => 'Votre paiement a été enregistré avec succès.',
-'en' => 'Your payment has been successfully registered.',
-),
-),
-'message_payment_refused' =>
-array (
-'label' => 'translations.message_payment_refused.field.label',
-'help' => 'translations.message_payment_refused.field.help',
-'default' =>
-array (
-'fr' => 'Votre paiement n\'a pas abouti.',
-'en' => 'Your payment is unsuccessful.',
-),
-),
-'message_order_canceled' =>
-array (
-'label' => 'translations.message_order_canceled.field.label',
-'help' => 'translations.message_order_canceled.field.help',
-'default' =>
-array (
-'fr' => 'Votre commande a été annulée.',
-'en' => 'Your order has been canceled.',
-),
-'enabled' => false,
-),
-'message_carbone_offsetting' =>
-array (
-'label' => 'translations.message_carbone_offsetting.field.label',
-'help' => 'translations.message_carbone_offsetting.field.help',
-'default' =>
-array (
-'fr' => 'Cette empreinte carbone sera intégralement prise en charge par votre commerçant.',
-'en' => 'This carbon footprint will be fully supported by your merchant.',
-),
-),
-),
-'upgrades' =>
-array (
-'1_0_0_upgrade_tables' =>
-array (
-'version' => '1.0.0',
-'type' => 'database',
-'config' =>
-array (
-'script' => 'PGMagento:upgrades/1.0.0-upgrade-tables.sql',
-),
-),
-'1_0_0_restore_settings' =>
-array (
-'version' => '1.0.0',
-'type' => 'settings.restore',
-'priority' => 750,
-'config' =>
-array (
-'keys' =>
-array (
-'active' => 'active',
-'title' => 'title',
-),
-),
-),
-'1_1_0_add_translations_table' =>
-array (
-'version' => '1.1.0',
-'type' => 'database',
-'priority' => 100,
-'config' =>
-array (
-'script' => 'PGIntl:translation/updates/001-creation-table.sql',
-),
-),
-'1_0_0_database_multishop' =>
-array (
-'version' => '1.0.0',
-'type' => 'database.multishop',
-'priority' => 100,
-),
-'1_0_0_upgrade_payment_tables' =>
-array (
-'version' => '1.0.0',
-'type' => 'database',
-'config' =>
-array (
-'script' => 'PGMagentoPayment:upgrades/1.0.0-upgrade-payment-tables.sql',
-),
-),
-'1_0_0_restore_payment_settings' =>
-array (
-'version' => '1.0.0',
-'type' => 'settings.restore',
-'priority' => 750,
-'config' =>
-array (
-'keys' =>
-array (
-'visibility' => 'admin_only_visibility',
-'payment_confirmation_button' => 'payment_confirmation_button',
-'payment_success_text' => 'notice_payment_accepted',
-'payment_error_text' => 'notice_payment_refused',
-'behavior_transmit_refund' => 'behavior_payment_refund',
-'behavior_transmit_delivering' => 'behavior_delivery_confirmation',
-),
-),
-),
-'1_1_0_restore_button_labels' =>
-array (
-'version' => '1.1.0',
-'type' => 'button_labels.restore',
-'priority' => 500,
-),
-'1_1_0_insert_default_translations' =>
-array (
-'version' => '1.1.0',
-'type' => 'translations.install_default_values',
-'priority' => 900,
-'config' =>
-array (
-'codes' =>
-array (
-0 => 'payment_bloc',
-1 => 'payment_link',
-2 => 'message_payment_success',
-3 => 'message_payment_refused',
-),
-),
-),
-'1_1_0_restore_translations' =>
-array (
-'version' => '1.1.0',
-'type' => 'translations.restore',
-'priority' => 950,
-'config' =>
-array (
-'keys' =>
-array (
-'payment_bloc' => 'title',
-'payment_link' => 'payment_confirmation_button',
-'message_payment_success' => 'notice_payment_accepted',
-'message_payment_refused' => 'notice_payment_refused',
-),
-),
-),
-'1_1_0_remove_button_label' =>
-array (
-'version' => '1.1.0',
-'type' => 'database',
-'priority' => 950,
-'config' =>
-array (
-'script' => 'PGPayment:button/001-remove-label.sql',
-),
-),
-'1_2_0_remove_button_default_picture' =>
-array (
-'version' => '1.2.0',
-'type' => 'media_delete',
-'config' =>
-array (
-'media' => 'default-payment-button.png',
-),
-),
-'2_0_0_add_filters_fields_in_button_table' =>
-array (
-'version' => '2.0.0',
-'type' => 'database',
-'config' =>
-array (
-'script' =>
-array (
-0 => 'PGPayment:button/002-add-filters-fields-in-button-table.sql',
-1 => 'PGPayment:button/004-update-filtered-category-primaries-remove-default-value.sql',
-),
-),
-),
-),
-'log' =>
-array (
-'format' => '<datetime> | *<type>* | <text>',
-'file' => 'log:/module.log',
-'view' =>
-array (
-'format' => '<datetime> | *<type>* | <text>',
-'file' => 'log:/view.log',
-),
-'api' =>
-array (
-'format' => '<datetime> | *<type>* | <text>',
-'file' => 'log:/api.log',
-),
-'api_tree' =>
-array (
-'format' => '<datetime> | *<type>* | <text>',
-'file' => 'log:/api.log',
 ),
 ),
 'db' =>
@@ -1083,90 +1464,6 @@ array (
 'engine' => 'innodb',
 ),
 'split' => true,
-),
-'request_builder' =>
-array (
-'default' =>
-array (
-),
-'backoffice' =>
-array (
-'strict' => false,
-),
-'frontoffice' =>
-array (
-'strict' => false,
-),
-),
-'mime_types' =>
-array (
-'aac' => 'audio/aac',
-'abw' => 'application/x-abiword',
-'arc' => 'application/octet-stream',
-'avi' => 'video/x-msvideo',
-'azw' => 'application/vnd.amazon.ebook',
-'bin' => 'application/octet-stream',
-'bz' => 'application/x-bzip',
-'bz2' => 'application/x-bzip2',
-'csh' => 'application/x-csh',
-'css' => 'text/css',
-'csv' => 'text/csv',
-'doc' => 'application/msword',
-'docx' => 'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
-'eot' => 'application/vnd.ms-fontobject',
-'epub' => 'application/epub+zip',
-'gif' => 'image/gif',
-'htm' => 'text/html',
-'html' => 'text/html',
-'ico' => 'image/x-icon',
-'ics' => 'text/calendar',
-'jar' => 'application/java-archive',
-'jpeg' => 'image/jpeg',
-'jpg' => 'image/jpeg',
-'js' => 'application/javascript',
-'json' => 'application/json',
-'log' => 'text/plain',
-'mid' => 'audio/midi',
-'midi' => 'audio/midi',
-'mpeg' => 'video/mpeg',
-'mpkg' => 'application/vnd.apple.installer+xml',
-'odp' => 'application/vnd.oasis.opendocument.presentation',
-'ods' => 'application/vnd.oasis.opendocument.spreadsheet',
-'odt' => 'application/vnd.oasis.opendocument.text',
-'oga' => 'audio/ogg',
-'ogv' => 'video/ogg',
-'ogx' => 'application/ogg',
-'otf' => 'font/otf',
-'png' => 'image/png',
-'pdf' => 'application/pdf',
-'ppt' => 'application/vnd.ms-powerpoint',
-'pptx' => 'application/vnd.openxmlformats-officedocument.presentationml.presentation',
-'rar' => 'application/x-rar-compressed',
-'rtf' => 'application/rtf',
-'sh' => 'application/x-sh',
-'svg' => 'image/svg+xml',
-'swf' => 'application/x-shockwave-flash',
-'tar' => 'application/x-tar',
-'tif' => 'image/tiff',
-'tiff' => 'image/tiff',
-'ts' => 'application/typescript',
-'ttf' => 'font/ttf',
-'vsd' => 'application/vnd.visio',
-'wav' => 'audio/x-wav',
-'weba' => 'audio/webm',
-'webm' => 'video/webm',
-'webp' => 'image/webp',
-'woff' => 'font/woff',
-'woff2' => 'font/woff2',
-'xhtml' => 'application/xhtml+xml',
-'xls' => 'application/vnd.ms-excel',
-'xlsx' => 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
-'xml' => 'application/xml',
-'xul' => 'application/vnd.mozilla.xul+xml',
-'zip' => 'application/zip',
-'3gp' => 'video/3gpp',
-'3g2' => 'video/3gpp2',
-'7z' => 'application/x-7z-compressed',
 ),
 'http_codes' =>
 array (
@@ -1245,6 +1542,90 @@ array (
 598 => 'Network read timeout error',
 599 => 'Network connect timeout error',
 ),
+'mime_types' =>
+array (
+'aac' => 'audio/aac',
+'abw' => 'application/x-abiword',
+'arc' => 'application/octet-stream',
+'avi' => 'video/x-msvideo',
+'azw' => 'application/vnd.amazon.ebook',
+'bin' => 'application/octet-stream',
+'bz' => 'application/x-bzip',
+'bz2' => 'application/x-bzip2',
+'csh' => 'application/x-csh',
+'css' => 'text/css',
+'csv' => 'text/csv',
+'doc' => 'application/msword',
+'docx' => 'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+'eot' => 'application/vnd.ms-fontobject',
+'epub' => 'application/epub+zip',
+'gif' => 'image/gif',
+'htm' => 'text/html',
+'html' => 'text/html',
+'ico' => 'image/x-icon',
+'ics' => 'text/calendar',
+'jar' => 'application/java-archive',
+'jpeg' => 'image/jpeg',
+'jpg' => 'image/jpeg',
+'js' => 'application/javascript',
+'json' => 'application/json',
+'log' => 'text/plain',
+'mid' => 'audio/midi',
+'midi' => 'audio/midi',
+'mpeg' => 'video/mpeg',
+'mpkg' => 'application/vnd.apple.installer+xml',
+'odp' => 'application/vnd.oasis.opendocument.presentation',
+'ods' => 'application/vnd.oasis.opendocument.spreadsheet',
+'odt' => 'application/vnd.oasis.opendocument.text',
+'oga' => 'audio/ogg',
+'ogv' => 'video/ogg',
+'ogx' => 'application/ogg',
+'otf' => 'font/otf',
+'png' => 'image/png',
+'pdf' => 'application/pdf',
+'ppt' => 'application/vnd.ms-powerpoint',
+'pptx' => 'application/vnd.openxmlformats-officedocument.presentationml.presentation',
+'rar' => 'application/x-rar-compressed',
+'rtf' => 'application/rtf',
+'sh' => 'application/x-sh',
+'svg' => 'image/svg+xml',
+'swf' => 'application/x-shockwave-flash',
+'tar' => 'application/x-tar',
+'tif' => 'image/tiff',
+'tiff' => 'image/tiff',
+'ts' => 'application/typescript',
+'ttf' => 'font/ttf',
+'vsd' => 'application/vnd.visio',
+'wav' => 'audio/x-wav',
+'weba' => 'audio/webm',
+'webm' => 'video/webm',
+'webp' => 'image/webp',
+'woff' => 'font/woff',
+'woff2' => 'font/woff2',
+'xhtml' => 'application/xhtml+xml',
+'xls' => 'application/vnd.ms-excel',
+'xlsx' => 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+'xml' => 'application/xml',
+'xul' => 'application/vnd.mozilla.xul+xml',
+'zip' => 'application/zip',
+'3gp' => 'video/3gpp',
+'3g2' => 'video/3gpp2',
+'7z' => 'application/x-7z-compressed',
+),
+'request_builder' =>
+array (
+'default' =>
+array (
+),
+'backoffice' =>
+array (
+'strict' => false,
+),
+'frontoffice' =>
+array (
+'strict' => false,
+),
+),
 'routing' =>
 array (
 'areas' =>
@@ -1266,17 +1647,17 @@ array (
 ),
 'routes' =>
 array (
-'backoffice.translations.display' =>
+'backoffice.products.display' =>
 array (
-'target' => 'translations.display',
+'target' => 'products.display',
 'requirements' =>
 array (
 'shop_context' => true,
 ),
 ),
-'backoffice.translations.save' =>
+'backoffice.products.save' =>
 array (
-'target' => 'save@backoffice.translations',
+'target' => 'products.save',
 'requirements' =>
 array (
 'shop_context' => true,
@@ -1324,15 +1705,23 @@ array (
 ),
 'backoffice.payment.activation' =>
 array (
-'target' => 'activatePayment@backoffice.payment',
+'target' => 'paymentActivation@backoffice.payment',
 'requirements' =>
 array (
 'shop_context' => true,
 ),
 ),
-'backoffice.payment_activation.save' =>
+'backoffice.payment_products.activation' =>
 array (
-'target' => 'payment_activation.save',
+'target' => 'paymentProductsActivation@backoffice.payment',
+'requirements' =>
+array (
+'shop_context' => true,
+),
+),
+'backoffice.payment_kit_activation.save' =>
+array (
+'target' => 'payment_kit_activation.save',
 'requirements' =>
 array (
 'shop_context' => true,
@@ -1344,7 +1733,7 @@ array (
 'requirements' =>
 array (
 'shop_context' => true,
-'payment_activation' => true,
+'payment_kit_activation' => true,
 ),
 ),
 'backoffice.account.save' =>
@@ -1353,16 +1742,7 @@ array (
 'requirements' =>
 array (
 'shop_context' => true,
-'payment_activation' => true,
-),
-),
-'backoffice.account.activation' =>
-array (
-'target' => 'activateAccount@backoffice.account',
-'requirements' =>
-array (
-'shop_context' => true,
-'paygreen_connexion' => true,
+'payment_kit_activation' => true,
 ),
 ),
 'backoffice.account.disconnect' =>
@@ -1399,7 +1779,7 @@ array (
 array (
 'shop_context' => true,
 'paygreen_connexion' => true,
-'payment_activation' => true,
+'payment_kit_activation' => true,
 ),
 ),
 'backoffice.config.save' =>
@@ -1427,7 +1807,7 @@ array (
 array (
 'shop_context' => true,
 'paygreen_connexion' => true,
-'payment_activation' => true,
+'payment_kit_activation' => true,
 ),
 ),
 'backoffice.eligible_amounts.categories.save' =>
@@ -1455,7 +1835,7 @@ array (
 array (
 'shop_context' => true,
 'paygreen_connexion' => true,
-'payment_activation' => true,
+'payment_kit_activation' => true,
 ),
 ),
 'backoffice.buttons.display_update' =>
@@ -1521,38 +1901,84 @@ array (
 'paygreen_connexion' => true,
 ),
 ),
+'backoffice.payment_statistics.display' =>
+array (
+'target' => 'payment_statistics.display',
+'requirements' =>
+array (
+'shop_context' => true,
+'payment_kit_activation' => true,
+),
+),
+'backoffice.payment_translations.display' =>
+array (
+'target' => 'payment_translations.display',
+'requirements' =>
+array (
+'shop_context' => true,
+'payment_kit_activation' => true,
+),
+),
+'backoffice.payment_translations.save' =>
+array (
+'target' => 'save@backoffice.payment_translations',
+'requirements' =>
+array (
+'shop_context' => true,
+'payment_kit_activation' => true,
+),
+),
 'front.payment.validation' =>
 array (
 'target' => 'validatePayment@front.payment',
+'requirements' =>
+array (
+'payment_activation' => true,
+),
 ),
 'front.payment.process_customer_return' =>
 array (
 'target' => 'process@front.customer_return',
+'requirements' =>
+array (
+'payment_activation' => true,
+),
 ),
 'front.payment.receive' =>
 array (
 'target' => 'receive@front.payment',
+'requirements' =>
+array (
+'payment_activation' => true,
+),
 ),
 'front.payment.display.insite' =>
 array (
 'target' => 'displayIFramePayment@front.payment',
-),
-'front.tree.save' =>
+'requirements' =>
 array (
-'target' => 'saveNavigationData@front.tree.customer_navigation',
-'input' =>
-array (
-'client' => '.+',
-'startAt' => '[0-9]+',
-'useTime' => '[0-9]+',
-'nbImage' => '[0-9]+',
-'device' => '.+',
-'browser' => '.+',
+'payment_activation' => true,
 ),
 ),
-'backoffice.tree.save' =>
+'backoffice.tree.activation' =>
 array (
-'target' => 'tree_activation.save',
+'target' => 'treeActivation@backoffice.tree',
+'requirements' =>
+array (
+'shop_context' => true,
+),
+),
+'backoffice.tree_products.activation' =>
+array (
+'target' => 'treeProductsActivation@backoffice.tree',
+'requirements' =>
+array (
+'shop_context' => true,
+),
+),
+'backoffice.tree_kit_activation.save' =>
+array (
+'target' => 'tree_kit_activation.save',
 'requirements' =>
 array (
 'shop_context' => true,
@@ -1564,7 +1990,7 @@ array (
 'requirements' =>
 array (
 'shop_context' => true,
-'tree_activation' => true,
+'tree_kit_activation' => true,
 ),
 ),
 'backoffice.tree_account.save' =>
@@ -1573,7 +1999,7 @@ array (
 'requirements' =>
 array (
 'shop_context' => true,
-'tree_activation' => true,
+'tree_kit_activation' => true,
 ),
 ),
 'backoffice.tree_account.disconnect' =>
@@ -1582,7 +2008,7 @@ array (
 'requirements' =>
 array (
 'shop_context' => true,
-'tree_activation' => true,
+'tree_kit_activation' => true,
 ),
 ),
 'backoffice.tree_config.display' =>
@@ -1591,7 +2017,16 @@ array (
 'requirements' =>
 array (
 'shop_context' => true,
-'tree_activation' => true,
+'tree_kit_activation' => true,
+),
+),
+'backoffice.carbon_bot_config.display' =>
+array (
+'target' => 'carbon_bot_config.display',
+'requirements' =>
+array (
+'shop_context' => true,
+'tree_kit_activation' => true,
 ),
 ),
 'backoffice.tree_config.save' =>
@@ -1600,7 +2035,25 @@ array (
 'requirements' =>
 array (
 'shop_context' => true,
-'tree_activation' => true,
+'tree_kit_activation' => true,
+),
+),
+'backoffice.carbon_bot_config_global_form.save' =>
+array (
+'target' => 'carbon_bot_config_global_form.save',
+'requirements' =>
+array (
+'shop_context' => true,
+'tree_kit_activation' => true,
+),
+),
+'backoffice.tree_bot_form.save' =>
+array (
+'target' => 'tree_bot_form.save',
+'requirements' =>
+array (
+'shop_context' => true,
+'tree_kit_activation' => true,
 ),
 ),
 'backoffice.tree_shipping_address.save' =>
@@ -1609,8 +2062,57 @@ array (
 'requirements' =>
 array (
 'shop_context' => true,
-'tree_activation' => true,
+'tree_kit_activation' => true,
 ),
+),
+'backoffice.tree_translations.display' =>
+array (
+'target' => 'tree_translations.display',
+'requirements' =>
+array (
+'shop_context' => true,
+'tree_kit_activation' => true,
+),
+),
+'backoffice.tree_translations.save' =>
+array (
+'target' => 'save@backoffice.tree_translations',
+'requirements' =>
+array (
+'shop_context' => true,
+'tree_kit_activation' => true,
+),
+),
+'backoffice.tree_translations.save_tree_bot' =>
+array (
+'target' => 'saveTreeBot@backoffice.tree_translations',
+'requirements' =>
+array (
+'shop_context' => true,
+'tree_kit_activation' => true,
+),
+),
+'backoffice.tree_config.download_product_catalog' =>
+array (
+'target' => 'downloadProductCatalog@backoffice.tree_export_product_catalog',
+'requirements' =>
+array (
+'shop_context' => true,
+'tree_kit_activation' => true,
+),
+),
+'backoffice.tree_config.export_product_catalog' =>
+array (
+'target' => 'exportProductCatalog@backoffice.tree_export_product_catalog',
+'requirements' =>
+array (
+'shop_context' => true,
+'tree_connexion' => true,
+),
+),
+'front.climatebot.display' =>
+array (
+'target' => 'display@tree.climatebot',
 ),
 'front.payment.abort' =>
 array (
@@ -1900,6 +2402,24 @@ array (
 'template' => 'fields/bloc-switch',
 ),
 ),
+'colorpicker' =>
+array (
+'format' => 'string',
+'view' =>
+array (
+'name' => 'field',
+'data' =>
+array (
+'class' => null,
+'attr' =>
+array (
+'data-js' => 'colorpicker',
+'class' => 'pgform__field__colorpicker',
+),
+),
+'template' => 'fields/bloc-colorpicker',
+),
+),
 ),
 'default' =>
 array (
@@ -1912,6 +2432,1191 @@ array (
 'basic' => 'PGFormComponentsField',
 'object' => 'PGFormComponentsFieldObject',
 'collection' => 'PGFormComponentsFieldCollection',
+),
+),
+'form' =>
+array (
+'definitions' =>
+array (
+'translations' =>
+array (
+'model' => 'basic',
+'fields' =>
+array (
+),
+'view' =>
+array (
+'data' =>
+array (
+'validate' => 'misc.forms.default.buttons.save',
+),
+),
+),
+'settings_support' =>
+array (
+'model' => 'basic',
+'fields' =>
+array (
+'behavior_detailed_logs' =>
+array (
+'model' => 'bool.switch',
+'view' =>
+array (
+'data' =>
+array (
+'label' => 'forms.settings_support.fields.detailed_logs.label',
+'help' => 'forms.settings_support.fields.detailed_logs.help',
+),
+),
+),
+),
+'view' =>
+array (
+'data' =>
+array (
+'validate' => 'misc.forms.default.buttons.save',
+),
+),
+),
+'authentication' =>
+array (
+'model' => 'basic',
+'fields' =>
+array (
+'public_key' =>
+array (
+'model' => 'string',
+'required' => true,
+'validators' =>
+array (
+'regexp' =>
+array (
+'format' => '/^(PP|SB)?[a-f0-9]{32}$/',
+'error' => 'forms.authentication.errors.identifier_bad_format',
+),
+),
+'view' =>
+array (
+'data' =>
+array (
+'label' => 'forms.authentication.fields.shop_token.label',
+'attr' =>
+array (
+'maxlength' => 34,
+'size' => 34,
+),
+),
+),
+),
+'private_key' =>
+array (
+'model' => 'string',
+'required' => true,
+'validators' =>
+array (
+'regexp' =>
+array (
+'format' => '/^[a-f0-9]{4}\\-[a-f0-9]{4}\\-[a-f0-9]{4}\\-[a-f0-9]{12}$/',
+'error' => 'forms.authentication.errors.private_key_bad_format',
+),
+),
+'view' =>
+array (
+'data' =>
+array (
+'label' => 'forms.authentication.fields.private_key.label',
+'attr' =>
+array (
+'maxlength' => 27,
+'size' => 34,
+),
+),
+),
+),
+),
+'view' =>
+array (
+'data' =>
+array (
+'validate' => 'misc.forms.default.buttons.save',
+),
+),
+),
+'products' =>
+array (
+'fields' =>
+array (
+'payment_kit_activation' =>
+array (
+'enabled' => true,
+'model' => 'bool.switch',
+'view' =>
+array (
+'data' =>
+array (
+'label' => 'forms.products.fields.payment_kit_activation.label',
+'help' => 'forms.products.fields.payment_kit_activation.help',
+),
+),
+),
+'tree_kit_activation' =>
+array (
+'enabled' => true,
+'model' => 'bool.switch',
+'view' =>
+array (
+'data' =>
+array (
+'label' => 'forms.products.fields.tree_kit_activation.label',
+'help' => 'forms.products.fields.tree_kit_activation.help',
+),
+),
+),
+),
+),
+'config' =>
+array (
+'model' => 'basic',
+'fields' =>
+array (
+'admin_only_visibility' =>
+array (
+'model' => 'choice.expanded.single',
+'format' => 'int',
+'view' =>
+array (
+'data' =>
+array (
+'choices' =>
+array (
+0 => 'forms.config.fields.visibility.values.no',
+1 => 'forms.config.fields.visibility.values.yes',
+),
+'translate' => true,
+'label' => 'forms.config.fields.visibility.label',
+'help' => 'forms.config.fields.visibility.help',
+),
+),
+'enabled' => false,
+),
+'cancel_order_on_refused_payment' =>
+array (
+'model' => 'choice.expanded.single',
+'format' => 'int',
+'view' =>
+array (
+'data' =>
+array (
+'choices' =>
+array (
+0 => 'forms.config.fields.behavior_payment_refused.values.no',
+1 => 'forms.config.fields.behavior_payment_refused.values.yes',
+),
+'translate' => true,
+'label' => 'forms.config.fields.behavior_payment_refused.label',
+'help' => 'forms.config.fields.behavior_payment_refused.help',
+),
+),
+'enabled' => false,
+),
+'behavior_payment_refund' =>
+array (
+'model' => 'bool.switch',
+'view' =>
+array (
+'data' =>
+array (
+'label' => 'forms.config.fields.behavior_transmit_refund.label',
+'help' => 'forms.config.fields.behavior_transmit_refund.help',
+),
+),
+),
+'behavior_delivery_confirmation' =>
+array (
+'model' => 'bool.switch',
+'view' =>
+array (
+'data' =>
+array (
+'label' => 'forms.config.fields.behavior_transmit_delivering.label',
+'help' => 'forms.config.fields.behavior_transmit_delivering.help',
+),
+),
+'enabled' => false,
+),
+'regenerate_cart_on_cancelled_payment' =>
+array (
+'model' => 'bool.switch',
+'view' =>
+array (
+'data' =>
+array (
+'label' => 'forms.config.fields.regenerate_cart_on_cancelled_payment.label',
+'help' => 'forms.config.fields.regenerate_cart_on_cancelled_payment.help',
+),
+),
+),
+'regenerate_cart_on_refused_payment' =>
+array (
+'model' => 'bool.switch',
+'view' =>
+array (
+'data' =>
+array (
+'label' => 'forms.config.fields.regenerate_cart_on_refused_payment.label',
+'help' => 'forms.config.fields.regenerate_cart_on_refused_payment.help',
+),
+),
+),
+),
+'view' =>
+array (
+'data' =>
+array (
+'validate' => 'misc.forms.default.buttons.save',
+),
+),
+),
+'button_filters' =>
+array (
+'model' => 'multipart',
+'fields' =>
+array (
+'id' =>
+array (
+'model' => 'hidden',
+'format' => 'int',
+'required' => true,
+'validators' =>
+array (
+'not_empty' =>
+array (
+'error' => 'forms.button.errors.id_not_found',
+),
+),
+),
+'categories_filtering_mode' =>
+array (
+'model' => 'choice.contracted.single',
+'validators' =>
+array (
+'array.in' =>
+array (
+0 => 'NONE',
+1 => 'STRICT',
+2 => 'FLEXIBLE',
+),
+),
+'view' =>
+array (
+'data' =>
+array (
+'choices' =>
+array (
+'NONE' => 'forms.button_filters.fields.categories_filtering_mode.values.NONE',
+'STRICT' => 'forms.button_filters.fields.categories_filtering_mode.values.STRICT',
+'FLEXIBLE' => 'forms.button_filters.fields.categories_filtering_mode.values.FLEXIBLE',
+),
+'translate' => true,
+'label' => 'forms.button_filters.fields.categories_filtering_mode.label',
+'help' => 'forms.button_filters.fields.categories_filtering_mode.help',
+),
+),
+),
+'filtered_categories' =>
+array (
+'model' => 'choice.double.bool',
+'default' =>
+array (
+),
+'view' =>
+array (
+'data' =>
+array (
+'horizontal_choices' =>
+array (
+0 => 'forms.button_filters.fields.filtered_categories.column',
+),
+'vertical_choices' => 'category.hierarchized',
+'axis' => 'vertical',
+'filterPlaceholder' => 'forms.button_filters.fields.search.placeholder',
+'translate' =>
+array (
+'horizontal_choices' => true,
+),
+'label' => 'forms.button_filters.fields.filtered_categories.label',
+'help' => 'forms.button_filters.fields.filtered_categories.help',
+),
+),
+),
+'cart_amount_limits' =>
+array (
+'model' => 'object',
+'children' =>
+array (
+'min' =>
+array (
+'model' => 'int',
+'default' => 0,
+'view' =>
+array (
+'data' =>
+array (
+'attr' =>
+array (
+'min' => 0,
+),
+),
+'template' => 'fields/partials/input',
+),
+),
+'max' =>
+array (
+'model' => 'int',
+'default' => 0,
+'view' =>
+array (
+'data' =>
+array (
+'attr' =>
+array (
+'min' => 0,
+),
+),
+'template' => 'fields/partials/input',
+),
+),
+),
+'view' =>
+array (
+'name' => 'field.object',
+'data' =>
+array (
+'label' => 'forms.button_filters.fields.cart_amount.label',
+'class' => null,
+'help' => 'forms.button_filters.fields.cart_amount.helper',
+'warning' => 'errors.button.min_amount_greater_than_max_amount',
+),
+'template' => 'fields/bloc-range',
+),
+),
+),
+'view' =>
+array (
+'data' =>
+array (
+'validate' => 'misc.forms.default.buttons.save',
+'columns' =>
+array (
+'categories_filtering' =>
+array (
+0 => 'categories_filtering_mode',
+1 => 'filtered_categories',
+),
+'other_filtering' =>
+array (
+0 => 'cart_amount_limits',
+1 => 'form_key',
+),
+),
+),
+'template' => 'forms/button_filters',
+),
+),
+'button' =>
+array (
+'model' => 'multipart',
+'fields' =>
+array (
+'label' =>
+array (
+'model' => 'collection.translations',
+'view' =>
+array (
+'data' =>
+array (
+'label' => 'forms.button.fields.label.label',
+),
+),
+),
+'payment_type' =>
+array (
+'model' => 'choice.contracted.single',
+'default' => 'CB',
+'validators' =>
+array (
+'array.in' => 'payment_type',
+),
+'view' =>
+array (
+'data' =>
+array (
+'choices' => 'payment_type',
+'label' => 'forms.button.fields.payment_type.label',
+),
+),
+),
+'display_type' =>
+array (
+'model' => 'choice.expanded.single',
+'default' => 'DEFAULT',
+'validators' =>
+array (
+'array.in' => 'display_type',
+),
+'view' =>
+array (
+'data' =>
+array (
+'choices' => 'display_type',
+'translate' => true,
+'label' => 'forms.button.fields.display_type.label',
+),
+),
+),
+'position' =>
+array (
+'model' => 'int',
+'view' =>
+array (
+'data' =>
+array (
+'label' => 'forms.button.fields.position.label',
+'help' => 'forms.button.fields.position.helper',
+'attr' =>
+array (
+'min' => 0,
+),
+),
+),
+),
+'picture' =>
+array (
+'model' => 'object',
+'children' =>
+array (
+'image' =>
+array (
+'type' => 'basic',
+'format' => 'string',
+'view' =>
+array (
+'name' => 'field',
+'data' =>
+array (
+'attr' =>
+array (
+'type' => 'file',
+),
+),
+'template' => 'fields/partials/input',
+),
+),
+'reset' =>
+array (
+'type' => 'basic',
+'format' => 'bool',
+'view' =>
+array (
+'name' => 'field.bool.checkbox',
+'data' =>
+array (
+'label' => 'forms.button.fields.image.default',
+'translate' => true,
+'attr' =>
+array (
+'type' => 'checkbox',
+),
+),
+'template' => 'fields/partials/radio-check',
+),
+),
+),
+'view' =>
+array (
+'name' => 'field.picture',
+'data' =>
+array (
+'class' => null,
+'label' => 'forms.button.fields.image.label',
+),
+'template' => 'fields/bloc-picture',
+),
+),
+'height' =>
+array (
+'model' => 'int',
+'default' => 60,
+'view' =>
+array (
+'data' =>
+array (
+'label' => 'forms.button.fields.height.label',
+'help' => 'forms.button.fields.height.helper',
+'append' => 'forms.button.fields.height.append',
+'attr' =>
+array (
+'min' => 0,
+),
+),
+),
+),
+'integration' =>
+array (
+'model' => 'choice.expanded.single',
+'default' => 'EXTERNAL',
+'validators' =>
+array (
+'array.in' => 'button_integration',
+),
+'view' =>
+array (
+'data' =>
+array (
+'choices' => 'button_integration',
+'translate' => true,
+'label' => 'forms.button.fields.integration.label',
+'help' => 'forms.button.fields.integration.helper',
+),
+),
+),
+'payment_mode' =>
+array (
+'model' => 'choice.expanded.single',
+'default' => 'CASH',
+'validators' =>
+array (
+'array.in' => 'payment_mode',
+),
+'view' =>
+array (
+'data' =>
+array (
+'choices' => 'payment_mode',
+'label' => 'forms.button.fields.payment_mode.label',
+),
+),
+),
+'payment_number' =>
+array (
+'model' => 'int',
+'default' => 1,
+'view' =>
+array (
+'data' =>
+array (
+'label' => 'forms.button.fields.payment_number.label',
+'warning' => 'forms.button.fields.payment_number.warning',
+'attr' =>
+array (
+'min' => 1,
+),
+'class' => 'js-hidden-field-togglable',
+),
+),
+),
+'first_payment_part' =>
+array (
+'model' => 'int',
+'default' => 0,
+'view' =>
+array (
+'data' =>
+array (
+'label' => 'forms.button.fields.first_payment_part.label',
+'help' => 'forms.button.fields.first_payment_part.helper',
+'append' => 'forms.button.fields.first_payment_part.append',
+'class' => 'js-hidden-field-togglable',
+'attr' =>
+array (
+'min' => 0,
+'max' => 100,
+),
+),
+),
+),
+'payment_report' =>
+array (
+'model' => 'choice.contracted.single',
+'default' => 0,
+'validators' =>
+array (
+'array.in' => 'payment_report',
+),
+'view' =>
+array (
+'data' =>
+array (
+'choices' => 'payment_report',
+'translate' => true,
+'label' => 'forms.button.fields.payment_report.label',
+'help' => 'forms.button.fields.payment_report.helper',
+'class' => 'js-hidden-field-togglable',
+),
+),
+),
+'order_repeated' =>
+array (
+'model' => 'bool',
+'default' => false,
+'enabled' => false,
+'view' =>
+array (
+'data' =>
+array (
+'label' => 'forms.button.fields.order_repeated.label',
+'help' => 'forms.button.fields.order_repeated.helper',
+'class' => 'js-hidden-field-togglable',
+),
+),
+),
+),
+'view' =>
+array (
+'data' =>
+array (
+'validate' => 'misc.forms.default.buttons.save',
+'columns' =>
+array (
+'appearance' =>
+array (
+0 => 'display_type',
+1 => 'label',
+2 => 'picture',
+3 => 'height',
+),
+'payment' =>
+array (
+0 => 'payment_type',
+1 => 'payment_mode',
+2 => 'payment_number',
+3 => 'first_payment_part',
+4 => 'order_repeated',
+5 => 'payment_report',
+),
+'other' =>
+array (
+0 => 'cart_amount_limits',
+1 => 'position',
+2 => 'integration',
+3 => 'form_key',
+),
+),
+),
+'template' => 'forms/button',
+),
+),
+'settings_customization' =>
+array (
+'model' => 'basic',
+'fields' =>
+array (
+'footer_display' =>
+array (
+'model' => 'bool.switch',
+'view' =>
+array (
+'data' =>
+array (
+'label' => 'forms.config.fields.behavior_display_footer.label',
+'help' => 'forms.config.fields.behavior_display_footer.help',
+),
+),
+'enabled' => false,
+),
+'footer_color' =>
+array (
+'model' => 'choice.contracted.single',
+'validators' =>
+array (
+'array.in' =>
+array (
+0 => 'white',
+1 => 'green',
+2 => 'black',
+),
+),
+'view' =>
+array (
+'data' =>
+array (
+'choices' =>
+array (
+'white' => 'forms.config.fields.display_footer_color.values.white',
+'green' => 'forms.config.fields.display_footer_color.values.green',
+'black' => 'forms.config.fields.display_footer_color.values.black',
+),
+'translate' => true,
+'label' => 'forms.config.fields.display_footer_color.label',
+),
+),
+'enabled' => false,
+),
+),
+'view' =>
+array (
+'data' =>
+array (
+'validate' => 'misc.forms.default.buttons.save',
+),
+),
+),
+'button_update' =>
+array (
+'extends' => 'button',
+'fields' =>
+array (
+'id' =>
+array (
+'model' => 'hidden',
+'format' => 'int',
+'required' => true,
+'validators' =>
+array (
+'not_empty' =>
+array (
+'error' => 'forms.button.errors.id_not_found',
+),
+),
+),
+),
+),
+'account_activation' =>
+array (
+'model' => 'basic',
+'fields' =>
+array (
+'activation' =>
+array (
+'model' => 'bool.switch',
+'view' =>
+array (
+'data' =>
+array (
+'label' => 'forms.account_activation.fields.activation.label',
+'help' => 'forms.account_activation.fields.activation.help',
+),
+),
+),
+),
+'view' =>
+array (
+'data' =>
+array (
+'validate' => 'misc.forms.default.buttons.save',
+),
+),
+),
+'exclusion_shipping_cost' =>
+array (
+'model' => 'basic',
+'fields' =>
+array (
+'payment_types' =>
+array (
+'model' => 'choice.expanded.multiple',
+'default' =>
+array (
+),
+'view' =>
+array (
+'data' =>
+array (
+'choices' => 'payment_type',
+'label' => 'forms.exclusion_shipping_cost.fields.label.label',
+),
+),
+),
+),
+'view' =>
+array (
+'data' =>
+array (
+'validate' => 'misc.forms.default.buttons.save',
+),
+),
+),
+'eligible_amounts' =>
+array (
+'model' => 'basic',
+'fields' =>
+array (
+'eligible_amounts' =>
+array (
+'model' => 'choice.double.bool',
+'default' =>
+array (
+),
+'view' =>
+array (
+'data' =>
+array (
+'horizontal_choices' => 'payment_type',
+'vertical_choices' => 'category.hierarchized',
+'axis' => 'vertical',
+'filterPlaceholder' => 'forms.eligible_amounts.fields.search.placeholder',
+),
+),
+),
+),
+'view' =>
+array (
+'data' =>
+array (
+'validate' => 'misc.forms.default.buttons.save',
+),
+),
+),
+'tree_shipping_address' =>
+array (
+'model' => 'basic',
+'fields' =>
+array (
+'shipping_address_line_1' =>
+array (
+'model' => 'string',
+'required' => true,
+'view' =>
+array (
+'data' =>
+array (
+'label' => 'forms.tree_shipping_address.fields.line_1.label',
+),
+),
+),
+'shipping_address_line_2' =>
+array (
+'model' => 'string',
+'required' => false,
+'view' =>
+array (
+'data' =>
+array (
+'label' => 'forms.tree_shipping_address.fields.line_2.label',
+),
+),
+),
+'shipping_address_zipcode' =>
+array (
+'model' => 'string',
+'required' => true,
+'view' =>
+array (
+'data' =>
+array (
+'label' => 'forms.tree_shipping_address.fields.zipcode.label',
+),
+),
+),
+'shipping_address_city' =>
+array (
+'model' => 'string',
+'required' => true,
+'view' =>
+array (
+'data' =>
+array (
+'label' => 'forms.tree_shipping_address.fields.city.label',
+),
+),
+),
+'shipping_address_country' =>
+array (
+'model' => 'choice.contracted.single',
+'validators' =>
+array (
+'array.in' => 'countries',
+),
+'required' => true,
+'view' =>
+array (
+'data' =>
+array (
+'choices' => 'countries',
+'translate' => true,
+'label' => 'forms.tree_shipping_address.fields.country.label',
+),
+),
+),
+),
+'view' =>
+array (
+'data' =>
+array (
+'validate' => 'misc.forms.default.buttons.save',
+),
+),
+),
+'tree_bot' =>
+array (
+'model' => 'basic',
+'fields' =>
+array (
+'tree_bot_color' =>
+array (
+'model' => 'colorpicker',
+'view' =>
+array (
+'data' =>
+array (
+'label' => 'forms.tree_bot.fields.tree_bot_color.label',
+'help' => 'forms.tree_bot.fields.tree_bot_color.help',
+),
+),
+),
+'tree_bot_side' =>
+array (
+'model' => 'choice.contracted.single',
+'validators' =>
+array (
+'array.in' =>
+array (
+0 => 'LEFT',
+1 => 'RIGHT',
+),
+),
+'view' =>
+array (
+'data' =>
+array (
+'translate' => true,
+'choices' =>
+array (
+'LEFT' => 'forms.tree_bot.fields.tree_bot_side.choices.LEFT',
+'RIGHT' => 'forms.tree_bot.fields.tree_bot_side.choices.RIGHT',
+),
+'label' => 'forms.tree_bot.fields.tree_bot_side.label',
+'help' => 'forms.tree_bot.fields.tree_bot_side.help',
+),
+),
+),
+'tree_bot_corner' =>
+array (
+'model' => 'choice.contracted.single',
+'validators' =>
+array (
+'array.in' =>
+array (
+0 => 'ROUND',
+1 => 'SQUARE',
+),
+),
+'view' =>
+array (
+'data' =>
+array (
+'translate' => true,
+'choices' =>
+array (
+'ROUND' => 'forms.tree_bot.fields.tree_bot_corner.choices.ROUND',
+'SQUARE' => 'forms.tree_bot.fields.tree_bot_corner.choices.SQUARE',
+),
+'label' => 'forms.tree_bot.fields.tree_bot_corner.label',
+'help' => 'forms.tree_bot.fields.tree_bot_corner.help',
+),
+),
+),
+'tree_bot_details_activated' =>
+array (
+'model' => 'bool.switch',
+'view' =>
+array (
+'data' =>
+array (
+'label' => 'forms.tree_bot.fields.tree_bot_details_activated.label',
+'help' => 'forms.tree_bot.fields.tree_bot_details_activated.help',
+'warning' => 'forms.tree_bot.fields.tree_bot_details_activated.warning',
+),
+),
+),
+),
+'view' =>
+array (
+'data' =>
+array (
+'validate' => 'misc.forms.default.buttons.save',
+),
+),
+),
+'tree_config' =>
+array (
+'model' => 'basic',
+'fields' =>
+array (
+'carbon_offsetting_payer' =>
+array (
+'model' => 'choice.expanded.single',
+'format' => 'string',
+'default' => 'MERCHANT',
+'enabled' => false,
+'view' =>
+array (
+'data' =>
+array (
+'choices' =>
+array (
+'MERCHANT' => 'forms.tree_config.fields.carbon_offsetting_payer.values.MERCHANT',
+'CUSTOMER' => 'forms.tree_config.fields.carbon_offsetting_payer.values.CUSTOMER',
+),
+'attr' =>
+array (
+'disabled' => '',
+),
+'translate' => true,
+'label' => 'forms.tree_config.fields.carbon_offsetting_payer.label',
+'help' => 'forms.tree_config.fields.carbon_offsetting_payer.help',
+'warning' => 'forms.tree_config.fields.carbon_offsetting_payer.warning',
+),
+),
+),
+'tree_details_url' =>
+array (
+'model' => 'string',
+'required' => true,
+'view' =>
+array (
+'data' =>
+array (
+'label' => 'forms.tree_config.fields.tree_details_url.label',
+'help' => 'forms.tree_config.fields.tree_details_url.help',
+),
+),
+),
+),
+'view' =>
+array (
+'data' =>
+array (
+'validate' => 'misc.forms.default.buttons.save',
+),
+),
+),
+'carbon_bot_config_global' =>
+array (
+'model' => 'basic',
+'fields' =>
+array (
+'tree_bot_activated' =>
+array (
+'model' => 'bool.switch',
+'view' =>
+array (
+'data' =>
+array (
+'label' => 'forms.carbon_bot_config_global.fields.tree_bot_activated.label',
+'help' => 'forms.carbon_bot_config_global.fields.tree_bot_activated.help',
+),
+),
+),
+'tree_bot_mobile_activated' =>
+array (
+'model' => 'bool.switch',
+'behavior' => 'tree_bot_activation',
+'view' =>
+array (
+'data' =>
+array (
+'label' => 'forms.tree_bot.fields.tree_bot_mobile_activated.label',
+'help' => 'forms.tree_bot.fields.tree_bot_mobile_activated.help',
+),
+),
+),
+),
+'view' =>
+array (
+'data' =>
+array (
+'validate' => 'misc.forms.default.buttons.save',
+),
+),
+),
+'tree_authentication' =>
+array (
+'model' => 'basic',
+'fields' =>
+array (
+'client_id' =>
+array (
+'model' => 'string',
+'required' => true,
+'view' =>
+array (
+'data' =>
+array (
+'label' => 'forms.tree_authentication.fields.client_id.label',
+),
+),
+),
+'login' =>
+array (
+'model' => 'string',
+'required' => true,
+'view' =>
+array (
+'data' =>
+array (
+'label' => 'forms.tree_authentication.fields.login.label',
+),
+),
+),
+'password' =>
+array (
+'model' => 'string',
+'required' => true,
+'view' =>
+array (
+'data' =>
+array (
+'label' => 'forms.tree_authentication.fields.password.label',
+),
+),
+),
+),
+'view' =>
+array (
+'data' =>
+array (
+'validate' => 'misc.forms.default.buttons.save',
+),
+),
+),
+),
+'default' =>
+array (
+),
+'models' =>
+array (
+'basic' =>
+array (
+'view' =>
+array (
+'name' => 'form',
+'data' =>
+array (
+'attr' =>
+array (
+'method' => 'post',
+),
+),
+'template' => 'form',
+),
+),
+'multipart' =>
+array (
+'view' =>
+array (
+'name' => 'form',
+'data' =>
+array (
+'attr' =>
+array (
+'method' => 'post',
+'enctype' => 'multipart/form-data',
+),
+),
+'template' => 'form',
+),
+),
 ),
 ),
 'countries' =>
@@ -2350,6 +4055,15 @@ array (
 ),
 'blocks' =>
 array (
+'header' =>
+array (
+'target' => 'home',
+'template' => 'home/block-header',
+'data' =>
+array (
+'class' => 'pg__default',
+),
+),
 'diagnostics' =>
 array (
 'target' => 'support',
@@ -2367,20 +4081,9 @@ array (
 'data' =>
 array (
 'title' => 'blocks.config_form_support.title',
-'class' => 'pgblock__md',
+'class' => 'pgblock__max__md',
 'name' => 'settings_support',
 'action' => 'backoffice.support.save_support_config',
-),
-),
-'form_translations_management' =>
-array (
-'target' => 'translations',
-'action' => 'displayTranslationsForm@backoffice.translations',
-'data' =>
-array (
-'class' => 'pgblock pgblock__lg',
-'title' => 'pages.translations.frontoffice.title',
-'description' => 'pages.translations.frontoffice.description',
 ),
 ),
 'system_module_informations' =>
@@ -2389,7 +4092,7 @@ array (
 'action' => 'displayModuleSystemInformations@backoffice.system',
 'data' =>
 array (
-'class' => 'pgblock pgblock__xl',
+'class' => 'pgblock pgblock__max__xl',
 'title' => 'blocks.system.title',
 'subtitle' => 'blocks.system.platform.title',
 ),
@@ -2405,29 +4108,39 @@ array (
 'action' => 'displayList@backoffice.release_note',
 'data' =>
 array (
-'class' => 'pgblock__xl',
+'class' => 'pgblock__full__xl',
 ),
 ),
-'payment' =>
+'products_infos' =>
 array (
+'target' => 'products',
+'template' => 'blocks/products-infos',
+'data' =>
+array (
+'class' => 'pg__default pgblock__full',
+),
+),
+'payment_kit_header' =>
+array (
+'position' => 1,
 'target' => 'home',
 'action' => 'display@backoffice.payment',
 'data' =>
 array (
-'class' => 'pgblock__xxl-force',
-),
-),
-'account_status' =>
-array (
-'target' => 'account',
-'action' => 'displayAccountStatus@backoffice.account',
-'data' =>
-array (
-'class' => 'pgblock__md',
+'class' => 'pgblock__min__xxl',
 ),
 'requirements' =>
 array (
-'paygreen_connexion' => true,
+'payment_kit_activation' => true,
+),
+),
+'payment_kit_products' =>
+array (
+'target' => 'products',
+'action' => 'displayProducts@backoffice.payment',
+'data' =>
+array (
+'class' => 'pgblock__max__md',
 ),
 ),
 'account_ids' =>
@@ -2436,7 +4149,7 @@ array (
 'action' => 'account_ids.display',
 'data' =>
 array (
-'class' => 'pgblock__md',
+'class' => 'pgblock__max__md',
 ),
 'requirements' =>
 array (
@@ -2449,7 +4162,7 @@ array (
 'template' => 'account/block-logout',
 'data' =>
 array (
-'class' => 'pgblock__md pg__danger',
+'class' => 'pgblock__max__md pg__danger',
 ),
 'requirements' =>
 array (
@@ -2462,7 +4175,7 @@ array (
 'action' => 'displayAccountInfos@backoffice.account',
 'data' =>
 array (
-'class' => 'pgblock__md',
+'class' => 'pgblock__max__md',
 ),
 'requirements' =>
 array (
@@ -2475,7 +4188,7 @@ array (
 'action' => 'account_login.display',
 'data' =>
 array (
-'class' => 'pgblock__md',
+'class' => 'pgblock__max__md',
 ),
 'requirements' =>
 array (
@@ -2488,7 +4201,7 @@ array (
 'template' => 'account/block-subscription',
 'data' =>
 array (
-'class' => 'pgblock__md',
+'class' => 'pgblock__max__md',
 ),
 'requirements' =>
 array (
@@ -2502,7 +4215,7 @@ array (
 'data' =>
 array (
 'title' => 'blocks.config_form_common.title',
-'class' => 'pgblock__md',
+'class' => 'pgblock__max__md',
 ),
 ),
 'config_form_integration' =>
@@ -2512,7 +4225,7 @@ array (
 'data' =>
 array (
 'title' => 'blocks.config_form_integration.title',
-'class' => 'pgblock__md',
+'class' => 'pgblock__max__md',
 ),
 'enabled' => false,
 ),
@@ -2523,7 +4236,7 @@ array (
 'data' =>
 array (
 'subtitle' => 'blocks.config_disclaimer.title',
-'class' => 'pgblock__md pg__default',
+'class' => 'pgblock__max__md pg__default',
 ),
 ),
 'buttons_list' =>
@@ -2532,7 +4245,7 @@ array (
 'action' => 'displayList@backoffice.buttons',
 'data' =>
 array (
-'class' => 'pgblock pgblock__xxl',
+'class' => 'pgblock pgblock__max__xxl',
 ),
 ),
 'form_eligible_amounts' =>
@@ -2552,18 +4265,74 @@ array (
 'action' => 'displayFormExclusionShippingCosts@backoffice.eligible_amounts',
 'data' =>
 array (
-'class' => 'pgblock pgblock__xxl',
+'class' => 'pgblock pgblock__max__xxl',
 'title' => 'forms.exclusion_shipping_cost.title',
 'description' => 'forms.exclusion_shipping_cost.explain',
 ),
 ),
-'tree' =>
+'payment_counts_statistics' =>
 array (
+'target' => 'statistics',
+'template' => 'payment/block-payment-counts-statistics',
+'data' =>
+array (
+'class' => 'pgblock pgblock__max__xxl',
+'title' => 'blocks.payment_counts_statistics.title',
+'description' => 'blocks.payment_counts_statistics.description',
+),
+),
+'payment_amounts_statistics' =>
+array (
+'target' => 'statistics',
+'template' => 'payment/block-payment-amounts-statistics',
+'data' =>
+array (
+'class' => 'pgblock pgblock__max__xxl',
+'title' => 'blocks.payment_amounts_statistics.title',
+'description' => 'blocks.payment_amounts_statistics.description',
+),
+),
+'payment_statistics_disclaimer' =>
+array (
+'target' => 'statistics',
+'template' => 'payment/block-payment-statistics-disclaimer',
+'data' =>
+array (
+'class' => 'pg__default',
+),
+),
+'form_payment_translations_management' =>
+array (
+'target' => 'payment_translations',
+'action' => 'displayPaymentTranslationsForm@backoffice.payment_translations',
+'data' =>
+array (
+'class' => 'pgblock pgblock__max__lg',
+'title' => 'pages.translations.frontoffice.title',
+'description' => 'pages.translations.frontoffice.description',
+),
+),
+'tree_kit_header' =>
+array (
+'position' => 2,
 'target' => 'home',
 'action' => 'display@backoffice.tree',
 'data' =>
 array (
-'class' => 'pgblock__xxl-force',
+'class' => 'pgblock__min__xxl',
+),
+'requirements' =>
+array (
+'tree_kit_activation' => true,
+),
+),
+'tree_kit_products' =>
+array (
+'target' => 'products',
+'action' => 'displayProducts@backoffice.tree',
+'data' =>
+array (
+'class' => 'pgblock__max__md',
 ),
 ),
 'tree_account_infos' =>
@@ -2572,7 +4341,7 @@ array (
 'action' => 'displayAccountInfos@backoffice.tree_account',
 'data' =>
 array (
-'class' => 'pgblock__md-force',
+'class' => 'pgblock__min__md',
 ),
 'requirements' =>
 array (
@@ -2585,7 +4354,7 @@ array (
 'template' => 'tree_account/block-logout',
 'data' =>
 array (
-'class' => 'pgblock__md pg__danger',
+'class' => 'pgblock__max__md pg__danger',
 ),
 'requirements' =>
 array (
@@ -2598,21 +4367,34 @@ array (
 'action' => 'displayAccountLogin@backoffice.tree_account',
 'data' =>
 array (
-'class' => 'pgblock__md',
+'class' => 'pgblock__max__md',
 ),
 'requirements' =>
 array (
 'tree_connexion' => false,
 ),
 ),
-'tree_config_form_common' =>
+'carbon_bot_config_global_form' =>
 array (
-'target' => 'tree_config',
-'action' => 'tree_module_config.display',
+'target' => 'carbon_bot_config',
+'action' => 'carbon_bot_config_global_form.display',
 'data' =>
 array (
-'title' => 'blocks.tree_config_form_common.title',
+'title' => 'blocks.carbon_bot_config_global_form.title',
 'class' => 'pgblock__md',
+),
+),
+'tree_bot_form' =>
+array (
+'target' => 'carbon_bot_config',
+'action' => 'tree_bot_form.display',
+'data' =>
+array (
+'title' => 'blocks.tree_bot_form.title',
+),
+'requirements' =>
+array (
+'tree_bot_activation' => true,
 ),
 ),
 'tree_shipping_address_form' =>
@@ -2623,6 +4405,52 @@ array (
 array (
 'title' => 'blocks.tree_shipping_address_form.title',
 'description' => 'blocks.tree_shipping_address_form.description',
+'class' => 'pgblock__max__md',
+),
+),
+'form_tree_translations_management' =>
+array (
+'target' => 'tree_translations',
+'action' => 'displayTreeTranslationsForm@backoffice.tree_translations',
+'data' =>
+array (
+'class' => 'pgblock pgblock__max__lg',
+'title' => 'pages.translations.frontoffice.title',
+'description' => 'pages.translations.frontoffice.description',
+),
+),
+'form_tree_bot_translations_management' =>
+array (
+'target' => 'carbon_bot_config',
+'action' => 'displayTreeBotTranslationsForm@backoffice.tree_translations',
+'data' =>
+array (
+'class' => 'pgblock pgblock__lg',
+'title' => 'blocks.tree_bot_translations_management.title',
+'description' => 'pages.translations.frontoffice.description',
+),
+'requirements' =>
+array (
+'tree_bot_activation' => true,
+),
+),
+'tree_export_product_catalog' =>
+array (
+'target' => 'tree_config',
+'action' => 'displayTreeExportProductCatalogButton@backoffice.tree_export_product_catalog',
+'data' =>
+array (
+'class' => 'pgblock pgblock__max__sm',
+'title' => 'blocks.tree_export_product_catalog.title',
+),
+),
+'tree_config_form_common' =>
+array (
+'target' => 'tree_config',
+'action' => 'tree_module_config.display',
+'data' =>
+array (
+'title' => 'blocks.tree_config_form_common.title',
 'class' => 'pgblock__md',
 ),
 ),
@@ -2639,1218 +4467,6 @@ array (
 ),
 ),
 'null_stream' => 'PGViewComponentsNullStream',
-),
-'form' =>
-array (
-'default' =>
-array (
-),
-'definitions' =>
-array (
-'settings_support' =>
-array (
-'model' => 'basic',
-'fields' =>
-array (
-'behavior_detailed_logs' =>
-array (
-'model' => 'bool.switch',
-'view' =>
-array (
-'data' =>
-array (
-'label' => 'forms.settings_support.fields.detailed_logs.label',
-'help' => 'forms.settings_support.fields.detailed_logs.help',
-),
-),
-),
-),
-'view' =>
-array (
-'data' =>
-array (
-'validate' => 'misc.forms.default.buttons.save',
-),
-),
-),
-'translations' =>
-array (
-'model' => 'basic',
-'fields' =>
-array (
-),
-'view' =>
-array (
-'data' =>
-array (
-'validate' => 'misc.forms.default.buttons.save',
-),
-),
-),
-'payment_activation' =>
-array (
-'model' => 'basic',
-'fields' =>
-array (
-'active' =>
-array (
-'enabled' => true,
-'model' => 'bool.switch',
-'view' =>
-array (
-'data' =>
-array (
-'label' => 'forms.payment_activation.fields.activation.label',
-'help' => 'forms.payment_activation.fields.activation.help',
-),
-),
-),
-),
-'view' =>
-array (
-'data' =>
-array (
-'validate' => 'misc.forms.default.buttons.save',
-),
-),
-),
-'account_activation' =>
-array (
-'model' => 'basic',
-'fields' =>
-array (
-'activation' =>
-array (
-'model' => 'bool.switch',
-'view' =>
-array (
-'data' =>
-array (
-'label' => 'forms.account_activation.fields.activation.label',
-'help' => 'forms.account_activation.fields.activation.help',
-),
-),
-),
-),
-'view' =>
-array (
-'data' =>
-array (
-'validate' => 'misc.forms.default.buttons.save',
-),
-),
-),
-'authentication' =>
-array (
-'model' => 'basic',
-'fields' =>
-array (
-'public_key' =>
-array (
-'model' => 'string',
-'required' => true,
-'validators' =>
-array (
-'regexp' =>
-array (
-'format' => '/^(PP|SB)?[a-f0-9]{32}$/',
-'error' => 'forms.authentication.errors.identifier_bad_format',
-),
-),
-'view' =>
-array (
-'data' =>
-array (
-'label' => 'forms.authentication.fields.shop_token.label',
-'attr' =>
-array (
-'maxlength' => 34,
-'size' => 34,
-),
-),
-),
-),
-'private_key' =>
-array (
-'model' => 'string',
-'required' => true,
-'validators' =>
-array (
-'regexp' =>
-array (
-'format' => '/^[a-f0-9]{4}\\-[a-f0-9]{4}\\-[a-f0-9]{4}\\-[a-f0-9]{12}$/',
-'error' => 'forms.authentication.errors.private_key_bad_format',
-),
-),
-'view' =>
-array (
-'data' =>
-array (
-'label' => 'forms.authentication.fields.private_key.label',
-'attr' =>
-array (
-'maxlength' => 27,
-'size' => 34,
-),
-),
-),
-),
-),
-'view' =>
-array (
-'data' =>
-array (
-'validate' => 'misc.forms.default.buttons.save',
-),
-),
-),
-'settings_customization' =>
-array (
-'model' => 'basic',
-'fields' =>
-array (
-'footer_display' =>
-array (
-'model' => 'bool.switch',
-'view' =>
-array (
-'data' =>
-array (
-'label' => 'forms.config.fields.behavior_display_footer.label',
-'help' => 'forms.config.fields.behavior_display_footer.help',
-),
-),
-'enabled' => false,
-),
-'footer_color' =>
-array (
-'model' => 'choice.contracted.single',
-'validators' =>
-array (
-'array.in' =>
-array (
-0 => 'white',
-1 => 'green',
-2 => 'black',
-),
-),
-'view' =>
-array (
-'data' =>
-array (
-'choices' =>
-array (
-'white' => 'forms.config.fields.display_footer_color.values.white',
-'green' => 'forms.config.fields.display_footer_color.values.green',
-'black' => 'forms.config.fields.display_footer_color.values.black',
-),
-'translate' => true,
-'label' => 'forms.config.fields.display_footer_color.label',
-),
-),
-'enabled' => false,
-),
-),
-'view' =>
-array (
-'data' =>
-array (
-'validate' => 'misc.forms.default.buttons.save',
-),
-),
-),
-'button_update' =>
-array (
-'extends' => 'button',
-'fields' =>
-array (
-'id' =>
-array (
-'model' => 'hidden',
-'format' => 'int',
-'required' => true,
-'validators' =>
-array (
-'not_empty' =>
-array (
-'error' => 'forms.button.errors.id_not_found',
-),
-),
-),
-),
-),
-'button_filters' =>
-array (
-'model' => 'multipart',
-'fields' =>
-array (
-'id' =>
-array (
-'model' => 'hidden',
-'format' => 'int',
-'required' => true,
-'validators' =>
-array (
-'not_empty' =>
-array (
-'error' => 'forms.button.errors.id_not_found',
-),
-),
-),
-'categories_filtering_mode' =>
-array (
-'model' => 'choice.contracted.single',
-'validators' =>
-array (
-'array.in' =>
-array (
-0 => 'NONE',
-1 => 'STRICT',
-2 => 'FLEXIBLE',
-),
-),
-'view' =>
-array (
-'data' =>
-array (
-'choices' =>
-array (
-'NONE' => 'forms.button_filters.fields.categories_filtering_mode.values.NONE',
-'STRICT' => 'forms.button_filters.fields.categories_filtering_mode.values.STRICT',
-'FLEXIBLE' => 'forms.button_filters.fields.categories_filtering_mode.values.FLEXIBLE',
-),
-'translate' => true,
-'label' => 'forms.button_filters.fields.categories_filtering_mode.label',
-'help' => 'forms.button_filters.fields.categories_filtering_mode.help',
-),
-),
-),
-'filtered_categories' =>
-array (
-'model' => 'choice.double.bool',
-'default' =>
-array (
-),
-'view' =>
-array (
-'data' =>
-array (
-'horizontal_choices' =>
-array (
-0 => 'forms.button_filters.fields.filtered_categories.column',
-),
-'vertical_choices' => 'category.hierarchized',
-'axis' => 'vertical',
-'filterPlaceholder' => 'forms.button_filters.fields.search.placeholder',
-'translate' =>
-array (
-'horizontal_choices' => true,
-),
-'label' => 'forms.button_filters.fields.filtered_categories.label',
-'help' => 'forms.button_filters.fields.filtered_categories.help',
-),
-),
-),
-'cart_amount_limits' =>
-array (
-'model' => 'object',
-'children' =>
-array (
-'min' =>
-array (
-'model' => 'int',
-'default' => 0,
-'view' =>
-array (
-'data' =>
-array (
-'attr' =>
-array (
-'min' => 0,
-),
-),
-'template' => 'fields/partials/input',
-),
-),
-'max' =>
-array (
-'model' => 'int',
-'default' => 0,
-'view' =>
-array (
-'data' =>
-array (
-'attr' =>
-array (
-'min' => 0,
-),
-),
-'template' => 'fields/partials/input',
-),
-),
-),
-'view' =>
-array (
-'name' => 'field.object',
-'data' =>
-array (
-'label' => 'forms.button_filters.fields.cart_amount.label',
-'class' => null,
-'help' => 'forms.button_filters.fields.cart_amount.helper',
-'warning' => 'errors.button.min_amount_greater_than_max_amount',
-),
-'template' => 'fields/bloc-range',
-),
-),
-),
-'view' =>
-array (
-'data' =>
-array (
-'validate' => 'misc.forms.default.buttons.save',
-'columns' =>
-array (
-'categories_filtering' =>
-array (
-0 => 'categories_filtering_mode',
-1 => 'filtered_categories',
-),
-'other_filtering' =>
-array (
-0 => 'cart_amount_limits',
-1 => 'form_key',
-),
-),
-),
-'template' => 'forms/button_filters',
-),
-),
-'eligible_amounts' =>
-array (
-'model' => 'basic',
-'fields' =>
-array (
-'eligible_amounts' =>
-array (
-'model' => 'choice.double.bool',
-'default' =>
-array (
-),
-'view' =>
-array (
-'data' =>
-array (
-'horizontal_choices' => 'payment_type',
-'vertical_choices' => 'category.hierarchized',
-'axis' => 'vertical',
-'filterPlaceholder' => 'forms.eligible_amounts.fields.search.placeholder',
-),
-),
-),
-),
-'view' =>
-array (
-'data' =>
-array (
-'validate' => 'misc.forms.default.buttons.save',
-),
-),
-),
-'config' =>
-array (
-'model' => 'basic',
-'fields' =>
-array (
-'active' =>
-array (
-'enabled' => true,
-'model' => 'bool.switch',
-'view' =>
-array (
-'data' =>
-array (
-'label' => 'forms.config.fields.active.label',
-'help' => 'forms.config.fields.active.help',
-),
-),
-),
-'admin_only_visibility' =>
-array (
-'model' => 'choice.expanded.single',
-'format' => 'int',
-'view' =>
-array (
-'data' =>
-array (
-'choices' =>
-array (
-0 => 'forms.config.fields.visibility.values.no',
-1 => 'forms.config.fields.visibility.values.yes',
-),
-'translate' => true,
-'label' => 'forms.config.fields.visibility.label',
-'help' => 'forms.config.fields.visibility.help',
-),
-),
-'enabled' => false,
-),
-'cancel_order_on_refused_payment' =>
-array (
-'model' => 'choice.expanded.single',
-'format' => 'int',
-'view' =>
-array (
-'data' =>
-array (
-'choices' =>
-array (
-0 => 'forms.config.fields.behavior_payment_refused.values.no',
-1 => 'forms.config.fields.behavior_payment_refused.values.yes',
-),
-'translate' => true,
-'label' => 'forms.config.fields.behavior_payment_refused.label',
-'help' => 'forms.config.fields.behavior_payment_refused.help',
-),
-),
-'enabled' => false,
-),
-'behavior_payment_refund' =>
-array (
-'model' => 'bool.switch',
-'view' =>
-array (
-'data' =>
-array (
-'label' => 'forms.config.fields.behavior_transmit_refund.label',
-'help' => 'forms.config.fields.behavior_transmit_refund.help',
-),
-),
-),
-'behavior_delivery_confirmation' =>
-array (
-'model' => 'bool.switch',
-'view' =>
-array (
-'data' =>
-array (
-'label' => 'forms.config.fields.behavior_transmit_delivering.label',
-'help' => 'forms.config.fields.behavior_transmit_delivering.help',
-),
-),
-'enabled' => false,
-),
-'regenerate_cart_on_cancelled_payment' =>
-array (
-'model' => 'bool.switch',
-'view' =>
-array (
-'data' =>
-array (
-'label' => 'forms.config.fields.regenerate_cart_on_cancelled_payment.label',
-'help' => 'forms.config.fields.regenerate_cart_on_cancelled_payment.help',
-),
-),
-),
-'regenerate_cart_on_refused_payment' =>
-array (
-'model' => 'bool.switch',
-'view' =>
-array (
-'data' =>
-array (
-'label' => 'forms.config.fields.regenerate_cart_on_refused_payment.label',
-'help' => 'forms.config.fields.regenerate_cart_on_refused_payment.help',
-),
-),
-),
-),
-'view' =>
-array (
-'data' =>
-array (
-'validate' => 'misc.forms.default.buttons.save',
-),
-),
-),
-'exclusion_shipping_cost' =>
-array (
-'model' => 'basic',
-'fields' =>
-array (
-'payment_types' =>
-array (
-'model' => 'choice.expanded.multiple',
-'default' =>
-array (
-),
-'view' =>
-array (
-'data' =>
-array (
-'choices' => 'payment_type',
-'label' => 'forms.exclusion_shipping_cost.fields.label.label',
-),
-),
-),
-),
-'view' =>
-array (
-'data' =>
-array (
-'validate' => 'misc.forms.default.buttons.save',
-),
-),
-),
-'button' =>
-array (
-'model' => 'multipart',
-'fields' =>
-array (
-'label' =>
-array (
-'model' => 'collection.translations',
-'view' =>
-array (
-'data' =>
-array (
-'label' => 'forms.button.fields.label.label',
-),
-),
-),
-'payment_type' =>
-array (
-'model' => 'choice.contracted.single',
-'default' => 'CB',
-'validators' =>
-array (
-'array.in' => 'payment_type',
-),
-'view' =>
-array (
-'data' =>
-array (
-'choices' => 'payment_type',
-'label' => 'forms.button.fields.payment_type.label',
-),
-),
-),
-'display_type' =>
-array (
-'model' => 'choice.expanded.single',
-'default' => 'DEFAULT',
-'validators' =>
-array (
-'array.in' => 'display_type',
-),
-'view' =>
-array (
-'data' =>
-array (
-'choices' => 'display_type',
-'translate' => true,
-'label' => 'forms.button.fields.display_type.label',
-),
-),
-),
-'position' =>
-array (
-'model' => 'int',
-'view' =>
-array (
-'data' =>
-array (
-'label' => 'forms.button.fields.position.label',
-'help' => 'forms.button.fields.position.helper',
-'attr' =>
-array (
-'min' => 0,
-),
-),
-),
-),
-'picture' =>
-array (
-'model' => 'object',
-'children' =>
-array (
-'image' =>
-array (
-'type' => 'basic',
-'format' => 'string',
-'view' =>
-array (
-'name' => 'field',
-'data' =>
-array (
-'attr' =>
-array (
-'type' => 'file',
-),
-),
-'template' => 'fields/partials/input',
-),
-),
-'reset' =>
-array (
-'type' => 'basic',
-'format' => 'bool',
-'view' =>
-array (
-'name' => 'field.bool.checkbox',
-'data' =>
-array (
-'label' => 'forms.button.fields.image.default',
-'translate' => true,
-'attr' =>
-array (
-'type' => 'checkbox',
-),
-),
-'template' => 'fields/partials/radio-check',
-),
-),
-),
-'view' =>
-array (
-'name' => 'field.picture',
-'data' =>
-array (
-'class' => null,
-'label' => 'forms.button.fields.image.label',
-),
-'template' => 'fields/bloc-picture',
-),
-),
-'height' =>
-array (
-'model' => 'int',
-'default' => 60,
-'view' =>
-array (
-'data' =>
-array (
-'label' => 'forms.button.fields.height.label',
-'help' => 'forms.button.fields.height.helper',
-'append' => 'forms.button.fields.height.append',
-'attr' =>
-array (
-'min' => 0,
-),
-),
-),
-),
-'integration' =>
-array (
-'model' => 'choice.expanded.single',
-'default' => 'EXTERNAL',
-'validators' =>
-array (
-'array.in' => 'button_integration',
-),
-'view' =>
-array (
-'data' =>
-array (
-'choices' => 'button_integration',
-'translate' => true,
-'label' => 'forms.button.fields.integration.label',
-'help' => 'forms.button.fields.integration.helper',
-),
-),
-),
-'payment_mode' =>
-array (
-'model' => 'choice.expanded.single',
-'default' => 'CASH',
-'validators' =>
-array (
-'array.in' => 'payment_mode',
-),
-'view' =>
-array (
-'data' =>
-array (
-'choices' => 'payment_mode',
-'label' => 'forms.button.fields.payment_mode.label',
-),
-),
-),
-'payment_number' =>
-array (
-'model' => 'int',
-'default' => 1,
-'view' =>
-array (
-'data' =>
-array (
-'label' => 'forms.button.fields.payment_number.label',
-'warning' => 'forms.button.fields.payment_number.warning',
-'attr' =>
-array (
-'min' => 1,
-),
-'class' => 'js-hidden-field-togglable',
-),
-),
-),
-'first_payment_part' =>
-array (
-'model' => 'int',
-'default' => 0,
-'view' =>
-array (
-'data' =>
-array (
-'label' => 'forms.button.fields.first_payment_part.label',
-'help' => 'forms.button.fields.first_payment_part.helper',
-'append' => 'forms.button.fields.first_payment_part.append',
-'class' => 'js-hidden-field-togglable',
-'attr' =>
-array (
-'min' => 0,
-'max' => 100,
-),
-),
-),
-),
-'payment_report' =>
-array (
-'model' => 'choice.contracted.single',
-'default' => 0,
-'validators' =>
-array (
-'array.in' => 'payment_report',
-),
-'view' =>
-array (
-'data' =>
-array (
-'choices' => 'payment_report',
-'translate' => true,
-'label' => 'forms.button.fields.payment_report.label',
-'help' => 'forms.button.fields.payment_report.helper',
-'class' => 'js-hidden-field-togglable',
-),
-),
-),
-'order_repeated' =>
-array (
-'model' => 'bool',
-'default' => false,
-'enabled' => false,
-'view' =>
-array (
-'data' =>
-array (
-'label' => 'forms.button.fields.order_repeated.label',
-'help' => 'forms.button.fields.order_repeated.helper',
-'class' => 'js-hidden-field-togglable',
-),
-),
-),
-),
-'view' =>
-array (
-'data' =>
-array (
-'validate' => 'misc.forms.default.buttons.save',
-'columns' =>
-array (
-'appearance' =>
-array (
-0 => 'display_type',
-1 => 'label',
-2 => 'picture',
-3 => 'height',
-),
-'payment' =>
-array (
-0 => 'payment_type',
-1 => 'payment_mode',
-2 => 'payment_number',
-3 => 'first_payment_part',
-4 => 'order_repeated',
-5 => 'payment_report',
-),
-'other' =>
-array (
-0 => 'cart_amount_limits',
-1 => 'position',
-2 => 'integration',
-3 => 'form_key',
-),
-),
-),
-'template' => 'forms/button',
-),
-),
-'tree_config' =>
-array (
-'model' => 'basic',
-'fields' =>
-array (
-'carbon_offsetting_payer' =>
-array (
-'model' => 'choice.expanded.single',
-'format' => 'string',
-'default' => 'MERCHANT',
-'enabled' => false,
-'view' =>
-array (
-'data' =>
-array (
-'choices' =>
-array (
-'MERCHANT' => 'forms.tree_config.fields.carbon_offsetting_payer.values.MERCHANT',
-'CUSTOMER' => 'forms.tree_config.fields.carbon_offsetting_payer.values.CUSTOMER',
-),
-'attr' =>
-array (
-'disabled' => '',
-),
-'translate' => true,
-'label' => 'forms.tree_config.fields.carbon_offsetting_payer.label',
-'help' => 'forms.tree_config.fields.carbon_offsetting_payer.help',
-'warning' => 'forms.tree_config.fields.carbon_offsetting_payer.warning',
-),
-),
-),
-'tree_api_server' =>
-array (
-'model' => 'choice.contracted.single',
-'validators' =>
-array (
-'array.in' =>
-array (
-0 => 'PROD',
-1 => 'SANDBOX',
-),
-),
-'view' =>
-array (
-'data' =>
-array (
-'choices' =>
-array (
-'PROD' => 'forms.tree_config.fields.tree_api_server.values.PROD',
-'SANDBOX' => 'forms.tree_config.fields.tree_api_server.values.SANDBOX',
-),
-'translate' => true,
-'label' => 'forms.tree_config.fields.tree_api_server.label',
-'help' => 'forms.tree_config.fields.tree_api_server.help',
-),
-),
-),
-),
-'view' =>
-array (
-'data' =>
-array (
-'validate' => 'misc.forms.default.buttons.save',
-),
-),
-),
-'tree_shipping_address' =>
-array (
-'model' => 'basic',
-'fields' =>
-array (
-'shipping_address_line_1' =>
-array (
-'model' => 'string',
-'required' => true,
-'view' =>
-array (
-'data' =>
-array (
-'label' => 'forms.tree_shipping_address.fields.line_1.label',
-),
-),
-),
-'shipping_address_line_2' =>
-array (
-'model' => 'string',
-'required' => false,
-'view' =>
-array (
-'data' =>
-array (
-'label' => 'forms.tree_shipping_address.fields.line_2.label',
-),
-),
-),
-'shipping_address_zipcode' =>
-array (
-'model' => 'string',
-'required' => true,
-'view' =>
-array (
-'data' =>
-array (
-'label' => 'forms.tree_shipping_address.fields.zipcode.label',
-),
-),
-),
-'shipping_address_city' =>
-array (
-'model' => 'string',
-'required' => true,
-'view' =>
-array (
-'data' =>
-array (
-'label' => 'forms.tree_shipping_address.fields.city.label',
-),
-),
-),
-'shipping_address_country' =>
-array (
-'model' => 'choice.contracted.single',
-'validators' =>
-array (
-'array.in' => 'countries',
-),
-'required' => true,
-'view' =>
-array (
-'data' =>
-array (
-'choices' => 'countries',
-'translate' => true,
-'label' => 'forms.tree_shipping_address.fields.country.label',
-),
-),
-),
-),
-'view' =>
-array (
-'data' =>
-array (
-'validate' => 'misc.forms.default.buttons.save',
-),
-),
-),
-'tree_authentication' =>
-array (
-'model' => 'basic',
-'fields' =>
-array (
-'client_id' =>
-array (
-'model' => 'string',
-'required' => true,
-'view' =>
-array (
-'data' =>
-array (
-'label' => 'forms.tree_authentication.fields.client_id.label',
-),
-),
-),
-'login' =>
-array (
-'model' => 'string',
-'required' => true,
-'view' =>
-array (
-'data' =>
-array (
-'label' => 'forms.tree_authentication.fields.login.label',
-),
-),
-),
-'password' =>
-array (
-'model' => 'string',
-'required' => true,
-'view' =>
-array (
-'data' =>
-array (
-'label' => 'forms.tree_authentication.fields.password.label',
-),
-),
-),
-),
-'view' =>
-array (
-'data' =>
-array (
-'validate' => 'misc.forms.default.buttons.save',
-),
-),
-),
-'tree_activation' =>
-array (
-'model' => 'basic',
-'fields' =>
-array (
-'tree_active' =>
-array (
-'enabled' => true,
-'model' => 'bool.switch',
-'view' =>
-array (
-'data' =>
-array (
-'label' => 'forms.tree_activation.fields.activation.label',
-'help' => 'forms.tree_activation.fields.activation.help',
-),
-),
-),
-),
-'view' =>
-array (
-'data' =>
-array (
-'validate' => 'misc.forms.default.buttons.save',
-),
-),
-),
-),
-'models' =>
-array (
-'basic' =>
-array (
-'view' =>
-array (
-'name' => 'form',
-'data' =>
-array (
-'attr' =>
-array (
-'method' => 'post',
-),
-),
-'template' => 'form',
-),
-),
-'multipart' =>
-array (
-'view' =>
-array (
-'name' => 'form',
-'data' =>
-array (
-'attr' =>
-array (
-'method' => 'post',
-'enctype' => 'multipart/form-data',
-),
-),
-'template' => 'form',
-),
-),
-),
-),
-'menu' =>
-array (
-'shop_selector' => true,
-'entries' =>
-array (
-'home' =>
-array (
-'action' => 'backoffice.home.display',
-'name' => 'pages.home.name',
-'title' => 'pages.home.title',
-),
-'payment' =>
-array (
-'name' => 'menu.payment.name',
-'title' => 'menu.payment.title',
-'children' =>
-array (
-'account' =>
-array (
-'action' => 'backoffice.account.display',
-'name' => 'pages.account.name',
-'title' => 'pages.account.title',
-),
-'module' =>
-array (
-'action' => 'backoffice.config.display',
-'name' => 'pages.config.name',
-'title' => 'pages.config.title',
-),
-'buttons' =>
-array (
-'action' => 'backoffice.buttons.display',
-'name' => 'pages.buttons.name',
-'title' => 'pages.buttons.title',
-),
-'eligible_amounts' =>
-array (
-'action' => 'backoffice.eligible_amounts.display',
-'name' => 'pages.eligible_amounts.name',
-'title' => 'pages.eligible_amounts.title',
-),
-),
-),
-'tree' =>
-array (
-'name' => 'menu.tree.name',
-'title' => 'menu.tree.title',
-'children' =>
-array (
-'tree_account' =>
-array (
-'action' => 'backoffice.tree_account.display',
-'name' => 'pages.tree_account.name',
-'title' => 'pages.tree_account.title',
-),
-'tree_config' =>
-array (
-'action' => 'backoffice.tree_config.display',
-'name' => 'pages.tree_config.name',
-'title' => 'pages.tree_config.title',
-),
-),
-),
-'config' =>
-array (
-'name' => 'menu.config.name',
-'title' => 'menu.config.title',
-'children' =>
-array (
-'translations' =>
-array (
-'action' => 'backoffice.translations.display',
-'name' => 'pages.translations.name',
-'title' => 'pages.translations.title',
-),
-),
-),
-'help' =>
-array (
-'name' => 'menu.help.name',
-'title' => 'menu.help.title',
-'children' =>
-array (
-'system' =>
-array (
-'action' => 'backoffice.system.display',
-'name' => 'pages.system.name',
-'title' => 'pages.system.title',
-),
-'support' =>
-array (
-'action' => 'backoffice.support.display',
-'name' => 'pages.support.name',
-'title' => 'pages.support.title',
-),
-'release_note' =>
-array (
-'action' => 'backoffice.release_note.display',
-'name' => 'pages.release_note.name',
-'title' => 'pages.release_note.title',
-),
-),
-),
-'error' =>
-array (
-'title' => 'pages.error.title',
-),
-),
 ),
 'servers' =>
 array (
@@ -3985,6 +4601,139 @@ array (
 'do' => 'stop',
 'with' => 'renderer.processor.write_http',
 ),
+),
+),
+),
+'menu' =>
+array (
+'shop_selector' => true,
+'entries' =>
+array (
+'home' =>
+array (
+'action' => 'backoffice.home.display',
+'name' => 'pages.home.name',
+'title' => 'pages.home.title',
+),
+'payment' =>
+array (
+'name' => 'menu.payment.name',
+'title' => 'menu.payment.title',
+'children' =>
+array (
+'account' =>
+array (
+'action' => 'backoffice.account.display',
+'name' => 'pages.account.name',
+'title' => 'pages.account.title',
+),
+'module' =>
+array (
+'action' => 'backoffice.config.display',
+'name' => 'pages.config.name',
+'title' => 'pages.config.title',
+),
+'buttons' =>
+array (
+'action' => 'backoffice.buttons.display',
+'name' => 'pages.buttons.name',
+'title' => 'pages.buttons.title',
+),
+'eligible_amounts' =>
+array (
+'action' => 'backoffice.eligible_amounts.display',
+'name' => 'pages.eligible_amounts.name',
+'title' => 'pages.eligible_amounts.title',
+),
+'statistics' =>
+array (
+'action' => 'backoffice.payment_statistics.display',
+'name' => 'pages.payment_statistics.name',
+'title' => 'pages.payment_statistics.title',
+),
+'payment_translations' =>
+array (
+'action' => 'backoffice.payment_translations.display',
+'name' => 'pages.translations.name',
+'title' => 'pages.translations.title',
+),
+),
+),
+'tree' =>
+array (
+'name' => 'menu.tree.name',
+'title' => 'menu.tree.title',
+'children' =>
+array (
+'tree_account' =>
+array (
+'action' => 'backoffice.tree_account.display',
+'name' => 'pages.tree_account.name',
+'title' => 'pages.tree_account.title',
+),
+'tree_config' =>
+array (
+'action' => 'backoffice.tree_config.display',
+'name' => 'pages.tree_config.name',
+'title' => 'pages.tree_config.title',
+),
+'tree_translations' =>
+array (
+'action' => 'backoffice.tree_translations.display',
+'name' => 'pages.translations.name',
+'title' => 'pages.translations.title',
+),
+'carbon_bot_config' =>
+array (
+'action' => 'backoffice.carbon_bot_config.display',
+'name' => 'pages.carbon_bot_config.name',
+'title' => 'pages.carbon_bot_config.title',
+),
+),
+),
+'config' =>
+array (
+'name' => 'menu.config.name',
+'title' => 'menu.config.title',
+'children' =>
+array (
+'products' =>
+array (
+'action' => 'backoffice.products.display',
+'name' => 'pages.products.name',
+'title' => 'pages.products.title',
+),
+),
+),
+'help' =>
+array (
+'name' => 'menu.help.name',
+'title' => 'menu.help.title',
+'children' =>
+array (
+'system' =>
+array (
+'action' => 'backoffice.system.display',
+'name' => 'pages.system.name',
+'title' => 'pages.system.title',
+),
+'support' =>
+array (
+'action' => 'backoffice.support.display',
+'name' => 'pages.support.name',
+'title' => 'pages.support.title',
+),
+'release_note' =>
+array (
+'action' => 'backoffice.release_note.display',
+'name' => 'pages.release_note.name',
+'title' => 'pages.release_note.title',
+),
+),
+),
+'error' =>
+array (
+'title' => 'pages.error.title',
 ),
 ),
 ),
@@ -4196,10 +4945,6 @@ array (
 ),
 ),
 ),
-'paygreen' =>
-array (
-'backlink' => 'http://paygreen.io/paiement-securise/',
-),
 'payment' =>
 array (
 'pictures' =>
@@ -4376,26 +5121,14 @@ array (
 'TEXT' => 'forms.button.fields.display_type.values.text',
 ),
 ),
-'oauth_exceptions_messages' =>
+'paygreen' =>
 array (
-1 => 'actions.authentication.save.errors.oauth_server_address_missmatch',
-2 => 'actions.authentication.save.errors.oauth_data_validation',
+'backlink' => 'http://paygreen.io/paiement-securise/',
 ),
 'api' =>
 array (
 'payment' =>
 array (
-'clients' =>
-array (
-'curl' =>
-array (
-'allow_redirection' => true,
-'verify_peer' => true,
-'verify_host' => 2,
-'timeout' => 30,
-'http_version' => '1.1',
-),
-),
 'requests' =>
 array (
 'oauth_access' =>
@@ -4497,6 +5230,17 @@ array (
 'private' => true,
 ),
 ),
+'clients' =>
+array (
+'curl' =>
+array (
+'allow_redirection' => true,
+'verify_peer' => true,
+'verify_host' => 2,
+'timeout' => 30,
+'http_version' => '1.1',
+),
+),
 'responses' =>
 array (
 'class' => 'APIPaymentComponentsResponse',
@@ -4577,8 +5321,15 @@ array (
 'add_transportation_carbon_emission' =>
 array (
 'method' => 'POST',
-'url' => '{host}/carbon/transportation',
+'url' => '{host}/carbon/footprints/{fingerprint}/transportation',
 'private' => true,
+),
+'remove_transportation_carbon_emission' =>
+array (
+'method' => 'DELETE',
+'url' => '{host}/carbon/footprints/{fingerprint}/transportation',
+'private' => true,
+'validity' => '204',
 ),
 'get_all_carbon_footprints' =>
 array (
@@ -4586,10 +5337,17 @@ array (
 'url' => '{host}/carbon/footprints',
 'private' => true,
 ),
+'create_carbon_footprints' =>
+array (
+'method' => 'POST',
+'url' => '{host}/carbon/footprints',
+'private' => true,
+'validity' => '201',
+),
 'get_carbon_footprint_estimation' =>
 array (
 'method' => 'GET',
-'url' => '{host}/carbon/footprints/{fingerprint}',
+'url' => '{host}/carbon/footprints/{fingerprint}?detailed={detailed}',
 'private' => true,
 ),
 'update_carbon_footprint_status' =>
@@ -4616,6 +5374,31 @@ array (
 'url' => '{host}/carbon/statistics/report',
 'private' => true,
 ),
+'export_product_catalog' =>
+array (
+'method' => 'POST',
+'url' => '{host}/carbon/products/catalog',
+'private' => true,
+),
+'create_product_reference' =>
+array (
+'method' => 'POST',
+'url' => '{host}/carbon/products/references',
+'private' => true,
+),
+'add_product_carbon_emission' =>
+array (
+'method' => 'POST',
+'url' => '{host}/carbon/footprints/{idFootprint}/products',
+'private' => true,
+),
+'delete_product_carbon_emission' =>
+array (
+'method' => 'DELETE',
+'url' => '{host}/carbon/footprints/{idFootprint}/products',
+'private' => true,
+'validity' => '204',
+),
 ),
 'clients' =>
 array (
@@ -4630,6 +5413,18 @@ array (
 ),
 ),
 ),
+'oauth_exceptions_messages' =>
+array (
+1 => 'actions.authentication.save.errors.oauth_server_address_missmatch',
+2 => 'actions.authentication.save.errors.oauth_data_validation',
+),
+'tree' =>
+array (
+'transport' =>
+array (
+'default' => 'standard-delivery-van',
+),
+),
 'urls' =>
 array (
 'climatekit' =>
@@ -4637,6 +5432,12 @@ array (
 'PROD' => 'solidaire.paygreen.fr',
 'SANDBOX' => 'sb-api-climatekit.paygreen.fr',
 'RECETTE' => 'rc-api-climatekit.paygreen.fr',
+),
+'bo_climatekit' =>
+array (
+'PROD' => 'solidaire.paygreen.fr',
+'SANDBOX' => 'sb-climatekit.paygreen.fr',
+'RECETTE' => 'rc-climatekit.paygreen.fr',
 ),
 ),
 'client' =>

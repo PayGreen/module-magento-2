@@ -15,7 +15,7 @@
  * @author    PayGreen <contact@paygreen.fr>
  * @copyright 2014 - 2021 Watt Is It
  * @license   https://opensource.org/licenses/mit-license.php MIT License X11
- * @version   2.0.2
+ * @version   2.1.0
  *
  */
 
@@ -80,40 +80,6 @@ class BOPaymentControllersAccount extends BOModuleFoundationsAbstractBackofficeC
         $this->success('actions.authentication.reset.result.success');
 
         return $this->redirect($this->getLinkHandler()->buildBackOfficeUrl('backoffice.account.display'));
-    }
-
-    /**
-     * @param $infoAccount
-     * @return PGViewComponentsBox
-     * @throws Exception
-     */
-    protected function buildActivationFormView($infoAccount)
-    {
-        $action = $this->getLinkHandler()->buildBackOfficeUrl('backoffice.account.activation');
-
-        $values = array(
-            'activation' => ($infoAccount ? $infoAccount->activate : false)
-        );
-
-        $view = $this->buildForm('account_activation', $values)
-            ->buildView()
-            ->setAction($action)
-        ;
-
-        return new PGViewComponentsBox($view);
-    }
-
-    public function displayAccountStatusAction()
-    {
-        $infoAccount = '';
-
-        if ($this->paygreenFacade->isConnected()) {
-            $infoAccount = $this->paygreenFacade->getAccountInfos();
-        }
-
-        return $this->buildTemplateResponse('account/block-status')
-            ->addData('form', $this->buildActivationFormView($infoAccount))
-        ;
     }
 
     public function displayAccountInfosAction()

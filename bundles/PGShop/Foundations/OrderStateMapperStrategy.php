@@ -15,7 +15,7 @@
  * @author    PayGreen <contact@paygreen.fr>
  * @copyright 2014 - 2021 Watt Is It
  * @license   https://opensource.org/licenses/mit-license.php MIT License X11
- * @version   2.0.2
+ * @version   2.1.0
  *
  */
 
@@ -47,7 +47,7 @@ abstract class PGShopFoundationsOrderStateMapperStrategy extends PGSystemFoundat
     /**
      * @param string $state
      * @return array|null
-     * @throws PGFrameworkExceptionsConfigurationException
+     * @throws PGSystemExceptionsConfiguration
      */
     public function getDefinition($state)
     {
@@ -58,7 +58,7 @@ abstract class PGShopFoundationsOrderStateMapperStrategy extends PGSystemFoundat
         foreach ($this->getDefinitions() as $temporaryState => $definition) {
             if (!array_key_exists('name', $definition)) {
                 $message = "Parameter 'name' not found in orderState definition : '$temporaryState'.";
-                throw new PGFrameworkExceptionsConfigurationException($message);
+                throw new PGSystemExceptionsConfiguration($message);
             }
 
             if ($temporaryState === $state) {

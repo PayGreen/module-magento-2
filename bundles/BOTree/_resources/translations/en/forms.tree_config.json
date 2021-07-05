@@ -2,22 +2,9 @@
   "forms":{
     "tree_config": {
       "fields": {
-        "carbon_offsetting_payer": {
-          "label": "Cost of carbon offsetting",
-          "help": "Defines who of the customer/merchant is responsible for paying the carbon offset.",
-          "warning": "WARNING: This field is currently disabled, so the merchant is responsible for paying the carbon compensation.",
-          "values": {
-            "MERCHANT": "At the merchant's expense.",
-            "CUSTOMER": "At the customer's expense."
-          }
-        },
-        "tree_api_server": {
-          "label": "PayGreen ClimateKit server",
-          "help": "Allows you to define which PayGreen ClimateKit server you want to use.",
-          "values": {
-            "PROD": "Production",
-            "SANDBOX": "Sandbox"
-          }
+        "tree_details_url": {
+          "label": "URL to the 'Learn More' page",
+          "help": "The 'Learn More' page will allow your customers to get more information about carbon footprint calculation and carbon offsetting."
         }
       }
     }

@@ -14,14 +14,14 @@
  * @author    PayGreen <contact@paygreen.fr>
  * @copyright 2014 - 2021 Watt Is It
  * @license   https://opensource.org/licenses/mit-license.php MIT License X11
- * @version   2.0.2
+ * @version   2.1.0
  *
  *}
 <form{foreach $attr as $key => $val} {$key}="{$val}"{/foreach}>
     {if isset($fields.id)}{$fields.id}{/if}
 
     <div class="pgcontainer" data-pglayout="button-filters-form">
-        <div class="pgblock pg__flex-1 pgblock__md">
+        <div class="pgblock pg__flex-1 pgblock__max__md">
             <h2>
                 {'pages.buttons.filters.columns.categories_filtering.title'|pgtrans}
             </h2>
@@ -33,7 +33,7 @@
             {/foreach}
         </div>
 
-        <div class="pgblock pg__flex-1 pgblock__md">
+        <div class="pgblock pg__flex-1 pgblock__max__md">
             <h2>
                 {'pages.buttons.filters.columns.other_filtering.title'|pgtrans}
             </h2>

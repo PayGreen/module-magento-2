@@ -15,7 +15,7 @@
  * @author    PayGreen <contact@paygreen.fr>
  * @copyright 2014 - 2021 Watt Is It
  * @license   https://opensource.org/licenses/mit-license.php MIT License X11
- * @version   2.0.2
+ * @version   2.1.0
  *
  */
 
@@ -37,11 +37,10 @@ return array (
 14 => 'BOPayment',
 15 => 'FOPayment',
 16 => 'PGTree',
-17 => 'PGTreeCommon',
-18 => 'APITree',
-19 => 'BOTree',
-20 => 'FOTree',
-21 => 'PGMagento',
-22 => 'PGMagentoPayment',
-23 => 'PGMagentoTree',
+17 => 'APITree',
+18 => 'BOTree',
+19 => 'FOTree',
+20 => 'PGMagento',
+21 => 'PGMagentoPayment',
+22 => 'PGMagentoTree',
 );

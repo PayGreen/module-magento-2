@@ -15,7 +15,7 @@
  * @author    PayGreen <contact@paygreen.fr>
  * @copyright 2014 - 2021 Watt Is It
  * @license   https://opensource.org/licenses/mit-license.php MIT License X11
- * @version   2.0.2
+ * @version   2.1.0
  *
  */
 
@@ -25,23 +25,23 @@
  */
 class PGTreeServicesHandlersTreeAuthentication
 {
-    const REFRESH_TOKEN_VALIDITY = '14 days';
+    const REFRESH_TOKEN_VALIDITY = '1 month';
 
     /** @var PGModuleServicesSettings */
     private $settings;
 
-    /** @var PGTreeServicesTreeFacade */
-    private $treeFacade;
+    /** @var APITreeServicesApiFacade */
+    private $treeAPIFacade;
 
     /** @var PGModuleServicesLogger */
     private $logger;
 
     public function __construct(
-        PGTreeServicesTreeFacade $treeFacade,
+        APITreeServicesApiFacade $treeAPIFacade,
         PGModuleServicesSettings $settings,
         PGModuleServicesLogger $logger
     ) {
-        $this->treeFacade = $treeFacade;
+        $this->treeAPIFacade = $treeAPIFacade;
         $this->settings = $settings;
         $this->logger = $logger;
     }
@@ -78,10 +78,11 @@ class PGTreeServicesHandlersTreeAuthentication
     public function connect($client_id, $username, $password)
     {
         /** @var PGClientComponentsResponse $response */
-        $response = $this->treeFacade->getAPIFacade()->getOAuthAccess($username, $password, $client_id);
+        $response = $this->treeAPIFacade->getOAuthAccess($username, $password, $client_id);
 
         if ($response->getHTTPCode() === 200) {
             $this->saveTokens($client_id, $response->data);
+            $this->settings->set('tree_client_username',$username);
             return true;
         }
 
@@ -101,7 +102,7 @@ class PGTreeServicesHandlersTreeAuthentication
             $client_id = $this->getTreeClientIdFromSettings();
 
             /** @var PGClientComponentsResponse $response */
-            $response = $this->treeFacade->getAPIFacade()->refreshOAuthAccess(
+            $response = $this->treeAPIFacade->refreshOAuthAccess(
                 $this->settings->get('tree_refresh_token'),
                 $client_id
             );

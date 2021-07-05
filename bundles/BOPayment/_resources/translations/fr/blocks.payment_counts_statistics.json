@@ -1,0 +1,14 @@
+{
+  "blocks": {
+    "payment_counts_statistics": {
+      "title": "Nombre de paiements",
+      "description": "Cette courbe retrace l'évolution du nombre de paiements via PayGreen sur le mois courant.",
+      "chart": {
+        "dataset": {
+          "current": "Nombre de paiements mois en cours",
+          "last": "Nombre de paiements mois dernier"
+        }
+      }
+    }
+  }
+}

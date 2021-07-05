@@ -15,7 +15,7 @@
  * @author    PayGreen <contact@paygreen.fr>
  * @copyright 2014 - 2021 Watt Is It
  * @license   https://opensource.org/licenses/mit-license.php MIT License X11
- * @version   2.0.2
+ * @version   2.1.0
  *
  */
 
@@ -25,12 +25,8 @@ use Magento\Framework\View\Element\Template;
 use Magento\Framework\View\Element\Template\Context;
 use PGSystemServicesContainer;
 use PGModuleServicesLogger;
-use PGServerServicesHandlersLink;
-use PGServerComponentsResourceBag;
-use PGServerComponentsResourcesScriptFileResource;
 use PGMagentoServicesMagentoResourceCompiler;
-use PGServerComponentsResourcesDataResource;
-use PGTreeCommonInterfacesTreeActivationBehavior;
+use PGModuleServicesProvidersOutput;
 
 class DisplayHomeHeader extends Template
 {
@@ -61,26 +57,14 @@ class DisplayHomeHeader extends Template
         /** @var PGMagentoServicesMagentoResourceCompiler $magentoResourceCompiler */
         $magentoResourceCompiler = $this->getService('compiler.resource.magento');
 
-        /** @var PGModuleServicesLogger $outputHandler */
         $logger = $this->getService('logger.view');
-
-        /** @var PGServerServicesHandlersLink $linkHandler */
-        $linkHandler = $this->getService('handler.link');
-
-        /** @var PGTreeCommonInterfacesTreeActivationBehavior $treeActivationBehavior */
-        $treeActivationBehavior = $this->getService('behavior.tree_activation');
 
         $logger->debug("Writing home page header output.");
 
-        $resources = new PGServerComponentsResourceBag();
+        /** @var PGModuleServicesProvidersOutput $outputProvider */
+        $outputProvider = $this->getService('provider.output');
 
-        if ($treeActivationBehavior->isActivated()) {
-            $resources->add(new PGServerComponentsResourcesScriptFileResource('/js/clientjs.js'));
-            $resources->add(new PGServerComponentsResourcesScriptFileResource('/js/tree.js'));
-            $resources->add(new PGServerComponentsResourcesDataResource(array(
-                'paygreen_tree_computing_url' => $linkHandler->buildFrontOfficeUrl('front.tree.save')
-            )));
-        }
+        $resources = $outputProvider->getResources(array('FRONT', 'FOOTER'));
 
         return $magentoResourceCompiler->compileResources($resources);
     }

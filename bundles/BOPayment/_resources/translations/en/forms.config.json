@@ -2,10 +2,6 @@
   "forms":{
     "config": {
       "fields": {
-        "active": {
-          "label": "Activate payments",
-          "help": "Activate payments with the PayGreen module."
-        },
         "behavior_payment_refused": {
           "label": "Action following a failed payment",
           "help": "Define the behavior of the PayGreen module when a payment fail.",

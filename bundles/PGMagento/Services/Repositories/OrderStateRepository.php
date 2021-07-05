@@ -15,7 +15,7 @@
  * @author    PayGreen <contact@paygreen.fr>
  * @copyright 2014 - 2021 Watt Is It
  * @license   https://opensource.org/licenses/mit-license.php MIT License X11
- * @version   2.0.2
+ * @version   2.1.0
  *
  */
 
@@ -38,38 +38,38 @@ class PGMagentoServicesRepositoriesOrderStateRepository extends PGMagentoFoundat
 
     /**
      * @inheritdoc
-     * @throws PGFrameworkExceptionsConfigurationException
+     * @throws PGSystemExceptionsConfiguration
      * @throws Exception
      */
     public function create($code, $name, array $metadata = array())
     {
         if (!array_key_exists($code, $this->definitions)) {
             $message = "Code definition not found : '$code'.";
-            throw new PGFrameworkExceptionsConfigurationException($message);
+            throw new PGSystemExceptionsConfiguration($message);
         } elseif (!is_array($this->definitions[$code])) {
             $message = "Uncorrectly defined order state : '$code'.";
-            throw new PGFrameworkExceptionsConfigurationException($message);
+            throw new PGSystemExceptionsConfiguration($message);
         } elseif (!array_key_exists('create', $this->definitions[$code]) || !$this->definitions[$code]['create']) {
             $message = "This state can not be created : '$code'.";
-            throw new PGFrameworkExceptionsConfigurationException($message);
+            throw new PGSystemExceptionsConfiguration($message);
         } elseif (!array_key_exists('source', $this->definitions[$code])) {
             $message = "Target state has no 'source' field : '$code'.";
-            throw new PGFrameworkExceptionsConfigurationException($message);
+            throw new PGSystemExceptionsConfiguration($message);
         } elseif (!is_array($this->definitions[$code]['source'])) {
             $message = "Target state 'source' must be an array : '$code'.";
-            throw new PGFrameworkExceptionsConfigurationException($message);
+            throw new PGSystemExceptionsConfiguration($message);
         } elseif (!array_key_exists('state', $this->definitions[$code]['source'])) {
             $message = "Target state has no 'state' field : '$code'.";
-            throw new PGFrameworkExceptionsConfigurationException($message);
+            throw new PGSystemExceptionsConfiguration($message);
         } elseif (!is_string($this->definitions[$code]['source']['state'])) {
             $message = "Target state 'state' field must be a string : '$code'.";
-            throw new PGFrameworkExceptionsConfigurationException($message);
+            throw new PGSystemExceptionsConfiguration($message);
         } elseif (!array_key_exists('status', $this->definitions[$code]['source'])) {
             $message = "Target state has no 'status' field : '$code'.";
-            throw new PGFrameworkExceptionsConfigurationException($message);
+            throw new PGSystemExceptionsConfiguration($message);
         } elseif (!is_string($this->definitions[$code]['source']['status'])) {
             $message = "Target state 'status' field must be a string : '$code'.";
-            throw new PGFrameworkExceptionsConfigurationException($message);
+            throw new PGSystemExceptionsConfiguration($message);
         }
 
         $metadata = array();

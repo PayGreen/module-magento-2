@@ -1,8 +1,12 @@
 {
   "blocks": {
     "payment": {
-      "title": "Solution de paiement PayGreen",
-      "shortcuts": "Raccourcis"
+      "title": "Paiement en ligne",
+      "shortcuts": "Raccourcis",
+      "payment_activation": {
+        "title": "Activation des paiements",
+        "help": "Si les paiements sont activés, vous encaissez les paiements de vos clients et vous êtes soumis à la facturation PayGreen*."
+      }
     }
   }
 }

@@ -15,7 +15,7 @@
  * @author    PayGreen <contact@paygreen.fr>
  * @copyright 2014 - 2021 Watt Is It
  * @license   https://opensource.org/licenses/mit-license.php MIT License X11
- * @version   2.0.2
+ * @version   2.1.0
  *
  */
 
@@ -54,7 +54,7 @@ class PGIntlServicesTranslator extends PGSystemFoundationsObject
      * @param PGIntlServicesHandlersLocaleHandler $localeHandler
      * @param PGModuleServicesLogger $logger
      * @param array $config
-     * @throws PGFrameworkExceptionsConfigurationException
+     * @throws PGSystemExceptionsConfiguration
      */
     public function __construct(
         PGIntlServicesHandlersCacheTranslationHandler $cacheHandler,
@@ -65,10 +65,10 @@ class PGIntlServicesTranslator extends PGSystemFoundationsObject
     ) {
         if (!array_key_exists('sources', $config)) {
             $message = "Translator configuration should contains 'sources' parameter.";
-            throw new PGFrameworkExceptionsConfigurationException($message);
+            throw new PGSystemExceptionsConfiguration($message);
         } elseif (!is_array($config['sources'])) {
             $message = "Translator configuration 'sources' parameter should be an array.";
-            throw new PGFrameworkExceptionsConfigurationException($message);
+            throw new PGSystemExceptionsConfiguration($message);
         }
 
         $this->cacheHandler = $cacheHandler;

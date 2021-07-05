@@ -15,7 +15,7 @@
  * @author    PayGreen <contact@paygreen.fr>
  * @copyright 2014 - 2021 Watt Is It
  * @license   https://opensource.org/licenses/mit-license.php MIT License X11
- * @version   2.0.2
+ * @version   2.1.0
  *
  */
 
@@ -25,17 +25,24 @@
  */
 class APITreeServicesListenersInstallCompatibilityCheck
 {
-    /** @var PGTreeServicesTreeFacade */
-    private $treeFacade;
+    /** @var APITreeServicesApiFacade */
+    private $treeAPIFacade;
 
-    public function __construct(PGTreeServicesTreeFacade $treeFacade)
+    /**
+     * APITreeServicesListenersInstallCompatibilityCheck constructor.
+     * @param APITreeServicesApiFacade $treeAPIFacade
+     */
+    public function __construct(APITreeServicesApiFacade $treeAPIFacade)
     {
-        $this->treeFacade = $treeFacade;
+        $this->treeAPIFacade = $treeAPIFacade;
     }
 
+    /**
+     * @throws Exception
+     */
     public function checkCompatibility()
     {
-        if (!$this->treeFacade->getApiFacade()->getRequestSender()->checkCompatibility()) {
+        if (!$this->treeAPIFacade->getRequestSender()->checkCompatibility()) {
             $error = "Your server is not able to contact PayGreen Tree API.";
             $error .= " You must install the cURL extension or allow URL fopen.";
 

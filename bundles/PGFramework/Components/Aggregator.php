@@ -15,7 +15,7 @@
  * @author    PayGreen <contact@paygreen.fr>
  * @copyright 2014 - 2021 Watt Is It
  * @license   https://opensource.org/licenses/mit-license.php MIT License X11
- * @version   2.0.2
+ * @version   2.1.0
  *
  */
 
@@ -68,9 +68,10 @@ class PGFrameworkComponentsAggregator implements PGSystemInterfacesServicesConfi
     public function addServiceName($serviceName, $name = null)
     {
         $type = $this->config['type'];
+        $quotedType = preg_quote($type);
 
         if ($name === null) {
-            if (preg_match("/^$type\\.(?P<name>.+)/", $serviceName, $result)) {
+            if (preg_match("/^$quotedType\\.(?P<name>.+)/", $serviceName, $result)) {
                 $name = $result['name'];
             } else {
                 throw new Exception(

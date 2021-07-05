@@ -15,7 +15,7 @@
  * @author    PayGreen <contact@paygreen.fr>
  * @copyright 2014 - 2021 Watt Is It
  * @license   https://opensource.org/licenses/mit-license.php MIT License X11
- * @version   2.0.2
+ * @version   2.1.0
  *
  */
 
@@ -35,7 +35,7 @@ class PGSystemComponentsBuildersAutoloaderBundles implements PGSystemInterfacesB
 
     /**
      * @param array $config
-     * @return PGSystemServicesAutoloader
+     * @return PGSystemServicesAutoloadersUncamelified
      * @throws Exception
      */
     public function build(array $config = array())
@@ -55,7 +55,7 @@ class PGSystemComponentsBuildersAutoloaderBundles implements PGSystemInterfacesB
             $storage = new PGSystemComponentsStoragesBlackHole();
         }
 
-        $autoloader = new PGSystemServicesAutoloader($storage, $this->bootstrap->getPathfinder());
+        $autoloader = new PGSystemServicesAutoloadersUncamelified($storage, $this->bootstrap->getPathfinder());
 
         /** @var PGSystemInterfacesBundle $bundle */
         foreach ($this->bootstrap->getKernel()->getBundles() as $bundle) {

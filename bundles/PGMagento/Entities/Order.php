@@ -15,7 +15,7 @@
  * @author    PayGreen <contact@paygreen.fr>
  * @copyright 2014 - 2021 Watt Is It
  * @license   https://opensource.org/licenses/mit-license.php MIT License X11
- * @version   2.0.2
+ * @version   2.1.0
  *
  */
 
@@ -148,5 +148,52 @@ class PGMagentoEntitiesOrder extends PGDatabaseFoundationsEntityWrapped implemen
         $localCart = $quoteFactory->create()->load($quote_id);
 
         $this->cart = new PGMagentoEntitiesCart($localCart);
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function getShippingAddress()
+    {
+        $shippingAddress = $this->getLocalEntity()->getShippingAddress();
+
+        return new PGMagentoEntitiesAddress($shippingAddress);
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function getCarrier()
+    {
+         /** @var PGModuleServicesLogger $logger */
+        $logger = $this->getService('logger');
+
+        $carrierName = $this->getLocalEntity()->getShippingMethod();
+
+        if (!$carrierName) {
+            $logger->warning('Local carrier name not found in Order entity.');
+
+            return null;
+        } else {
+            return new PGMagentoEntitiesCarrier($carrierName);
+        }
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function paidWithPaygreen()
+    {
+        $result = false;
+
+        $payment = $this->getLocalEntity()->getPayment();
+
+        if ($payment !== null) {
+            $paymentMethod = $payment->getMethod();
+
+            $result = (strtolower($paymentMethod) === 'paygreenpayment');
+        }
+
+        return $result;
     }
 }

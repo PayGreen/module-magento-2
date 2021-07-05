@@ -1,0 +1,11 @@
+{
+  "climatebot": {
+    "total": " of C02",
+    "description": "Carbon estimate updated in real time",
+    "data": {
+      "web": "Web browser",
+      "cart": "Shopping cart content",
+      "shipping": "Shipping"
+    }
+  }
+}

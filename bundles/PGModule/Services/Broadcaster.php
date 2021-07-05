@@ -15,7 +15,7 @@
  * @author    PayGreen <contact@paygreen.fr>
  * @copyright 2014 - 2021 Watt Is It
  * @license   https://opensource.org/licenses/mit-license.php MIT License X11
- * @version   2.0.2
+ * @version   2.1.0
  *
  */
 
@@ -43,7 +43,7 @@ class PGModuleServicesBroadcaster
      * @param PGSystemServicesContainer $container
      * @param PGModuleServicesLogger $logger
      * @param array $listeners
-     * @throws PGFrameworkExceptionsConfigurationException
+     * @throws PGSystemExceptionsConfiguration
      */
     public function __construct(
         PGSystemServicesContainer $container,
@@ -60,16 +60,16 @@ class PGModuleServicesBroadcaster
 
     /**
      * @param array $listenerConfiguration
-     * @throws PGFrameworkExceptionsConfigurationException
+     * @throws PGSystemExceptionsConfiguration
      */
     protected function addListenerConfiguration(array $listenerConfiguration)
     {
         if (!array_key_exists('event', $listenerConfiguration)) {
             $this->logger->critical("Listener declaration must contain 'event' key.", $listenerConfiguration);
-            throw new PGFrameworkExceptionsConfigurationException("Bad listener configuration.");
+            throw new PGSystemExceptionsConfiguration("Bad listener configuration.");
         } elseif (!array_key_exists('service', $listenerConfiguration)) {
             $this->logger->critical("Listener declaration must contain 'service' key.", $listenerConfiguration);
-            throw new PGFrameworkExceptionsConfigurationException("Bad listener configuration.");
+            throw new PGSystemExceptionsConfiguration("Bad listener configuration.");
         }
 
         $listenerConfiguration = array_merge(self::$LISTENER_DEFAULT_CONFIGURATION, $listenerConfiguration);
@@ -91,7 +91,7 @@ class PGModuleServicesBroadcaster
      * @param string $event
      * @param string $method
      * @param int $priority
-     * @throws PGFrameworkExceptionsConfigurationException
+     * @throws PGSystemExceptionsConfiguration
      */
     public function addListener($serviceName, $event, $method = 'listen', $priority = 500)
     {

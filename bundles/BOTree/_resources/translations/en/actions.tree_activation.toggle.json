@@ -3,8 +3,10 @@
     "tree_activation": {
       "toggle": {
         "result": {
-          "success": "The ClimateKit module activation has been successfully updated.",
-          "failure": "An error occurred when updating the activation of the ClimateKit module."
+          "success": {
+            "enabled": "ClimateKit carbon footprint calculation successfully activated.",
+            "disabled": "ClimateKit carbon footprint calculation successfully deactivated."
+          }
         }
       }
     }

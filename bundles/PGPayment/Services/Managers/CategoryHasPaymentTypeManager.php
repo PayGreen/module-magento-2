@@ -15,7 +15,7 @@
  * @author    PayGreen <contact@paygreen.fr>
  * @copyright 2014 - 2021 Watt Is It
  * @license   https://opensource.org/licenses/mit-license.php MIT License X11
- * @version   2.0.2
+ * @version   2.1.0
  *
  */
 
@@ -61,11 +61,29 @@ class PGPaymentServicesManagersCategoryHasPaymentTypeManager extends PGDatabaseF
             $this->preloadPaymentType($code);
         }
 
-        $isEmpty = empty($this->paymentTypes[$code]);
+        $isUnlimited = $this->isUnlimitedPaymentType($code);
+
         $inArray = in_array($category->id(), $this->paymentTypes[$code]);
 
-        return ($isEmpty || $inArray);
+        return ($isUnlimited || $inArray);
     }
+
+
+    /**
+     * @param string $code
+     * @return bool
+     */
+    public function isUnlimitedPaymentType($code)
+    {
+        if (!array_key_exists($code, $this->paymentTypes)) {
+            $this->preloadPaymentType($code);
+        }
+
+        return empty($this->paymentTypes[$code]);
+    }
+
+
+
 
     protected function preloadPaymentType($type)
     {

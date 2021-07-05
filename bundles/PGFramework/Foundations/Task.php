@@ -15,7 +15,7 @@
  * @author    PayGreen <contact@paygreen.fr>
  * @copyright 2014 - 2021 Watt Is It
  * @license   https://opensource.org/licenses/mit-license.php MIT License X11
- * @version   2.0.2
+ * @version   2.1.0
  *
  */
 
@@ -54,5 +54,18 @@ abstract class PGFrameworkFoundationsTask implements PGFrameworkInterfacesTaskIn
         $constantNames = array_flip($reflexion->getConstants());
 
         return $constantNames[$code];
+    }
+
+    /**
+     * @inheritdoc
+     * @throws Exception
+     */
+    public function getStatusCode($name)
+    {
+        $reflexion = new ReflectionClass($this);
+
+        $constantCodes = $reflexion->getConstants();
+
+        return $constantCodes[$name];
     }
 }

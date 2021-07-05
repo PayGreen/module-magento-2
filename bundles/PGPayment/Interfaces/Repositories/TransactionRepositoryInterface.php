@@ -15,7 +15,7 @@
  * @author    PayGreen <contact@paygreen.fr>
  * @copyright 2014 - 2021 Watt Is It
  * @license   https://opensource.org/licenses/mit-license.php MIT License X11
- * @version   2.0.2
+ * @version   2.1.0
  *
  */
 
@@ -71,4 +71,25 @@ interface PGPaymentInterfacesRepositoriesTransactionRepositoryInterface extends 
      * @return bool
      */
     public function delete(PGPaymentInterfacesEntitiesTransactionInterface $transaction);
+
+    /**
+     * @param int $dayIntervalBegin
+     * @param int $dayIntervalEnd
+     * @return array
+     */
+    public function findAllByDayInterval($dayIntervalBegin = 0, $dayIntervalEnd = 1);
+
+    /**
+     * @param int $dayIntervalBegin
+     * @param int $dayIntervalEnd
+     * @return int
+     */
+    public function getCountByDayInterval($dayIntervalBegin = 0, $dayIntervalEnd = 1);
+
+    /**
+     * @param int $dayIntervalBegin
+     * @param int $dayIntervalEnd
+     * @return float
+     */
+    public function getAmountByDayInterval($dayIntervalBegin = 0, $dayIntervalEnd = 1);
 }

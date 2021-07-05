@@ -15,7 +15,7 @@
  * @author    PayGreen <contact@paygreen.fr>
  * @copyright 2014 - 2021 Watt Is It
  * @license   https://opensource.org/licenses/mit-license.php MIT License X11
- * @version   2.0.2
+ * @version   2.1.0
  *
  */
 
@@ -70,7 +70,7 @@ class PGShopServicesManagersOrderState extends PGDatabaseFoundationsManager
     /**
      * @param string $state
      * @return PGShopInterfacesEntitiesOrderState|null
-     * @throws PGFrameworkExceptionsConfigurationException
+     * @throws PGSystemExceptionsConfiguration
      */
     public function create($state)
     {
@@ -80,13 +80,13 @@ class PGShopServicesManagersOrderState extends PGDatabaseFoundationsManager
         $definition = $parameters["order.states.$state"];
 
         if (!$definition) {
-            throw new PGFrameworkExceptionsConfigurationException("Code definition not found : '$state'.");
+            throw new PGSystemExceptionsConfiguration("Code definition not found : '$state'.");
         } elseif (!is_array($definition)) {
-            throw new PGFrameworkExceptionsConfigurationException("Uncorrectly defined order state : '$state'.");
+            throw new PGSystemExceptionsConfiguration("Uncorrectly defined order state : '$state'.");
         } elseif (!array_key_exists('name', $definition)) {
-            throw new PGFrameworkExceptionsConfigurationException("Target state has no name : '$state'.");
+            throw new PGSystemExceptionsConfiguration("Target state has no name : '$state'.");
         } elseif (!is_string($definition['name'])) {
-            throw new PGFrameworkExceptionsConfigurationException("Target state name must be a string : '$state'.");
+            throw new PGSystemExceptionsConfiguration("Target state name must be a string : '$state'.");
         }
 
         if (!array_key_exists('create', $definition) || ($definition['create'] !== true)) {

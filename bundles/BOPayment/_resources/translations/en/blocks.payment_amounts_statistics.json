@@ -1,0 +1,14 @@
+{
+  "blocks": {
+    "payment_amounts_statistics": {
+      "title": "Total amount of payments",
+      "description": "This curve shows the evolution of the total amount of payments via PayGreen over the current month.",
+      "chart": {
+        "dataset": {
+          "current": "Total amount (€) current month",
+          "last": "Total amount (€) last month"
+        }
+      }
+    }
+  }
+}

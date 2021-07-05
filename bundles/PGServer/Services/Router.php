@@ -15,7 +15,7 @@
  * @author    PayGreen <contact@paygreen.fr>
  * @copyright 2014 - 2021 Watt Is It
  * @license   https://opensource.org/licenses/mit-license.php MIT License X11
- * @version   2.0.2
+ * @version   2.1.0
  *
  */
 
@@ -55,6 +55,7 @@ class PGServerServicesRouter extends PGSystemFoundationsObject
 
         $this->verifyRoute($action);
         $this->verifyArea($action, $areas);
+        $this->verifyRequirements($action);
 
         $target = $this->routeHandler->getTarget($action);
 
@@ -93,6 +94,17 @@ class PGServerServicesRouter extends PGSystemFoundationsObject
 
         if (!in_array($area, $areas)) {
             throw new PGServerExceptionsHTTPNotFoundException("Action '$action' not found in any area of this server.");
+        }
+    }
+
+    /**
+     * @param string $action
+     * @throws PGServerExceptionsHTTPUnauthorizedException
+     */
+    protected function verifyRequirements($action)
+    {
+        if (!$this->routeHandler->areRequirementsFulfilled($action)) {
+            throw new PGServerExceptionsHTTPUnauthorizedException("Route '$action' requirements are not fulfilled.");
         }
     }
 }

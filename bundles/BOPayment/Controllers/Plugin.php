@@ -15,7 +15,7 @@
  * @author    PayGreen <contact@paygreen.fr>
  * @copyright 2014 - 2021 Watt Is It
  * @license   https://opensource.org/licenses/mit-license.php MIT License X11
- * @version   2.0.2
+ * @version   2.1.0
  *
  */
 
@@ -31,12 +31,17 @@ class BOPaymentControllersPlugin extends BOModuleFoundationsAbstractBackofficeCo
     /** @var PGFrameworkServicesHandlersCacheHandler */
     private $cacheHandler;
 
+    /** @var PGPaymentServicesManagersTransactionManager */
+    private $transactionManager;
+
     public function __construct(
         PGPaymentServicesPaygreenFacade $paygreenFacade,
-        PGFrameworkServicesHandlersCacheHandler $cacheHandler
+        PGFrameworkServicesHandlersCacheHandler $cacheHandler,
+        PGPaymentServicesManagersTransactionManager $transactionManager
     ) {
         $this->paygreenFacade = $paygreenFacade;
         $this->cacheHandler = $cacheHandler;
+        $this->transactionManager = $transactionManager;
     }
 
     /**
@@ -48,69 +53,120 @@ class BOPaymentControllersPlugin extends BOModuleFoundationsAbstractBackofficeCo
         /** @var PGModuleServicesSettings $settings */
         $settings = $this->getSettings();
 
-        $isPaymentActivated = $settings->get('active');
+        $isPaymentActivated = $settings->get('payment_activation');
 
-        $infoAccount = '';
+        $infos = array();
 
         if ($this->paygreenFacade->isConnected()) {
-            $infoAccount = $this->paygreenFacade->getAccountInfos();
+            $infos['public_key'] = $settings->get('public_key');
+            $infos['payments_overview'] = $this->getPaymentOverviewData();
         }
 
         return $this->buildTemplateResponse('payment/block-payment')
-            ->addData('paymentActivationFormView', $this->buildPaymentActivationFormView())
             ->addData('connected', $this->paygreenFacade->isConnected())
             ->addData('paymentActivated', $isPaymentActivated)
-            ->addData('infoAccount', $infoAccount)
+            ->addData('paymentKitInfos', $infos)
+            ->addData('growth', $this->transactionManager->getGrowthOfTheMonth())
         ;
     }
 
     /**
-     * @return PGViewComponentsBox
+     * @return PGServerComponentsResponsesTemplateResponse
      * @throws Exception
      */
-    protected function buildPaymentActivationFormView()
+    public function displayProductsAction()
     {
         /** @var PGModuleServicesSettings $settings */
         $settings = $this->getSettings();
 
-        $isActive = $settings->get('active');
+        $isPaymentActivated = $settings->get('payment_kit_activation');
 
-        $action = $this->getLinkHandler()->buildBackOfficeUrl('backoffice.payment.activation');
-
-        $values = array(
-            'active' => $isActive
-        );
-
-        $view = $this->buildForm('payment_activation', $values)
-            ->buildView()
-            ->setAction($action)
-        ;
-
-        return new PGViewComponentsBox($view);
+        return $this->buildTemplateResponse('payment/block-payment-products')
+            ->addData('paymentActivated', $isPaymentActivated)
+            ;
     }
 
     /**
      * @return PGServerComponentsResponsesRedirectionResponse
-     * @throws PGClientExceptionsResponse
      * @throws Exception
      */
-    public function activatePaymentAction()
+    public function paymentActivationAction()
     {
-        /** @var PGModuleServicesSettings $settings */
         $settings = $this->getSettings();
 
-        $activate = (bool) $this->getRequest()->get('active');
+        $paymentActivation = $settings->get('payment_activation');
 
-        $settings->set('active', $activate);
+        $settings->set('payment_activation', !$paymentActivation);
 
-        if ($activate === $settings->get('active')) {
-            $this->cacheHandler->clearCache();
-
-            $this->success('actions.payment_activation.toggle.result.success');
+        if ($paymentActivation) {
+            $this->success('actions.payment_activation.toggle.result.success.disabled');
         } else {
-            $this->failure('actions.payment_activation.toggle.result.failure');
+            $this->success('actions.payment_activation.toggle.result.success.enabled');
         }
 
         return $this->redirect($this->getLinkHandler()->buildBackOfficeUrl('backoffice.home.display'));
+    }
+
+    /**
+     * @return PGServerComponentsResponsesRedirectionResponse
+     * @throws Exception
+     */
+    public function paymentProductsActivationAction()
+    {
+        $settings = $this->getSettings();
+
+        $paymentActivation = $settings->get('payment_kit_activation');
+
+        $settings->set('payment_kit_activation', !$paymentActivation);
+
+        if ($paymentActivation) {
+            $this->success('actions.payment_activation.toggle.result.success.disabled');
+        } else {
+            $this->success('actions.payment_activation.toggle.result.success.enabled');
+        }
+
+        return $this->redirect($this->getLinkHandler()->buildBackOfficeUrl('backoffice.products.display'));
+    }
+
+    /**
+     * @return array
+     * @throws Exception
+     */
+    private function getPaymentOverviewData()
+    {
+        $data = array();
+
+        $data[] = array(
+            'period' => 'day',
+            'count' => $this->transactionManager->getCountOfTheDay(),
+            'amount' => $this->transactionManager->getAmountOfTheDay()
+        );
+
+        $data[] = array(
+            'period' => 'week',
+            'count' => $this->transactionManager->getCountOfTheWeek(),
+            'amount' => $this->transactionManager->getAmountOfTheWeek()
+        );
+
+        $data[] = array(
+            'period' => 'month',
+            'count' => $this->transactionManager->getCountOfTheMonth(),
+            'amount' => $this->transactionManager->getAmountOfTheMonth()
+        );
+
+        foreach ($data as $index => $value) {
+            $data[$index]['amount'] = $this->formatAmount($value['amount']);
+        }
+
+        return $data;
+    }
+
+    /**
+     * @param $amount
+     * @return string
+     */
+    private function formatAmount($amount)
+    {
+        return number_format($amount, 2, '.', ' ');
     }
 }

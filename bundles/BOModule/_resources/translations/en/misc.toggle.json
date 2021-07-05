@@ -1,0 +1,16 @@
+{
+  "misc": {
+    "toggle": {
+      "values": {
+        "true": {
+          "label": "Yes",
+          "confirmation": "Are you sure you want to enable this feature?"
+        },
+        "false": {
+          "label": "No",
+          "confirmation": "Are you sure you want to disable this feature?"
+        }
+      }
+    }
+  }
+}

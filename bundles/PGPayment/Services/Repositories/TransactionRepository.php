@@ -15,7 +15,7 @@
  * @author    PayGreen <contact@paygreen.fr>
  * @copyright 2014 - 2021 Watt Is It
  * @license   https://opensource.org/licenses/mit-license.php MIT License X11
- * @version   2.0.2
+ * @version   2.1.0
  *
  */
 
@@ -25,6 +25,8 @@
  */
 class PGPaymentServicesRepositoriesTransactionRepository extends PGDatabaseFoundationsRepositoryDatabase implements PGPaymentInterfacesRepositoriesTransactionRepositoryInterface
 {
+    const NB_SECONDS_IN_A_DAY = 86400;
+
     /**
      * @inheritdoc
      * @return PGPaymentInterfacesEntitiesTransactionInterface|null
@@ -101,6 +103,76 @@ class PGPaymentServicesRepositoriesTransactionRepository extends PGDatabaseFound
 
         $sql = "SELECT COUNT(*) FROM  `%{database.entities.transaction.table}` WHERE `id_order` = '$id_order';";
 
-        return (int) $this->getRequester()->execute($sql);
+        return (int) $this->getRequester()->fetchValue($sql);
+    }
+
+    /**
+     * @inheritDoc
+     * @throws Exception
+     */
+    public function findAllByDayInterval($dayIntervalBegin = 0, $dayIntervalEnd = 1)
+    {
+        $where = $this->buildWhereConditionByDayInterval($dayIntervalBegin, $dayIntervalEnd);
+
+        return $this->findAllEntities($where);
+    }
+
+    /**
+     * @inheritDoc
+     * @throws Exception
+     */
+    public function getCountByDayInterval($dayIntervalBegin = 0, $dayIntervalEnd = 1)
+    {
+        $where = $this->buildWhereConditionByDayInterval($dayIntervalBegin, $dayIntervalEnd);
+
+        $sql = "SELECT COUNT(*)
+            FROM `{$this->getTableName()}`
+            WHERE {$where}";
+
+        return (int) $this->getRequester()->fetchValue($sql);
+    }
+
+    /**
+     * @inheritDoc
+     * @throws Exception
+     */
+    public function getAmountByDayInterval($dayIntervalBegin = 0, $dayIntervalEnd = 1)
+    {
+        $where = $this->buildWhereConditionByDayInterval($dayIntervalBegin, $dayIntervalEnd);
+
+        $sql = "SELECT SUM(`amount`)
+            FROM `{$this->getTableName()}`
+            WHERE {$where}";
+
+        $amount = $this->getRequester()->fetchValue($sql);
+
+        return PGShopToolsPrice::toFloat($amount);
+    }
+
+    /**
+     * @param int $dayIntervalBegin
+     * @param int $dayIntervalEnd
+     * @return string
+     */
+    private function buildWhereConditionByDayInterval($dayIntervalBegin = 0, $dayIntervalEnd = 1)
+    {
+        $timestamp = $this->initializeDatetime()->getTimestamp();
+
+        $dayIntervalBegin *= self::NB_SECONDS_IN_A_DAY;
+        $dayIntervalEnd *= self::NB_SECONDS_IN_A_DAY;
+
+        return "`created_at` >= ({$timestamp} - {$dayIntervalBegin})
+            AND `created_at` < ({$timestamp} + {$dayIntervalEnd});";
+    }
+
+    /**
+     * @return DateTime
+     */
+    private function initializeDatetime()
+    {
+        $datetime = new DateTime();
+        $datetime->setTime(0, 0);
+
+        return $datetime;
     }
 }

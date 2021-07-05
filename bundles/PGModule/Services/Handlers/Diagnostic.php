@@ -15,7 +15,7 @@
  * @author    PayGreen <contact@paygreen.fr>
  * @copyright 2014 - 2021 Watt Is It
  * @license   https://opensource.org/licenses/mit-license.php MIT License X11
- * @version   2.0.2
+ * @version   2.1.0
  *
  */
 
@@ -74,10 +74,10 @@ class PGModuleServicesHandlersDiagnostic extends PGSystemFoundationsObject
         try {
             foreach ($this->diagnosticNames as $diagnosticName) {
                 if (($name === null) || ($diagnosticName === $name)) {
-                    /** @var PGFrameworkFoundationsAbstractDiagnostic $diagnostic */
+                    /** @var PGFrameworkFoundationsDiagnostic $diagnostic */
                     $diagnostic = $this->container->get($diagnosticName);
 
-                    if (!$diagnostic instanceof PGFrameworkFoundationsAbstractDiagnostic) {
+                    if (!$diagnostic instanceof PGFrameworkFoundationsDiagnostic) {
                         throw new Exception("'$diagnosticName' is not a valid Diagnostic.");
                     }
 
@@ -94,15 +94,15 @@ class PGModuleServicesHandlersDiagnostic extends PGSystemFoundationsObject
 
     /**
      * @param string $name
-     * @return PGFrameworkFoundationsAbstractDiagnostic
+     * @return PGFrameworkFoundationsDiagnostic
      * @throws Exception
      */
     public function getDiagnostic($name)
     {
-        /** @var PGFrameworkFoundationsAbstractDiagnostic $diagnostic */
+        /** @var PGFrameworkFoundationsDiagnostic $diagnostic */
         $diagnostic = $this->container->get($name);
 
-        if (!$diagnostic instanceof PGFrameworkFoundationsAbstractDiagnostic) {
+        if (!$diagnostic instanceof PGFrameworkFoundationsDiagnostic) {
             throw new Exception("'$name' is not a valid Diagnostic.");
         }
 
@@ -110,10 +110,10 @@ class PGModuleServicesHandlersDiagnostic extends PGSystemFoundationsObject
     }
 
     /**
-     * @param PGFrameworkFoundationsAbstractDiagnostic $diagnostic
+     * @param PGFrameworkFoundationsDiagnostic $diagnostic
      * @param bool $fix
      */
-    protected function diagnose(PGFrameworkFoundationsAbstractDiagnostic $diagnostic, $fix = true)
+    protected function diagnose(PGFrameworkFoundationsDiagnostic $diagnostic, $fix = true)
     {
         $name = get_class($diagnostic);
 

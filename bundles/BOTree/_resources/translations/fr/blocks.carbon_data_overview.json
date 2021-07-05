@@ -1,0 +1,17 @@
+{
+  "blocks": {
+    "carbon_data_overview": {
+      "title": "Aperçu des données carbones",
+      "columns": {
+        "period": "Période",
+        "footprint": "Empreinte carbone",
+        "carbon_offset": "Estimation du cout carbone"
+      },
+      "period": {
+        "day": "Aujourd'hui",
+        "week": "Cette semaine",
+        "month": "Ce mois-ci"
+      }
+    }
+  }
+}

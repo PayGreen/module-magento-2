@@ -15,7 +15,7 @@
  * @author    PayGreen <contact@paygreen.fr>
  * @copyright 2014 - 2021 Watt Is It
  * @license   https://opensource.org/licenses/mit-license.php MIT License X11
- * @version   2.0.2
+ * @version   2.1.0
  *
  */
 
@@ -45,7 +45,7 @@ class PGFrameworkServicesHandlersMimeTypeHandler
         if (array_key_exists($ext, $this->mime_types)) {
             $mime_type = $this->mime_types[$ext];
         } else {
-            $this->logger->warning("Unable to find the mime type associated with this extension : $ext.");
+            $this->logger->warning("Unable to find the mime type associated with this product : $ext.");
         }
 
         return $mime_type;

@@ -15,7 +15,7 @@
  * @author    PayGreen <contact@paygreen.fr>
  * @copyright 2014 - 2021 Watt Is It
  * @license   https://opensource.org/licenses/mit-license.php MIT License X11
- * @version   2.0.2
+ * @version   2.1.0
  *
  */
 
@@ -23,23 +23,29 @@
  * Class PGPaymentServicesProcessorsPaymentValidationProcessor
  * @package PGPayment\Services\Processors
  */
-class PGPaymentServicesProcessorsPaymentValidationProcessor extends PGFrameworkFoundationsAbstractProcessor
+class PGPaymentServicesProcessorsPaymentValidationProcessor extends PGFrameworkFoundationsProcessor
 {
     const PROCESSOR_NAME = 'PaymentValidation';
 
     private static $USE_PARENT_PAYMENT_RECORD_BY_PAYMENT_MODE = array('CASH');
 
     /** @var PGShopInterfacesOfficersPostPayment */
-    protected $officer;
+    protected $postPaymentOfficer;
 
-    public function __construct()
+    /** @var PGPaymentServicesHandlersProcessingHandler */
+    protected $processingHandler;
+
+    public function __construct(PGPaymentServicesHandlersProcessingHandler $processingHandler)
     {
+        $this->processingHandler = $processingHandler;
+
         $this->setSteps(array(
             'verifyPIDValidity',
             'verifyModuleActivation',
             'putLock',
             'paygreenCall',
             'manageAbortedTransaction',
+            'loadTransactionProcessorCache',
             'buildProvisioner',
             'switchPaymentMode'
         ));
@@ -50,7 +56,7 @@ class PGPaymentServicesProcessorsPaymentValidationProcessor extends PGFrameworkF
      */
     public function setPostPaymentOfficer($officer)
     {
-        $this->officer = $officer;
+        $this->postPaymentOfficer = $officer;
     }
 
     protected function verifyPIDValidityStep(PGPaymentComponentsTasksPaymentValidation $task)
@@ -151,13 +157,37 @@ class PGPaymentServicesProcessorsPaymentValidationProcessor extends PGFrameworkF
         }
     }
 
+    protected function loadTransactionProcessorCacheStep(PGPaymentComponentsTasksPaymentValidation $task)
+    {
+        /** @var PGModuleServicesLogger $logger */
+        $logger = $this->getService('logger');
+
+        try {
+            /** @var PGPaymentInterfacesEntitiesProcessingInterface $processing */
+            $processing = $this->processingHandler->loadCachedProcessingResult($task->getTransaction());
+
+            if ($processing !== null) {
+                $logger->notice('Use cached processor result.');
+
+                $statusCode = $task->getStatusCode($processing->getStatus());
+                $task->setStatus($statusCode);
+
+                $task->setOrder($processing->getOrder());
+                $task->setFinalOrderState($processing->getOrderStateTo());
+            }
+        } catch (Exception $exception) {
+            $message = "An error occurred during processor cache management : " . $exception->getMessage();
+            $logger->error($message, $exception);
+        }
+    }
+
     protected function buildProvisionerStep(PGPaymentComponentsTasksPaymentValidation $task)
     {
         /** @var PGModuleServicesLogger $logger */
         $logger = $this->getService('logger');
 
         try {
-            $provisioner = $this->officer->buildPostPaymentProvisioner($task->getPid(), $task->getTransaction());
+            $provisioner = $this->postPaymentOfficer->buildPostPaymentProvisioner($task->getPid(), $task->getTransaction());
 
             $task->setProvisioner($provisioner);
         } catch (Exception $exception) {
@@ -175,7 +205,7 @@ class PGPaymentServicesProcessorsPaymentValidationProcessor extends PGFrameworkF
         /** @var PGPaymentComponentsTasksTransactionManagement $subTask */
         $subTask = new PGPaymentComponentsTasksTransactionManagement($task->getProvisioner());
 
-        /** @var PGFrameworkFoundationsAbstractProcessor|null $processor */
+        /** @var PGFrameworkFoundationsProcessor|null $processor */
         $processor = null;
 
         $paymentMode = $task->getTransaction()->getMode();
@@ -206,18 +236,23 @@ class PGPaymentServicesProcessorsPaymentValidationProcessor extends PGFrameworkF
                 case $subTask::STATE_ORDER_CANCELED:
                     $task->setStatus($task::STATE_SUCCESS);
                     $task->setOrder($subTask->getOrder());
+                    $task->setFinalOrderState($subTask->getOrderStateTo());
+                    $this->processingHandler->saveProcessing($subTask, true);
                     break;
 
                 case $subTask::STATE_PAYMENT_REFUSED:
                     $task->setStatus($task::STATE_PAYMENT_REFUSED);
+                    $this->processingHandler->saveProcessing($subTask, true);
                     break;
 
                 case $subTask::STATE_ORDER_NOT_FOUND:
                     $task->setStatus($task::STATE_INCONSISTENT_CONTEXT);
+                    $this->processingHandler->saveProcessing($subTask, false);
                     break;
 
                 default:
                     $task->setStatus($task::STATE_FATAL_ERROR);
+                    $this->processingHandler->saveProcessing($subTask, false);
             }
 
             if (PAYGREEN_ENV === 'DEV') {

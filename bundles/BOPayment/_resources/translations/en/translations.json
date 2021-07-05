@@ -1,5 +1,5 @@
 {
-  "translations": {
+  "payment_translations": {
     "payment_bloc": {
       "field": {
         "label": "Presentation of payment buttons",

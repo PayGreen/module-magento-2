@@ -15,7 +15,7 @@
  * @author    PayGreen <contact@paygreen.fr>
  * @copyright 2014 - 2021 Watt Is It
  * @license   https://opensource.org/licenses/mit-license.php MIT License X11
- * @version   2.0.2
+ * @version   2.1.0
  *
  */
 
@@ -35,11 +35,11 @@ class PGFrameworkServicesHandlersRequirementHandler
 
     /**
      * @param string $name
-     * @param mixed $arguments
+     * @param mixed|null $arguments
      * @return bool
      * @throws Exception
      */
-    public function isFulfilled($name, $arguments)
+    public function isFulfilled($name, $arguments = null)
     {
         /** @var PGFrameworkInterfacesRequirementInterface $requirement */
         $requirement = $this->requirementAggregator->getService($name);

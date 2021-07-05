@@ -15,7 +15,7 @@
  * @author    PayGreen <contact@paygreen.fr>
  * @copyright 2014 - 2021 Watt Is It
  * @license   https://opensource.org/licenses/mit-license.php MIT License X11
- * @version   2.0.2
+ * @version   2.1.0
  *
  */
 
@@ -66,7 +66,7 @@ abstract class PGDatabaseFoundationsRepositoryDatabase extends PGDatabaseFoundat
     protected function unserializeData(array $data)
     {
         foreach ($data as $index => $value) {
-            if (is_string($index)) {
+            if (is_string($index) && (!empty($value))) {
                 $data[$index] = $this->unserializeField($index, $value);
             }
         }
@@ -332,14 +332,14 @@ abstract class PGDatabaseFoundationsRepositoryDatabase extends PGDatabaseFoundat
         }
     }
 
+    protected function getTableName()
+    {
+        return $this->config['table'];
+    }
+
     private function getClassName()
     {
         return $this->config['class'];
-    }
-
-    private function getTableName()
-    {
-        return $this->config['table'];
     }
 
     private function getPrimaryColumn()

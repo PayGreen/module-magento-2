@@ -15,7 +15,7 @@
  * @author    PayGreen <contact@paygreen.fr>
  * @copyright 2014 - 2021 Watt Is It
  * @license   https://opensource.org/licenses/mit-license.php MIT License X11
- * @version   2.0.2
+ * @version   2.1.0
  *
  */
 
@@ -34,5 +34,5 @@ require_once(PAYGREEN_VENDOR_DIR . DS . 'PGSystem' . DS . 'Foundations' . DS . '
 require_once(PAYGREEN_VENDOR_DIR . DS . 'PGSystem' . DS . 'Foundations' . DS . 'StorageFile.php');
 require_once(PAYGREEN_VENDOR_DIR . DS . 'PGSystem' . DS . 'Components' . DS . 'Storages' . DS . 'JSONFile.php');
 require_once(PAYGREEN_VENDOR_DIR . DS . 'PGSystem' . DS . 'Components' . DS . 'Storages' . DS . 'BlackHole.php');
-require_once(PAYGREEN_VENDOR_DIR . DS . 'PGSystem' . DS . 'Services' . DS . 'Autoloader.php');
+require_once(PAYGREEN_VENDOR_DIR . DS . 'PGSystem' . DS . 'Services' . DS . 'Autoloaders' . DS . 'Uncamelified.php');
 require_once(PAYGREEN_VENDOR_DIR . DS . 'PGSystem' . DS . 'Services' . DS . 'Autoloaders' . DS . 'Compiled.php');

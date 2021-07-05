@@ -14,12 +14,12 @@
  * @author    PayGreen <contact@paygreen.fr>
  * @copyright 2014 - 2021 Watt Is It
  * @license   https://opensource.org/licenses/mit-license.php MIT License X11
- * @version   2.0.2
+ * @version   2.1.0
  *
  *}
 <div class="pgnavbar">
     <a
-        href="https://paygreen.fr/login"
+        href="https://www.paygreen.io/"
         target="_blank"
         title="{'misc.backoffice.menu.logo'|pgtrans}"
         class="pgnavbar__logo"

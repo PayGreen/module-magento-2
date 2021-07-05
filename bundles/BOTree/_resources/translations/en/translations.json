@@ -1,9 +1,21 @@
 {
   "translations": {
-    "message_carbone_offsetting": {
+    "message_carbon_offsetting": {
       "field": {
         "label": "Carbon footprint of your order",
         "help": "This message is displayed to your customers after a validated payment."
+      }
+    },
+    "message_carbon_footprint": {
+      "field": {
+        "label": "Message for the carbon footprint",
+        "help": "This message is displayed to your customers in the CarbonBot to show your carbon footprint."
+      }
+    },
+    "message_find_out_more": {
+      "field": {
+        "label": "Message to find out more about your commitments",
+        "help": "This text will be used as a link to take your customers to the presentation page of your commitments."
       }
     }
   }

@@ -15,7 +15,7 @@
  * @author    PayGreen <contact@paygreen.fr>
  * @copyright 2014 - 2021 Watt Is It
  * @license   https://opensource.org/licenses/mit-license.php MIT License X11
- * @version   2.0.2
+ * @version   2.1.0
  *
  */
 
@@ -25,10 +25,14 @@
  */
 class PGModuleServicesHandlersBehavior extends PGSystemFoundationsObject
 {
+    /** @var PGFrameworkServicesHandlersRequirementHandler */
+    private $requirementHandler;
+
     private $behaviors = array();
 
-    public function __construct(array $behaviors)
+    public function __construct(PGFrameworkServicesHandlersRequirementHandler $requirementHandler, array $behaviors)
     {
+        $this->requirementHandler = $requirementHandler;
         $this->behaviors = $behaviors;
     }
 
@@ -89,6 +93,15 @@ class PGModuleServicesHandlersBehavior extends PGSystemFoundationsObject
                 $service = $this->getService($behavior['service']);
 
                 $value = call_user_func_array(array($service, $behavior['method']), $options);
+
+                break;
+
+            case 'requirement':
+                if (!array_key_exists('requirements', $behavior)) {
+                    throw new Exception("Behavior '$name' has no requirements defined.");
+                }
+
+                $value = $this->requirementHandler->areFulfilled($behavior['requirements']);
 
                 break;
 

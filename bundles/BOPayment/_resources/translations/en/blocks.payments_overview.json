@@ -1,0 +1,17 @@
+{
+  "blocks": {
+    "payments_overview": {
+      "title": "Payments overwiew",
+      "columns": {
+        "period": "Time period",
+        "count": "Number of payments",
+        "amount": "Total amount"
+      },
+      "period": {
+        "day": "Today",
+        "week": "This week",
+        "month": "This month"
+      }
+    }
+  }
+}

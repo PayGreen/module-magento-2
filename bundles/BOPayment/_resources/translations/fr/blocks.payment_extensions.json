@@ -1,0 +1,12 @@
+{
+  "blocks": {
+    "payment": {
+      "payment_products": {
+        "title": "Paiement en ligne",
+        "description": "Ce produit va vous permettre d'utiliser l'API de paiement PayGreen afin d'encaisser les paiements de vos clients. Vous aurez également la possibilité de gérer les remboursements depuis votre module.",
+        "label": "Activation des fonctionnalités de paiement",
+        "help": "Une fois ce produit activé, il vous restera à vous connecter à l'API puis à configurer votre module."
+      }
+    }
+  }
+}

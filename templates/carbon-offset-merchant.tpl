@@ -14,14 +14,14 @@
  * @author    PayGreen <contact@paygreen.fr>
  * @copyright 2014 - 2021 Watt Is It
  * @license   https://opensource.org/licenses/mit-license.php MIT License X11
- * @version   2.0.2
+ * @version   2.1.0
  *
  *}
 <div>
-    <span style="font-weight: bold;">{'translations.message_carbone_offsetting.field.label'|pgtrans}</span>
+    <span style="font-weight: bold;">{'front.confirmation.carbon_offsetting.label'|pgtrans}</span>
     <span>{$carbon_offset}&nbsp;kg CO²</span>
 </div>
 <div>
-    <span style="font-size: 0.7em; line-height: 0.25em;">{'~message_carbone_offsetting'|pgtrans}</span>
+    <span style="font-size: 0.7em; line-height: 0.25em;">{'~message_carbon_offsetting'|pgtrans}</span>
 </div>
 <hr />

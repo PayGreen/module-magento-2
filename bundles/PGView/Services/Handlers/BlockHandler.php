@@ -15,7 +15,7 @@
  * @author    PayGreen <contact@paygreen.fr>
  * @copyright 2014 - 2021 Watt Is It
  * @license   https://opensource.org/licenses/mit-license.php MIT License X11
- * @version   2.0.2
+ * @version   2.1.0
  *
  */
 
@@ -54,13 +54,29 @@ class PGViewServicesHandlersBlockHandler
 
     /**
      * @param string $target
-     * @return string[]
+     * @return PGModuleComponentsOutput
      * @throws Exception
      */
-    public function buildBlocks($target)
+    public function getBlocks($target)
     {
-        $blocks = array();
-        $unpositionnedBlocks = array();
+        $aggregatedBlocks = new PGModuleComponentsOutput();
+
+        foreach($this->buildBlocks($target) as $block) {
+            $aggregatedBlocks->merge($block);
+        }
+
+        return $aggregatedBlocks;
+    }
+
+    /**
+     * @param string $target
+     * @return PGModuleComponentsOutput[]
+     * @throws Exception
+     */
+    private function buildBlocks($target)
+    {
+        $fixedBlocks = array();
+        $floatingBlocks = array();
 
         foreach ($this->config as $config) {
             if ($config['requirements']) {
@@ -73,35 +89,46 @@ class PGViewServicesHandlersBlockHandler
 
             if ($isEnabled && ($config['target'] === $target)) {
                 $data = $config['data'] ? $config['data'] : array();
-                
+
+                $block = $this->buildBlock($config, $data);
+
                 if ($config['position'] && ($config['position'] > 0)) {
                     $position = $config['position'];
+                    $fixedBlocks[$position] = $block;
                 } else {
-                    $position = 'unpositionned';
+                    $floatingBlocks[] = $block;
                 }
 
-                if ($config['view']) {
-                    $blocks[$position] = $this->viewHandler->renderView($config['view'], $data);
-                } elseif ($config['template']) {
-                    $data['content'] = $this->viewHandler->renderTemplate($config['template'], $data);
-                    $blocks[$position] = $this->viewHandler->renderTemplate('blocks/layout', $data);
-                } elseif ($config['action']) {
-                    $blocks[$position] = $this->buildActionBlock($config['action'], $data);
-                } else {
-                    throw new Exception("Block configuration must contain 'view' or 'template' key.");
-                }
             }
-
-            if (array_key_exists('unpositionned', $blocks)) {
-                $unpositionnedBlocks[] = $blocks['unpositionned'];
-                unset($blocks['unpositionned']);
-            }
-            ksort($blocks, SORT_NUMERIC);
         }
-        
-        $blocks = array_merge($blocks, $unpositionnedBlocks);
 
-        return $blocks;
+        ksort($fixedBlocks, SORT_NUMERIC);
+
+        return array_merge($fixedBlocks, $floatingBlocks);
+    }
+
+    /**
+     * @param PGSystemComponentsBag $config
+     * @param array $data
+     * @return PGModuleComponentsOutput
+     * @throws Exception
+     */
+    private function buildBlock(PGSystemComponentsBag $config, array $data)
+    {
+        if ($config['view']) {
+            $html = $this->viewHandler->renderView($config['view'], $data);
+            $block = new PGModuleComponentsOutput($html);
+        } elseif ($config['template']) {
+            $data['content'] = $this->viewHandler->renderTemplate($config['template'], $data);
+            $html = $this->viewHandler->renderTemplate('blocks/layout', $data);
+            $block = new PGModuleComponentsOutput($html);
+        } elseif ($config['action']) {
+            $block = $this->buildActionBlock($config['action'], $data);
+        } else {
+            throw new Exception("Block configuration must contain 'action', 'view' or 'template' key.");
+        }
+
+        return $block;
     }
 
     private function buildActionBlock($action, array $data)
@@ -116,6 +143,13 @@ class PGViewServicesHandlersBlockHandler
         }
 
         $data['content'] = $this->viewHandler->renderTemplate($response->getTemplatePath(), $response->getData());
-        return $this->viewHandler->renderTemplate('blocks/layout', $data);
+
+        $html = $this->viewHandler->renderTemplate('blocks/layout', $data);
+
+        $output = new PGModuleComponentsOutput($html);
+
+        $output->addResources($response->getResources());
+
+        return $output;
     }
 }

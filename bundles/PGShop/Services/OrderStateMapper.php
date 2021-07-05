@@ -15,7 +15,7 @@
  * @author    PayGreen <contact@paygreen.fr>
  * @copyright 2014 - 2021 Watt Is It
  * @license   https://opensource.org/licenses/mit-license.php MIT License X11
- * @version   2.0.2
+ * @version   2.1.0
  *
  */
 
@@ -41,14 +41,14 @@ class PGShopServicesOrderStateMapper extends PGSystemFoundationsObject
     /**
      * @param PGShopInterfacesOrderStateMapperStrategy $mapperStrategy
      * @param string $name
-     * @throws PGFrameworkExceptionsConfigurationException
+     * @throws PGSystemExceptionsConfiguration
      */
     public function addMapperStrategy(PGShopInterfacesOrderStateMapperStrategy $mapperStrategy, $name)
     {
         if (!is_string($name) || empty($name)) {
             $strategyClassName = get_class($mapperStrategy);
             $message = "OrderState mapping strategy must be named : '$strategyClassName'.";
-            throw new PGFrameworkExceptionsConfigurationException($message);
+            throw new PGSystemExceptionsConfiguration($message);
         }
 
         $this->mapperStrategies[$name] = $mapperStrategy;
@@ -58,17 +58,17 @@ class PGShopServicesOrderStateMapper extends PGSystemFoundationsObject
         foreach ($this->definitions as $state => $definition) {
             if (!is_array($definition)) {
                 $message = "Uncorrectly defined order state : '$state'.";
-                throw new PGFrameworkExceptionsConfigurationException($message);
+                throw new PGSystemExceptionsConfiguration($message);
             } elseif (array_key_exists('source', $definition)) {
                 if (!is_array($definition['source'])) {
                     $message = "Uncorrectly sourced order state : '$state'.";
-                    throw new PGFrameworkExceptionsConfigurationException($message);
+                    throw new PGSystemExceptionsConfiguration($message);
                 } elseif (!array_key_exists('type', $definition['source'])) {
                     $message = "Undefined mapping strategy for order state : '$state'.";
-                    throw new PGFrameworkExceptionsConfigurationException($message);
+                    throw new PGSystemExceptionsConfiguration($message);
                 } elseif (!is_string($definition['source']['type'])) {
                     $message = "Uncorrectly defined mapping strategy for order state : '$state'.";
-                    throw new PGFrameworkExceptionsConfigurationException($message);
+                    throw new PGSystemExceptionsConfiguration($message);
                 }
 
                 if ($definition['source']['type'] === $name) {
@@ -108,28 +108,28 @@ class PGShopServicesOrderStateMapper extends PGSystemFoundationsObject
     /**
      * @param string $state
      * @return array
-     * @throws PGFrameworkExceptionsConfigurationException
+     * @throws PGSystemExceptionsConfiguration
      */
     public function getLocalOrderState($state)
     {
         if (!array_key_exists($state, $this->definitions)) {
             $message = "Undefined order state : '$state'.";
-            throw new PGFrameworkExceptionsConfigurationException($message);
+            throw new PGSystemExceptionsConfiguration($message);
         } elseif (!is_array($this->definitions[$state])) {
             $message = "Uncorrectly defined order state : '$state'.";
-            throw new PGFrameworkExceptionsConfigurationException($message);
+            throw new PGSystemExceptionsConfiguration($message);
         } elseif (!array_key_exists('source', $this->definitions[$state])) {
             $message = "Unsourced order state : '$state'.";
-            throw new PGFrameworkExceptionsConfigurationException($message);
+            throw new PGSystemExceptionsConfiguration($message);
         } elseif (!is_array($this->definitions[$state]['source'])) {
             $message = "Uncorrectly sourced order state : '$state'.";
-            throw new PGFrameworkExceptionsConfigurationException($message);
+            throw new PGSystemExceptionsConfiguration($message);
         } elseif (!array_key_exists('type', $this->definitions[$state]['source'])) {
             $message = "Undefined mapping strategy for order state : '$state'.";
-            throw new PGFrameworkExceptionsConfigurationException($message);
+            throw new PGSystemExceptionsConfiguration($message);
         } elseif (!is_string($this->definitions[$state]['source']['type'])) {
             $message = "Uncorrectly defined mapping strategy for order state : '$state'.";
-            throw new PGFrameworkExceptionsConfigurationException($message);
+            throw new PGSystemExceptionsConfiguration($message);
         } elseif (!array_key_exists($this->definitions[$state]['source']['type'], $this->mapperStrategies)) {
             $message = "Mapping strategy not found : '{$this->definitions[$state]['source']['type']}'.";
             throw new LogicException($message);

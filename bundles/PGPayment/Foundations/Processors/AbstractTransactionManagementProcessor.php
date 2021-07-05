@@ -15,7 +15,7 @@
  * @author    PayGreen <contact@paygreen.fr>
  * @copyright 2014 - 2021 Watt Is It
  * @license   https://opensource.org/licenses/mit-license.php MIT License X11
- * @version   2.0.2
+ * @version   2.1.0
  *
  */
 
@@ -23,7 +23,7 @@
  * Class PGPaymentFoundationsProcessorsAbstractTransactionManagementProcessor
  * @package PGPayment\Foundations\Processors
  */
-class PGPaymentFoundationsProcessorsAbstractTransactionManagementProcessor extends PGFrameworkFoundationsAbstractProcessor
+class PGPaymentFoundationsProcessorsAbstractTransactionManagementProcessor extends PGFrameworkFoundationsProcessor
 {
     /** @var PGShopInterfacesOfficersPostPayment */
     protected $officer;
@@ -88,7 +88,7 @@ class PGPaymentFoundationsProcessorsAbstractTransactionManagementProcessor exten
                 $transaction = $transactionManager->create(
                     $task->getPid(),
                     $task->getOrder(),
-                    $task->getOrderStatus(),
+                    $task->getOrderStateTo(),
                     $task->getTransaction()->getMode(),
                     $task->getTransaction()->getAmount()
                 );
@@ -120,7 +120,7 @@ class PGPaymentFoundationsProcessorsAbstractTransactionManagementProcessor exten
                 )
             );
 
-            $task->setOrderStatus('VERIFY');
+            $task->setOrderStateTo('VERIFY');
         }
     }
 
@@ -151,6 +151,7 @@ class PGPaymentFoundationsProcessorsAbstractTransactionManagementProcessor exten
         if ($order === null) {
             $order = $this->createOrder($task);
         } else {
+            $task->setOrderStateFrom($order->getState());
             $this->updateOrder($order, $task);
         }
 
@@ -172,13 +173,13 @@ class PGPaymentFoundationsProcessorsAbstractTransactionManagementProcessor exten
 
         $order = null;
 
-        if ($orderStateManager->isAllowedStart($task->getTransaction()->getMode(), $task->getOrderStatus())) {
+        if ($orderStateManager->isAllowedStart($task->getTransaction()->getMode(), $task->getOrderStateTo())) {
             $order = $this->officer->createOrder(
                 $task->getProvisioner(),
-                $task->getOrderStatus()
+                $task->getOrderStateTo()
             );
         } else {
-            $logger->error("Unauthorized start state: '{$task->getOrderStatus()}'.");
+            $logger->error("Unauthorized start state: '{$task->getOrderStateTo()}'.");
             $task->setStatus($task::STATE_WORKFLOW_ERROR);
         }
 
@@ -201,7 +202,7 @@ class PGPaymentFoundationsProcessorsAbstractTransactionManagementProcessor exten
         $logger = $this->getService('logger');
 
         try {
-            $orderManager->updateOrder($order, $task->getOrderStatus(), $task->getTransaction()->getMode());
+            $orderManager->updateOrder($order, $task->getOrderStateTo(), $task->getTransaction()->getMode());
         } catch (PGShopExceptionsUnnecessaryOrderTransition $exception) {
             $logger->info($exception->getMessage());
             $this->addException($exception);
@@ -219,7 +220,7 @@ class PGPaymentFoundationsProcessorsAbstractTransactionManagementProcessor exten
     protected function checkTestingModeStep(PGPaymentComponentsTasksTransactionManagement $task)
     {
         if ($task->getTransaction()->isTesting() && (PAYGREEN_ENV !== 'DEV')) {
-            $task->setOrderStatus('TEST');
+            $task->setOrderStateTo('TEST');
         }
     }
 
@@ -229,7 +230,7 @@ class PGPaymentFoundationsProcessorsAbstractTransactionManagementProcessor exten
      */
     protected function setOrderStatusStep(PGPaymentComponentsTasksTransactionManagement $task, $status)
     {
-        $task->setOrderStatus($status);
+        $task->setOrderStateTo($status);
     }
 
     /**

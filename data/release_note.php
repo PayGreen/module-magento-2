@@ -15,7 +15,7 @@
  * @author    PayGreen <contact@paygreen.fr>
  * @copyright 2014 - 2021 Watt Is It
  * @license   https://opensource.org/licenses/mit-license.php MIT License X11
- * @version   2.0.2
+ * @version   2.1.0
  *
  */
 
@@ -793,408 +793,720 @@ array (
 ),
 48 =>
 array (
+'type' => 'ADD',
+'code' => 'PGI-2891',
+'text' => 'Ajout du disclaimer statistiques sur la page d\'accueil.',
+),
+49 =>
+array (
+'type' => 'ADD',
+'code' => 'PGI-2973',
+'text' => 'Suppression de la page "statistiques" de l\'onglet ClimateKit.',
+),
+50 =>
+array (
+'type' => 'ADD',
+'code' => 'PGI-2974',
+'text' => 'Ajout d\'un lien vers le backoffice ClimateKit.',
+),
+51 =>
+array (
+'type' => 'ADD',
+'code' => 'PGI-2849',
+'text' => 'Renommer le ClimateKit en ClimateBot.',
+),
+52 =>
+array (
+'type' => 'ADD',
+'code' => 'PGI-2852',
+'text' => 'Ajout d\'un message warning sur le booléan d\'affichage de la page "en savoir plus".',
+),
+53 =>
+array (
+'type' => 'ADD',
+'code' => 'PGI-2850',
+'text' => 'Séparation des gestions des traductions pour le CarbonBot.',
+),
+54 =>
+array (
+'type' => 'ADD',
+'code' => 'PGI-2913',
+'text' => 'Refonte du design du carbon bot.',
+),
+55 =>
+array (
+'type' => 'ADD',
+'code' => 'PGI-2873',
+'text' => 'Ajout d\'un preview pour le CarbonBot.',
+),
+56 =>
+array (
+'type' => 'ADD',
+'code' => 'PGI-2874',
+'text' => 'Preview de la position et de la forme des angles du CarbonBot.',
+),
+57 =>
+array (
+'type' => 'ADD',
+'code' => 'PGI-2875',
+'text' => 'Preview de la couleur du CarbonBot.',
+),
+58 =>
+array (
+'type' => 'ADD',
+'code' => 'PGI-2933',
+'text' => 'Implémentation de l\'export du catalogue produit.',
+),
+59 =>
+array (
+'type' => 'ADD',
+'code' => 'PGI-2876',
+'text' => 'Preview de l\'affichage du lien "En savoir plus" dans le CarbonBot.',
+),
+60 =>
+array (
+'type' => 'ADD',
+'code' => 'PGI-2882',
+'text' => 'Ajout de l\'animation d\'ouverture du CarbonBot.',
+),
+61 =>
+array (
+'type' => 'ADD',
+'code' => 'PGI-2967',
+'text' => 'Ajout d\'un pour envoyer directement la liste des produits à l\'api Climate.',
+),
+62 =>
+array (
+'type' => 'ADD',
+'code' => 'PGI-2995',
+'text' => 'Griser les éléments du CarbonBot ayant une valeur à zéro.',
+),
+63 =>
+array (
+'type' => 'ADD',
+'code' => 'PGI-3030',
+'text' => 'Calculer l\'estimation carbone des produits du panier.',
+),
+64 =>
+array (
+'type' => 'ADD',
+'code' => 'PGI-3043',
+'text' => 'Intégration du design de la partie mobile du CarbonBot et possibilité de le cacher sur mobile.',
+),
+65 =>
+array (
+'type' => 'ADD',
+'code' => 'PGI-3045',
+'text' => 'Supprimer la possibilité de modifier le mode test.',
+),
+66 =>
+array (
+'type' => 'ADD',
+'code' => 'PGI-3048',
+'text' => 'Modifications de quelques textes en rapport avec le CarbonBot.',
+),
+67 =>
+array (
+'type' => 'ADD',
+'code' => 'PGI-3087',
+'text' => 'Déplacement du champs de configuration de l\'url vers la page "En savoir plus" dans le formulaire de configuration global.',
+),
+68 =>
+array (
+'type' => 'ADD',
+'code' => 'PGI-3145',
+'text' => 'Indication que l\'export du catalogue produit vers l\'api ClimateKit peut être très long.',
+),
+69 =>
+array (
+'type' => 'ADD',
+'code' => 'PGI-3170',
+'text' => 'Retirer le bouton d\'export de la liste des produits vers l\'api climatekit.',
+),
+70 =>
+array (
+'type' => 'ADD',
+'code' => 'PGI-3172',
+'text' => 'Renommer la classe PGSystemExceptionsConfigurationException en PGSystemExceptionsConfiguration.',
+),
+71 =>
+array (
 'type' => 'FIX',
 'code' => 'PGI-943',
 'text' => 'Passage des paiements XTIME à 4 versements maximum.',
 ),
-49 =>
+72 =>
 array (
 'type' => 'FIX',
 'code' => 'PGI-869',
 'text' => 'Correction d\'une erreur lors de l\'installation de l\'image par défaut des boutons de paiements.',
 ),
-50 =>
+73 =>
 array (
 'type' => 'FIX',
 'code' => 'PGI-893',
 'text' => 'Correction d\'un bug liés aux redirections curl.',
 ),
-51 =>
+74 =>
 array (
 'type' => 'FIX',
 'code' => 'PGI-524',
 'text' => 'Correction d\'une erreur liée aux order states si les metadata n\'était pas définies.',
 ),
-52 =>
+75 =>
 array (
 'type' => 'FIX',
 'text' => 'Correction d\'une erreur lors de la génération de certains services du module.',
 ),
-53 =>
+76 =>
 array (
 'type' => 'FIX',
 'code' => 'PGI-946',
 'text' => 'Correction d\'un bug de montant invalide lors de la configuration d\'un bouton de paiement.',
 ),
-54 =>
+77 =>
 array (
 'type' => 'FIX',
 'text' => 'Correction d\'une erreur lié au serveur du module.',
 ),
-55 =>
+78 =>
 array (
 'type' => 'FIX',
 'code' => 'PGI-1033',
 'text' => 'Correction d\'une erreur de notification.',
 ),
-56 =>
+79 =>
 array (
 'type' => 'FIX',
 'text' => 'Correction mineure.',
 ),
-57 =>
+80 =>
 array (
 'type' => 'FIX',
 'code' => 'PGI-1046',
 'text' => 'Correction d\'une erreur lors du premier paiement en mode RECURRING.',
 ),
-58 =>
+81 =>
 array (
 'type' => 'FIX',
 'code' => 'PGI-998',
 'text' => 'Correction d\'une erreur liée à l\'utilisation de backslashes.',
 ),
-59 =>
+82 =>
 array (
 'type' => 'FIX',
 'code' => 'PGI-999',
 'text' => 'Correction d\'une erreur liée à la connexion oAuth.',
 ),
-60 =>
+83 =>
 array (
 'type' => 'FIX',
 'text' => 'Corrections de traductions.',
 ),
-61 =>
+84 =>
 array (
 'type' => 'FIX',
 'text' => 'Corrections mineures.',
 ),
-62 =>
+85 =>
 array (
 'type' => 'FIX',
 'code' => 'PGI-1585',
 'text' => 'Correction d\'une erreur de droits en écriture sur le serveur wordpress.com',
 ),
-63 =>
+86 =>
 array (
 'type' => 'FIX',
 'code' => 'PGI-1701',
 'text' => 'Correction du Chmod utilisé lors du téléchargement d\'images.',
 ),
-64 =>
+87 =>
 array (
 'type' => 'FIX',
 'text' => 'Correction d\'un bug lié à l\'activation de Tree.',
 ),
-65 =>
+88 =>
 array (
 'type' => 'FIX',
 'text' => 'Correction css mineure.',
 ),
-66 =>
+89 =>
 array (
 'type' => 'FIX',
 'text' => 'Correction de traductions.',
 ),
-67 =>
+90 =>
 array (
 'type' => 'FIX',
 'text' => 'Mauvaises variables utilisées dans le service RequestBuilder.',
 ),
-68 =>
+91 =>
 array (
 'type' => 'FIX',
 'code' => 'PGI-1845',
 'text' => 'Correction d\'un bug qui ne décochait pas tous les montants éligibles après configuration.',
 ),
-69 =>
+92 =>
 array (
 'type' => 'FIX',
 'code' => 'PGI-1744',
 'text' => 'Correction de la gestion du timeout en cas d\'erreurs. Limitation des forwards responses à 3.',
 ),
-70 =>
+93 =>
 array (
 'type' => 'FIX',
 'code' => 'PGI-1898',
 'text' => 'Redirection vers la page de détails de la commande en cas d\'order state inconnu.',
 ),
-71 =>
+94 =>
 array (
 'type' => 'FIX',
 'code' => 'PGI-1950',
 'text' => 'Correction d\'un bug lié à une mauvaise gestion du cache Smarty.',
 ),
-72 =>
+95 =>
 array (
 'type' => 'FIX',
 'code' => 'PGI-1615',
 'text' => 'Prise en compte des traductions enregistrées dans des sous-répertoires.',
 ),
-73 =>
+96 =>
 array (
 'type' => 'FIX',
 'code' => 'PGI-1777',
 'text' => 'Correction d\'un bug avec les path absolus de l\'autoloader.',
 ),
-74 =>
+97 =>
 array (
 'type' => 'FIX',
 'code' => 'PGI-1965',
 'text' => 'Correction d\'une erreur avec des commandes ayant le statut \'WAITING\'.',
 ),
-75 =>
+98 =>
 array (
 'type' => 'FIX',
 'text' => 'Correction d\'une erreur lors de l\'enregistrement d\'images via le module.',
 ),
-76 =>
+99 =>
 array (
 'type' => 'FIX',
 'text' => 'Correction d\'une erreur qui générait une nouvelle transaction malgré un PID déjà existant.',
 ),
-77 =>
+100 =>
 array (
 'type' => 'FIX',
 'text' => 'Correction d\'erreurs sur le composant ResourceBag.',
 ),
-78 =>
+101 =>
 array (
 'type' => 'FIX',
 'text' => 'Réutilisation de la constante DEFAULT_PICTURE pour assurer la compatibilité avec les anciennes versions.',
 ),
-79 =>
+102 =>
 array (
 'type' => 'FIX',
 'code' => 'PGI-2103',
 'text' => 'Correction d\'une erreur qui empêchait l\'envoi des données Tree avec le navigateur Chrome.',
 ),
-80 =>
+103 =>
 array (
 'type' => 'FIX',
 'code' => 'PGI-1962',
 'text' => 'Correction de la taille des logos PayGreen.',
 ),
-81 =>
+104 =>
 array (
 'type' => 'FIX',
 'code' => 'PGI-2322',
 'text' => 'Correction des paiements suspects en cas de transaction composite.',
 ),
-82 =>
+105 =>
 array (
 'type' => 'FIX',
 'code' => 'PGI-2347',
 'text' => 'Correction d\'un bug dans la gestion des montants éligibles en environnement multi-boutiques.',
 ),
-83 =>
+106 =>
 array (
 'type' => 'FIX',
 'code' => 'PGI-2385',
 'text' => 'Correction d\'un bug lors de la confirmation des paiements TOKENIZE.',
 ),
-84 =>
+107 =>
 array (
 'type' => 'FIX',
 'code' => 'PGI-1609',
 'text' => 'Affichage d\'une notification à l\'utilisateur en cas d\'erreurs lors de la connexion OAuth plutôt qu\'une exception.',
 ),
-85 =>
+108 =>
 array (
 'type' => 'FIX',
 'code' => 'PGI-2315',
 'text' => 'Correction d\'un bug sur le formulaire de modification des boutons, un nouveau bouton était créé lors de la validation du formulaire.',
 ),
-86 =>
+109 =>
 array (
 'type' => 'FIX',
 'code' => 'PGI-2509',
 'text' => 'Correction du lien permettant d\'afficher les release-notes au delà de 5.',
 ),
-87 =>
+110 =>
 array (
 'type' => 'FIX',
 'code' => 'PGI-2505',
 'text' => 'Correction de l\'url du serveur ClimateKit de production.',
 ),
-88 =>
+111 =>
 array (
 'type' => 'FIX',
 'text' => 'Corrections divers sur la page d\'affichage des release-notes.',
 ),
-89 =>
+112 =>
 array (
 'type' => 'FIX',
 'text' => 'Utilisation systématique du LocalHandler pour récupérer la locale.',
 ),
-90 =>
+113 =>
 array (
 'type' => 'FIX',
 'code' => 'PGI-2433',
 'text' => 'Vidange du cache lors de la modification des identifiants de l\'API de paiement.',
 ),
-91 =>
+114 =>
 array (
 'type' => 'FIX',
 'code' => 'PGI-2644',
 'text' => 'Ajout des traductions manquantes sur la page de notification du frontoffice.',
 ),
-92 =>
+115 =>
 array (
 'type' => 'FIX',
 'code' => 'PGI-2634',
 'text' => 'Ajout des traductions manquantes pour la configuration de la reconstitution manuelle du panier.',
 ),
-93 =>
+116 =>
 array (
 'type' => 'FIX',
 'code' => 'PGI-2643',
 'text' => 'Correction du wrapper superglobal des sessions.',
 ),
-94 =>
+117 =>
 array (
 'type' => 'FIX',
 'code' => 'PGI-2670',
 'text' => 'Correction de la taille du champ \'filtered_category_primaries\' de l\'entité Button.',
 ),
-95 =>
+118 =>
 array (
 'type' => 'FIX',
 'code' => 'PGI-2702',
 'text' => 'Correction d\'un problème de typage lors de l\'enregistrement de l\'empreinte carbone.',
 ),
-96 =>
+119 =>
 array (
 'type' => 'FIX',
 'code' => 'PGI-2698',
 'text' => 'Correction de la configuration de l\'entité Transaction causant un blocage des remboursements.',
 ),
-97 =>
+120 =>
 array (
 'type' => 'FIX',
 'code' => 'PGI-2688',
 'text' => 'Correction des traductions manquantes en cas de paiement refusé.',
 ),
-98 =>
+121 =>
 array (
 'type' => 'FIX',
 'code' => 'PGI-2751',
 'text' => 'Correction de la configuration de l\'url de retour utilisée en cas d\'erreur lors de la création d\'un paiement.',
 ),
-99 =>
+122 =>
 array (
 'type' => 'FIX',
 'code' => 'PGI-2729',
 'text' => 'Complétion des entêtes envoyées par le Requester Fopen.',
 ),
-100 =>
+123 =>
 array (
 'type' => 'FIX',
 'code' => 'PGI-2761',
 'text' => 'Correction du statut final utilisé pour cloturé un dossier de paiement ClimateKit.',
 ),
-101 =>
+124 =>
 array (
 'type' => 'FIX',
 'code' => 'PGI-2794',
 'text' => 'Correction de la configuration des clients Curl.',
 ),
-102 =>
+125 =>
 array (
 'type' => 'FIX',
 'code' => 'PGI-2764',
 'text' => 'Correction de la gestion de l\'orderId avec l\'API de paiement.',
 ),
-103 =>
+126 =>
+array (
+'type' => 'FIX',
+'code' => 'PGI-2836',
+'text' => 'Correction d\'un problème d\'affichage des blocs de gestion des extensions et modification des classes css permettant de configurer la taille d\'un bloc.',
+),
+127 =>
+array (
+'type' => 'FIX',
+'code' => 'PGI-2887',
+'text' => 'Affichage des boutons de paiement lorsqu\'un produit n\'a pas de catégorie.',
+),
+128 =>
+array (
+'type' => 'FIX',
+'code' => 'PGI-2896',
+'text' => 'Sur la page d\'accueil, placer tout en bas le block indiquant que l\'on peut gérer ses extensions via la page dédiée.',
+),
+129 =>
+array (
+'type' => 'FIX',
+'code' => 'PGI-2918',
+'text' => 'Correction de la méthode de stockage des données de statistiques, utilisation de DataResource au lieu de cookie.',
+),
+130 =>
+array (
+'type' => 'FIX',
+'code' => 'PGI-2934',
+'text' => 'Correction de la gestion du hover sur le bouton d\'ouverture du carbon bot.',
+),
+131 =>
+array (
+'type' => 'FIX',
+'code' => 'PGI-2971',
+'text' => 'Refonte du css du CarbonBot pour être le plus indépendant possible du CMS et du thème utilisé.',
+),
+132 =>
+array (
+'type' => 'FIX',
+'code' => 'PGI-3026',
+'text' => 'Correction de l\'erreur 422 en cas de mise à jour d\'un impacte transport déjà défini.',
+),
+133 =>
+array (
+'type' => 'FIX',
+'code' => 'PGI-3025',
+'text' => 'Blocage de la page en cas d\'erreur sur le chargement du CarbonBot.',
+),
+134 =>
+array (
+'type' => 'FIX',
+'code' => 'PGI-3003',
+'text' => 'Problème de traduction sur la page de gestion du compte ClimateKit.',
+),
+135 =>
+array (
+'type' => 'FIX',
+'code' => 'PGI-3044',
+'text' => 'Gestion des erreurs lors du calcul du transport.',
+),
+136 =>
+array (
+'type' => 'FIX',
+'code' => 'PGI-3054',
+'text' => 'Définir la valeur par défaut pour les OutputBuilder non-conformes.',
+),
+137 =>
+array (
+'type' => 'FIX',
+'code' => 'PGI-3050',
+'text' => 'Correction d\'un problème du calcul de la compensation carbone à cause d\'erreurs liées à l\'interface Shopable.',
+),
+138 =>
+array (
+'type' => 'FIX',
+'code' => 'PGI-3060',
+'text' => 'Amélioration de la gestion des retours en cas de suppression d\'une collection.',
+),
+139 =>
+array (
+'type' => 'FIX',
+'code' => 'PGI-3057',
+'text' => 'Problème de IdFootprint introuvable.',
+),
+140 =>
+array (
+'type' => 'FIX',
+'code' => 'PGI-3059',
+'text' => 'Problème d\'affichage du bilan carbon global dans le CarbonBot.',
+),
+141 =>
+array (
+'type' => 'FIX',
+'code' => 'PGI-3062',
+'text' => 'Affichage de l\'empreinte carbone à la place de la compensation carbone sur la page de succès.',
+),
+142 =>
+array (
+'type' => 'FIX',
+'code' => 'PGI-3096',
+'text' => 'Correction des traductions du bilan carbone sur la page de succès.',
+),
+143 =>
+array (
+'type' => 'FIX',
+'code' => 'PGI-3102',
+'text' => 'Correction du mode de création d\'un dossier de compensation carbone.',
+),
+144 =>
+array (
+'type' => 'FIX',
+'code' => 'PGI-3094',
+'text' => 'Ouverture le lien \'en savoir plus\' du CarbonBot dans un nouvelle onglet.',
+),
+145 =>
+array (
+'type' => 'FIX',
+'code' => 'PGI-3069',
+'text' => 'Retouches CSS sur le CarbonBot.',
+),
+146 =>
+array (
+'type' => 'FIX',
+'code' => 'PGI-3072',
+'text' => 'Correction d\'un problème au niveau de l\'affichage du CarbonBot sur mobile.',
+),
+147 =>
+array (
+'type' => 'FIX',
+'code' => 'PGI-3107',
+'text' => 'Correction des boutons d\'export et de téléchargement du catalogue produite qui ne fonctionnent plus.',
+),
+148 =>
+array (
+'type' => 'FIX',
+'code' => 'PGI-3108',
+'text' => 'Correction de l\'affichage du formulaire de configuration générale de ClimateKit.',
+),
+149 =>
+array (
+'type' => 'FIX',
+'code' => 'PGI-3105',
+'text' => 'Sécuriser le listener FOTreeServicesListenersCarbonFootprintFinalization en cas d\'erreur.',
+),
+150 =>
+array (
+'type' => 'FIX',
+'code' => 'PGI-3106',
+'text' => 'Les champs "nom d\'utilisateur" et "compte" du formulaire de connexion ClimateKit sont inversés.',
+),
+151 =>
+array (
+'type' => 'FIX',
+'code' => 'PGI-3164',
+'text' => 'Correction d\'un problème de string non-quotté dans les fichiers CSV générés.',
+),
+152 =>
 array (
 'type' => 'PERF',
 'text' => 'Optimisations mineures.',
 ),
-104 =>
+153 =>
 array (
 'type' => 'PERF',
 'text' => 'Amélioration du service Parser.',
 ),
-105 =>
+154 =>
 array (
 'type' => 'PERF',
 'text' => 'Optimisation globale du framework.',
 ),
-106 =>
+155 =>
 array (
 'type' => 'PERF',
 'text' => 'Factorisation des limitations de montant du panier.',
 ),
-107 =>
+156 =>
 array (
 'type' => 'PERF',
 'text' => 'Optimisation de l\'autoloader.',
 ),
-108 =>
+157 =>
 array (
 'type' => 'PERF',
 'text' => 'Amélioration de l\'enregistrement des settings.',
 ),
-109 =>
+158 =>
 array (
 'type' => 'PERF',
 'text' => 'Amélioration de la gestion des erreurs liées au mode Insite.',
 ),
-110 =>
+159 =>
 array (
 'type' => 'PERF',
 'text' => 'Meilleure gestion des upgrades.',
 ),
-111 =>
+160 =>
 array (
 'type' => 'PERF',
 'text' => 'Amélioration de la gestion des settings.',
 ),
-112 =>
+161 =>
 array (
 'type' => 'PERF',
 'text' => 'Amélioration de la résilience du système de cache du module et de Smarty.',
 ),
-113 =>
+162 =>
 array (
 'type' => 'PERF',
 'text' => 'Amélioration de la résilience de l\'autoloader.',
 ),
-114 =>
+163 =>
 array (
 'type' => 'PERF',
 'text' => 'Amélioration du cache Smarty.',
 ),
-115 =>
+164 =>
 array (
 'type' => 'PERF',
 'text' => 'Amélioration des logs sur la page de paiement.',
 ),
-116 =>
+165 =>
 array (
 'type' => 'PERF',
 'text' => 'On affiche plus la balise \'ul\' de notifications si il n\'y a pas de notifications.',
 ),
-117 =>
+166 =>
 array (
 'type' => 'PERF',
 'text' => 'Réduction du temps du PID Locking: 30sec -> 3sec.',
 ),
-118 =>
+167 =>
 array (
 'type' => 'PERF',
 'text' => 'Utilisation de la route /availablepaymenttype pour la récupération des moyens de paiement.',
 ),
-119 =>
+168 =>
 array (
 'type' => 'PERF',
 'text' => 'Utilisation de l\'index d\'autoloading pré-compilé.',
 ),
-120 =>
+169 =>
 array (
 'type' => 'PERF',
 'text' => 'Utilisation d\'un includer pré-compilé.',
+),
+170 =>
+array (
+'type' => 'PERF',
+'code' => 'PGI-2989',
+'text' => 'Renommer le concept d\'\'extension\' en \'produit\'.',
+),
+171 =>
+array (
+'type' => 'PERF',
+'code' => 'PGI-2972',
+'text' => 'Renommer le wording du plugin ClimateKit.',
+),
+172 =>
+array (
+'type' => 'PERF',
+'code' => 'PGI-2975',
+'text' => 'Modification de l\'affichage des crédentials de connexion au compte ClimateKit.',
 ),
 ),
 'dependencies' =>
@@ -2204,6 +2516,341 @@ array (
 array (
 'version' => '3.2.8',
 'from' => '3.2.7',
+),
+),
+),
+25 =>
+array (
+'version' => '2.1.0',
+'date' => '29/06/2021',
+'description' => 'Améliorations divers',
+'notes' =>
+array (
+0 =>
+array (
+'type' => 'ADD',
+'code' => 'PGI-2891',
+'text' => 'Ajout du disclaimer statistiques sur la page d\'accueil.',
+),
+1 =>
+array (
+'type' => 'ADD',
+'code' => 'PGI-2973',
+'text' => 'Suppression de la page "statistiques" de l\'onglet ClimateKit.',
+),
+2 =>
+array (
+'type' => 'ADD',
+'code' => 'PGI-2974',
+'text' => 'Ajout d\'un lien vers le backoffice ClimateKit.',
+),
+3 =>
+array (
+'type' => 'ADD',
+'code' => 'PGI-2849',
+'text' => 'Renommer le ClimateKit en ClimateBot.',
+),
+4 =>
+array (
+'type' => 'ADD',
+'code' => 'PGI-2852',
+'text' => 'Ajout d\'un message warning sur le booléan d\'affichage de la page "en savoir plus".',
+),
+5 =>
+array (
+'type' => 'ADD',
+'code' => 'PGI-2850',
+'text' => 'Séparation des gestions des traductions pour le CarbonBot.',
+),
+6 =>
+array (
+'type' => 'ADD',
+'code' => 'PGI-2913',
+'text' => 'Refonte du design du carbon bot.',
+),
+7 =>
+array (
+'type' => 'ADD',
+'code' => 'PGI-2873',
+'text' => 'Ajout d\'un preview pour le CarbonBot.',
+),
+8 =>
+array (
+'type' => 'ADD',
+'code' => 'PGI-2874',
+'text' => 'Preview de la position et de la forme des angles du CarbonBot.',
+),
+9 =>
+array (
+'type' => 'ADD',
+'code' => 'PGI-2875',
+'text' => 'Preview de la couleur du CarbonBot.',
+),
+10 =>
+array (
+'type' => 'ADD',
+'code' => 'PGI-2933',
+'text' => 'Implémentation de l\'export du catalogue produit.',
+),
+11 =>
+array (
+'type' => 'ADD',
+'code' => 'PGI-2876',
+'text' => 'Preview de l\'affichage du lien "En savoir plus" dans le CarbonBot.',
+),
+12 =>
+array (
+'type' => 'ADD',
+'code' => 'PGI-2882',
+'text' => 'Ajout de l\'animation d\'ouverture du CarbonBot.',
+),
+13 =>
+array (
+'type' => 'ADD',
+'code' => 'PGI-2967',
+'text' => 'Ajout d\'un pour envoyer directement la liste des produits à l\'api Climate.',
+),
+14 =>
+array (
+'type' => 'ADD',
+'code' => 'PGI-2995',
+'text' => 'Griser les éléments du CarbonBot ayant une valeur à zéro.',
+),
+15 =>
+array (
+'type' => 'ADD',
+'code' => 'PGI-3030',
+'text' => 'Calculer l\'estimation carbone des produits du panier.',
+),
+16 =>
+array (
+'type' => 'ADD',
+'code' => 'PGI-3043',
+'text' => 'Intégration du design de la partie mobile du CarbonBot et possibilité de le cacher sur mobile.',
+),
+17 =>
+array (
+'type' => 'ADD',
+'code' => 'PGI-3045',
+'text' => 'Supprimer la possibilité de modifier le mode test.',
+),
+18 =>
+array (
+'type' => 'ADD',
+'code' => 'PGI-3048',
+'text' => 'Modifications de quelques textes en rapport avec le CarbonBot.',
+),
+19 =>
+array (
+'type' => 'ADD',
+'code' => 'PGI-3087',
+'text' => 'Déplacement du champs de configuration de l\'url vers la page "En savoir plus" dans le formulaire de configuration global.',
+),
+20 =>
+array (
+'type' => 'ADD',
+'code' => 'PGI-3145',
+'text' => 'Indication que l\'export du catalogue produit vers l\'api ClimateKit peut être très long.',
+),
+21 =>
+array (
+'type' => 'ADD',
+'code' => 'PGI-3170',
+'text' => 'Retirer le bouton d\'export de la liste des produits vers l\'api climatekit.',
+),
+22 =>
+array (
+'type' => 'ADD',
+'code' => 'PGI-3172',
+'text' => 'Renommer la classe PGSystemExceptionsConfigurationException en PGSystemExceptionsConfiguration.',
+),
+23 =>
+array (
+'type' => 'FIX',
+'code' => 'PGI-3099',
+'text' => 'Utiliser la bonne clé de traduction dans le template \'carbon-offset-merchant\'.',
+),
+24 =>
+array (
+'type' => 'FIX',
+'code' => 'PGI-2836',
+'text' => 'Correction d\'un problème d\'affichage des blocs de gestion des extensions et modification des classes css permettant de configurer la taille d\'un bloc.',
+),
+25 =>
+array (
+'type' => 'FIX',
+'code' => 'PGI-2887',
+'text' => 'Affichage des boutons de paiement lorsqu\'un produit n\'a pas de catégorie.',
+),
+26 =>
+array (
+'type' => 'FIX',
+'code' => 'PGI-2896',
+'text' => 'Sur la page d\'accueil, placer tout en bas le block indiquant que l\'on peut gérer ses extensions via la page dédiée.',
+),
+27 =>
+array (
+'type' => 'FIX',
+'code' => 'PGI-2918',
+'text' => 'Correction de la méthode de stockage des données de statistiques, utilisation de DataResource au lieu de cookie.',
+),
+28 =>
+array (
+'type' => 'FIX',
+'code' => 'PGI-2934',
+'text' => 'Correction de la gestion du hover sur le bouton d\'ouverture du carbon bot.',
+),
+29 =>
+array (
+'type' => 'FIX',
+'code' => 'PGI-2971',
+'text' => 'Refonte du css du CarbonBot pour être le plus indépendant possible du CMS et du thème utilisé.',
+),
+30 =>
+array (
+'type' => 'FIX',
+'code' => 'PGI-3026',
+'text' => 'Correction de l\'erreur 422 en cas de mise à jour d\'un impacte transport déjà défini.',
+),
+31 =>
+array (
+'type' => 'FIX',
+'code' => 'PGI-3025',
+'text' => 'Blocage de la page en cas d\'erreur sur le chargement du CarbonBot.',
+),
+32 =>
+array (
+'type' => 'FIX',
+'code' => 'PGI-3003',
+'text' => 'Problème de traduction sur la page de gestion du compte ClimateKit.',
+),
+33 =>
+array (
+'type' => 'FIX',
+'code' => 'PGI-3044',
+'text' => 'Gestion des erreurs lors du calcul du transport.',
+),
+34 =>
+array (
+'type' => 'FIX',
+'code' => 'PGI-3054',
+'text' => 'Définir la valeur par défaut pour les OutputBuilder non-conformes.',
+),
+35 =>
+array (
+'type' => 'FIX',
+'code' => 'PGI-3050',
+'text' => 'Correction d\'un problème du calcul de la compensation carbone à cause d\'erreurs liées à l\'interface Shopable.',
+),
+36 =>
+array (
+'type' => 'FIX',
+'code' => 'PGI-3060',
+'text' => 'Amélioration de la gestion des retours en cas de suppression d\'une collection.',
+),
+37 =>
+array (
+'type' => 'FIX',
+'code' => 'PGI-3057',
+'text' => 'Problème de IdFootprint introuvable.',
+),
+38 =>
+array (
+'type' => 'FIX',
+'code' => 'PGI-3059',
+'text' => 'Problème d\'affichage du bilan carbon global dans le CarbonBot.',
+),
+39 =>
+array (
+'type' => 'FIX',
+'code' => 'PGI-3062',
+'text' => 'Affichage de l\'empreinte carbone à la place de la compensation carbone sur la page de succès.',
+),
+40 =>
+array (
+'type' => 'FIX',
+'code' => 'PGI-3096',
+'text' => 'Correction des traductions du bilan carbone sur la page de succès.',
+),
+41 =>
+array (
+'type' => 'FIX',
+'code' => 'PGI-3102',
+'text' => 'Correction du mode de création d\'un dossier de compensation carbone.',
+),
+42 =>
+array (
+'type' => 'FIX',
+'code' => 'PGI-3094',
+'text' => 'Ouverture le lien \'en savoir plus\' du CarbonBot dans un nouvelle onglet.',
+),
+43 =>
+array (
+'type' => 'FIX',
+'code' => 'PGI-3069',
+'text' => 'Retouches CSS sur le CarbonBot.',
+),
+44 =>
+array (
+'type' => 'FIX',
+'code' => 'PGI-3072',
+'text' => 'Correction d\'un problème au niveau de l\'affichage du CarbonBot sur mobile.',
+),
+45 =>
+array (
+'type' => 'FIX',
+'code' => 'PGI-3107',
+'text' => 'Correction des boutons d\'export et de téléchargement du catalogue produite qui ne fonctionnent plus.',
+),
+46 =>
+array (
+'type' => 'FIX',
+'code' => 'PGI-3108',
+'text' => 'Correction de l\'affichage du formulaire de configuration générale de ClimateKit.',
+),
+47 =>
+array (
+'type' => 'FIX',
+'code' => 'PGI-3105',
+'text' => 'Sécuriser le listener FOTreeServicesListenersCarbonFootprintFinalization en cas d\'erreur.',
+),
+48 =>
+array (
+'type' => 'FIX',
+'code' => 'PGI-3106',
+'text' => 'Les champs "nom d\'utilisateur" et "compte" du formulaire de connexion ClimateKit sont inversés.',
+),
+49 =>
+array (
+'type' => 'FIX',
+'code' => 'PGI-3164',
+'text' => 'Correction d\'un problème de string non-quotté dans les fichiers CSV générés.',
+),
+50 =>
+array (
+'type' => 'PERF',
+'code' => 'PGI-2989',
+'text' => 'Renommer le concept d\'\'extension\' en \'produit\'.',
+),
+51 =>
+array (
+'type' => 'PERF',
+'code' => 'PGI-2972',
+'text' => 'Renommer le wording du plugin ClimateKit.',
+),
+52 =>
+array (
+'type' => 'PERF',
+'code' => 'PGI-2975',
+'text' => 'Modification de l\'affichage des crédentials de connexion au compte ClimateKit.',
+),
+),
+'dependencies' =>
+array (
+'framework' =>
+array (
+'version' => '3.4.4',
+'from' => '3.2.8',
 ),
 ),
 ),

@@ -15,7 +15,7 @@
  * @author    PayGreen <contact@paygreen.fr>
  * @copyright 2014 - 2021 Watt Is It
  * @license   https://opensource.org/licenses/mit-license.php MIT License X11
- * @version   2.0.2
+ * @version   2.1.0
  *
  */
 
@@ -121,4 +121,247 @@ class PGPaymentServicesManagersTransactionManager extends PGDatabaseFoundationsM
 
         return $this->save($transaction);
     }
+
+    /**
+     * @return int
+     * @throws Exception
+     */
+    public function getCountOfTheDay()
+    {
+        return $this->getRepository()->getCountByDayInterval();
+    }
+
+    /**
+     * @return float
+     * @throws Exception
+     */
+    public function getAmountOfTheDay()
+    {
+        return $this->getRepository()->getAmountByDayInterval();
+    }
+
+    /**
+     * @return int
+     * @throws Exception
+     */
+    public function getCountOfTheWeek()
+    {
+        $dayIntervalBegin = (int) $this->initializeDatetime()->format('w') - 1;
+
+        return $this->getRepository()->getCountByDayInterval($dayIntervalBegin);
+    }
+
+    /**
+     * @return float
+     * @throws Exception
+     */
+    public function getAmountOfTheWeek()
+    {
+        $dayIntervalBegin = (int) $this->initializeDatetime()->format('w') - 1;
+
+        return $this->getRepository()->getAmountByDayInterval($dayIntervalBegin);
+    }
+
+    /**
+     * @return int
+     * @throws Exception
+     */
+    public function getCountOfTheMonth()
+    {
+        $dayIntervalBegin = (int) $this->initializeDatetime()->format('j') - 1;
+
+        return $this->getRepository()->getCountByDayInterval($dayIntervalBegin);
+    }
+
+    /**
+     * @return float
+     * @throws Exception
+     */
+    public function getAmountOfTheMonth()
+    {
+        $dayIntervalBegin = (int) $this->initializeDatetime()->format('j') - 1;
+
+        return $this->getRepository()->getAmountByDayInterval($dayIntervalBegin);
+    }
+
+    /**
+     * @return float
+     * @throws Exception
+     */
+    public function getGrowthOfTheMonth()
+    {
+        $dayIntervalBegin = (int) $this->initializeDatetime()->format('j') - 1;
+        $numberOfDaysLastMonth = $this->getNumberOfDaysLastMonth();
+        $newvalue = $this->getRepository()->getAmountByDayInterval($dayIntervalBegin);
+        $previousvalue = $this->getRepository()->getAmountByDayInterval($dayIntervalBegin+$numberOfDaysLastMonth,-$numberOfDaysLastMonth);
+
+        return $this->getGrowth($newvalue,$previousvalue);
+    }
+
+    /**
+     * @param int $currentMonthDay
+     * @return array
+     * @throws Exception
+     */
+    public function getCountsForTheCurrentMonth($currentMonthDay)
+    {
+        $transactions = $this->getRepository()->findAllByDayInterval($currentMonthDay);
+
+        return $this->getCountsForTransactions($transactions);
+    }
+
+    /**
+     * @param int $currentMonthDay
+     * @return array
+     * @throws Exception
+     */
+    public function getCountsForTheLastMonth($currentMonthDay)
+    {
+        $numberOfDaysLastMonth = $this->getNumberOfDaysLastMonth();
+        $transactions = $this->getRepository()->findAllByDayInterval($currentMonthDay+$numberOfDaysLastMonth,-$currentMonthDay);
+
+        return $this->getCountsForTransactions($transactions);
+    }
+
+    /**
+     * @param array $transactions
+     * @return array
+     * @throws Exception
+     */
+    public function getCountsForTransactions($transactions)
+    {
+        $counts = array();
+
+        /** @var PGPaymentInterfacesEntitiesTransactionInterface $transaction */
+        foreach ($transactions as $transaction) {
+            $createdAt = $transaction->getCreatedAt()->getTimestamp();
+            $datetime = new Datetime();
+            $transactionDay = $datetime->setTimestamp($createdAt)->setTime(0, 0)->format('d/m');
+
+            if (array_key_exists($transactionDay, $counts)) {
+                $counts[$transactionDay] += 1;
+            } else {
+                $counts[$transactionDay] = 1;
+            }
+        }
+
+        $this->sortTransactionsByDate($counts);
+
+        return $counts;
+    }
+
+    /**
+     * @param int $currentMonthDay
+     * @return array
+     * @throws Exception
+     */
+    public function getAmountsForTheCurrentMonth($currentMonthDay)
+    {
+        $transactions = $this->getRepository()->findAllByDayInterval($currentMonthDay);
+
+        return $this->getAmountsForTransactions($transactions);
+    }
+
+    /**
+     * @param int $currentMonthDay
+     * @return array
+     * @throws Exception
+     */
+    public function getAmountsForTheLastMonth($currentMonthDay)
+    {
+        $numberOfDaysLastMonth = $this->getNumberOfDaysLastMonth();
+        $transactions = $this->getRepository()->findAllByDayInterval($currentMonthDay+$numberOfDaysLastMonth,-$currentMonthDay);
+
+        return $this->getAmountsForTransactions($transactions);
+
+    }
+
+    /**
+     * @param array $transactions
+     * @return array
+     * @throws Exception
+     */
+    protected function getAmountsForTransactions($transactions)
+    {
+         $amounts = array();
+
+        /** @var PGPaymentInterfacesEntitiesTransactionInterface $transaction */
+        foreach ($transactions as $transaction) {
+            $createdAt = $transaction->getCreatedAt()->getTimestamp();
+            $datetime = new Datetime();
+            $transactionDay = $datetime->setTimestamp($createdAt)->setTime(0, 0)->format('d/m');
+            $transactionAmount = PGShopToolsPrice::toFloat($transaction->getAmount());
+
+            if (array_key_exists($transactionDay, $amounts)) {
+                $amounts[$transactionDay] += $transactionAmount;
+            } else {
+                $amounts[$transactionDay] = $transactionAmount;
+            }
+        }
+
+        $this->sortTransactionsByDate($amounts);
+
+        return $amounts;
+    }
+
+
+
+    private function sortTransactionsByDate($transactions)
+    {
+        uksort($transactions, function ($dateA, $dateB) {
+            $dayA = (int) substr($dateA, 0, 2);
+            $monthA = (int) substr($dateA, 3, 2);
+
+            $dayB = (int) substr($dateB, 0, 2);
+            $monthB = (int) substr($dateB, 3, 2);
+
+            if ($monthB > $monthA) {
+                return -1;
+            } elseif ($monthB === $monthA) {
+                if ($dayB > $dayA) {
+                    return -1;
+                } else {
+                    return 1;
+                }
+            } else {
+                return 1;
+            }
+        });
+    }
+
+    /**
+     * @return DateTime
+     */
+    private function initializeDatetime()
+    {
+        $datetime = new DateTime();
+        $datetime->setTime(0, 0);
+
+        return $datetime;
+    }
+    /**
+     * @param int $newvalue
+     * @param int $previousvalue
+     * @return float
+     * @throws Exception
+     */
+    public function getGrowth($newvalue, $previousvalue)
+    {
+        if($previousvalue == 0 || $newvalue == 0) {
+            return 0;
+        }
+        $increase = $newvalue - $previousvalue;
+        $result = $increase / $previousvalue;
+
+        return round($result*100,2);
+    }
+
+    /**
+     * @throws Exception
+     */
+    public function getNumberOfDaysLastMonth()
+    {
+        return date("t", mktime(0,0,0, date("n") - 1));
+    }
+
 }

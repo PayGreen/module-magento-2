@@ -2,22 +2,9 @@
   "forms":{
     "tree_config": {
       "fields": {
-        "carbon_offsetting_payer": {
-          "label": "Coût de la compensation carbone",
-          "help": "Définit qui du client/marchand est en charge de payer la compensation carbone.",
-          "warning": "ATTENTION: Ce champ est actuellement désactivé, le marchand est donc en charge de payer la compensation carbone.",
-          "values": {
-            "MERCHANT": "À la charge du marchand.",
-            "CUSTOMER": "À la charge du client."
-          }
-        },
-        "tree_api_server": {
-          "label": "Serveur PayGreen ClimateKit",
-          "help": "Permet de définir quel serveur PayGreen ClimateKit vous souhaitez utiliser.",
-          "values": {
-            "PROD": "Production",
-            "SANDBOX": "Bac à sable"
-          }
+        "tree_details_url": {
+          "label": "URL vers la page 'En savoir plus'",
+          "help": "La page 'En savoir plus' permettra à vos clients d'obtenir plus d'informations concernant le calcul de l'empreinte carbone et la compensation carbone."
         }
       }
     }

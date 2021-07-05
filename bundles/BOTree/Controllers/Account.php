@@ -15,7 +15,7 @@
  * @author    PayGreen <contact@paygreen.fr>
  * @copyright 2014 - 2021 Watt Is It
  * @license   https://opensource.org/licenses/mit-license.php MIT License X11
- * @version   2.0.2
+ * @version   2.1.0
  *
  */
 
@@ -80,6 +80,7 @@ class BOTreeControllersAccount extends BOModuleFoundationsAbstractBackofficeCont
         $result = null;
 
         if ($form->isValid()) {
+
             $isConnected = $this->treeAuthenticationHandler->connect(
                 $form->getValue('client_id'),
                 $form->getValue('login'),
@@ -120,13 +121,19 @@ class BOTreeControllersAccount extends BOModuleFoundationsAbstractBackofficeCont
 
         if ($this->treeAuthenticationHandler->isConnected()) {
             $client_id = $settings->get('tree_client_id');
+            $username = $settings->get('tree_client_username');
             $infos = array(
-                'blocks.tree_account_infos.form.client_id' => $client_id
+                'blocks.tree_account_infos.form.client_id' => $client_id,
+                'blocks.tree_account_infos.form.username' => $username
             );
         }
 
+        $serverLabel = 'data.tree_api_server.values.'.$this->getSettings()->get('tree_api_server');
+
+
         return $this->buildTemplateResponse('tree_account/block-infos')
             ->addData('infos', $infos)
+            ->addData('tree_api_server', $serverLabel )
         ;
     }
 

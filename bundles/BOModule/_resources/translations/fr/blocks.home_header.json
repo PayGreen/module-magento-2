@@ -1,0 +1,8 @@
+{
+  "blocks": {
+    "home_header": {
+      "message": "Vous pouvez activer ou désactiver les différents produits de la solution PayGreen depuis la page de configuration.",
+      "descriptionLink": "Gérer les produits"
+    }
+  }
+}

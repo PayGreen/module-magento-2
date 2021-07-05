@@ -15,7 +15,7 @@
  * @author    PayGreen <contact@paygreen.fr>
  * @copyright 2014 - 2021 Watt Is It
  * @license   https://opensource.org/licenses/mit-license.php MIT License X11
- * @version   2.0.2
+ * @version   2.1.0
  *
  */
 
@@ -72,7 +72,7 @@ class PGShopServicesOrderStateMappingStrategiesSettings extends PGShopFoundation
     /**
      * @param string $state
      * @return array
-     * @throws PGFrameworkExceptionsConfigurationException
+     * @throws PGSystemExceptionsConfiguration
      */
     public function getLocalState($state)
     {
@@ -95,7 +95,7 @@ class PGShopServicesOrderStateMappingStrategiesSettings extends PGShopFoundation
      * @param string $state
      * @return int
      * @throws Exception
-     * @throws PGFrameworkExceptionsConfigurationException
+     * @throws PGSystemExceptionsConfiguration
      */
     protected function getOrderStatePrimary($state)
     {
@@ -105,7 +105,7 @@ class PGShopServicesOrderStateMappingStrategiesSettings extends PGShopFoundation
             throw new Exception("OrderState definition not found : '$state'.");
         } elseif (!array_key_exists('name', $definition)) {
             $message = "Parameter 'name' not found in orderState definition '$state'.";
-            throw new PGFrameworkExceptionsConfigurationException($message);
+            throw new PGSystemExceptionsConfiguration($message);
         }
 
         $parameter = $definition['name'];

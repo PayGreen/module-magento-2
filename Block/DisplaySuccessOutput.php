@@ -15,7 +15,7 @@
  * @author    PayGreen <contact@paygreen.fr>
  * @copyright 2014 - 2021 Watt Is It
  * @license   https://opensource.org/licenses/mit-license.php MIT License X11
- * @version   2.0.2
+ * @version   2.1.0
  *
  */
 
@@ -25,12 +25,12 @@ use Exception;
 use Magento\Checkout\Model\Session as CheckoutSession;
 use Magento\Framework\View\Element\Template;
 use Magento\Framework\View\Element\Template\Context;
-use Magento\Sales\Api\Data\OrderPaymentInterface;
-use PGModuleComponentsEventsOutput;
-use PGModuleComponentsOutput;
-use PGModuleServicesBroadcaster;
 use PGSystemServicesContainer;
 use PGModuleServicesLogger;
+use PGModuleServicesProvidersOutput;
+use PGMagentoServicesRepositoriesOrderRepository;
+use Magento\Sales\Model\Order;
+use PGModuleComponentsOutput;
 
 class DisplaySuccessOutput extends Template
 {
@@ -71,52 +71,32 @@ class DisplaySuccessOutput extends Template
      */
     public function getContent()
     {
-        /** @var PGModuleServicesBroadcaster $broadcaster */
-        $broadcaster = $this->getService('broadcaster');
-
-        $output = $this->buildComponentOutput();
-
-        $broadcaster->fire(new PGModuleComponentsEventsOutput(
-            'display_success_message',
-            $output,
-            array(
-                'paymentMethod' => $this->getPaymentMethod()
-            )
-        ));
-
-        return $output->getContent();
-    }
-
-    /**
-     * @return string|null
-     */
-    private function getPaymentMethod()
-    {
         /** @var PGModuleServicesLogger $logger */
-        $logger = $this->getService('logger');
+        $logger = $this->getService('logger.view');
 
-        $paymentMethod = null;
+        /** @var PGModuleServicesProvidersOutput */
+        $outputProvider = $this->getService('provider.output');
 
-        $lastOrder = $this->checkoutSession->getLastRealOrder();
+        /** @var Order $localOrder */
+        $localOrder = $this->checkoutSession->getLastRealOrder();
 
-        if ($lastOrder !== null) {
-            $lastPayment = $lastOrder->getPayment();
+        $content = '';
 
-            if ($lastPayment instanceof OrderPaymentInterface) {
-                $paymentMethod = $lastPayment->getMethod();
-            } else {
-                $logger->debug('An error occurred while retrieving the last payment method.');
-            }
+        if ($localOrder instanceof Order) {
+            $logger->debug("Build FUNNEL.CONFIRMATION channel for order #{$localOrder->getId()}");
+
+            /** @var PGMagentoServicesRepositoriesOrderRepository $orderRepository */
+            $orderRepository = $this->getService('repository.order');
+
+            /** @var PGModuleComponentsOutput $output */
+            $output = $outputProvider->getZoneOutput('FUNNEL.CONFIRMATION', array(
+                'order' => $orderRepository->wrapEntity($localOrder)
+            ));
+
+            $content = $output->getContent();
         }
 
-        return $paymentMethod;
+        return $content;
     }
 
-    /**
-     * @return PGModuleComponentsOutput
-     */
-    private function buildComponentOutput()
-    {
-        return new PGModuleComponentsOutput();
-    }
 }

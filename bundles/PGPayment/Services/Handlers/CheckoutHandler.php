@@ -15,7 +15,7 @@
  * @author    PayGreen <contact@paygreen.fr>
  * @copyright 2014 - 2021 Watt Is It
  * @license   https://opensource.org/licenses/mit-license.php MIT License X11
- * @version   2.0.2
+ * @version   2.1.0
  *
  */
 
@@ -34,16 +34,18 @@ class PGPaymentServicesHandlersCheckoutHandler extends PGSystemFoundationsObject
     /** @var PGModuleInterfacesModuleFacade */
     private $moduleFacade;
 
+    /** @var PGFrameworkServicesHandlersRequirementHandler */
+    private $requirementHandler;
+
     /** @var PGModuleServicesLogger */
     private $logger;
 
-    /** @var PGModuleServicesSettings */
-    private $settings;
-
-    public function __construct(PGModuleServicesLogger $logger, PGModuleServicesSettings $settings)
-    {
+    public function __construct(
+        PGFrameworkServicesHandlersRequirementHandler $requirementHandler,
+        PGModuleServicesLogger $logger
+    ) {
+        $this->requirementHandler = $requirementHandler;
         $this->logger = $logger;
-        $this->settings = $settings;
     }
 
     /**
@@ -87,8 +89,8 @@ class PGPaymentServicesHandlersCheckoutHandler extends PGSystemFoundationsObject
             return false;
         }
 
-        if (!$this->settings->get('active')) {
-            $this->logger->warning("PayGreen Payment extension is deactivated.");
+        if (!$this->requirementHandler->isFulfilled('payment_activation', true)) {
+            $this->logger->warning("PayGreen payments are deactivated.");
             return false;
         }
 

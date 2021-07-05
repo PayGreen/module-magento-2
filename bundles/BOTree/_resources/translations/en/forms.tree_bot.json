@@ -1,0 +1,37 @@
+{
+  "forms": {
+    "tree_bot": {
+      "fields": {
+        "tree_bot_color": {
+          "label": "CarbonBot color",
+          "help": "Allows you to set the color of the opening button and the carbon information displayed inside the CarbonBot."
+        },
+        "tree_bot_side": {
+          "label": "CarbonBot position",
+          "help": "Allows you to set the position at which the CarbonBot will be displayed.",
+          "choices": {
+            "LEFT": "On the left",
+            "RIGHT": "On the right"
+          }
+        },
+        "tree_bot_details_activated" : {
+          "label": "Display a link to a 'Learn More' page",
+          "help": "Allows you to define whether or not you want to display a link to the 'Learn More' page.",
+          "warning": "You must configure this link in the ClimateKit Configuration page."
+        },
+        "tree_bot_corner": {
+          "label": "Shape of the corners of the CarbonBot",
+          "help": "Allows you to define the shape of the corners of the CarbonBot.",
+          "choices": {
+            "ROUND": "Round",
+            "SQUARE": "Square"
+          }
+        },
+        "tree_bot_mobile_activated" : {
+          "label": "Display the CarbonBot on mobile sites",
+          "help": "Allows you to define whether or not you want to display the CarbonBot on mobile sites."
+        }
+      }
+    }
+  }   
+}

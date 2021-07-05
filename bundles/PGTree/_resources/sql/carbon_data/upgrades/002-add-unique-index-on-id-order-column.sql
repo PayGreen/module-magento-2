@@ -1,0 +1,1 @@
+CREATE UNIQUE INDEX `UX_ID_ORDER` ON `%{database.entities.carbon_data.table}` (`id_order`);

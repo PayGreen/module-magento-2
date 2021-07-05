@@ -15,7 +15,7 @@
  * @author    PayGreen <contact@paygreen.fr>
  * @copyright 2014 - 2021 Watt Is It
  * @license   https://opensource.org/licenses/mit-license.php MIT License X11
- * @version   2.0.2
+ * @version   2.1.0
  *
  */
 
@@ -43,7 +43,9 @@ class BOModuleActionsStandardizedDisplayPage extends PGServerFoundationsAbstract
 
         $data['page_name'] = $this->getConfig('page_name');
         $data['selected_page'] = $data['page_name'];
-        $data['blocks'] = $this->getBlocks($data['page_name']);
+
+        $aggregatedBlocks =  $this->blockHandler->getBlocks($data['page_name']);
+        $data['blocks'] = $aggregatedBlocks->getContent();
 
         if ($this->hasConfig('selected_page')) {
             $data['selected_page'] = $this->getConfig('selected_page');
@@ -51,21 +53,14 @@ class BOModuleActionsStandardizedDisplayPage extends PGServerFoundationsAbstract
 
         $response = $this->buildTemplateResponse($this->computeTemplateToUse(), $data);
 
+        $response->getResources()->merge($aggregatedBlocks->getResources());
+
         return $response;
     }
 
     /**
-     * @param string $target
-     * @return array
-     * @throws Exception
-     */
-    private function getBlocks($target)
-    {
-        return $this->blockHandler->buildBlocks($target);
-    }
-
-    /**
      * @return string
+     * @throws Exception
      */
     private function computeTemplateToUse()
     {

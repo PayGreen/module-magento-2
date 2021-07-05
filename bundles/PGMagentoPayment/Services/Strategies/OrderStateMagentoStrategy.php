@@ -15,7 +15,7 @@
  * @author    PayGreen <contact@paygreen.fr>
  * @copyright 2014 - 2021 Watt Is It
  * @license   https://opensource.org/licenses/mit-license.php MIT License X11
- * @version   2.0.2
+ * @version   2.1.0
  *
  */
 
@@ -36,7 +36,7 @@ class PGMagentoPaymentServicesStrategiesOrderStateMagentoStrategy extends PGShop
      * @param array $localState
      * @return string|null
      * @throws Exception
-     * @throws PGFrameworkExceptionsConfigurationException
+     * @throws PGSystemExceptionsConfiguration
      */
     public function getState(array $localState)
     {
@@ -53,10 +53,10 @@ class PGMagentoPaymentServicesStrategiesOrderStateMagentoStrategy extends PGShop
         foreach ($this->getDefinitions() as $state => $definition) {
             if (!array_key_exists('state', $definition)) {
                 $message = "Field 'state' not found in orderState definition : '$state'.";
-                throw new PGFrameworkExceptionsConfigurationException($message);
+                throw new PGSystemExceptionsConfiguration($message);
             } elseif (!array_key_exists('status', $definition)) {
                 $message = "Field 'status' not found in orderState definition : '$state'.";
-                throw new PGFrameworkExceptionsConfigurationException($message);
+                throw new PGSystemExceptionsConfiguration($message);
             }
 
             if (($localState['state'] === $definition['state']) && ($localState['status'] === $definition['status'])) {
@@ -71,7 +71,7 @@ class PGMagentoPaymentServicesStrategiesOrderStateMagentoStrategy extends PGShop
      * @param string $state
      * @return array
      * @throws Exception
-     * @throws PGFrameworkExceptionsConfigurationException
+     * @throws PGSystemExceptionsConfiguration
      */
     public function getLocalState($state)
     {
@@ -82,10 +82,10 @@ class PGMagentoPaymentServicesStrategiesOrderStateMagentoStrategy extends PGShop
             throw new Exception($message);
         } elseif (!array_key_exists('state', $definitions[$state])) {
             $message = "Field 'state' not found in orderState definition : '$state'.";
-            throw new PGFrameworkExceptionsConfigurationException($message);
+            throw new PGSystemExceptionsConfiguration($message);
         } elseif (!array_key_exists('status', $definitions[$state])) {
             $message = "Field 'status' not found in orderState definition : '$state'.";
-            throw new PGFrameworkExceptionsConfigurationException($message);
+            throw new PGSystemExceptionsConfiguration($message);
         }
 
         $this->verifyOrderStateExistence($state, $definitions[$state]['status']);
@@ -99,7 +99,7 @@ class PGMagentoPaymentServicesStrategiesOrderStateMagentoStrategy extends PGShop
     /**
      * @param array $localState
      * @return bool
-     * @throws PGFrameworkExceptionsConfigurationException
+     * @throws PGSystemExceptionsConfiguration
      */
     public function isRecognizedLocalState(array $localState)
     {
@@ -109,7 +109,7 @@ class PGMagentoPaymentServicesStrategiesOrderStateMagentoStrategy extends PGShop
     /**
      * @param $state
      * @param $status
-     * @throws PGFrameworkExceptionsConfigurationException
+     * @throws PGSystemExceptionsConfiguration
      */
     protected function verifyOrderStateExistence($state, $status)
     {

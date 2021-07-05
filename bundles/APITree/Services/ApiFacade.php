@@ -15,7 +15,7 @@
  * @author    PayGreen <contact@paygreen.fr>
  * @copyright 2014 - 2021 Watt Is It
  * @license   https://opensource.org/licenses/mit-license.php MIT License X11
- * @version   2.0.2
+ * @version   2.1.0
  *
  */
 
@@ -23,7 +23,7 @@
  * Class APITreeServicesApiFacade
  * @package APITree\Services
  */
-class APITreeServicesApiFacade extends PGSystemFoundationsObject
+class APITreeServicesApiFacade
 {
     const VERSION = '1.0.0';
 
@@ -116,40 +116,45 @@ class APITreeServicesApiFacade extends PGSystemFoundationsObject
     }
 
     /**
+     * This is the first call you have to make in order to open a Carbon Footprint to register all carbon emissions for
+     * one of your customer shopping path. All you need is to provide the API with a unique idFootprint that will
+     * serve as an identifier for all data you will add later. As a response, you will get a Footprint with a CREATED
+     * status.
+     *
+     * @param string $fingerprint
+     * @return PGClientComponentsResponse
+     * @throws PGClientExceptionsResponse
+     */
+    public function createEmptyFootprint(
+        $fingerprint
+    ) {
+        $request = $this->getRequestFactory()->buildRequest('create_carbon_footprints')->setContent(array(
+            'idFootprint' => $fingerprint
+        ));
+
+        return $this->getRequestSender()->sendRequest($request);
+    }
+
+    /**
      * The first HTTP call will create a Carbon Footprint identified by its fingerprint and initialize it.
      * Further calls will add new emissions to the Footprint.
      * The response represents all carbon emissions in the Carbon Footprint.
      *
      * @param string $fingerprint Unique string that you provide to identify a Carbon Footprint
-     * @param int $countImages
      * @param int $countPages
-     * @param int $navigationTime
      * @param string $userAgent
-     * @param string $device (can be deduced from User Agent headers)
-     * @param string $browser (can be deduced from User Agent headers)
-     * @param string $externalId
      * @return PGClientComponentsResponse
      * @throws PGClientExceptionsResponse
      */
     public function addWebCarbonEmission(
         $fingerprint,
-        $countImages,
         $countPages,
-        $navigationTime,
-        $userAgent = '',
-        $device = '',
-        $browser = '',
-        $externalId = ''
+        $userAgent = ''
     ) {
         $request = $this->getRequestFactory()->buildRequest('add_web_carbon_emission')->setContent(array(
             'fingerprint' => $fingerprint,
-            'countImages' => $countImages,
             'countPages' => $countPages,
-            'time' => $navigationTime,
-            'userAgent' => $userAgent,
-            'device' => $device,
-            'browser' => $browser,
-            'externalId' => $externalId
+            'userAgent' => $userAgent
         ));
 
         return $this->getRequestSender()->sendRequest($request);
@@ -177,12 +182,22 @@ class APITreeServicesApiFacade extends PGSystemFoundationsObject
         $adresses,
         $transports
     ) {
-        $request = $this->getRequestFactory()->buildRequest('add_transportation_carbon_emission')->setContent(array(
-            'fingerprint' => $fingerprint,
+        $request = $this->getRequestFactory()->buildRequest('add_transportation_carbon_emission', array(
+            'fingerprint' => $fingerprint
+        ))->setContent(array(
             'weightPackages' => $weightPackages,
             'countPackages' => $countPackages,
             'addresses' => $adresses,
             'transports' => $transports
+        ));
+
+        return $this->getRequestSender()->sendRequest($request);
+    }
+
+    public function removeTransportationCarbonEmission($fingerprint)
+    {
+        $request = $this->getRequestFactory()->buildRequest('remove_transportation_carbon_emission', array(
+            'fingerprint' => $fingerprint
         ));
 
         return $this->getRequestSender()->sendRequest($request);
@@ -214,16 +229,20 @@ class APITreeServicesApiFacade extends PGSystemFoundationsObject
      * It will simply return the results with the contributions already provided.
      *
      * @param string $fingerprint Unique string that you provide to identify a Carbon Footprint
+     * @param bool $detailed
      * @return APITreeComponentsRepliesCarbonFootprint
      * @throws PGClientExceptionsResponse
+     * @throws Exception
      */
-    public function getCarbonFootprintEstimation($fingerprint)
+    public function getCarbonFootprintEstimation($fingerprint, $detailed = false)
     {
         $request = $this->getRequestFactory()->buildRequest(
             'get_carbon_footprint_estimation',
-            array('fingerprint' => $fingerprint)
+            array(
+                'fingerprint' => $fingerprint,
+                'detailed' => ($detailed) ? 1 : 0
+            )
         );
-
         $response = $this->getRequestSender()->sendRequest($request);
 
         /** @var APITreeComponentsRepliesCarbonFootprint $carbonFootprint */
@@ -322,6 +341,75 @@ class APITreeServicesApiFacade extends PGSystemFoundationsObject
             'onlyNotRefundable' => (int) $onlyNotRefundable
         ));
 
+        return $this->getRequestSender()->sendRequest($request);
+    }
+
+    /**
+     * @param $csvFile
+     * @return PGClientComponentsResponse
+     * @throws PGClientExceptionsResponse
+     */
+    public function exportProductCatalog($csvFile)
+    {
+        $request = $this->getRequestFactory()->buildRequest('export_product_catalog')->setContent(array(
+            'inputCsv' => $csvFile,
+        ));
+
+        return $this->getRequestSender()->sendRequest($request);
+    }
+
+    /**
+     * @param string $productReference,
+     * @param string $productName
+     * @param float $productWeight
+     * @return PGClientComponentsResponse
+     * @throws PGClientExceptionsResponse
+     */
+    public function createProductReference($productReference, $productName, $productWeight)
+    {
+        $request = $this->getRequestFactory()->buildRequest('create_product_reference')->setContent(array(
+            'productExternalReference' => $productReference,
+            'productName' => $productName,
+            'productWeight' => $productWeight
+        ));
+
+        return $this->getRequestSender()->sendRequest($request);
+    }
+
+    /**
+     * @param string $fingerprint Unique string that you provide to identify a Carbon Footprint
+     * @param string $productReference,
+     * @param int $quantity
+     * @return PGClientComponentsResponse
+     * @throws PGClientExceptionsResponse
+     */
+    public function addProductCarbonEmission(
+        $fingerprint,
+        $productReference,
+        $quantity
+    ) {
+        $request = $this->getRequestFactory()->buildRequest('add_product_carbon_emission', array(
+            'idFootprint' => $fingerprint
+        ))->setContent(array(
+            'productExternalReference' => $productReference,
+            'quantity' => $quantity
+        ));
+
+        return $this->getRequestSender()->sendRequest($request);
+    }
+
+    /**
+     * @param string $fingerprint Unique string that you provide to identify a Carbon Footprint
+     * @return PGClientComponentsResponse
+     * @throws PGClientExceptionsResponse
+     */
+    public function deleteProductCarbonEmission(
+        $fingerprint
+    ) {
+        $request = $this->getRequestFactory()->buildRequest('delete_product_carbon_emission', array(
+            'idFootprint' => $fingerprint
+        ));
+        
         return $this->getRequestSender()->sendRequest($request);
     }
 }

@@ -15,7 +15,7 @@
  * @author    PayGreen <contact@paygreen.fr>
  * @copyright 2014 - 2021 Watt Is It
  * @license   https://opensource.org/licenses/mit-license.php MIT License X11
- * @version   2.0.2
+ * @version   2.1.0
  *
  */
 
@@ -30,15 +30,15 @@ class PGModuleComponentsOutput
 
     private $content = '';
 
-    public function __construct()
+    public function __construct($content = '')
     {
+        $this->content = $content;
         $this->resources = new PGServerComponentsResourceBag();
     }
 
     /**
      * @param PGServerFoundationsAbstractResource $resource
      * @return $this
-     * @throws Exception
      */
     public function addResource(PGServerFoundationsAbstractResource $resource)
     {
@@ -48,9 +48,8 @@ class PGModuleComponentsOutput
     }
 
     /**
-     * @param array $resources
+     * @param PGServerComponentsResourceBag $resources
      * @return $this
-     * @throws Exception
      */
     public function addResources(PGServerComponentsResourceBag $resources)
     {
@@ -106,5 +105,14 @@ class PGModuleComponentsOutput
     public function getContent()
     {
         return $this->content;
+    }
+
+    /**
+     * @param PGModuleComponentsOutput $output
+     */
+    public function merge(PGModuleComponentsOutput $output)
+    {
+        $this->addContent($output->getContent());
+        $this->addResources($output->getResources());
     }
 }

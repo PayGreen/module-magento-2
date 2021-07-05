@@ -4,8 +4,10 @@
       "title": "Mes informations",
       "form": {
         "access_token": "Token d'accès",
-        "client_id": "ID client"
-      }
+        "client_id": "Compte",
+        "username": "Nom d'utilisateur"
+      },
+      "server": "Nom du serveur"
     }
   }
 }

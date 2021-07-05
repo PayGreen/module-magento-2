@@ -15,7 +15,7 @@
  * @author    PayGreen <contact@paygreen.fr>
  * @copyright 2014 - 2021 Watt Is It
  * @license   https://opensource.org/licenses/mit-license.php MIT License X11
- * @version   2.0.2
+ * @version   2.1.0
  *
  */
 
@@ -23,27 +23,42 @@ namespace Paygreen\Payment\Observer;
 
 use Magento\Framework\Event\Observer;
 use Magento\Framework\Event\ObserverInterface;
-use Magento\Sales\Model\Order;
-use PGFrameworkInterfacesHandlersSessionHandlerInterface;
-use PGMagentoTreeServicesHandlersLocalCarbonOffset;
 use PGModuleServicesLogger;
 use PGSystemServicesContainer;
+use PGModuleServicesBroadcaster;
+use PGShopComponentsEventsLocalOrder;
+use PGMagentoServicesRepositoriesOrderRepository;
+use PGShopInterfacesEntitiesOrder;
+use Magento\Sales\Model\Order;
 
 class OrderConfirmationObserver implements ObserverInterface
 {
+    public function __construct()
+    {
+        require_once PAYGREEN_BOOTSTRAP_SRC;
+    }
+
     public function execute(Observer $observer)
     {
-        /** @var PGMagentoTreeServicesHandlersLocalCarbonOffset $localCarbonOffsetHandler */
-        $localCarbonOffsetHandler = $this->getService('handler.local_carbon_offset');
-
         /** @var PGModuleServicesLogger $logger */
         $logger = $this->getService('logger');
 
+        /** @var PGModuleServicesBroadcaster $broadcaster */
+        $broadcaster = $this->getService('broadcaster');
+
+        /** @var Order $localOrder */
         $localOrder = $observer->getEvent()->getData('order');
 
-        if ($localOrder) {
-            $logger->debug("Compute carbon offsetting for order #{$localOrder->getIncrementId()}");
-            $localCarbonOffsetHandler->computeCarbonOffset($localOrder);
+        if ($localOrder instanceof Order) {
+            $logger->debug("Order confirmation for order #{$localOrder->getId()}");
+
+            /** @var PGMagentoServicesRepositoriesOrderRepository $orderRepository */
+            $orderRepository = $this->getService('repository.order');
+
+            /** @var PGShopInterfacesEntitiesOrder $order */
+            $order = $orderRepository->wrapEntity($localOrder);
+
+            $broadcaster->fire(new PGShopComponentsEventsLocalOrder('VALIDATION', $order));
         }
     }
 

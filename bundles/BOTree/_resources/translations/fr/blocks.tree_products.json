@@ -1,0 +1,12 @@
+{
+  "blocks": {
+    "tree": {
+      "tree_products": {
+        "title": "ClimateKit",
+        "description": "Ce produit vous permettra de calculer et d'afficher l'impact carbone du parcours d'achat de vos clients. Vous pourrez ensuite compenser cet impact grâce aux différents partenariats de PayGreen.",
+        "label": "Activation du calcul de l'impacte carbone",
+        "help": "Une fois ce produit activé, il vous restera à vous connecter à l'API puis à configurer votre module."
+      }
+    }
+  }
+}

@@ -15,7 +15,7 @@
  * @author    PayGreen <contact@paygreen.fr>
  * @copyright 2014 - 2021 Watt Is It
  * @license   https://opensource.org/licenses/mit-license.php MIT License X11
- * @version   2.0.2
+ * @version   2.1.0
  *
  */
 
@@ -38,7 +38,10 @@ class PGPaymentComponentsTasksTransactionManagement extends PGFrameworkFoundatio
     private $order = null;
 
     /** @var string|null */
-    private $orderStatus = null;
+    private $orderStateFrom = null;
+
+    /** @var string|null */
+    private $orderStateTo = null;
 
     public function __construct(PGShopInterfacesProvisionersPostPayment $provisioner)
     {
@@ -86,9 +89,13 @@ class PGPaymentComponentsTasksTransactionManagement extends PGFrameworkFoundatio
      * @param PGShopInterfacesEntitiesOrder|null $order
      * @return self
      */
-    public function setOrder($order = null)
+    public function setOrder(PGShopInterfacesEntitiesOrder $order = null)
     {
         $this->order = $order;
+
+        if (($this->orderStateTo === null) && ($order !== null)) {
+            $this->orderStateTo = $order->getState();
+        }
 
         return $this;
     }
@@ -101,18 +108,37 @@ class PGPaymentComponentsTasksTransactionManagement extends PGFrameworkFoundatio
     /**
      * @return string|null
      */
-    public function getOrderStatus()
+    public function getOrderStateTo()
     {
-        return $this->orderStatus;
+        return $this->orderStateTo;
     }
 
     /**
-     * @param string|null $orderStatus
+     * @param string|null $orderStateTo
      * @return self
      */
-    public function setOrderStatus($orderStatus)
+    public function setOrderStateTo($orderStateTo)
     {
-        $this->orderStatus = $orderStatus;
+        $this->orderStateTo = $orderStateTo;
+
+        return $this;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getOrderStateFrom()
+    {
+        return $this->orderStateFrom;
+    }
+
+    /**
+     * @param null $orderStateFrom
+     * @return self
+     */
+    public function setOrderStateFrom($orderStateFrom)
+    {
+        $this->orderStateFrom = $orderStateFrom;
 
         return $this;
     }

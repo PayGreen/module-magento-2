@@ -3,13 +3,13 @@
     "tree_authentication": {
       "fields": {
         "login": {
-          "label": "Login"
+          "label": "Username"
         },
         "password": {
           "label": "Password"
         },
         "client_id": {
-          "label": "Client ID"
+          "label": "Account"
         }
       }
     }

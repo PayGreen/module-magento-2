@@ -1,0 +1,17 @@
+{
+  "blocks": {
+    "payments_overview": {
+      "title": "Aperçu des paiements",
+      "columns": {
+        "period": "Période",
+        "count": "Nombre de paiements",
+        "amount": "Montant total"
+      },
+      "period": {
+        "day": "Aujourd'hui",
+        "week": "Cette semaine",
+        "month": "Ce mois-ci"
+      }
+    }
+  }
+}

@@ -3,4 +3,7 @@
     <event name="checkout_onepage_controller_success_action">
         <observer name="paygreen_order_confirmation_observer" instance="Paygreen\Payment\Observer\OrderConfirmationObserver" />
     </event>
+    <event name="controller_front_send_response_before">
+        <observer name="paygreen_front_observer" instance="Paygreen\Payment\Observer\FrontObserver" />
+    </event>
 </config>

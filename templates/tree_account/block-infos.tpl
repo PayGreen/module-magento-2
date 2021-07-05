@@ -14,7 +14,7 @@
  * @author    PayGreen <contact@paygreen.fr>
  * @copyright 2014 - 2021 Watt Is It
  * @license   https://opensource.org/licenses/mit-license.php MIT License X11
- * @version   2.0.2
+ * @version   2.1.0
  *
  *}
 {if $infos != null}
@@ -41,4 +41,15 @@
             class="pgform__field--disabled"
         }
     {/foreach}
+    {include
+        file="fields/input-bloc.tpl"
+        attr=[
+            'type' => 'text',
+            'disabled' => 'disabled',
+            'value' => "{{$tree_api_server}|pgtrans}",
+            'placeholder' => "{'misc.forms.default.input.empty'|pgtrans}"
+        ]
+        label="{'blocks.tree_account_infos.server'}"
+        class="pgform__field--disabled"
+    }
 {/if}

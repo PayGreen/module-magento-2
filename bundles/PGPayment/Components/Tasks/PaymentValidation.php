@@ -15,7 +15,7 @@
  * @author    PayGreen <contact@paygreen.fr>
  * @copyright 2014 - 2021 Watt Is It
  * @license   https://opensource.org/licenses/mit-license.php MIT License X11
- * @version   2.0.2
+ * @version   2.1.0
  *
  */
 
@@ -42,6 +42,9 @@ class PGPaymentComponentsTasksPaymentValidation extends PGFrameworkFoundationsTa
 
     /** @var PGShopInterfacesEntitiesOrder|null  */
     private $order = null;
+
+    /** @var string|null */
+    private $finalOrderState = null;
 
     /** @var PGShopInterfacesProvisionersPostPayment|null */
     private $postPaymentProvisioner = null;
@@ -97,6 +100,22 @@ class PGPaymentComponentsTasksPaymentValidation extends PGFrameworkFoundationsTa
         $this->order = $order;
 
         return $this;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getFinalOrderState()
+    {
+        return $this->finalOrderState;
+    }
+
+    /**
+     * @param string $finalOrderState
+     */
+    public function setFinalOrderState($finalOrderState)
+    {
+        $this->finalOrderState = $finalOrderState;
     }
 
     /**

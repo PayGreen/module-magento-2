@@ -1,8 +1,12 @@
 {
   "blocks": {
     "payment": {
-      "title": "PayGreen payment solution",
-      "shortcuts": "Shortcuts"
+      "title": "Online payment",
+      "shortcuts": "Shortcuts",
+      "payment_activation": {
+        "title": "Activation of payments",
+        "help": "If payments are enabled, you collect payments from your customers and are subject to PayGreen* billing."
+      }
     }
   }
 }

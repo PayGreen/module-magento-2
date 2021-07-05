@@ -1,0 +1,9 @@
+{
+  "front": {
+    "confirmation": {
+      "carbon_offsetting": {
+        "label": "Empreinte carbone de votre commande"
+      }
+    }
+  }
+}

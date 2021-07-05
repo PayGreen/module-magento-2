@@ -1,0 +1,8 @@
+{
+  "pages": {
+    "payment_statistics": {
+      "name": "Statistics",
+      "title": "Payment statistics via PayGreen"
+    }
+  }
+}

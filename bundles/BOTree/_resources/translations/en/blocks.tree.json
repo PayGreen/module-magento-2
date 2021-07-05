@@ -2,7 +2,11 @@
   "blocks": {
     "tree": {
       "title": "PayGreen ClimateKit solution",
-      "shortcuts": "Shortcuts"
+      "shortcuts": "Shortcuts",
+      "tree_activation": {
+        "title": "Activation of the carbon footprint calculation",
+        "help": "If the carbon footprint calculation is enabled, you can offset the carbon cost of a transaction."
+      }
     }
   }
 }

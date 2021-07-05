@@ -15,7 +15,7 @@
  * @author    PayGreen <contact@paygreen.fr>
  * @copyright 2014 - 2021 Watt Is It
  * @license   https://opensource.org/licenses/mit-license.php MIT License X11
- * @version   2.0.2
+ * @version   2.1.0
  *
  */
 
@@ -31,7 +31,17 @@ interface PGShopInterfacesShopable extends PGDatabaseInterfacesEntityWrapped
     public function getShippingWeight();
 
     /**
+     * @return PGShopInterfacesEntitiesAddress|null
+     */
+    public function getShippingAddress();
+
+    /**
      * @return PGShopInterfacesEntitiesShopableItem[]
      */
     public function getItems();
+
+    /**
+     * @return PGShopInterfacesEntitiesCarrier|null
+     */
+    public function getCarrier();
 }

@@ -15,7 +15,7 @@
  * @author    PayGreen <contact@paygreen.fr>
  * @copyright 2014 - 2021 Watt Is It
  * @license   https://opensource.org/licenses/mit-license.php MIT License X11
- * @version   2.0.2
+ * @version   2.1.0
  *
  */
 
@@ -27,7 +27,7 @@ class PGSystemBootstrap
 {
     const VAR_FOLDER_CHMOD = 0775;
 
-    /** @var PGSystemServicesAutoloader */
+    /** @var PGSystemServicesAutoloadersUncamelified */
     private $autoloader = null;
 
     /** @var PGSystemServicesPathfinder */
@@ -95,7 +95,7 @@ class PGSystemBootstrap
     }
 
     /**
-     * @return PGSystemServicesAutoloader
+     * @return PGSystemServicesAutoloadersUncamelified
      */
     public function getAutoloader()
     {
@@ -118,7 +118,7 @@ class PGSystemBootstrap
      */
     public function buildKernel($path, $subset = null)
     {
-        $kernelBuilder = new PGSystemComponentsBuilderKernel();
+        $kernelBuilder = new PGSystemComponentsBuildersKernel();
 
         if ($subset) {
             $src = $path . DIRECTORY_SEPARATOR . "bundles-$subset.php";
