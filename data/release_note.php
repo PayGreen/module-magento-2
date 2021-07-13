@@ -15,7 +15,7 @@
  * @author    PayGreen <contact@paygreen.fr>
  * @copyright 2014 - 2021 Watt Is It
  * @license   https://opensource.org/licenses/mit-license.php MIT License X11
- * @version   2.1.0
+ * @version   2.1.1
  *
  */
 
@@ -931,578 +931,584 @@ array (
 ),
 71 =>
 array (
+'type' => 'ADD',
+'code' => 'PGI-3216',
+'text' => 'Rendre la server Bac à sable accessible depuis la version de production.',
+),
+72 =>
+array (
 'type' => 'FIX',
 'code' => 'PGI-943',
 'text' => 'Passage des paiements XTIME à 4 versements maximum.',
 ),
-72 =>
+73 =>
 array (
 'type' => 'FIX',
 'code' => 'PGI-869',
 'text' => 'Correction d\'une erreur lors de l\'installation de l\'image par défaut des boutons de paiements.',
 ),
-73 =>
+74 =>
 array (
 'type' => 'FIX',
 'code' => 'PGI-893',
 'text' => 'Correction d\'un bug liés aux redirections curl.',
 ),
-74 =>
+75 =>
 array (
 'type' => 'FIX',
 'code' => 'PGI-524',
 'text' => 'Correction d\'une erreur liée aux order states si les metadata n\'était pas définies.',
 ),
-75 =>
+76 =>
 array (
 'type' => 'FIX',
 'text' => 'Correction d\'une erreur lors de la génération de certains services du module.',
 ),
-76 =>
+77 =>
 array (
 'type' => 'FIX',
 'code' => 'PGI-946',
 'text' => 'Correction d\'un bug de montant invalide lors de la configuration d\'un bouton de paiement.',
 ),
-77 =>
+78 =>
 array (
 'type' => 'FIX',
 'text' => 'Correction d\'une erreur lié au serveur du module.',
 ),
-78 =>
+79 =>
 array (
 'type' => 'FIX',
 'code' => 'PGI-1033',
 'text' => 'Correction d\'une erreur de notification.',
 ),
-79 =>
+80 =>
 array (
 'type' => 'FIX',
 'text' => 'Correction mineure.',
 ),
-80 =>
+81 =>
 array (
 'type' => 'FIX',
 'code' => 'PGI-1046',
 'text' => 'Correction d\'une erreur lors du premier paiement en mode RECURRING.',
 ),
-81 =>
+82 =>
 array (
 'type' => 'FIX',
 'code' => 'PGI-998',
 'text' => 'Correction d\'une erreur liée à l\'utilisation de backslashes.',
 ),
-82 =>
+83 =>
 array (
 'type' => 'FIX',
 'code' => 'PGI-999',
 'text' => 'Correction d\'une erreur liée à la connexion oAuth.',
 ),
-83 =>
+84 =>
 array (
 'type' => 'FIX',
 'text' => 'Corrections de traductions.',
 ),
-84 =>
+85 =>
 array (
 'type' => 'FIX',
 'text' => 'Corrections mineures.',
 ),
-85 =>
+86 =>
 array (
 'type' => 'FIX',
 'code' => 'PGI-1585',
 'text' => 'Correction d\'une erreur de droits en écriture sur le serveur wordpress.com',
 ),
-86 =>
+87 =>
 array (
 'type' => 'FIX',
 'code' => 'PGI-1701',
 'text' => 'Correction du Chmod utilisé lors du téléchargement d\'images.',
 ),
-87 =>
+88 =>
 array (
 'type' => 'FIX',
 'text' => 'Correction d\'un bug lié à l\'activation de Tree.',
 ),
-88 =>
+89 =>
 array (
 'type' => 'FIX',
 'text' => 'Correction css mineure.',
 ),
-89 =>
+90 =>
 array (
 'type' => 'FIX',
 'text' => 'Correction de traductions.',
 ),
-90 =>
+91 =>
 array (
 'type' => 'FIX',
 'text' => 'Mauvaises variables utilisées dans le service RequestBuilder.',
 ),
-91 =>
+92 =>
 array (
 'type' => 'FIX',
 'code' => 'PGI-1845',
 'text' => 'Correction d\'un bug qui ne décochait pas tous les montants éligibles après configuration.',
 ),
-92 =>
+93 =>
 array (
 'type' => 'FIX',
 'code' => 'PGI-1744',
 'text' => 'Correction de la gestion du timeout en cas d\'erreurs. Limitation des forwards responses à 3.',
 ),
-93 =>
+94 =>
 array (
 'type' => 'FIX',
 'code' => 'PGI-1898',
 'text' => 'Redirection vers la page de détails de la commande en cas d\'order state inconnu.',
 ),
-94 =>
+95 =>
 array (
 'type' => 'FIX',
 'code' => 'PGI-1950',
 'text' => 'Correction d\'un bug lié à une mauvaise gestion du cache Smarty.',
 ),
-95 =>
+96 =>
 array (
 'type' => 'FIX',
 'code' => 'PGI-1615',
 'text' => 'Prise en compte des traductions enregistrées dans des sous-répertoires.',
 ),
-96 =>
+97 =>
 array (
 'type' => 'FIX',
 'code' => 'PGI-1777',
 'text' => 'Correction d\'un bug avec les path absolus de l\'autoloader.',
 ),
-97 =>
+98 =>
 array (
 'type' => 'FIX',
 'code' => 'PGI-1965',
 'text' => 'Correction d\'une erreur avec des commandes ayant le statut \'WAITING\'.',
 ),
-98 =>
+99 =>
 array (
 'type' => 'FIX',
 'text' => 'Correction d\'une erreur lors de l\'enregistrement d\'images via le module.',
 ),
-99 =>
+100 =>
 array (
 'type' => 'FIX',
 'text' => 'Correction d\'une erreur qui générait une nouvelle transaction malgré un PID déjà existant.',
 ),
-100 =>
+101 =>
 array (
 'type' => 'FIX',
 'text' => 'Correction d\'erreurs sur le composant ResourceBag.',
 ),
-101 =>
+102 =>
 array (
 'type' => 'FIX',
 'text' => 'Réutilisation de la constante DEFAULT_PICTURE pour assurer la compatibilité avec les anciennes versions.',
 ),
-102 =>
+103 =>
 array (
 'type' => 'FIX',
 'code' => 'PGI-2103',
 'text' => 'Correction d\'une erreur qui empêchait l\'envoi des données Tree avec le navigateur Chrome.',
 ),
-103 =>
+104 =>
 array (
 'type' => 'FIX',
 'code' => 'PGI-1962',
 'text' => 'Correction de la taille des logos PayGreen.',
 ),
-104 =>
+105 =>
 array (
 'type' => 'FIX',
 'code' => 'PGI-2322',
 'text' => 'Correction des paiements suspects en cas de transaction composite.',
 ),
-105 =>
+106 =>
 array (
 'type' => 'FIX',
 'code' => 'PGI-2347',
 'text' => 'Correction d\'un bug dans la gestion des montants éligibles en environnement multi-boutiques.',
 ),
-106 =>
+107 =>
 array (
 'type' => 'FIX',
 'code' => 'PGI-2385',
 'text' => 'Correction d\'un bug lors de la confirmation des paiements TOKENIZE.',
 ),
-107 =>
+108 =>
 array (
 'type' => 'FIX',
 'code' => 'PGI-1609',
 'text' => 'Affichage d\'une notification à l\'utilisateur en cas d\'erreurs lors de la connexion OAuth plutôt qu\'une exception.',
 ),
-108 =>
+109 =>
 array (
 'type' => 'FIX',
 'code' => 'PGI-2315',
 'text' => 'Correction d\'un bug sur le formulaire de modification des boutons, un nouveau bouton était créé lors de la validation du formulaire.',
 ),
-109 =>
+110 =>
 array (
 'type' => 'FIX',
 'code' => 'PGI-2509',
 'text' => 'Correction du lien permettant d\'afficher les release-notes au delà de 5.',
 ),
-110 =>
+111 =>
 array (
 'type' => 'FIX',
 'code' => 'PGI-2505',
 'text' => 'Correction de l\'url du serveur ClimateKit de production.',
 ),
-111 =>
+112 =>
 array (
 'type' => 'FIX',
 'text' => 'Corrections divers sur la page d\'affichage des release-notes.',
 ),
-112 =>
+113 =>
 array (
 'type' => 'FIX',
 'text' => 'Utilisation systématique du LocalHandler pour récupérer la locale.',
 ),
-113 =>
+114 =>
 array (
 'type' => 'FIX',
 'code' => 'PGI-2433',
 'text' => 'Vidange du cache lors de la modification des identifiants de l\'API de paiement.',
 ),
-114 =>
+115 =>
 array (
 'type' => 'FIX',
 'code' => 'PGI-2644',
 'text' => 'Ajout des traductions manquantes sur la page de notification du frontoffice.',
 ),
-115 =>
+116 =>
 array (
 'type' => 'FIX',
 'code' => 'PGI-2634',
 'text' => 'Ajout des traductions manquantes pour la configuration de la reconstitution manuelle du panier.',
 ),
-116 =>
+117 =>
 array (
 'type' => 'FIX',
 'code' => 'PGI-2643',
 'text' => 'Correction du wrapper superglobal des sessions.',
 ),
-117 =>
+118 =>
 array (
 'type' => 'FIX',
 'code' => 'PGI-2670',
 'text' => 'Correction de la taille du champ \'filtered_category_primaries\' de l\'entité Button.',
 ),
-118 =>
+119 =>
 array (
 'type' => 'FIX',
 'code' => 'PGI-2702',
 'text' => 'Correction d\'un problème de typage lors de l\'enregistrement de l\'empreinte carbone.',
 ),
-119 =>
+120 =>
 array (
 'type' => 'FIX',
 'code' => 'PGI-2698',
 'text' => 'Correction de la configuration de l\'entité Transaction causant un blocage des remboursements.',
 ),
-120 =>
+121 =>
 array (
 'type' => 'FIX',
 'code' => 'PGI-2688',
 'text' => 'Correction des traductions manquantes en cas de paiement refusé.',
 ),
-121 =>
+122 =>
 array (
 'type' => 'FIX',
 'code' => 'PGI-2751',
 'text' => 'Correction de la configuration de l\'url de retour utilisée en cas d\'erreur lors de la création d\'un paiement.',
 ),
-122 =>
+123 =>
 array (
 'type' => 'FIX',
 'code' => 'PGI-2729',
 'text' => 'Complétion des entêtes envoyées par le Requester Fopen.',
 ),
-123 =>
+124 =>
 array (
 'type' => 'FIX',
 'code' => 'PGI-2761',
 'text' => 'Correction du statut final utilisé pour cloturé un dossier de paiement ClimateKit.',
 ),
-124 =>
+125 =>
 array (
 'type' => 'FIX',
 'code' => 'PGI-2794',
 'text' => 'Correction de la configuration des clients Curl.',
 ),
-125 =>
+126 =>
 array (
 'type' => 'FIX',
 'code' => 'PGI-2764',
 'text' => 'Correction de la gestion de l\'orderId avec l\'API de paiement.',
 ),
-126 =>
+127 =>
 array (
 'type' => 'FIX',
 'code' => 'PGI-2836',
 'text' => 'Correction d\'un problème d\'affichage des blocs de gestion des extensions et modification des classes css permettant de configurer la taille d\'un bloc.',
 ),
-127 =>
+128 =>
 array (
 'type' => 'FIX',
 'code' => 'PGI-2887',
 'text' => 'Affichage des boutons de paiement lorsqu\'un produit n\'a pas de catégorie.',
 ),
-128 =>
+129 =>
 array (
 'type' => 'FIX',
 'code' => 'PGI-2896',
 'text' => 'Sur la page d\'accueil, placer tout en bas le block indiquant que l\'on peut gérer ses extensions via la page dédiée.',
 ),
-129 =>
+130 =>
 array (
 'type' => 'FIX',
 'code' => 'PGI-2918',
 'text' => 'Correction de la méthode de stockage des données de statistiques, utilisation de DataResource au lieu de cookie.',
 ),
-130 =>
+131 =>
 array (
 'type' => 'FIX',
 'code' => 'PGI-2934',
 'text' => 'Correction de la gestion du hover sur le bouton d\'ouverture du carbon bot.',
 ),
-131 =>
+132 =>
 array (
 'type' => 'FIX',
 'code' => 'PGI-2971',
 'text' => 'Refonte du css du CarbonBot pour être le plus indépendant possible du CMS et du thème utilisé.',
 ),
-132 =>
+133 =>
 array (
 'type' => 'FIX',
 'code' => 'PGI-3026',
 'text' => 'Correction de l\'erreur 422 en cas de mise à jour d\'un impacte transport déjà défini.',
 ),
-133 =>
+134 =>
 array (
 'type' => 'FIX',
 'code' => 'PGI-3025',
 'text' => 'Blocage de la page en cas d\'erreur sur le chargement du CarbonBot.',
 ),
-134 =>
+135 =>
 array (
 'type' => 'FIX',
 'code' => 'PGI-3003',
 'text' => 'Problème de traduction sur la page de gestion du compte ClimateKit.',
 ),
-135 =>
+136 =>
 array (
 'type' => 'FIX',
 'code' => 'PGI-3044',
 'text' => 'Gestion des erreurs lors du calcul du transport.',
 ),
-136 =>
+137 =>
 array (
 'type' => 'FIX',
 'code' => 'PGI-3054',
 'text' => 'Définir la valeur par défaut pour les OutputBuilder non-conformes.',
 ),
-137 =>
+138 =>
 array (
 'type' => 'FIX',
 'code' => 'PGI-3050',
 'text' => 'Correction d\'un problème du calcul de la compensation carbone à cause d\'erreurs liées à l\'interface Shopable.',
 ),
-138 =>
+139 =>
 array (
 'type' => 'FIX',
 'code' => 'PGI-3060',
 'text' => 'Amélioration de la gestion des retours en cas de suppression d\'une collection.',
 ),
-139 =>
+140 =>
 array (
 'type' => 'FIX',
 'code' => 'PGI-3057',
 'text' => 'Problème de IdFootprint introuvable.',
 ),
-140 =>
+141 =>
 array (
 'type' => 'FIX',
 'code' => 'PGI-3059',
 'text' => 'Problème d\'affichage du bilan carbon global dans le CarbonBot.',
 ),
-141 =>
+142 =>
 array (
 'type' => 'FIX',
 'code' => 'PGI-3062',
 'text' => 'Affichage de l\'empreinte carbone à la place de la compensation carbone sur la page de succès.',
 ),
-142 =>
+143 =>
 array (
 'type' => 'FIX',
 'code' => 'PGI-3096',
 'text' => 'Correction des traductions du bilan carbone sur la page de succès.',
 ),
-143 =>
+144 =>
 array (
 'type' => 'FIX',
 'code' => 'PGI-3102',
 'text' => 'Correction du mode de création d\'un dossier de compensation carbone.',
 ),
-144 =>
+145 =>
 array (
 'type' => 'FIX',
 'code' => 'PGI-3094',
 'text' => 'Ouverture le lien \'en savoir plus\' du CarbonBot dans un nouvelle onglet.',
 ),
-145 =>
+146 =>
 array (
 'type' => 'FIX',
 'code' => 'PGI-3069',
 'text' => 'Retouches CSS sur le CarbonBot.',
 ),
-146 =>
+147 =>
 array (
 'type' => 'FIX',
 'code' => 'PGI-3072',
 'text' => 'Correction d\'un problème au niveau de l\'affichage du CarbonBot sur mobile.',
 ),
-147 =>
+148 =>
 array (
 'type' => 'FIX',
 'code' => 'PGI-3107',
 'text' => 'Correction des boutons d\'export et de téléchargement du catalogue produite qui ne fonctionnent plus.',
 ),
-148 =>
+149 =>
 array (
 'type' => 'FIX',
 'code' => 'PGI-3108',
 'text' => 'Correction de l\'affichage du formulaire de configuration générale de ClimateKit.',
 ),
-149 =>
+150 =>
 array (
 'type' => 'FIX',
 'code' => 'PGI-3105',
 'text' => 'Sécuriser le listener FOTreeServicesListenersCarbonFootprintFinalization en cas d\'erreur.',
 ),
-150 =>
+151 =>
 array (
 'type' => 'FIX',
 'code' => 'PGI-3106',
 'text' => 'Les champs "nom d\'utilisateur" et "compte" du formulaire de connexion ClimateKit sont inversés.',
 ),
-151 =>
+152 =>
 array (
 'type' => 'FIX',
 'code' => 'PGI-3164',
 'text' => 'Correction d\'un problème de string non-quotté dans les fichiers CSV générés.',
 ),
-152 =>
+153 =>
 array (
 'type' => 'PERF',
 'text' => 'Optimisations mineures.',
 ),
-153 =>
+154 =>
 array (
 'type' => 'PERF',
 'text' => 'Amélioration du service Parser.',
 ),
-154 =>
+155 =>
 array (
 'type' => 'PERF',
 'text' => 'Optimisation globale du framework.',
 ),
-155 =>
+156 =>
 array (
 'type' => 'PERF',
 'text' => 'Factorisation des limitations de montant du panier.',
 ),
-156 =>
+157 =>
 array (
 'type' => 'PERF',
 'text' => 'Optimisation de l\'autoloader.',
 ),
-157 =>
+158 =>
 array (
 'type' => 'PERF',
 'text' => 'Amélioration de l\'enregistrement des settings.',
 ),
-158 =>
+159 =>
 array (
 'type' => 'PERF',
 'text' => 'Amélioration de la gestion des erreurs liées au mode Insite.',
 ),
-159 =>
+160 =>
 array (
 'type' => 'PERF',
 'text' => 'Meilleure gestion des upgrades.',
 ),
-160 =>
+161 =>
 array (
 'type' => 'PERF',
 'text' => 'Amélioration de la gestion des settings.',
 ),
-161 =>
+162 =>
 array (
 'type' => 'PERF',
 'text' => 'Amélioration de la résilience du système de cache du module et de Smarty.',
 ),
-162 =>
+163 =>
 array (
 'type' => 'PERF',
 'text' => 'Amélioration de la résilience de l\'autoloader.',
 ),
-163 =>
+164 =>
 array (
 'type' => 'PERF',
 'text' => 'Amélioration du cache Smarty.',
 ),
-164 =>
+165 =>
 array (
 'type' => 'PERF',
 'text' => 'Amélioration des logs sur la page de paiement.',
 ),
-165 =>
+166 =>
 array (
 'type' => 'PERF',
 'text' => 'On affiche plus la balise \'ul\' de notifications si il n\'y a pas de notifications.',
 ),
-166 =>
+167 =>
 array (
 'type' => 'PERF',
 'text' => 'Réduction du temps du PID Locking: 30sec -> 3sec.',
 ),
-167 =>
+168 =>
 array (
 'type' => 'PERF',
 'text' => 'Utilisation de la route /availablepaymenttype pour la récupération des moyens de paiement.',
 ),
-168 =>
+169 =>
 array (
 'type' => 'PERF',
 'text' => 'Utilisation de l\'index d\'autoloading pré-compilé.',
 ),
-169 =>
+170 =>
 array (
 'type' => 'PERF',
 'text' => 'Utilisation d\'un includer pré-compilé.',
 ),
-170 =>
+171 =>
 array (
 'type' => 'PERF',
 'code' => 'PGI-2989',
 'text' => 'Renommer le concept d\'\'extension\' en \'produit\'.',
 ),
-171 =>
+172 =>
 array (
 'type' => 'PERF',
 'code' => 'PGI-2972',
 'text' => 'Renommer le wording du plugin ClimateKit.',
 ),
-172 =>
+173 =>
 array (
 'type' => 'PERF',
 'code' => 'PGI-2975',
@@ -2851,6 +2857,29 @@ array (
 array (
 'version' => '3.4.4',
 'from' => '3.2.8',
+),
+),
+),
+26 =>
+array (
+'version' => '2.1.1',
+'date' => '13/07/2021',
+'description' => 'Améliorations divers',
+'notes' =>
+array (
+0 =>
+array (
+'type' => 'ADD',
+'code' => 'PGI-3216',
+'text' => 'Rendre la server Bac à sable accessible depuis la version de production.',
+),
+),
+'dependencies' =>
+array (
+'framework' =>
+array (
+'version' => '3.4.5',
+'from' => '3.4.4',
 ),
 ),
 ),

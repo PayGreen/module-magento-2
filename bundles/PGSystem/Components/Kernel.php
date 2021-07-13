@@ -15,7 +15,7 @@
  * @author    PayGreen <contact@paygreen.fr>
  * @copyright 2014 - 2021 Watt Is It
  * @license   https://opensource.org/licenses/mit-license.php MIT License X11
- * @version   2.1.0
+ * @version   2.1.1
  *
  */
 
@@ -25,7 +25,7 @@
  */
 class PGSystemComponentsKernel
 {
-    const VERSION = '3.4.4';
+    const VERSION = '3.4.5';
 
     private $bundles = array();
 

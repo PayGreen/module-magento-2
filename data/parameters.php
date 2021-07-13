@@ -15,54 +15,11 @@
  * @author    PayGreen <contact@paygreen.fr>
  * @copyright 2014 - 2021 Watt Is It
  * @license   https://opensource.org/licenses/mit-license.php MIT License X11
- * @version   2.1.0
+ * @version   2.1.1
  *
  */
 
 return array (
-'translator' =>
-array (
-'sources' =>
-array (
-0 => 'bundles-resources',
-1 => 'module-resources',
-),
-),
-'cache' =>
-array (
-'entries' =>
-array (
-'translations-fr' =>
-array (
-'ttl' => 86400,
-'format' => 'array',
-),
-'translations-en' =>
-array (
-'ttl' => 86400,
-'format' => 'array',
-),
-'account-infos' =>
-array (
-'ttl' => 300,
-'format' => 'object',
-),
-'status-shop' =>
-array (
-'ttl' => 300,
-'format' => 'object',
-),
-'payment-types' =>
-array (
-'ttl' => 3600,
-'format' => 'object',
-),
-),
-),
-'media' =>
-array (
-'baseurl' => '/pub/media/paygreen',
-),
 'settings' =>
 array (
 'entries' =>
@@ -266,6 +223,12 @@ array (
 'type' => 'bool',
 'default' => true,
 ),
+'tree_api_server' =>
+array (
+'default' => 'PROD',
+'type' => 'string',
+'global' => true,
+),
 'tree_access_token' =>
 array (
 'type' => 'string',
@@ -283,12 +246,6 @@ array (
 'tree_refresh_token_validity' =>
 array (
 'type' => 'string',
-),
-'tree_api_server' =>
-array (
-'type' => 'string',
-'global' => true,
-'default' => 'PROD',
 ),
 'tree_use_https' =>
 array (
@@ -360,6 +317,41 @@ array (
 array (
 'type' => 'user',
 'key' => 'behavior_payment_refund',
+),
+),
+'media' =>
+array (
+'baseurl' => '/pub/media/paygreen',
+),
+'cache' =>
+array (
+'entries' =>
+array (
+'translations-fr' =>
+array (
+'ttl' => 86400,
+'format' => 'array',
+),
+'translations-en' =>
+array (
+'ttl' => 86400,
+'format' => 'array',
+),
+'account-infos' =>
+array (
+'ttl' => 300,
+'format' => 'object',
+),
+'status-shop' =>
+array (
+'ttl' => 300,
+'format' => 'object',
+),
+'payment-types' =>
+array (
+'ttl' => 3600,
+'format' => 'object',
+),
 ),
 ),
 'listeners' =>
@@ -622,6 +614,18 @@ array (
 'priority' => 65,
 ),
 ),
+'translator' =>
+array (
+'sources' =>
+array (
+0 => 'bundles-resources',
+1 => 'module-resources',
+),
+),
+'setup' =>
+array (
+'older' => null,
+),
 'static' =>
 array (
 'public' => null,
@@ -638,439 +642,6 @@ array (
 ),
 'module' => 'Paygreen_Payment',
 'folder' => 'static',
-),
-'translations' =>
-array (
-'payment_bloc' =>
-array (
-'label' => 'payment_translations.payment_bloc.field.label',
-'help' => 'payment_translations.payment_bloc.field.help',
-'tags' =>
-array (
-0 => 'payment',
-),
-'default' =>
-array (
-'fr' => 'PayGreen : paiement solidaire et responsable',
-'en' => 'PayGreen: green & sustainable payment',
-),
-),
-'payment_link' =>
-array (
-'label' => 'payment_translations.payment_link.field.label',
-'help' => 'payment_translations.payment_link.field.help',
-'tags' =>
-array (
-0 => 'payment',
-),
-'default' =>
-array (
-'fr' => 'Payer avec PayGreen',
-'en' => 'Pay with PayGreen',
-),
-),
-'message_payment_success' =>
-array (
-'label' => 'payment_translations.message_payment_success.field.label',
-'help' => 'payment_translations.message_payment_success.field.help',
-'tags' =>
-array (
-0 => 'payment',
-),
-'default' =>
-array (
-'fr' => 'Votre paiement a été enregistré avec succès.',
-'en' => 'Your payment has been successfully registered.',
-),
-),
-'message_payment_refused' =>
-array (
-'label' => 'payment_translations.message_payment_refused.field.label',
-'help' => 'payment_translations.message_payment_refused.field.help',
-'tags' =>
-array (
-0 => 'payment',
-),
-'default' =>
-array (
-'fr' => 'Votre paiement n\'a pas abouti.',
-'en' => 'Your payment is unsuccessful.',
-),
-),
-'message_order_canceled' =>
-array (
-'label' => 'payment_translations.message_order_canceled.field.label',
-'help' => 'payment_translations.message_order_canceled.field.help',
-'tags' =>
-array (
-0 => 'payment',
-),
-'default' =>
-array (
-'fr' => 'Votre commande a été annulée.',
-'en' => 'Your order has been canceled.',
-),
-'enabled' => false,
-),
-'message_carbon_offsetting' =>
-array (
-'label' => 'translations.message_carbon_offsetting.field.label',
-'help' => 'translations.message_carbon_offsetting.field.help',
-'tags' =>
-array (
-0 => 'tree',
-),
-'default' =>
-array (
-'fr' => 'Cette empreinte carbone sera intégralement prise en charge par votre commerçant.',
-'en' => 'This carbon footprint will be fully supported by your merchant.',
-),
-),
-'message_carbon_footprint' =>
-array (
-'label' => 'translations.message_carbon_footprint.field.label',
-'help' => 'translations.message_carbon_footprint.field.help',
-'tags' =>
-array (
-0 => 'tree_bot',
-),
-'default' =>
-array (
-'fr' => 'Impact carbone de mon parcours d\'achat',
-'en' => 'Carbon impact of my purchasing journey',
-),
-),
-'message_find_out_more' =>
-array (
-'label' => 'translations.message_find_out_more.field.label',
-'help' => 'translations.message_find_out_more.field.help',
-'tags' =>
-array (
-0 => 'tree_bot',
-),
-'default' =>
-array (
-'fr' => 'En savoir plus sur nos engagements',
-'en' => 'Find out more about our commitments',
-),
-),
-),
-'setup' =>
-array (
-'older' => null,
-),
-'upgrades' =>
-array (
-'1_0_0_upgrade_tables' =>
-array (
-'version' => '1.0.0',
-'type' => 'database',
-'config' =>
-array (
-'script' => 'PGMagento:upgrades/1.0.0-upgrade-tables.sql',
-),
-),
-'1_0_0_restore_settings' =>
-array (
-'version' => '1.0.0',
-'type' => 'settings.restore',
-'priority' => 750,
-'config' =>
-array (
-'keys' =>
-array (
-'active' => 'active',
-'title' => 'title',
-),
-),
-),
-'1_1_0_add_translations_table' =>
-array (
-'version' => '1.1.0',
-'type' => 'database',
-'priority' => 100,
-'config' =>
-array (
-'script' => 'PGIntl:translation/updates/001-creation-table.sql',
-),
-),
-'2_1_0_rename_active_setting' =>
-array (
-'version' => '2.1.0',
-'type' => 'rename_settings',
-'config' =>
-array (
-'mapping' =>
-array (
-'active' => 'payment_activation',
-),
-),
-),
-'1_0_0_database_multishop' =>
-array (
-'version' => '1.0.0',
-'type' => 'database.multishop',
-'priority' => 100,
-),
-'1_0_0_upgrade_payment_tables' =>
-array (
-'version' => '1.0.0',
-'type' => 'database',
-'config' =>
-array (
-'script' => 'PGMagentoPayment:upgrades/1.0.0-upgrade-payment-tables.sql',
-),
-),
-'1_0_0_restore_payment_settings' =>
-array (
-'version' => '1.0.0',
-'type' => 'settings.restore',
-'priority' => 750,
-'config' =>
-array (
-'keys' =>
-array (
-'visibility' => 'admin_only_visibility',
-'payment_confirmation_button' => 'payment_confirmation_button',
-'payment_success_text' => 'notice_payment_accepted',
-'payment_error_text' => 'notice_payment_refused',
-'behavior_transmit_refund' => 'behavior_payment_refund',
-'behavior_transmit_delivering' => 'behavior_delivery_confirmation',
-),
-),
-),
-'1_1_0_restore_button_labels' =>
-array (
-'version' => '1.1.0',
-'type' => 'button_labels.restore',
-'priority' => 500,
-),
-'1_1_0_insert_default_translations' =>
-array (
-'version' => '1.1.0',
-'type' => 'translations.install_default_values',
-'priority' => 900,
-'config' =>
-array (
-'codes' =>
-array (
-0 => 'payment_bloc',
-1 => 'payment_link',
-2 => 'message_payment_success',
-3 => 'message_payment_refused',
-),
-),
-),
-'1_1_0_restore_translations' =>
-array (
-'version' => '1.1.0',
-'type' => 'translations.restore',
-'priority' => 950,
-'config' =>
-array (
-'keys' =>
-array (
-'payment_bloc' => 'title',
-'payment_link' => 'payment_confirmation_button',
-'message_payment_success' => 'notice_payment_accepted',
-'message_payment_refused' => 'notice_payment_refused',
-),
-),
-),
-'1_1_0_remove_button_label' =>
-array (
-'version' => '1.1.0',
-'type' => 'database',
-'priority' => 950,
-'config' =>
-array (
-'script' => 'PGPayment:button/001-remove-label.sql',
-),
-),
-'1_2_0_remove_button_default_picture' =>
-array (
-'version' => '1.2.0',
-'type' => 'media_delete',
-'config' =>
-array (
-'media' => 'default-payment-button.png',
-),
-),
-'2_0_0_add_filters_fields_in_button_table' =>
-array (
-'version' => '2.0.0',
-'type' => 'database',
-'config' =>
-array (
-'script' =>
-array (
-0 => 'PGPayment:button/002-add-filters-fields-in-button-table.sql',
-1 => 'PGPayment:button/004-update-filtered-category-primaries-remove-default-value.sql',
-),
-),
-),
-'2_1_0_create_processing_table' =>
-array (
-'version' => '2.1.0',
-'type' => 'database',
-'config' =>
-array (
-'script' =>
-array (
-0 => 'PGPayment:processing/upgrades/001-creation-table.sql',
-),
-),
-),
-'2_1_0_creation_carbon_data_table' =>
-array (
-'version' => '2.1.0',
-'type' => 'database',
-'config' =>
-array (
-'script' =>
-array (
-0 => 'PGTree:carbon_data/upgrades/001-creation-carbon-data-table.sql',
-),
-),
-),
-'2_1_0_rename_tree_active_setting' =>
-array (
-'version' => '2.1.0',
-'type' => 'rename_settings',
-'config' =>
-array (
-'mapping' =>
-array (
-'tree_active' => 'tree_kit_activation',
-),
-),
-),
-'2_1_0_fix_carbon_offsetting_translations' =>
-array (
-'version' => '2.1.0',
-'type' => 'database',
-'config' =>
-array (
-'script' =>
-array (
-0 => 'PGTree:upgrades/002-fix-carbon-offsetting-translations.sql',
-),
-),
-),
-'2_1_0_remove_fingerprint_table' =>
-array (
-'version' => '2.1.0',
-'type' => 'database',
-'config' =>
-array (
-'script' =>
-array (
-0 => 'PGTree:fingerprint/upgrades/002-remove-fingerprint-table.sql',
-),
-),
-),
-'2_1_0_add_carbon_bot_translations' =>
-array (
-'version' => '2.1.0',
-'type' => 'translations.install_default_values',
-'config' =>
-array (
-'codes' =>
-array (
-0 => 'message_carbon_footprint',
-1 => 'message_find_out_more',
-),
-),
-),
-'2_1_0_add_unique_index_carbon_data' =>
-array (
-'version' => '2.1.0',
-'type' => 'database',
-'config' =>
-array (
-'script' =>
-array (
-0 => 'PGTree:carbon_data/upgrades/002-add-unique-index-on-id-order-column.sql',
-),
-),
-),
-),
-'outputs' =>
-array (
-'payment_footer' =>
-array (
-'target' => 'footer',
-'builder' => 'payment_footer',
-'clean' => true,
-'requirements' =>
-array (
-'footer_displayed' => true,
-),
-),
-'success_payment_message' =>
-array (
-'target' => 'FUNNEL.CONFIRMATION',
-'builder' => 'success_payment_message',
-'clean' => true,
-'requirements' =>
-array (
-'payment_activation' => true,
-'payment_kit_activation' => true,
-),
-),
-'carbon_bot' =>
-array (
-'target' => 'FRONT',
-'builder' => 'carbon_bot',
-'clean' => true,
-'requirements' =>
-array (
-'tree_activation' => true,
-'tree_bot_activation' => true,
-),
-),
-'carbon_footprint' =>
-array (
-'target' => 'funnel.confirmation',
-'builder' => 'carbon_footprint',
-'clean' => true,
-'requirements' =>
-array (
-'tree_activation' => true,
-'tree_connexion' => true,
-),
-),
-'carbon_bot_css' =>
-array (
-'target' => 'FRONT',
-'builder' => 'carbon_bot_css',
-'clean' => true,
-'requirements' =>
-array (
-'tree_activation' => true,
-'tree_bot_activation' => true,
-),
-),
-),
-'log' =>
-array (
-'format' => '<datetime> | *<type>* | <text>',
-'file' => 'log:/module.log',
-'view' =>
-array (
-'format' => '<datetime> | *<type>* | <text>',
-'file' => 'log:/view.log',
-),
-'api' =>
-array (
-'format' => '<datetime> | *<type>* | <text>',
-'file' => 'log:/api.log',
-),
-'api_tree' =>
-array (
-'format' => '<datetime> | *<type>* | <text>',
-'file' => 'log:/api.log',
-),
 ),
 'database' =>
 array (
@@ -1456,6 +1027,435 @@ array (
 ),
 ),
 ),
+'outputs' =>
+array (
+'payment_footer' =>
+array (
+'target' => 'footer',
+'builder' => 'payment_footer',
+'clean' => true,
+'requirements' =>
+array (
+'footer_displayed' => true,
+),
+),
+'success_payment_message' =>
+array (
+'target' => 'FUNNEL.CONFIRMATION',
+'builder' => 'success_payment_message',
+'clean' => true,
+'requirements' =>
+array (
+'payment_activation' => true,
+'payment_kit_activation' => true,
+),
+),
+'carbon_bot' =>
+array (
+'target' => 'FRONT',
+'builder' => 'carbon_bot',
+'clean' => true,
+'requirements' =>
+array (
+'tree_activation' => true,
+'tree_bot_activation' => true,
+),
+),
+'carbon_footprint' =>
+array (
+'target' => 'funnel.confirmation',
+'builder' => 'carbon_footprint',
+'clean' => true,
+'requirements' =>
+array (
+'tree_activation' => true,
+'tree_connexion' => true,
+),
+),
+'carbon_bot_css' =>
+array (
+'target' => 'FRONT',
+'builder' => 'carbon_bot_css',
+'clean' => true,
+'requirements' =>
+array (
+'tree_activation' => true,
+'tree_bot_activation' => true,
+),
+),
+),
+'translations' =>
+array (
+'payment_bloc' =>
+array (
+'label' => 'payment_translations.payment_bloc.field.label',
+'help' => 'payment_translations.payment_bloc.field.help',
+'tags' =>
+array (
+0 => 'payment',
+),
+'default' =>
+array (
+'fr' => 'PayGreen : paiement solidaire et responsable',
+'en' => 'PayGreen: green & sustainable payment',
+),
+),
+'payment_link' =>
+array (
+'label' => 'payment_translations.payment_link.field.label',
+'help' => 'payment_translations.payment_link.field.help',
+'tags' =>
+array (
+0 => 'payment',
+),
+'default' =>
+array (
+'fr' => 'Payer avec PayGreen',
+'en' => 'Pay with PayGreen',
+),
+),
+'message_payment_success' =>
+array (
+'label' => 'payment_translations.message_payment_success.field.label',
+'help' => 'payment_translations.message_payment_success.field.help',
+'tags' =>
+array (
+0 => 'payment',
+),
+'default' =>
+array (
+'fr' => 'Votre paiement a été enregistré avec succès.',
+'en' => 'Your payment has been successfully registered.',
+),
+),
+'message_payment_refused' =>
+array (
+'label' => 'payment_translations.message_payment_refused.field.label',
+'help' => 'payment_translations.message_payment_refused.field.help',
+'tags' =>
+array (
+0 => 'payment',
+),
+'default' =>
+array (
+'fr' => 'Votre paiement n\'a pas abouti.',
+'en' => 'Your payment is unsuccessful.',
+),
+),
+'message_order_canceled' =>
+array (
+'label' => 'payment_translations.message_order_canceled.field.label',
+'help' => 'payment_translations.message_order_canceled.field.help',
+'tags' =>
+array (
+0 => 'payment',
+),
+'default' =>
+array (
+'fr' => 'Votre commande a été annulée.',
+'en' => 'Your order has been canceled.',
+),
+'enabled' => false,
+),
+'message_carbon_offsetting' =>
+array (
+'label' => 'translations.message_carbon_offsetting.field.label',
+'help' => 'translations.message_carbon_offsetting.field.help',
+'tags' =>
+array (
+0 => 'tree',
+),
+'default' =>
+array (
+'fr' => 'Cette empreinte carbone sera intégralement prise en charge par votre commerçant.',
+'en' => 'This carbon footprint will be fully supported by your merchant.',
+),
+),
+'message_carbon_footprint' =>
+array (
+'label' => 'translations.message_carbon_footprint.field.label',
+'help' => 'translations.message_carbon_footprint.field.help',
+'tags' =>
+array (
+0 => 'tree_bot',
+),
+'default' =>
+array (
+'fr' => 'Impact carbone de mon parcours d\'achat',
+'en' => 'Carbon impact of my purchasing journey',
+),
+),
+'message_find_out_more' =>
+array (
+'label' => 'translations.message_find_out_more.field.label',
+'help' => 'translations.message_find_out_more.field.help',
+'tags' =>
+array (
+0 => 'tree_bot',
+),
+'default' =>
+array (
+'fr' => 'En savoir plus sur nos engagements',
+'en' => 'Find out more about our commitments',
+),
+),
+),
+'upgrades' =>
+array (
+'1_0_0_upgrade_tables' =>
+array (
+'version' => '1.0.0',
+'type' => 'database',
+'config' =>
+array (
+'script' => 'PGMagento:upgrades/1.0.0-upgrade-tables.sql',
+),
+),
+'1_0_0_restore_settings' =>
+array (
+'version' => '1.0.0',
+'type' => 'settings.restore',
+'priority' => 750,
+'config' =>
+array (
+'keys' =>
+array (
+'active' => 'active',
+'title' => 'title',
+),
+),
+),
+'1_1_0_add_translations_table' =>
+array (
+'version' => '1.1.0',
+'type' => 'database',
+'priority' => 100,
+'config' =>
+array (
+'script' => 'PGIntl:translation/updates/001-creation-table.sql',
+),
+),
+'2_1_0_rename_active_setting' =>
+array (
+'version' => '2.1.0',
+'type' => 'rename_settings',
+'config' =>
+array (
+'mapping' =>
+array (
+'active' => 'payment_activation',
+),
+),
+),
+'1_0_0_database_multishop' =>
+array (
+'version' => '1.0.0',
+'type' => 'database.multishop',
+'priority' => 100,
+),
+'1_0_0_upgrade_payment_tables' =>
+array (
+'version' => '1.0.0',
+'type' => 'database',
+'config' =>
+array (
+'script' => 'PGMagentoPayment:upgrades/1.0.0-upgrade-payment-tables.sql',
+),
+),
+'1_0_0_restore_payment_settings' =>
+array (
+'version' => '1.0.0',
+'type' => 'settings.restore',
+'priority' => 750,
+'config' =>
+array (
+'keys' =>
+array (
+'visibility' => 'admin_only_visibility',
+'payment_confirmation_button' => 'payment_confirmation_button',
+'payment_success_text' => 'notice_payment_accepted',
+'payment_error_text' => 'notice_payment_refused',
+'behavior_transmit_refund' => 'behavior_payment_refund',
+'behavior_transmit_delivering' => 'behavior_delivery_confirmation',
+),
+),
+),
+'1_1_0_restore_button_labels' =>
+array (
+'version' => '1.1.0',
+'type' => 'button_labels.restore',
+'priority' => 500,
+),
+'1_1_0_insert_default_translations' =>
+array (
+'version' => '1.1.0',
+'type' => 'translations.install_default_values',
+'priority' => 900,
+'config' =>
+array (
+'codes' =>
+array (
+0 => 'payment_bloc',
+1 => 'payment_link',
+2 => 'message_payment_success',
+3 => 'message_payment_refused',
+),
+),
+),
+'1_1_0_restore_translations' =>
+array (
+'version' => '1.1.0',
+'type' => 'translations.restore',
+'priority' => 950,
+'config' =>
+array (
+'keys' =>
+array (
+'payment_bloc' => 'title',
+'payment_link' => 'payment_confirmation_button',
+'message_payment_success' => 'notice_payment_accepted',
+'message_payment_refused' => 'notice_payment_refused',
+),
+),
+),
+'1_1_0_remove_button_label' =>
+array (
+'version' => '1.1.0',
+'type' => 'database',
+'priority' => 950,
+'config' =>
+array (
+'script' => 'PGPayment:button/001-remove-label.sql',
+),
+),
+'1_2_0_remove_button_default_picture' =>
+array (
+'version' => '1.2.0',
+'type' => 'media_delete',
+'config' =>
+array (
+'media' => 'default-payment-button.png',
+),
+),
+'2_0_0_add_filters_fields_in_button_table' =>
+array (
+'version' => '2.0.0',
+'type' => 'database',
+'config' =>
+array (
+'script' =>
+array (
+0 => 'PGPayment:button/002-add-filters-fields-in-button-table.sql',
+1 => 'PGPayment:button/004-update-filtered-category-primaries-remove-default-value.sql',
+),
+),
+),
+'2_1_0_create_processing_table' =>
+array (
+'version' => '2.1.0',
+'type' => 'database',
+'config' =>
+array (
+'script' =>
+array (
+0 => 'PGPayment:processing/upgrades/001-creation-table.sql',
+),
+),
+),
+'2_1_0_creation_carbon_data_table' =>
+array (
+'version' => '2.1.0',
+'type' => 'database',
+'config' =>
+array (
+'script' =>
+array (
+0 => 'PGTree:carbon_data/upgrades/001-creation-carbon-data-table.sql',
+),
+),
+),
+'2_1_0_rename_tree_active_setting' =>
+array (
+'version' => '2.1.0',
+'type' => 'rename_settings',
+'config' =>
+array (
+'mapping' =>
+array (
+'tree_active' => 'tree_kit_activation',
+),
+),
+),
+'2_1_0_fix_carbon_offsetting_translations' =>
+array (
+'version' => '2.1.0',
+'type' => 'database',
+'config' =>
+array (
+'script' =>
+array (
+0 => 'PGTree:upgrades/002-fix-carbon-offsetting-translations.sql',
+),
+),
+),
+'2_1_0_remove_fingerprint_table' =>
+array (
+'version' => '2.1.0',
+'type' => 'database',
+'config' =>
+array (
+'script' =>
+array (
+0 => 'PGTree:fingerprint/upgrades/002-remove-fingerprint-table.sql',
+),
+),
+),
+'2_1_0_add_carbon_bot_translations' =>
+array (
+'version' => '2.1.0',
+'type' => 'translations.install_default_values',
+'config' =>
+array (
+'codes' =>
+array (
+0 => 'message_carbon_footprint',
+1 => 'message_find_out_more',
+),
+),
+),
+'2_1_0_add_unique_index_carbon_data' =>
+array (
+'version' => '2.1.0',
+'type' => 'database',
+'config' =>
+array (
+'script' =>
+array (
+0 => 'PGTree:carbon_data/upgrades/002-add-unique-index-on-id-order-column.sql',
+),
+),
+),
+),
+'log' =>
+array (
+'format' => '<datetime> | *<type>* | <text>',
+'file' => 'log:/module.log',
+'view' =>
+array (
+'format' => '<datetime> | *<type>* | <text>',
+'file' => 'log:/view.log',
+),
+'api' =>
+array (
+'format' => '<datetime> | *<type>* | <text>',
+'file' => 'log:/api.log',
+),
+'api_tree' =>
+array (
+'format' => '<datetime> | *<type>* | <text>',
+'file' => 'log:/api.log',
+),
+),
 'db' =>
 array (
 'var' =>
@@ -1464,6 +1464,90 @@ array (
 'engine' => 'innodb',
 ),
 'split' => true,
+),
+'request_builder' =>
+array (
+'default' =>
+array (
+),
+'backoffice' =>
+array (
+'strict' => false,
+),
+'frontoffice' =>
+array (
+'strict' => false,
+),
+),
+'mime_types' =>
+array (
+'aac' => 'audio/aac',
+'abw' => 'application/x-abiword',
+'arc' => 'application/octet-stream',
+'avi' => 'video/x-msvideo',
+'azw' => 'application/vnd.amazon.ebook',
+'bin' => 'application/octet-stream',
+'bz' => 'application/x-bzip',
+'bz2' => 'application/x-bzip2',
+'csh' => 'application/x-csh',
+'css' => 'text/css',
+'csv' => 'text/csv',
+'doc' => 'application/msword',
+'docx' => 'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+'eot' => 'application/vnd.ms-fontobject',
+'epub' => 'application/epub+zip',
+'gif' => 'image/gif',
+'htm' => 'text/html',
+'html' => 'text/html',
+'ico' => 'image/x-icon',
+'ics' => 'text/calendar',
+'jar' => 'application/java-archive',
+'jpeg' => 'image/jpeg',
+'jpg' => 'image/jpeg',
+'js' => 'application/javascript',
+'json' => 'application/json',
+'log' => 'text/plain',
+'mid' => 'audio/midi',
+'midi' => 'audio/midi',
+'mpeg' => 'video/mpeg',
+'mpkg' => 'application/vnd.apple.installer+xml',
+'odp' => 'application/vnd.oasis.opendocument.presentation',
+'ods' => 'application/vnd.oasis.opendocument.spreadsheet',
+'odt' => 'application/vnd.oasis.opendocument.text',
+'oga' => 'audio/ogg',
+'ogv' => 'video/ogg',
+'ogx' => 'application/ogg',
+'otf' => 'font/otf',
+'png' => 'image/png',
+'pdf' => 'application/pdf',
+'ppt' => 'application/vnd.ms-powerpoint',
+'pptx' => 'application/vnd.openxmlformats-officedocument.presentationml.presentation',
+'rar' => 'application/x-rar-compressed',
+'rtf' => 'application/rtf',
+'sh' => 'application/x-sh',
+'svg' => 'image/svg+xml',
+'swf' => 'application/x-shockwave-flash',
+'tar' => 'application/x-tar',
+'tif' => 'image/tiff',
+'tiff' => 'image/tiff',
+'ts' => 'application/typescript',
+'ttf' => 'font/ttf',
+'vsd' => 'application/vnd.visio',
+'wav' => 'audio/x-wav',
+'weba' => 'audio/webm',
+'webm' => 'video/webm',
+'webp' => 'image/webp',
+'woff' => 'font/woff',
+'woff2' => 'font/woff2',
+'xhtml' => 'application/xhtml+xml',
+'xls' => 'application/vnd.ms-excel',
+'xlsx' => 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+'xml' => 'application/xml',
+'xul' => 'application/vnd.mozilla.xul+xml',
+'zip' => 'application/zip',
+'3gp' => 'video/3gpp',
+'3g2' => 'video/3gpp2',
+'7z' => 'application/x-7z-compressed',
 ),
 'http_codes' =>
 array (
@@ -1541,90 +1625,6 @@ array (
 511 => 'Network Authentication Required',
 598 => 'Network read timeout error',
 599 => 'Network connect timeout error',
-),
-'mime_types' =>
-array (
-'aac' => 'audio/aac',
-'abw' => 'application/x-abiword',
-'arc' => 'application/octet-stream',
-'avi' => 'video/x-msvideo',
-'azw' => 'application/vnd.amazon.ebook',
-'bin' => 'application/octet-stream',
-'bz' => 'application/x-bzip',
-'bz2' => 'application/x-bzip2',
-'csh' => 'application/x-csh',
-'css' => 'text/css',
-'csv' => 'text/csv',
-'doc' => 'application/msword',
-'docx' => 'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
-'eot' => 'application/vnd.ms-fontobject',
-'epub' => 'application/epub+zip',
-'gif' => 'image/gif',
-'htm' => 'text/html',
-'html' => 'text/html',
-'ico' => 'image/x-icon',
-'ics' => 'text/calendar',
-'jar' => 'application/java-archive',
-'jpeg' => 'image/jpeg',
-'jpg' => 'image/jpeg',
-'js' => 'application/javascript',
-'json' => 'application/json',
-'log' => 'text/plain',
-'mid' => 'audio/midi',
-'midi' => 'audio/midi',
-'mpeg' => 'video/mpeg',
-'mpkg' => 'application/vnd.apple.installer+xml',
-'odp' => 'application/vnd.oasis.opendocument.presentation',
-'ods' => 'application/vnd.oasis.opendocument.spreadsheet',
-'odt' => 'application/vnd.oasis.opendocument.text',
-'oga' => 'audio/ogg',
-'ogv' => 'video/ogg',
-'ogx' => 'application/ogg',
-'otf' => 'font/otf',
-'png' => 'image/png',
-'pdf' => 'application/pdf',
-'ppt' => 'application/vnd.ms-powerpoint',
-'pptx' => 'application/vnd.openxmlformats-officedocument.presentationml.presentation',
-'rar' => 'application/x-rar-compressed',
-'rtf' => 'application/rtf',
-'sh' => 'application/x-sh',
-'svg' => 'image/svg+xml',
-'swf' => 'application/x-shockwave-flash',
-'tar' => 'application/x-tar',
-'tif' => 'image/tiff',
-'tiff' => 'image/tiff',
-'ts' => 'application/typescript',
-'ttf' => 'font/ttf',
-'vsd' => 'application/vnd.visio',
-'wav' => 'audio/x-wav',
-'weba' => 'audio/webm',
-'webm' => 'video/webm',
-'webp' => 'image/webp',
-'woff' => 'font/woff',
-'woff2' => 'font/woff2',
-'xhtml' => 'application/xhtml+xml',
-'xls' => 'application/vnd.ms-excel',
-'xlsx' => 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
-'xml' => 'application/xml',
-'xul' => 'application/vnd.mozilla.xul+xml',
-'zip' => 'application/zip',
-'3gp' => 'video/3gpp',
-'3g2' => 'video/3gpp2',
-'7z' => 'application/x-7z-compressed',
-),
-'request_builder' =>
-array (
-'default' =>
-array (
-),
-'backoffice' =>
-array (
-'strict' => false,
-),
-'frontoffice' =>
-array (
-'strict' => false,
-),
 ),
 'routing' =>
 array (
@@ -2434,6 +2434,255 @@ array (
 'collection' => 'PGFormComponentsFieldCollection',
 ),
 ),
+'countries' =>
+array (
+0 => 'af',
+1 => 'al',
+2 => 'ag',
+3 => 'an',
+4 => 'ao',
+5 => 'av',
+6 => 'ac',
+7 => 'ar',
+8 => 'am',
+9 => 'aa',
+10 => 'at',
+11 => 'as',
+12 => 'au',
+13 => 'aj',
+14 => 'bf',
+15 => 'ba',
+16 => 'bg',
+17 => 'bb',
+18 => 'bs',
+19 => 'bo',
+20 => 'be',
+21 => 'bh',
+22 => 'bn',
+23 => 'bd',
+24 => 'bt',
+25 => 'bl',
+26 => 'bk',
+27 => 'bc',
+28 => 'bv',
+29 => 'br',
+30 => 'io',
+31 => 'vi',
+32 => 'bx',
+33 => 'bu',
+34 => 'uv',
+35 => 'bm',
+36 => 'by',
+37 => 'cb',
+38 => 'cm',
+39 => 'ca',
+40 => 'cv',
+41 => 'cj',
+42 => 'ct',
+43 => 'cd',
+44 => 'ci',
+45 => 'ch',
+46 => 'kt',
+47 => 'ip',
+48 => 'ck',
+49 => 'co',
+50 => 'cn',
+51 => 'cf',
+52 => 'cg',
+53 => 'cw',
+54 => 'cr',
+55 => 'cs',
+56 => 'iv',
+57 => 'hr',
+58 => 'cu',
+59 => 'cy',
+60 => 'ez',
+61 => 'da',
+62 => 'dj',
+63 => 'do',
+64 => 'dr',
+65 => 'tt',
+66 => 'ec',
+67 => 'eg',
+68 => 'es',
+69 => 'ek',
+70 => 'er',
+71 => 'en',
+72 => 'et',
+73 => 'eu',
+74 => 'fk',
+75 => 'fo',
+76 => 'fj',
+77 => 'fi',
+78 => 'fr',
+79 => 'fg',
+80 => 'fp',
+81 => 'fs',
+82 => 'gb',
+83 => 'ga',
+84 => 'gz',
+85 => 'gg',
+86 => 'gm',
+87 => 'gh',
+88 => 'gi',
+89 => 'go',
+90 => 'gr',
+91 => 'gl',
+92 => 'gj',
+93 => 'gp',
+94 => 'gt',
+95 => 'gk',
+96 => 'gv',
+97 => 'pu',
+98 => 'gy',
+99 => 'ha',
+100 => 'hm',
+101 => 'ho',
+102 => 'hk',
+103 => 'hu',
+104 => 'ic',
+105 => 'in',
+106 => 'id',
+107 => 'ir',
+108 => 'iz',
+109 => 'ei',
+110 => 'im',
+111 => 'is',
+112 => 'it',
+113 => 'jm',
+114 => 'jn',
+115 => 'ja',
+116 => 'je',
+117 => 'jo',
+118 => 'ju',
+119 => 'kz',
+120 => 'ke',
+121 => 'kr',
+122 => 'ku',
+123 => 'kg',
+124 => 'la',
+125 => 'lg',
+126 => 'le',
+127 => 'lt',
+128 => 'li',
+129 => 'ly',
+130 => 'ls',
+131 => 'lh',
+132 => 'lu',
+133 => 'mc',
+134 => 'mk',
+135 => 'ma',
+136 => 'mi',
+137 => 'my',
+138 => 'mv',
+139 => 'ml',
+140 => 'mt',
+141 => 'rm',
+142 => 'mb',
+143 => 'mr',
+144 => 'mp',
+145 => 'mf',
+146 => 'mx',
+147 => 'fm',
+148 => 'md',
+149 => 'mn',
+150 => 'mg',
+151 => 'mh',
+152 => 'mo',
+153 => 'mz',
+154 => 'wa',
+155 => 'nr',
+156 => 'np',
+157 => 'nl',
+158 => 'nt',
+159 => 'nc',
+160 => 'nz',
+161 => 'nu',
+162 => 'ng',
+163 => 'ni',
+164 => 'ne',
+165 => 'nm',
+166 => 'nf',
+167 => 'kn',
+168 => 'no',
+169 => 'mu',
+170 => 'pk',
+171 => 'ps',
+172 => 'pm',
+173 => 'pp',
+174 => 'pa',
+175 => 'pe',
+176 => 'rp',
+177 => 'pc',
+178 => 'pl',
+179 => 'po',
+180 => 'qa',
+181 => 're',
+182 => 'ro',
+183 => 'rs',
+184 => 'rw',
+185 => 'sh',
+186 => 'sc',
+187 => 'st',
+188 => 'sb',
+189 => 'vc',
+190 => 'ws',
+191 => 'sm',
+192 => 'tp',
+193 => 'sa',
+194 => 'sg',
+195 => 'yi',
+196 => 'se',
+197 => 'sl',
+198 => 'sn',
+199 => 'lo',
+200 => 'si',
+201 => 'bp',
+202 => 'so',
+203 => 'sf',
+204 => 'sx',
+205 => 'ks',
+206 => 'sp',
+207 => 'pg',
+208 => 'ce',
+209 => 'su',
+210 => 'ns',
+211 => 'sv',
+212 => 'wz',
+213 => 'sw',
+214 => 'sz',
+215 => 'sy',
+216 => 'tw',
+217 => 'ti',
+218 => 'tz',
+219 => 'th',
+220 => 'to',
+221 => 'tl',
+222 => 'tn',
+223 => 'td',
+224 => 'te',
+225 => 'ts',
+226 => 'tu',
+227 => 'tx',
+228 => 'tk',
+229 => 'tv',
+230 => 'ug',
+231 => 'up',
+232 => 'ae',
+233 => 'uk',
+234 => 'uy',
+235 => 'uz',
+236 => 'nh',
+237 => 'vt',
+238 => 've',
+239 => 'vm',
+240 => 'wf',
+241 => 'we',
+242 => 'wi',
+243 => 'ym',
+244 => 'za',
+245 => 'zi',
+),
 'form' =>
 array (
 'definitions' =>
@@ -2466,6 +2715,32 @@ array (
 array (
 'label' => 'forms.settings_support.fields.detailed_logs.label',
 'help' => 'forms.settings_support.fields.detailed_logs.help',
+),
+),
+),
+),
+'view' =>
+array (
+'data' =>
+array (
+'validate' => 'misc.forms.default.buttons.save',
+),
+),
+),
+'account_activation' =>
+array (
+'model' => 'basic',
+'fields' =>
+array (
+'activation' =>
+array (
+'model' => 'bool.switch',
+'view' =>
+array (
+'data' =>
+array (
+'label' => 'forms.account_activation.fields.activation.label',
+'help' => 'forms.account_activation.fields.activation.help',
 ),
 ),
 ),
@@ -2542,131 +2817,51 @@ array (
 ),
 ),
 ),
-'products' =>
-array (
-'fields' =>
-array (
-'payment_kit_activation' =>
-array (
-'enabled' => true,
-'model' => 'bool.switch',
-'view' =>
-array (
-'data' =>
-array (
-'label' => 'forms.products.fields.payment_kit_activation.label',
-'help' => 'forms.products.fields.payment_kit_activation.help',
-),
-),
-),
-'tree_kit_activation' =>
-array (
-'enabled' => true,
-'model' => 'bool.switch',
-'view' =>
-array (
-'data' =>
-array (
-'label' => 'forms.products.fields.tree_kit_activation.label',
-'help' => 'forms.products.fields.tree_kit_activation.help',
-),
-),
-),
-),
-),
-'config' =>
+'settings_customization' =>
 array (
 'model' => 'basic',
 'fields' =>
 array (
-'admin_only_visibility' =>
+'footer_display' =>
 array (
-'model' => 'choice.expanded.single',
-'format' => 'int',
+'model' => 'bool.switch',
+'view' =>
+array (
+'data' =>
+array (
+'label' => 'forms.config.fields.behavior_display_footer.label',
+'help' => 'forms.config.fields.behavior_display_footer.help',
+),
+),
+'enabled' => false,
+),
+'footer_color' =>
+array (
+'model' => 'choice.contracted.single',
+'validators' =>
+array (
+'array.in' =>
+array (
+0 => 'white',
+1 => 'green',
+2 => 'black',
+),
+),
 'view' =>
 array (
 'data' =>
 array (
 'choices' =>
 array (
-0 => 'forms.config.fields.visibility.values.no',
-1 => 'forms.config.fields.visibility.values.yes',
+'white' => 'forms.config.fields.display_footer_color.values.white',
+'green' => 'forms.config.fields.display_footer_color.values.green',
+'black' => 'forms.config.fields.display_footer_color.values.black',
 ),
 'translate' => true,
-'label' => 'forms.config.fields.visibility.label',
-'help' => 'forms.config.fields.visibility.help',
+'label' => 'forms.config.fields.display_footer_color.label',
 ),
 ),
 'enabled' => false,
-),
-'cancel_order_on_refused_payment' =>
-array (
-'model' => 'choice.expanded.single',
-'format' => 'int',
-'view' =>
-array (
-'data' =>
-array (
-'choices' =>
-array (
-0 => 'forms.config.fields.behavior_payment_refused.values.no',
-1 => 'forms.config.fields.behavior_payment_refused.values.yes',
-),
-'translate' => true,
-'label' => 'forms.config.fields.behavior_payment_refused.label',
-'help' => 'forms.config.fields.behavior_payment_refused.help',
-),
-),
-'enabled' => false,
-),
-'behavior_payment_refund' =>
-array (
-'model' => 'bool.switch',
-'view' =>
-array (
-'data' =>
-array (
-'label' => 'forms.config.fields.behavior_transmit_refund.label',
-'help' => 'forms.config.fields.behavior_transmit_refund.help',
-),
-),
-),
-'behavior_delivery_confirmation' =>
-array (
-'model' => 'bool.switch',
-'view' =>
-array (
-'data' =>
-array (
-'label' => 'forms.config.fields.behavior_transmit_delivering.label',
-'help' => 'forms.config.fields.behavior_transmit_delivering.help',
-),
-),
-'enabled' => false,
-),
-'regenerate_cart_on_cancelled_payment' =>
-array (
-'model' => 'bool.switch',
-'view' =>
-array (
-'data' =>
-array (
-'label' => 'forms.config.fields.regenerate_cart_on_cancelled_payment.label',
-'help' => 'forms.config.fields.regenerate_cart_on_cancelled_payment.help',
-),
-),
-),
-'regenerate_cart_on_refused_payment' =>
-array (
-'model' => 'bool.switch',
-'view' =>
-array (
-'data' =>
-array (
-'label' => 'forms.config.fields.regenerate_cart_on_refused_payment.label',
-'help' => 'forms.config.fields.regenerate_cart_on_refused_payment.help',
-),
-),
 ),
 ),
 'view' =>
@@ -2674,6 +2869,26 @@ array (
 'data' =>
 array (
 'validate' => 'misc.forms.default.buttons.save',
+),
+),
+),
+'button_update' =>
+array (
+'extends' => 'button',
+'fields' =>
+array (
+'id' =>
+array (
+'model' => 'hidden',
+'format' => 'int',
+'required' => true,
+'validators' =>
+array (
+'not_empty' =>
+array (
+'error' => 'forms.button.errors.id_not_found',
+),
+),
 ),
 ),
 ),
@@ -2821,6 +3036,201 @@ array (
 ),
 ),
 'template' => 'forms/button_filters',
+),
+),
+'products' =>
+array (
+'fields' =>
+array (
+'payment_kit_activation' =>
+array (
+'enabled' => true,
+'model' => 'bool.switch',
+'view' =>
+array (
+'data' =>
+array (
+'label' => 'forms.products.fields.payment_kit_activation.label',
+'help' => 'forms.products.fields.payment_kit_activation.help',
+),
+),
+),
+'tree_kit_activation' =>
+array (
+'enabled' => true,
+'model' => 'bool.switch',
+'view' =>
+array (
+'data' =>
+array (
+'label' => 'forms.products.fields.tree_kit_activation.label',
+'help' => 'forms.products.fields.tree_kit_activation.help',
+),
+),
+),
+),
+),
+'eligible_amounts' =>
+array (
+'model' => 'basic',
+'fields' =>
+array (
+'eligible_amounts' =>
+array (
+'model' => 'choice.double.bool',
+'default' =>
+array (
+),
+'view' =>
+array (
+'data' =>
+array (
+'horizontal_choices' => 'payment_type',
+'vertical_choices' => 'category.hierarchized',
+'axis' => 'vertical',
+'filterPlaceholder' => 'forms.eligible_amounts.fields.search.placeholder',
+),
+),
+),
+),
+'view' =>
+array (
+'data' =>
+array (
+'validate' => 'misc.forms.default.buttons.save',
+),
+),
+),
+'config' =>
+array (
+'model' => 'basic',
+'fields' =>
+array (
+'admin_only_visibility' =>
+array (
+'model' => 'choice.expanded.single',
+'format' => 'int',
+'view' =>
+array (
+'data' =>
+array (
+'choices' =>
+array (
+0 => 'forms.config.fields.visibility.values.no',
+1 => 'forms.config.fields.visibility.values.yes',
+),
+'translate' => true,
+'label' => 'forms.config.fields.visibility.label',
+'help' => 'forms.config.fields.visibility.help',
+),
+),
+'enabled' => false,
+),
+'cancel_order_on_refused_payment' =>
+array (
+'model' => 'choice.expanded.single',
+'format' => 'int',
+'view' =>
+array (
+'data' =>
+array (
+'choices' =>
+array (
+0 => 'forms.config.fields.behavior_payment_refused.values.no',
+1 => 'forms.config.fields.behavior_payment_refused.values.yes',
+),
+'translate' => true,
+'label' => 'forms.config.fields.behavior_payment_refused.label',
+'help' => 'forms.config.fields.behavior_payment_refused.help',
+),
+),
+'enabled' => false,
+),
+'behavior_payment_refund' =>
+array (
+'model' => 'bool.switch',
+'view' =>
+array (
+'data' =>
+array (
+'label' => 'forms.config.fields.behavior_transmit_refund.label',
+'help' => 'forms.config.fields.behavior_transmit_refund.help',
+),
+),
+),
+'behavior_delivery_confirmation' =>
+array (
+'model' => 'bool.switch',
+'view' =>
+array (
+'data' =>
+array (
+'label' => 'forms.config.fields.behavior_transmit_delivering.label',
+'help' => 'forms.config.fields.behavior_transmit_delivering.help',
+),
+),
+'enabled' => false,
+),
+'regenerate_cart_on_cancelled_payment' =>
+array (
+'model' => 'bool.switch',
+'view' =>
+array (
+'data' =>
+array (
+'label' => 'forms.config.fields.regenerate_cart_on_cancelled_payment.label',
+'help' => 'forms.config.fields.regenerate_cart_on_cancelled_payment.help',
+),
+),
+),
+'regenerate_cart_on_refused_payment' =>
+array (
+'model' => 'bool.switch',
+'view' =>
+array (
+'data' =>
+array (
+'label' => 'forms.config.fields.regenerate_cart_on_refused_payment.label',
+'help' => 'forms.config.fields.regenerate_cart_on_refused_payment.help',
+),
+),
+),
+),
+'view' =>
+array (
+'data' =>
+array (
+'validate' => 'misc.forms.default.buttons.save',
+),
+),
+),
+'exclusion_shipping_cost' =>
+array (
+'model' => 'basic',
+'fields' =>
+array (
+'payment_types' =>
+array (
+'model' => 'choice.expanded.multiple',
+'default' =>
+array (
+),
+'view' =>
+array (
+'data' =>
+array (
+'choices' => 'payment_type',
+'label' => 'forms.exclusion_shipping_cost.fields.label.label',
+),
+),
+),
+),
+'view' =>
+array (
+'data' =>
+array (
+'validate' => 'misc.forms.default.buttons.save',
+),
 ),
 ),
 'button' =>
@@ -3106,34 +3516,46 @@ array (
 'template' => 'forms/button',
 ),
 ),
-'settings_customization' =>
+'tree_config' =>
 array (
 'model' => 'basic',
 'fields' =>
 array (
-'footer_display' =>
+'carbon_offsetting_payer' =>
 array (
-'model' => 'bool.switch',
+'model' => 'choice.expanded.single',
+'format' => 'string',
+'default' => 'MERCHANT',
+'enabled' => false,
 'view' =>
 array (
 'data' =>
 array (
-'label' => 'forms.config.fields.behavior_display_footer.label',
-'help' => 'forms.config.fields.behavior_display_footer.help',
+'choices' =>
+array (
+'MERCHANT' => 'forms.tree_config.fields.carbon_offsetting_payer.values.MERCHANT',
+'CUSTOMER' => 'forms.tree_config.fields.carbon_offsetting_payer.values.CUSTOMER',
+),
+'attr' =>
+array (
+'disabled' => '',
+),
+'translate' => true,
+'label' => 'forms.tree_config.fields.carbon_offsetting_payer.label',
+'help' => 'forms.tree_config.fields.carbon_offsetting_payer.help',
+'warning' => 'forms.tree_config.fields.carbon_offsetting_payer.warning',
 ),
 ),
-'enabled' => false,
 ),
-'footer_color' =>
+'tree_api_server' =>
 array (
 'model' => 'choice.contracted.single',
 'validators' =>
 array (
 'array.in' =>
 array (
-0 => 'white',
-1 => 'green',
-2 => 'black',
+0 => 'PROD',
+1 => 'SANDBOX',
 ),
 ),
 'view' =>
@@ -3142,15 +3564,26 @@ array (
 array (
 'choices' =>
 array (
-'white' => 'forms.config.fields.display_footer_color.values.white',
-'green' => 'forms.config.fields.display_footer_color.values.green',
-'black' => 'forms.config.fields.display_footer_color.values.black',
+'PROD' => 'forms.tree_config.fields.tree_api_server.values.PROD',
+'SANDBOX' => 'forms.tree_config.fields.tree_api_server.values.SANDBOX',
 ),
 'translate' => true,
-'label' => 'forms.config.fields.display_footer_color.label',
+'label' => 'forms.tree_config.fields.tree_api_server.label',
+'help' => 'forms.tree_config.fields.tree_api_server.help',
 ),
 ),
-'enabled' => false,
+),
+'tree_details_url' =>
+array (
+'model' => 'string',
+'view' =>
+array (
+'data' =>
+array (
+'label' => 'forms.tree_config.fields.tree_details_url.label',
+'help' => 'forms.tree_config.fields.tree_details_url.help',
+),
+),
 ),
 ),
 'view' =>
@@ -3161,100 +3594,33 @@ array (
 ),
 ),
 ),
-'button_update' =>
-array (
-'extends' => 'button',
-'fields' =>
-array (
-'id' =>
-array (
-'model' => 'hidden',
-'format' => 'int',
-'required' => true,
-'validators' =>
-array (
-'not_empty' =>
-array (
-'error' => 'forms.button.errors.id_not_found',
-),
-),
-),
-),
-),
-'account_activation' =>
+'carbon_bot_config_global' =>
 array (
 'model' => 'basic',
 'fields' =>
 array (
-'activation' =>
+'tree_bot_activated' =>
 array (
 'model' => 'bool.switch',
 'view' =>
 array (
 'data' =>
 array (
-'label' => 'forms.account_activation.fields.activation.label',
-'help' => 'forms.account_activation.fields.activation.help',
+'label' => 'forms.carbon_bot_config_global.fields.tree_bot_activated.label',
+'help' => 'forms.carbon_bot_config_global.fields.tree_bot_activated.help',
 ),
 ),
 ),
-),
+'tree_bot_mobile_activated' =>
+array (
+'model' => 'bool.switch',
+'behavior' => 'tree_bot_activation',
 'view' =>
 array (
 'data' =>
 array (
-'validate' => 'misc.forms.default.buttons.save',
-),
-),
-),
-'exclusion_shipping_cost' =>
-array (
-'model' => 'basic',
-'fields' =>
-array (
-'payment_types' =>
-array (
-'model' => 'choice.expanded.multiple',
-'default' =>
-array (
-),
-'view' =>
-array (
-'data' =>
-array (
-'choices' => 'payment_type',
-'label' => 'forms.exclusion_shipping_cost.fields.label.label',
-),
-),
-),
-),
-'view' =>
-array (
-'data' =>
-array (
-'validate' => 'misc.forms.default.buttons.save',
-),
-),
-),
-'eligible_amounts' =>
-array (
-'model' => 'basic',
-'fields' =>
-array (
-'eligible_amounts' =>
-array (
-'model' => 'choice.double.bool',
-'default' =>
-array (
-),
-'view' =>
-array (
-'data' =>
-array (
-'horizontal_choices' => 'payment_type',
-'vertical_choices' => 'category.hierarchized',
-'axis' => 'vertical',
-'filterPlaceholder' => 'forms.eligible_amounts.fields.search.placeholder',
+'label' => 'forms.tree_bot.fields.tree_bot_mobile_activated.label',
+'help' => 'forms.tree_bot.fields.tree_bot_mobile_activated.help',
 ),
 ),
 ),
@@ -3335,6 +3701,56 @@ array (
 'choices' => 'countries',
 'translate' => true,
 'label' => 'forms.tree_shipping_address.fields.country.label',
+),
+),
+),
+),
+'view' =>
+array (
+'data' =>
+array (
+'validate' => 'misc.forms.default.buttons.save',
+),
+),
+),
+'tree_authentication' =>
+array (
+'model' => 'basic',
+'fields' =>
+array (
+'client_id' =>
+array (
+'model' => 'string',
+'required' => true,
+'view' =>
+array (
+'data' =>
+array (
+'label' => 'forms.tree_authentication.fields.client_id.label',
+),
+),
+),
+'login' =>
+array (
+'model' => 'string',
+'required' => true,
+'view' =>
+array (
+'data' =>
+array (
+'label' => 'forms.tree_authentication.fields.login.label',
+),
+),
+),
+'password' =>
+array (
+'model' => 'string',
+'required' => true,
+'view' =>
+array (
+'data' =>
+array (
+'label' => 'forms.tree_authentication.fields.password.label',
 ),
 ),
 ),
@@ -3438,148 +3854,6 @@ array (
 ),
 ),
 ),
-'tree_config' =>
-array (
-'model' => 'basic',
-'fields' =>
-array (
-'carbon_offsetting_payer' =>
-array (
-'model' => 'choice.expanded.single',
-'format' => 'string',
-'default' => 'MERCHANT',
-'enabled' => false,
-'view' =>
-array (
-'data' =>
-array (
-'choices' =>
-array (
-'MERCHANT' => 'forms.tree_config.fields.carbon_offsetting_payer.values.MERCHANT',
-'CUSTOMER' => 'forms.tree_config.fields.carbon_offsetting_payer.values.CUSTOMER',
-),
-'attr' =>
-array (
-'disabled' => '',
-),
-'translate' => true,
-'label' => 'forms.tree_config.fields.carbon_offsetting_payer.label',
-'help' => 'forms.tree_config.fields.carbon_offsetting_payer.help',
-'warning' => 'forms.tree_config.fields.carbon_offsetting_payer.warning',
-),
-),
-),
-'tree_details_url' =>
-array (
-'model' => 'string',
-'required' => true,
-'view' =>
-array (
-'data' =>
-array (
-'label' => 'forms.tree_config.fields.tree_details_url.label',
-'help' => 'forms.tree_config.fields.tree_details_url.help',
-),
-),
-),
-),
-'view' =>
-array (
-'data' =>
-array (
-'validate' => 'misc.forms.default.buttons.save',
-),
-),
-),
-'carbon_bot_config_global' =>
-array (
-'model' => 'basic',
-'fields' =>
-array (
-'tree_bot_activated' =>
-array (
-'model' => 'bool.switch',
-'view' =>
-array (
-'data' =>
-array (
-'label' => 'forms.carbon_bot_config_global.fields.tree_bot_activated.label',
-'help' => 'forms.carbon_bot_config_global.fields.tree_bot_activated.help',
-),
-),
-),
-'tree_bot_mobile_activated' =>
-array (
-'model' => 'bool.switch',
-'behavior' => 'tree_bot_activation',
-'view' =>
-array (
-'data' =>
-array (
-'label' => 'forms.tree_bot.fields.tree_bot_mobile_activated.label',
-'help' => 'forms.tree_bot.fields.tree_bot_mobile_activated.help',
-),
-),
-),
-),
-'view' =>
-array (
-'data' =>
-array (
-'validate' => 'misc.forms.default.buttons.save',
-),
-),
-),
-'tree_authentication' =>
-array (
-'model' => 'basic',
-'fields' =>
-array (
-'client_id' =>
-array (
-'model' => 'string',
-'required' => true,
-'view' =>
-array (
-'data' =>
-array (
-'label' => 'forms.tree_authentication.fields.client_id.label',
-),
-),
-),
-'login' =>
-array (
-'model' => 'string',
-'required' => true,
-'view' =>
-array (
-'data' =>
-array (
-'label' => 'forms.tree_authentication.fields.login.label',
-),
-),
-),
-'password' =>
-array (
-'model' => 'string',
-'required' => true,
-'view' =>
-array (
-'data' =>
-array (
-'label' => 'forms.tree_authentication.fields.password.label',
-),
-),
-),
-),
-'view' =>
-array (
-'data' =>
-array (
-'validate' => 'misc.forms.default.buttons.save',
-),
-),
-),
 ),
 'default' =>
 array (
@@ -3618,255 +3892,6 @@ array (
 ),
 ),
 ),
-),
-'countries' =>
-array (
-0 => 'af',
-1 => 'al',
-2 => 'ag',
-3 => 'an',
-4 => 'ao',
-5 => 'av',
-6 => 'ac',
-7 => 'ar',
-8 => 'am',
-9 => 'aa',
-10 => 'at',
-11 => 'as',
-12 => 'au',
-13 => 'aj',
-14 => 'bf',
-15 => 'ba',
-16 => 'bg',
-17 => 'bb',
-18 => 'bs',
-19 => 'bo',
-20 => 'be',
-21 => 'bh',
-22 => 'bn',
-23 => 'bd',
-24 => 'bt',
-25 => 'bl',
-26 => 'bk',
-27 => 'bc',
-28 => 'bv',
-29 => 'br',
-30 => 'io',
-31 => 'vi',
-32 => 'bx',
-33 => 'bu',
-34 => 'uv',
-35 => 'bm',
-36 => 'by',
-37 => 'cb',
-38 => 'cm',
-39 => 'ca',
-40 => 'cv',
-41 => 'cj',
-42 => 'ct',
-43 => 'cd',
-44 => 'ci',
-45 => 'ch',
-46 => 'kt',
-47 => 'ip',
-48 => 'ck',
-49 => 'co',
-50 => 'cn',
-51 => 'cf',
-52 => 'cg',
-53 => 'cw',
-54 => 'cr',
-55 => 'cs',
-56 => 'iv',
-57 => 'hr',
-58 => 'cu',
-59 => 'cy',
-60 => 'ez',
-61 => 'da',
-62 => 'dj',
-63 => 'do',
-64 => 'dr',
-65 => 'tt',
-66 => 'ec',
-67 => 'eg',
-68 => 'es',
-69 => 'ek',
-70 => 'er',
-71 => 'en',
-72 => 'et',
-73 => 'eu',
-74 => 'fk',
-75 => 'fo',
-76 => 'fj',
-77 => 'fi',
-78 => 'fr',
-79 => 'fg',
-80 => 'fp',
-81 => 'fs',
-82 => 'gb',
-83 => 'ga',
-84 => 'gz',
-85 => 'gg',
-86 => 'gm',
-87 => 'gh',
-88 => 'gi',
-89 => 'go',
-90 => 'gr',
-91 => 'gl',
-92 => 'gj',
-93 => 'gp',
-94 => 'gt',
-95 => 'gk',
-96 => 'gv',
-97 => 'pu',
-98 => 'gy',
-99 => 'ha',
-100 => 'hm',
-101 => 'ho',
-102 => 'hk',
-103 => 'hu',
-104 => 'ic',
-105 => 'in',
-106 => 'id',
-107 => 'ir',
-108 => 'iz',
-109 => 'ei',
-110 => 'im',
-111 => 'is',
-112 => 'it',
-113 => 'jm',
-114 => 'jn',
-115 => 'ja',
-116 => 'je',
-117 => 'jo',
-118 => 'ju',
-119 => 'kz',
-120 => 'ke',
-121 => 'kr',
-122 => 'ku',
-123 => 'kg',
-124 => 'la',
-125 => 'lg',
-126 => 'le',
-127 => 'lt',
-128 => 'li',
-129 => 'ly',
-130 => 'ls',
-131 => 'lh',
-132 => 'lu',
-133 => 'mc',
-134 => 'mk',
-135 => 'ma',
-136 => 'mi',
-137 => 'my',
-138 => 'mv',
-139 => 'ml',
-140 => 'mt',
-141 => 'rm',
-142 => 'mb',
-143 => 'mr',
-144 => 'mp',
-145 => 'mf',
-146 => 'mx',
-147 => 'fm',
-148 => 'md',
-149 => 'mn',
-150 => 'mg',
-151 => 'mh',
-152 => 'mo',
-153 => 'mz',
-154 => 'wa',
-155 => 'nr',
-156 => 'np',
-157 => 'nl',
-158 => 'nt',
-159 => 'nc',
-160 => 'nz',
-161 => 'nu',
-162 => 'ng',
-163 => 'ni',
-164 => 'ne',
-165 => 'nm',
-166 => 'nf',
-167 => 'kn',
-168 => 'no',
-169 => 'mu',
-170 => 'pk',
-171 => 'ps',
-172 => 'pm',
-173 => 'pp',
-174 => 'pa',
-175 => 'pe',
-176 => 'rp',
-177 => 'pc',
-178 => 'pl',
-179 => 'po',
-180 => 'qa',
-181 => 're',
-182 => 'ro',
-183 => 'rs',
-184 => 'rw',
-185 => 'sh',
-186 => 'sc',
-187 => 'st',
-188 => 'sb',
-189 => 'vc',
-190 => 'ws',
-191 => 'sm',
-192 => 'tp',
-193 => 'sa',
-194 => 'sg',
-195 => 'yi',
-196 => 'se',
-197 => 'sl',
-198 => 'sn',
-199 => 'lo',
-200 => 'si',
-201 => 'bp',
-202 => 'so',
-203 => 'sf',
-204 => 'sx',
-205 => 'ks',
-206 => 'sp',
-207 => 'pg',
-208 => 'ce',
-209 => 'su',
-210 => 'ns',
-211 => 'sv',
-212 => 'wz',
-213 => 'sw',
-214 => 'sz',
-215 => 'sy',
-216 => 'tw',
-217 => 'ti',
-218 => 'tz',
-219 => 'th',
-220 => 'to',
-221 => 'tl',
-222 => 'tn',
-223 => 'td',
-224 => 'te',
-225 => 'ts',
-226 => 'tu',
-227 => 'tx',
-228 => 'tk',
-229 => 'tv',
-230 => 'ug',
-231 => 'up',
-232 => 'ae',
-233 => 'uk',
-234 => 'uy',
-235 => 'uz',
-236 => 'nh',
-237 => 'vt',
-238 => 've',
-239 => 'vm',
-240 => 'wf',
-241 => 'we',
-242 => 'wi',
-243 => 'ym',
-244 => 'za',
-245 => 'zi',
 ),
 'languages' =>
 array (
@@ -4468,6 +4493,139 @@ array (
 ),
 'null_stream' => 'PGViewComponentsNullStream',
 ),
+'menu' =>
+array (
+'shop_selector' => true,
+'entries' =>
+array (
+'home' =>
+array (
+'action' => 'backoffice.home.display',
+'name' => 'pages.home.name',
+'title' => 'pages.home.title',
+),
+'payment' =>
+array (
+'name' => 'menu.payment.name',
+'title' => 'menu.payment.title',
+'children' =>
+array (
+'account' =>
+array (
+'action' => 'backoffice.account.display',
+'name' => 'pages.account.name',
+'title' => 'pages.account.title',
+),
+'module' =>
+array (
+'action' => 'backoffice.config.display',
+'name' => 'pages.config.name',
+'title' => 'pages.config.title',
+),
+'buttons' =>
+array (
+'action' => 'backoffice.buttons.display',
+'name' => 'pages.buttons.name',
+'title' => 'pages.buttons.title',
+),
+'eligible_amounts' =>
+array (
+'action' => 'backoffice.eligible_amounts.display',
+'name' => 'pages.eligible_amounts.name',
+'title' => 'pages.eligible_amounts.title',
+),
+'statistics' =>
+array (
+'action' => 'backoffice.payment_statistics.display',
+'name' => 'pages.payment_statistics.name',
+'title' => 'pages.payment_statistics.title',
+),
+'payment_translations' =>
+array (
+'action' => 'backoffice.payment_translations.display',
+'name' => 'pages.translations.name',
+'title' => 'pages.translations.title',
+),
+),
+),
+'tree' =>
+array (
+'name' => 'menu.tree.name',
+'title' => 'menu.tree.title',
+'children' =>
+array (
+'tree_account' =>
+array (
+'action' => 'backoffice.tree_account.display',
+'name' => 'pages.tree_account.name',
+'title' => 'pages.tree_account.title',
+),
+'tree_config' =>
+array (
+'action' => 'backoffice.tree_config.display',
+'name' => 'pages.tree_config.name',
+'title' => 'pages.tree_config.title',
+),
+'tree_translations' =>
+array (
+'action' => 'backoffice.tree_translations.display',
+'name' => 'pages.translations.name',
+'title' => 'pages.translations.title',
+),
+'carbon_bot_config' =>
+array (
+'action' => 'backoffice.carbon_bot_config.display',
+'name' => 'pages.carbon_bot_config.name',
+'title' => 'pages.carbon_bot_config.title',
+),
+),
+),
+'config' =>
+array (
+'name' => 'menu.config.name',
+'title' => 'menu.config.title',
+'children' =>
+array (
+'products' =>
+array (
+'action' => 'backoffice.products.display',
+'name' => 'pages.products.name',
+'title' => 'pages.products.title',
+),
+),
+),
+'help' =>
+array (
+'name' => 'menu.help.name',
+'title' => 'menu.help.title',
+'children' =>
+array (
+'system' =>
+array (
+'action' => 'backoffice.system.display',
+'name' => 'pages.system.name',
+'title' => 'pages.system.title',
+),
+'support' =>
+array (
+'action' => 'backoffice.support.display',
+'name' => 'pages.support.name',
+'title' => 'pages.support.title',
+),
+'release_note' =>
+array (
+'action' => 'backoffice.release_note.display',
+'name' => 'pages.release_note.name',
+'title' => 'pages.release_note.title',
+),
+),
+),
+'error' =>
+array (
+'title' => 'pages.error.title',
+),
+),
+),
 'servers' =>
 array (
 'backoffice' =>
@@ -4601,139 +4759,6 @@ array (
 'do' => 'stop',
 'with' => 'renderer.processor.write_http',
 ),
-),
-),
-),
-'menu' =>
-array (
-'shop_selector' => true,
-'entries' =>
-array (
-'home' =>
-array (
-'action' => 'backoffice.home.display',
-'name' => 'pages.home.name',
-'title' => 'pages.home.title',
-),
-'payment' =>
-array (
-'name' => 'menu.payment.name',
-'title' => 'menu.payment.title',
-'children' =>
-array (
-'account' =>
-array (
-'action' => 'backoffice.account.display',
-'name' => 'pages.account.name',
-'title' => 'pages.account.title',
-),
-'module' =>
-array (
-'action' => 'backoffice.config.display',
-'name' => 'pages.config.name',
-'title' => 'pages.config.title',
-),
-'buttons' =>
-array (
-'action' => 'backoffice.buttons.display',
-'name' => 'pages.buttons.name',
-'title' => 'pages.buttons.title',
-),
-'eligible_amounts' =>
-array (
-'action' => 'backoffice.eligible_amounts.display',
-'name' => 'pages.eligible_amounts.name',
-'title' => 'pages.eligible_amounts.title',
-),
-'statistics' =>
-array (
-'action' => 'backoffice.payment_statistics.display',
-'name' => 'pages.payment_statistics.name',
-'title' => 'pages.payment_statistics.title',
-),
-'payment_translations' =>
-array (
-'action' => 'backoffice.payment_translations.display',
-'name' => 'pages.translations.name',
-'title' => 'pages.translations.title',
-),
-),
-),
-'tree' =>
-array (
-'name' => 'menu.tree.name',
-'title' => 'menu.tree.title',
-'children' =>
-array (
-'tree_account' =>
-array (
-'action' => 'backoffice.tree_account.display',
-'name' => 'pages.tree_account.name',
-'title' => 'pages.tree_account.title',
-),
-'tree_config' =>
-array (
-'action' => 'backoffice.tree_config.display',
-'name' => 'pages.tree_config.name',
-'title' => 'pages.tree_config.title',
-),
-'tree_translations' =>
-array (
-'action' => 'backoffice.tree_translations.display',
-'name' => 'pages.translations.name',
-'title' => 'pages.translations.title',
-),
-'carbon_bot_config' =>
-array (
-'action' => 'backoffice.carbon_bot_config.display',
-'name' => 'pages.carbon_bot_config.name',
-'title' => 'pages.carbon_bot_config.title',
-),
-),
-),
-'config' =>
-array (
-'name' => 'menu.config.name',
-'title' => 'menu.config.title',
-'children' =>
-array (
-'products' =>
-array (
-'action' => 'backoffice.products.display',
-'name' => 'pages.products.name',
-'title' => 'pages.products.title',
-),
-),
-),
-'help' =>
-array (
-'name' => 'menu.help.name',
-'title' => 'menu.help.title',
-'children' =>
-array (
-'system' =>
-array (
-'action' => 'backoffice.system.display',
-'name' => 'pages.system.name',
-'title' => 'pages.system.title',
-),
-'support' =>
-array (
-'action' => 'backoffice.support.display',
-'name' => 'pages.support.name',
-'title' => 'pages.support.title',
-),
-'release_note' =>
-array (
-'action' => 'backoffice.release_note.display',
-'name' => 'pages.release_note.name',
-'title' => 'pages.release_note.title',
-),
-),
-),
-'error' =>
-array (
-'title' => 'pages.error.title',
 ),
 ),
 ),
@@ -4945,6 +4970,10 @@ array (
 ),
 ),
 ),
+'paygreen' =>
+array (
+'backlink' => 'http://paygreen.io/paiement-securise/',
+),
 'payment' =>
 array (
 'pictures' =>
@@ -5121,14 +5150,26 @@ array (
 'TEXT' => 'forms.button.fields.display_type.values.text',
 ),
 ),
-'paygreen' =>
+'oauth_exceptions_messages' =>
 array (
-'backlink' => 'http://paygreen.io/paiement-securise/',
+1 => 'actions.authentication.save.errors.oauth_server_address_missmatch',
+2 => 'actions.authentication.save.errors.oauth_data_validation',
 ),
 'api' =>
 array (
 'payment' =>
 array (
+'clients' =>
+array (
+'curl' =>
+array (
+'allow_redirection' => true,
+'verify_peer' => true,
+'verify_host' => 2,
+'timeout' => 30,
+'http_version' => '1.1',
+),
+),
 'requests' =>
 array (
 'oauth_access' =>
@@ -5228,17 +5269,6 @@ array (
 'method' => 'GET',
 'url' => '{host}/api/{ui}/availablepaymenttype',
 'private' => true,
-),
-),
-'clients' =>
-array (
-'curl' =>
-array (
-'allow_redirection' => true,
-'verify_peer' => true,
-'verify_host' => 2,
-'timeout' => 30,
-'http_version' => '1.1',
 ),
 ),
 'responses' =>
@@ -5412,11 +5442,6 @@ array (
 ),
 ),
 ),
-),
-'oauth_exceptions_messages' =>
-array (
-1 => 'actions.authentication.save.errors.oauth_server_address_missmatch',
-2 => 'actions.authentication.save.errors.oauth_data_validation',
 ),
 'tree' =>
 array (
