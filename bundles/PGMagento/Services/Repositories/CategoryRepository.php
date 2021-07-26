@@ -15,25 +15,30 @@
  * @author    PayGreen <contact@paygreen.fr>
  * @copyright 2014 - 2021 Watt Is It
  * @license   https://opensource.org/licenses/mit-license.php MIT License X11
- * @version   2.1.1
+ * @version   2.2.0
  *
  */
 
-use Magento\Catalog\Model\ResourceModel\Category\CollectionFactory;
-use Magento\Store\Model\StoreManagerInterface;
+namespace PGI\Module\PGMagento\Services\Repositories;
 
-class PGMagentoServicesRepositoriesCategoryRepository extends PGMagentoFoundationsAbstractMagentoRepository implements PGShopInterfacesRepositoriesCategory
+use Magento\Catalog\Model\ResourceModel\Category\CollectionFactory as LocalCollectionFactory;
+use Magento\Store\Model\StoreManagerInterface as LocalStoreManagerInterface;
+use PGI\Module\PGMagento\Entities\Category;
+use PGI\Module\PGMagento\Foundations\AbstractMagentoRepository;
+use PGI\Module\PGShop\Interfaces\Repositories\CategoryRepositoryInterface;
+
+class CategoryRepository extends AbstractMagentoRepository implements CategoryRepositoryInterface
 {
     const ENTITY = 'Magento\Catalog\Model\Category';
     const RESOURCE = 'Magento\Catalog\Model\ResourceModel\Category';
 
     /**
      * @param Magento\Catalog\Model\Category $localEntity
-     * @return PGMagentoEntitiesCategory
+     * @return Category
      */
     public function wrapEntity($localEntity)
     {
-        return new PGMagentoEntitiesCategory($localEntity);
+        return new Category($localEntity);
     }
 
     /**

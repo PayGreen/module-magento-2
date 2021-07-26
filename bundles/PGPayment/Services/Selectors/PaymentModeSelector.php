@@ -15,23 +15,28 @@
  * @author    PayGreen <contact@paygreen.fr>
  * @copyright 2014 - 2021 Watt Is It
  * @license   https://opensource.org/licenses/mit-license.php MIT License X11
- * @version   2.1.1
+ * @version   2.2.0
  *
  */
 
+namespace PGI\Module\PGPayment\Services\Selectors;
+
+use PGI\Module\PGFramework\Foundations\AbstractSelector;
+use PGI\Module\PGPayment\Services\Facades\PaygreenFacade;
+
 /**
- * Class PGPaymentServicesSelectorsPaymentModeSelector
+ * Class PaymentModeSelector
  * @package PGPayment\Services\Selectors
  */
-class PGPaymentServicesSelectorsPaymentModeSelector extends PGFrameworkFoundationsSelector
+class PaymentModeSelector extends AbstractSelector
 {
-    /** @var PGPaymentServicesPaygreenFacade */
+    /** @var PaygreenFacade */
     private $paygreenFacade;
 
     /**
-     * @param PGPaymentServicesPaygreenFacade $paygreenFacade
+     * @param PaygreenFacade $paygreenFacade
      */
-    public function setPaygreenFacade(PGPaymentServicesPaygreenFacade $paygreenFacade)
+    public function setPaygreenFacade(PaygreenFacade $paygreenFacade)
     {
         $this->paygreenFacade = $paygreenFacade;
     }

@@ -15,15 +15,22 @@
  * @author    PayGreen <contact@paygreen.fr>
  * @copyright 2014 - 2021 Watt Is It
  * @license   https://opensource.org/licenses/mit-license.php MIT License X11
- * @version   2.1.1
+ * @version   2.2.0
  *
  */
 
+namespace PGI\Module\PGFramework\Services\Handlers;
+
+use PGI\Module\PGFramework\Components\Picture as PictureComponent;
+use PGI\Module\PGModule\Services\Logger;
+use PGI\Module\PGSystem\Foundations\AbstractObject;
+use Exception;
+
 /**
- * Class PGFrameworkServicesHandlersPictureHandler
+ * Class PictureHandler
  * @package PGFramework\Services\Handlers
  */
-class PGFrameworkServicesHandlersPictureHandler extends PGSystemFoundationsObject
+class PictureHandler extends AbstractObject
 {
     /** @var string */
     private $basePath;
@@ -35,7 +42,7 @@ class PGFrameworkServicesHandlersPictureHandler extends PGSystemFoundationsObjec
     const MEDIA_FILE_CHMOD = 0664;
 
     /**
-     * PGFrameworkServicesHandlersPictureHandler constructor.
+     * PictureHandler constructor.
      * @param string $basePath
      * @param string $baseUrl
      */
@@ -70,7 +77,7 @@ class PGFrameworkServicesHandlersPictureHandler extends PGSystemFoundationsObjec
         }
 
         if (!$this->isStored($filename)) {
-            /** @var PGModuleServicesLogger $logger */
+            /** @var Logger $logger */
             $logger = $this->getService('logger');
 
             $logger->alert("Unknown media file : '$filename'.");
@@ -83,12 +90,12 @@ class PGFrameworkServicesHandlersPictureHandler extends PGSystemFoundationsObjec
      * @param string $source
      * @param string $name
      * @param bool $keepOriginal
-     * @return PGFrameworkEntitiesPicture
+     * @return PictureComponent
      * @throws Exception
      */
     public function store($source, $name, $keepOriginal = false)
     {
-        /** @var PGModuleServicesLogger $logger */
+        /** @var Logger $logger */
         $logger = $this->getService('logger');
 
         if (!is_file($source)) {
@@ -121,7 +128,7 @@ class PGFrameworkServicesHandlersPictureHandler extends PGSystemFoundationsObjec
      */
     public function removeFromStore($filename)
     {
-        /** @var PGModuleServicesLogger $logger */
+        /** @var Logger $logger */
         $logger = $this->getService('logger');
 
         if (!$this->isStored($filename)) {
@@ -159,7 +166,7 @@ class PGFrameworkServicesHandlersPictureHandler extends PGSystemFoundationsObjec
 
     /**
      * @param string $filename
-     * @return PGFrameworkEntitiesPicture
+     * @return PictureComponent
      * @throws Exception
      */
     public function getPicture($filename)
@@ -168,6 +175,6 @@ class PGFrameworkServicesHandlersPictureHandler extends PGSystemFoundationsObjec
             throw new Exception("Unknown media file : '$filename'.");
         }
 
-        return new PGFrameworkEntitiesPicture($this->getPath($filename));
+        return new PictureComponent($this->getPath($filename));
     }
 }

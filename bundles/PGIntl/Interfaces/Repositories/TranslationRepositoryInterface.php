@@ -15,50 +15,56 @@
  * @author    PayGreen <contact@paygreen.fr>
  * @copyright 2014 - 2021 Watt Is It
  * @license   https://opensource.org/licenses/mit-license.php MIT License X11
- * @version   2.1.1
+ * @version   2.2.0
  *
  */
 
+namespace PGI\Module\PGIntl\Interfaces\Repositories;
+
+use PGI\Module\PGDatabase\Interfaces\RepositoryInterface;
+use PGI\Module\PGIntl\Interfaces\Entities\TranslationEntityInterface;
+use PGI\Module\PGShop\Interfaces\Entities\ShopEntityInterface;
+
 /**
- * Interface PGIntlInterfacesRepositoriesTranslationRepositoryInterface
+ * Interface TranslationRepositoryInterface
  * @package PGIntl\Interfaces\Repositories
  */
-interface PGIntlInterfacesRepositoriesTranslationRepositoryInterface extends PGDatabaseInterfacesRepository
+interface TranslationRepositoryInterface extends RepositoryInterface
 {
     /**
      * @param string $code
-     * @return PGIntlInterfacesEntitiesTranslationInterface[]
+     * @return TranslationEntityInterface[]
      */
-    public function findByCode($code, PGShopInterfacesEntitiesShop $shop = null);
+    public function findByCode($code, ShopEntityInterface $shop = null);
 
     /**
      * @param string $pattern
-     * @return PGIntlInterfacesEntitiesTranslationInterface[]
+     * @return TranslationEntityInterface[]
      */
-    public function findByPattern($pattern, PGShopInterfacesEntitiesShop $shop = null);
+    public function findByPattern($pattern, ShopEntityInterface $shop = null);
 
     /**
      * @param string $code
      * @param string $language
      * @return bool
      */
-    public function create($code, $language, PGShopInterfacesEntitiesShop $shop = null);
+    public function create($code, $language, ShopEntityInterface $shop = null);
 
     /**
-     * @param PGIntlInterfacesEntitiesTranslationInterface $translation
+     * @param TranslationEntityInterface $translation
      * @return bool
      */
-    public function insert(PGIntlInterfacesEntitiesTranslationInterface $translation);
+    public function insert(TranslationEntityInterface $translation);
 
     /**
-     * @param PGIntlInterfacesEntitiesTranslationInterface $translation
+     * @param TranslationEntityInterface $translation
      * @return bool
      */
-    public function update(PGIntlInterfacesEntitiesTranslationInterface $translation);
+    public function update(TranslationEntityInterface $translation);
 
     /**
-     * @param PGIntlInterfacesEntitiesTranslationInterface $translation
+     * @param TranslationEntityInterface $translation
      * @return bool
      */
-    public function delete(PGIntlInterfacesEntitiesTranslationInterface $translation);
+    public function delete(TranslationEntityInterface $translation);
 }

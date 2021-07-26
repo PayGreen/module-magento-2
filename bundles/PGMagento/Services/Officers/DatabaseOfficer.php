@@ -15,19 +15,23 @@
  * @author    PayGreen <contact@paygreen.fr>
  * @copyright 2014 - 2021 Watt Is It
  * @license   https://opensource.org/licenses/mit-license.php MIT License X11
- * @version   2.1.1
+ * @version   2.2.0
  *
  */
 
-use Magento\Framework\DB\Adapter\AdapterInterface;
-use Magento\Framework\App\ObjectManager;
+namespace PGI\Module\PGMagento\Services\Officers;
 
-class PGMagentoServicesOfficersDatabaseOfficer implements PGDatabaseInterfacesDatabaseOfficer
+use Magento\Framework\DB\Adapter\AdapterInterface as LocalAdapterInterface;
+use Magento\Framework\App\ObjectManager as LocalObjectManager;
+use PGI\Module\PGDatabase\Interfaces\DatabaseOfficerInterface;
+use Exception;
+
+class DatabaseOfficer implements DatabaseOfficerInterface
 {
-    /** @var AdapterInterface */
+    /** @var LocalAdapterInterface */
     private $databaseAdapter;
 
-    public function __construct(ObjectManager $magento)
+    public function __construct(LocalObjectManager $magento)
     {
         $this->databaseAdapter = $magento->get('Magento\Framework\App\ResourceConnection')->getConnection();
     }

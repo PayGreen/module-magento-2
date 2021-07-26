@@ -15,20 +15,28 @@
  * @author    PayGreen <contact@paygreen.fr>
  * @copyright 2014 - 2021 Watt Is It
  * @license   https://opensource.org/licenses/mit-license.php MIT License X11
- * @version   2.1.1
+ * @version   2.2.0
  *
  */
 
+namespace PGI\Module\PGSystem\Components;
+
+use PGI\Module\PGSystem\Components\Bag as BagComponent;
+use PGI\Module\PGSystem\Components\Parser as ParserComponent;
+use PGI\Module\PGSystem\Exceptions\ParserConstant as ParserConstantException;
+use ArrayAccess;
+use Exception;
+
 /**
- * Class PGSystemComponentsParameters
+ * Class Parameters
  * @package PGSystem\Components
  */
-class PGSystemComponentsParameters implements arrayaccess
+class Parameters implements ArrayAccess
 {
-    /** @var PGSystemComponentsBag */
+    /** @var BagComponent */
     private $bag;
 
-    /** @var PGSystemComponentsParser */
+    /** @var ParserComponent */
     private $parser;
 
     /** @var string */
@@ -38,7 +46,7 @@ class PGSystemComponentsParameters implements arrayaccess
 
     public function __construct()
     {
-        $this->parser = new PGSystemComponentsParser(array());
+        $this->parser = new ParserComponent(array());
 
         $this->buildParametersBag();
     }
@@ -56,11 +64,11 @@ class PGSystemComponentsParameters implements arrayaccess
 
     private function buildParametersBag()
     {
-        $this->bag = new PGSystemComponentsBag();
+        $this->bag = new BagComponent();
     }
 
     /**
-     * @return PGSystemComponentsBag
+     * @return BagComponent
      */
     public function getBag()
     {
@@ -68,7 +76,7 @@ class PGSystemComponentsParameters implements arrayaccess
     }
 
     /**
-     * @throws PGSystemExceptionsParserConstant
+     * @throws ParserConstantException
      */
     public function reset()
     {
@@ -84,7 +92,7 @@ class PGSystemComponentsParameters implements arrayaccess
     /**
      * @param array $data
      * @return array
-     * @throws PGSystemExceptionsParserConstant
+     * @throws ParserConstantException
      */
     private function parseConstants(array $data)
     {

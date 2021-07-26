@@ -15,41 +15,50 @@
  * @author    PayGreen <contact@paygreen.fr>
  * @copyright 2014 - 2021 Watt Is It
  * @license   https://opensource.org/licenses/mit-license.php MIT License X11
- * @version   2.1.1
+ * @version   2.2.0
  *
  */
 
+namespace PGI\Module\PGSystem\Services;
+
+use PGI\Module\PGSystem\Components\Parameters as ParametersComponent;
+use PGI\Module\PGSystem\Components\Parser as ParserComponent;
+use PGI\Module\PGSystem\Components\Service\Builder as BuilderServiceComponent;
+use PGI\Module\PGSystem\Components\Service\Library as LibraryServiceComponent;
+use Exception;
+use LogicException;
+
 /**
- * Class PGSystemServicesContainer
+ * Class Container
  * @package PGSystem\Services
  */
-class PGSystemServicesContainer
+class Container
 {
     private $services = array();
 
-    /** @var PGSystemComponentsParameters  */
+    /** @var ParametersComponent  */
     private $parameters;
 
-    /** @var PGSystemComponentsServiceLibrary */
+    /** @var LibraryServiceComponent */
     private $library;
 
-    /** @var PGSystemComponentsServiceBuilder */
+    /** @var BuilderServiceComponent */
     private $builder;
 
-    /** @var PGSystemServicesContainer|null  */
+    /** @var Container|null  */
     private static $instance = null;
 
     /**
-     * PGSystemServicesContainer constructor.
+     * Container constructor.
      */
     private function __construct()
     {
-        $this->library = new PGSystemComponentsServiceLibrary();
-        $this->parameters = new PGSystemComponentsParameters();
+        $this->library = new LibraryServiceComponent();
+        $this->parameters = new ParametersComponent();
 
-        $parser = new PGSystemComponentsParser($this->parameters);
+        $parser = new ParserComponent($this->parameters);
 
-        $this->builder = new PGSystemComponentsServiceBuilder($this, $this->library, $parser);
+        $this->builder = new BuilderServiceComponent($this, $this->library, $parser);
 
         $parser->setBuilder($this->builder);
 
@@ -63,7 +72,7 @@ class PGSystemServicesContainer
     }
 
     /**
-     * @return PGSystemServicesContainer
+     * @return Container
      */
     public static function getInstance()
     {
@@ -82,7 +91,7 @@ class PGSystemServicesContainer
         $static_services = array();
 
         foreach ($this->services as $name => $service) {
-            if ($this->library->isStatic($name)) {
+            if ($this->library->isFixed($name)) {
                 $static_services[$name] = $service;
             }
         }

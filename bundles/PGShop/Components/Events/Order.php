@@ -15,15 +15,20 @@
  * @author    PayGreen <contact@paygreen.fr>
  * @copyright 2014 - 2021 Watt Is It
  * @license   https://opensource.org/licenses/mit-license.php MIT License X11
- * @version   2.1.1
+ * @version   2.2.0
  *
  */
 
+namespace PGI\Module\PGShop\Components\Events;
+
+use PGI\Module\PGModule\Foundations\AbstractEvent;
+use PGI\Module\PGShop\Interfaces\Entities\OrderEntityInterface;
+
 /**
- * Class PGShopComponentsEventsOrder
+ * Class Order
  * @package PGShop\Components\Events
  */
-class PGShopComponentsEventsOrder extends PGModuleFoundationsEvent
+class Order extends AbstractEvent
 {
     /** @var string */
     private $name;
@@ -31,10 +36,10 @@ class PGShopComponentsEventsOrder extends PGModuleFoundationsEvent
     /** @var string */
     private $pid;
 
-    /** @var PGShopInterfacesEntitiesOrder */
+    /** @var OrderEntityInterface */
     private $order;
 
-    public function __construct($name, $pid, PGShopInterfacesEntitiesOrder $order)
+    public function __construct($name, $pid, OrderEntityInterface $order)
     {
         $this->order = $order;
         $this->pid = $pid;
@@ -50,7 +55,7 @@ class PGShopComponentsEventsOrder extends PGModuleFoundationsEvent
     }
 
     /**
-     * @return PGShopInterfacesEntitiesOrder
+     * @return OrderEntityInterface
      */
     public function getOrder()
     {

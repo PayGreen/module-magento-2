@@ -15,17 +15,23 @@
  * @author    PayGreen <contact@paygreen.fr>
  * @copyright 2014 - 2021 Watt Is It
  * @license   https://opensource.org/licenses/mit-license.php MIT License X11
- * @version   2.1.1
+ * @version   2.2.0
  *
  */
 
+namespace PGI\Module\PGPayment\Services\Managers;
+
+use PGI\Module\PGDatabase\Foundations\AbstractManager;
+use PGI\Module\PGPayment\Interfaces\Repositories\CategoryHasPaymentTypeRepositoryInterface;
+use PGI\Module\PGShop\Interfaces\Entities\CategoryEntityInterface;
+
 /**
- * Class PGPaymentServicesManagersCategoryHasPaymentTypeManager
+ * Class CategoryHasPaymentTypeManager
  *
  * @package PGPayment\Services\Managers
- * @method PGPaymentInterfacesRepositoriesCategoryHasPaymentTypeRepositoryInterface getRepository()
+ * @method CategoryHasPaymentTypeRepositoryInterface getRepository()
  */
-class PGPaymentServicesManagersCategoryHasPaymentTypeManager extends PGDatabaseFoundationsManager
+class CategoryHasPaymentTypeManager extends AbstractManager
 {
     private $paymentTypes = array();
 
@@ -51,11 +57,11 @@ class PGPaymentServicesManagersCategoryHasPaymentTypeManager extends PGDatabaseF
     }
 
     /**
-     * @param PGShopInterfacesEntitiesCategory $category
+     * @param CategoryEntityInterface $category
      * @param string $code
      * @return bool
      */
-    public function isEligibleCategory(PGShopInterfacesEntitiesCategory $category, $code)
+    public function isEligibleCategory(CategoryEntityInterface $category, $code)
     {
         if (!array_key_exists($code, $this->paymentTypes)) {
             $this->preloadPaymentType($code);

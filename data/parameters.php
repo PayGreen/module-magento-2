@@ -15,11 +15,54 @@
  * @author    PayGreen <contact@paygreen.fr>
  * @copyright 2014 - 2021 Watt Is It
  * @license   https://opensource.org/licenses/mit-license.php MIT License X11
- * @version   2.1.1
+ * @version   2.2.0
  *
  */
 
 return array (
+'translator' =>
+array (
+'sources' =>
+array (
+0 => 'bundles-resources',
+1 => 'module-resources',
+),
+),
+'cache' =>
+array (
+'entries' =>
+array (
+'translations-fr' =>
+array (
+'ttl' => 86400,
+'format' => 'array',
+),
+'translations-en' =>
+array (
+'ttl' => 86400,
+'format' => 'array',
+),
+'account-infos' =>
+array (
+'ttl' => 300,
+'format' => 'object',
+),
+'status-shop' =>
+array (
+'ttl' => 300,
+'format' => 'object',
+),
+'payment-types' =>
+array (
+'ttl' => 3600,
+'format' => 'object',
+),
+),
+),
+'media' =>
+array (
+'baseurl' => '/pub/media/paygreen',
+),
 'settings' =>
 array (
 'entries' =>
@@ -74,6 +117,11 @@ array (
 'default' => false,
 ),
 'behavior_delivery_confirmation' =>
+array (
+'type' => 'bool',
+'default' => false,
+),
+'behavior_payment_insite' =>
 array (
 'type' => 'bool',
 'default' => false,
@@ -294,6 +342,11 @@ array (
 'type' => 'user',
 'key' => 'behavior_delivery_confirmation',
 ),
+'behavior_payment_insite' =>
+array (
+'type' => 'user',
+'key' => 'behavior_payment_insite',
+),
 'use_transaction_lock' =>
 array (
 'type' => 'fixed',
@@ -317,41 +370,6 @@ array (
 array (
 'type' => 'user',
 'key' => 'behavior_payment_refund',
-),
-),
-'media' =>
-array (
-'baseurl' => '/pub/media/paygreen',
-),
-'cache' =>
-array (
-'entries' =>
-array (
-'translations-fr' =>
-array (
-'ttl' => 86400,
-'format' => 'array',
-),
-'translations-en' =>
-array (
-'ttl' => 86400,
-'format' => 'array',
-),
-'account-infos' =>
-array (
-'ttl' => 300,
-'format' => 'object',
-),
-'status-shop' =>
-array (
-'ttl' => 300,
-'format' => 'object',
-),
-'payment-types' =>
-array (
-'ttl' => 3600,
-'format' => 'object',
-),
 ),
 ),
 'listeners' =>
@@ -437,11 +455,6 @@ array (
 array (
 'event' => 'action.backoffice.system.display',
 'service' => 'listener.action.shop_context_backoffice',
-),
-'display_backoffice_static_files' =>
-array (
-'event' => 'output.backoffice',
-'service' => 'listener.page.backoffice_static_files',
 ),
 'display_support_page' =>
 array (
@@ -599,32 +612,6 @@ array (
 'method' => 'saveOrderHistory',
 'priority' => 250,
 ),
-'display_payment_success_message' =>
-array (
-'event' => 'output.display_success_message',
-'service' => 'listener.payment.display_success_message',
-'method' => 'display',
-'priority' => 60,
-),
-'display_carbon_offset' =>
-array (
-'event' => 'output.display_success_message',
-'service' => 'listener.tree.display_carbon_offset',
-'method' => 'display',
-'priority' => 65,
-),
-),
-'translator' =>
-array (
-'sources' =>
-array (
-0 => 'bundles-resources',
-1 => 'module-resources',
-),
-),
-'setup' =>
-array (
-'older' => null,
 ),
 'static' =>
 array (
@@ -642,447 +629,6 @@ array (
 ),
 'module' => 'Paygreen_Payment',
 'folder' => 'static',
-),
-'database' =>
-array (
-'entities' =>
-array (
-'setting' =>
-array (
-'class' => 'PGModuleEntitiesSetting',
-'table' => 'paygreen_settings',
-'primary' => 'id',
-'fields' =>
-array (
-'id' =>
-array (
-'type' => 'int',
-),
-'id_shop' =>
-array (
-'type' => 'string',
-'default' => null,
-),
-'name' =>
-array (
-'type' => 'string',
-),
-'value' =>
-array (
-'type' => 'string',
-),
-),
-),
-'translation' =>
-array (
-'class' => 'PGIntlEntitiesTranslation',
-'table' => 'paygreen_translations',
-'primary' => 'id',
-'fields' =>
-array (
-'id' =>
-array (
-'type' => 'int',
-),
-'id_shop' =>
-array (
-'type' => 'string',
-'default' => null,
-),
-'code' =>
-array (
-'type' => 'string',
-),
-'language' =>
-array (
-'type' => 'string',
-),
-'text' =>
-array (
-'type' => 'string',
-),
-),
-),
-'button' =>
-array (
-'class' => 'PGPaymentEntitiesButton',
-'table' => 'paygreen_buttons',
-'primary' => 'id',
-'fields' =>
-array (
-'id' =>
-array (
-'type' => 'int',
-),
-'image' =>
-array (
-'type' => 'string',
-),
-'height' =>
-array (
-'type' => 'int',
-),
-'position' =>
-array (
-'type' => 'int',
-),
-'displayType' =>
-array (
-'type' => 'string',
-),
-'integration' =>
-array (
-'type' => 'string',
-),
-'maxAmount' =>
-array (
-'type' => 'int',
-),
-'minAmount' =>
-array (
-'type' => 'int',
-),
-'filtered_category_mode' =>
-array (
-'type' => 'string',
-'default' => 'NONE',
-),
-'filtered_category_primaries' =>
-array (
-'type' => 'array',
-'default' =>
-array (
-),
-),
-'paymentMode' =>
-array (
-'type' => 'string',
-),
-'paymentType' =>
-array (
-'type' => 'string',
-),
-'firstPaymentPart' =>
-array (
-'type' => 'string',
-),
-'paymentNumber' =>
-array (
-'type' => 'int',
-),
-'paymentReport' =>
-array (
-'type' => 'string',
-),
-'discount' =>
-array (
-'type' => 'string',
-),
-'orderRepeated' =>
-array (
-'type' => 'bool',
-),
-'id_shop' =>
-array (
-'type' => 'int',
-),
-),
-),
-'lock' =>
-array (
-'class' => 'PGPaymentEntitiesLock',
-'table' => 'paygreen_transaction_locks',
-'primary' => 'id',
-'fields' =>
-array (
-'id' =>
-array (
-'type' => 'int',
-),
-'pid' =>
-array (
-'type' => 'string',
-),
-'locked_at' =>
-array (
-'type' => 'datetime',
-),
-),
-),
-'category_has_payment' =>
-array (
-'class' => 'PGPaymentEntitiesCategoryHasPaymentType',
-'table' => 'paygreen_categories_has_payments',
-'primary' => 'id',
-'fields' =>
-array (
-'id' =>
-array (
-'type' => 'int',
-),
-'id_category' =>
-array (
-'type' => 'string',
-),
-'payment' =>
-array (
-'type' => 'string',
-),
-'id_shop' =>
-array (
-'type' => 'int',
-),
-),
-),
-'transaction' =>
-array (
-'class' => 'PGPaymentEntitiesTransaction',
-'table' => 'paygreen_transactions',
-'primary' => 'id',
-'fields' =>
-array (
-'id' =>
-array (
-'type' => 'int',
-),
-'pid' =>
-array (
-'type' => 'string',
-),
-'id_order' =>
-array (
-'type' => 'string',
-),
-'state' =>
-array (
-'type' => 'string',
-),
-'mode' =>
-array (
-'type' => 'string',
-),
-'amount' =>
-array (
-'type' => 'int',
-),
-'created_at' =>
-array (
-'type' => 'datetime',
-),
-),
-),
-'recurring_transaction' =>
-array (
-'class' => 'PGPaymentEntitiesRecurringTransaction',
-'table' => 'paygreen_recurring_transaction',
-'primary' => 'id',
-'fields' =>
-array (
-'id' =>
-array (
-'type' => 'int',
-),
-'pid' =>
-array (
-'type' => 'string',
-),
-'id_order' =>
-array (
-'type' => 'string',
-),
-'state' =>
-array (
-'type' => 'string',
-),
-'state_order_before' =>
-array (
-'type' => 'string',
-),
-'state_order_after' =>
-array (
-'type' => 'string',
-),
-'mode' =>
-array (
-'type' => 'string',
-),
-'amount' =>
-array (
-'type' => 'int',
-),
-'rank' =>
-array (
-'type' => 'int',
-),
-'created_at' =>
-array (
-'type' => 'datetime',
-),
-),
-),
-'processing' =>
-array (
-'class' => 'PGPaymentEntitiesProcessing',
-'table' => 'paygreen_processing',
-'primary' => 'id',
-'fields' =>
-array (
-'id' =>
-array (
-'type' => 'int',
-),
-'id_shop' =>
-array (
-'type' => 'int',
-),
-'reference' =>
-array (
-'type' => 'string',
-),
-'success' =>
-array (
-'type' => 'string',
-),
-'status' =>
-array (
-'type' => 'string',
-),
-'pid' =>
-array (
-'type' => 'string',
-),
-'pid_status' =>
-array (
-'type' => 'string',
-),
-'created_at' =>
-array (
-'type' => 'datetime',
-),
-'echoes' =>
-array (
-'type' => 'array',
-'default' =>
-array (
-),
-),
-'amount' =>
-array (
-'type' => 'int',
-),
-'id_order' =>
-array (
-'type' => 'string',
-),
-'state_from' =>
-array (
-'type' => 'string',
-),
-'state_to' =>
-array (
-'type' => 'string',
-),
-),
-),
-'fingerprint' =>
-array (
-'table' => 'paygreen_fingerprint',
-),
-'carbon_data' =>
-array (
-'class' => 'PGTreeEntitiesCarbonData',
-'table' => 'paygreen_carbon_data',
-'primary' => 'id',
-'fields' =>
-array (
-'id' =>
-array (
-'type' => 'int',
-),
-'id_order' =>
-array (
-'type' => 'int',
-),
-'id_user' =>
-array (
-'type' => 'int',
-),
-'id_fingerprint' =>
-array (
-'type' => 'string',
-),
-'footprint' =>
-array (
-'type' => 'float',
-),
-'carbon_offset' =>
-array (
-'type' => 'float',
-),
-'created_at' =>
-array (
-'type' => 'datetime',
-),
-),
-),
-),
-),
-'outputs' =>
-array (
-'payment_footer' =>
-array (
-'target' => 'footer',
-'builder' => 'payment_footer',
-'clean' => true,
-'requirements' =>
-array (
-'footer_displayed' => true,
-),
-),
-'success_payment_message' =>
-array (
-'target' => 'FUNNEL.CONFIRMATION',
-'builder' => 'success_payment_message',
-'clean' => true,
-'requirements' =>
-array (
-'payment_activation' => true,
-'payment_kit_activation' => true,
-),
-),
-'carbon_bot' =>
-array (
-'target' => 'FRONT',
-'builder' => 'carbon_bot',
-'clean' => true,
-'requirements' =>
-array (
-'tree_activation' => true,
-'tree_bot_activation' => true,
-),
-),
-'carbon_footprint' =>
-array (
-'target' => 'funnel.confirmation',
-'builder' => 'carbon_footprint',
-'clean' => true,
-'requirements' =>
-array (
-'tree_activation' => true,
-'tree_connexion' => true,
-),
-),
-'carbon_bot_css' =>
-array (
-'target' => 'FRONT',
-'builder' => 'carbon_bot_css',
-'clean' => true,
-'requirements' =>
-array (
-'tree_activation' => true,
-'tree_bot_activation' => true,
-),
-),
 ),
 'translations' =>
 array (
@@ -1199,6 +745,10 @@ array (
 'en' => 'Find out more about our commitments',
 ),
 ),
+),
+'setup' =>
+array (
+'older' => null,
 ),
 'upgrades' =>
 array (
@@ -1362,6 +912,22 @@ array (
 ),
 ),
 ),
+'2_2_0_insite_payment_upgrade' =>
+array (
+'version' => '2.2.0',
+'type' => 'insite_payment',
+'priority' => 200,
+),
+'2_2_0_remove_integration' =>
+array (
+'version' => '2.2.0',
+'type' => 'database',
+'priority' => 250,
+'config' =>
+array (
+'script' => 'PGPayment:button/005-remove-integration.sql',
+),
+),
 '2_1_0_creation_carbon_data_table' =>
 array (
 'version' => '2.1.0',
@@ -1436,6 +1002,80 @@ array (
 ),
 ),
 ),
+'outputs' =>
+array (
+'back_office_paygreen' =>
+array (
+'target' => 'BACK.PAYGREEN',
+'builder' => 'back_office_paygreen',
+'clean' => false,
+),
+'front_office_paygreen' =>
+array (
+'target' => 'FRONT.PAYGREEN',
+'builder' => 'front_office_paygreen',
+'clean' => false,
+),
+'success_payment_message' =>
+array (
+'target' => 'FRONT.FUNNEL.CONFIRMATION',
+'builder' => 'success_payment_message',
+'clean' => true,
+'requirements' =>
+array (
+'payment_activation' => true,
+'payment_kit_activation' => true,
+),
+),
+'payment_footer' =>
+array (
+'target' => 'FRONT.HOME.FOOTER',
+'builder' => 'payment_footer',
+'clean' => true,
+'requirements' =>
+array (
+'footer_displayed' => true,
+),
+),
+'carbon_footprint' =>
+array (
+'target' => 'FRONT.FUNNEL.CONFIRMATION',
+'builder' => 'carbon_footprint',
+'clean' => true,
+'requirements' =>
+array (
+'tree_activation' => true,
+'tree_connexion' => true,
+),
+),
+'carbon_bot' =>
+array (
+'target' => 'FRONT.HEAD',
+'builder' => 'carbon_bot',
+'clean' => true,
+'requirements' =>
+array (
+'tree_activation' => true,
+'tree_bot_activation' => true,
+),
+),
+'frontoffice_override_css' =>
+array (
+'target' => 'FRONT.HEAD',
+'builder' => 'frontoffice_override_css',
+),
+'carbon_bot_css' =>
+array (
+'target' => 'FRONT.HEAD',
+'builder' => 'carbon_bot_css',
+'clean' => true,
+'requirements' =>
+array (
+'tree_activation' => true,
+'tree_bot_activation' => true,
+),
+),
+),
 'log' =>
 array (
 'format' => '<datetime> | *<type>* | <text>',
@@ -1456,6 +1096,390 @@ array (
 'file' => 'log:/api.log',
 ),
 ),
+'database' =>
+array (
+'entities' =>
+array (
+'setting' =>
+array (
+'class' => 'PGI\\Module\\PGModule\\Entities\\Setting',
+'table' => 'paygreen_settings',
+'primary' => 'id',
+'fields' =>
+array (
+'id' =>
+array (
+'type' => 'int',
+),
+'id_shop' =>
+array (
+'type' => 'string',
+'default' => null,
+),
+'name' =>
+array (
+'type' => 'string',
+),
+'value' =>
+array (
+'type' => 'string',
+),
+),
+),
+'translation' =>
+array (
+'class' => 'PGI\\Module\\PGIntl\\Entities\\Translation',
+'table' => 'paygreen_translations',
+'primary' => 'id',
+'fields' =>
+array (
+'id' =>
+array (
+'type' => 'int',
+),
+'id_shop' =>
+array (
+'type' => 'string',
+'default' => null,
+),
+'code' =>
+array (
+'type' => 'string',
+),
+'language' =>
+array (
+'type' => 'string',
+),
+'text' =>
+array (
+'type' => 'string',
+),
+),
+),
+'button' =>
+array (
+'class' => 'PGI\\Module\\PGPayment\\Entities\\Button',
+'table' => 'paygreen_buttons',
+'primary' => 'id',
+'fields' =>
+array (
+'id' =>
+array (
+'type' => 'int',
+),
+'image' =>
+array (
+'type' => 'string',
+),
+'height' =>
+array (
+'type' => 'int',
+),
+'position' =>
+array (
+'type' => 'int',
+),
+'displayType' =>
+array (
+'type' => 'string',
+),
+'integration' =>
+array (
+'type' => 'string',
+),
+'maxAmount' =>
+array (
+'type' => 'int',
+),
+'minAmount' =>
+array (
+'type' => 'int',
+),
+'filtered_category_mode' =>
+array (
+'type' => 'string',
+'default' => 'NONE',
+),
+'filtered_category_primaries' =>
+array (
+'type' => 'array',
+'default' =>
+array (
+),
+),
+'paymentMode' =>
+array (
+'type' => 'string',
+),
+'paymentType' =>
+array (
+'type' => 'string',
+),
+'firstPaymentPart' =>
+array (
+'type' => 'string',
+),
+'paymentNumber' =>
+array (
+'type' => 'int',
+),
+'paymentReport' =>
+array (
+'type' => 'string',
+),
+'discount' =>
+array (
+'type' => 'string',
+),
+'orderRepeated' =>
+array (
+'type' => 'bool',
+),
+'id_shop' =>
+array (
+'type' => 'int',
+),
+),
+),
+'lock' =>
+array (
+'class' => 'PGI\\Module\\PGPayment\\Entities\\Lock',
+'table' => 'paygreen_transaction_locks',
+'primary' => 'id',
+'fields' =>
+array (
+'id' =>
+array (
+'type' => 'int',
+),
+'pid' =>
+array (
+'type' => 'string',
+),
+'locked_at' =>
+array (
+'type' => 'datetime',
+),
+),
+),
+'category_has_payment' =>
+array (
+'class' => 'PGI\\Module\\PGPayment\\Entities\\CategoryHasPaymentType',
+'table' => 'paygreen_categories_has_payments',
+'primary' => 'id',
+'fields' =>
+array (
+'id' =>
+array (
+'type' => 'int',
+),
+'id_category' =>
+array (
+'type' => 'string',
+),
+'payment' =>
+array (
+'type' => 'string',
+),
+'id_shop' =>
+array (
+'type' => 'int',
+),
+),
+),
+'transaction' =>
+array (
+'class' => 'PGI\\Module\\PGPayment\\Entities\\Transaction',
+'table' => 'paygreen_transactions',
+'primary' => 'id',
+'fields' =>
+array (
+'id' =>
+array (
+'type' => 'int',
+),
+'pid' =>
+array (
+'type' => 'string',
+),
+'id_order' =>
+array (
+'type' => 'string',
+),
+'state' =>
+array (
+'type' => 'string',
+),
+'mode' =>
+array (
+'type' => 'string',
+),
+'amount' =>
+array (
+'type' => 'int',
+),
+'created_at' =>
+array (
+'type' => 'datetime',
+),
+),
+),
+'recurring_transaction' =>
+array (
+'class' => 'PGI\\Module\\PGPayment\\Entities\\RecurringTransaction',
+'table' => 'paygreen_recurring_transaction',
+'primary' => 'id',
+'fields' =>
+array (
+'id' =>
+array (
+'type' => 'int',
+),
+'pid' =>
+array (
+'type' => 'string',
+),
+'id_order' =>
+array (
+'type' => 'string',
+),
+'state' =>
+array (
+'type' => 'string',
+),
+'state_order_before' =>
+array (
+'type' => 'string',
+),
+'state_order_after' =>
+array (
+'type' => 'string',
+),
+'mode' =>
+array (
+'type' => 'string',
+),
+'amount' =>
+array (
+'type' => 'int',
+),
+'rank' =>
+array (
+'type' => 'int',
+),
+'created_at' =>
+array (
+'type' => 'datetime',
+),
+),
+),
+'processing' =>
+array (
+'class' => 'PGI\\Module\\PGPayment\\Entities\\Processing',
+'table' => 'paygreen_processing',
+'primary' => 'id',
+'fields' =>
+array (
+'id' =>
+array (
+'type' => 'int',
+),
+'id_shop' =>
+array (
+'type' => 'int',
+),
+'reference' =>
+array (
+'type' => 'string',
+),
+'success' =>
+array (
+'type' => 'string',
+),
+'status' =>
+array (
+'type' => 'string',
+),
+'pid' =>
+array (
+'type' => 'string',
+),
+'pid_status' =>
+array (
+'type' => 'string',
+),
+'created_at' =>
+array (
+'type' => 'datetime',
+),
+'echoes' =>
+array (
+'type' => 'array',
+'default' =>
+array (
+),
+),
+'amount' =>
+array (
+'type' => 'int',
+),
+'id_order' =>
+array (
+'type' => 'string',
+),
+'state_from' =>
+array (
+'type' => 'string',
+),
+'state_to' =>
+array (
+'type' => 'string',
+),
+),
+),
+'fingerprint' =>
+array (
+'table' => 'paygreen_fingerprint',
+),
+'carbon_data' =>
+array (
+'class' => 'PGI\\Module\\PGTree\\Entities\\CarbonData',
+'table' => 'paygreen_carbon_data',
+'primary' => 'id',
+'fields' =>
+array (
+'id' =>
+array (
+'type' => 'int',
+),
+'id_order' =>
+array (
+'type' => 'int',
+),
+'id_user' =>
+array (
+'type' => 'int',
+),
+'id_fingerprint' =>
+array (
+'type' => 'string',
+),
+'footprint' =>
+array (
+'type' => 'float',
+),
+'carbon_offset' =>
+array (
+'type' => 'float',
+),
+'created_at' =>
+array (
+'type' => 'datetime',
+),
+),
+),
+),
+),
 'db' =>
 array (
 'var' =>
@@ -1464,90 +1488,6 @@ array (
 'engine' => 'innodb',
 ),
 'split' => true,
-),
-'request_builder' =>
-array (
-'default' =>
-array (
-),
-'backoffice' =>
-array (
-'strict' => false,
-),
-'frontoffice' =>
-array (
-'strict' => false,
-),
-),
-'mime_types' =>
-array (
-'aac' => 'audio/aac',
-'abw' => 'application/x-abiword',
-'arc' => 'application/octet-stream',
-'avi' => 'video/x-msvideo',
-'azw' => 'application/vnd.amazon.ebook',
-'bin' => 'application/octet-stream',
-'bz' => 'application/x-bzip',
-'bz2' => 'application/x-bzip2',
-'csh' => 'application/x-csh',
-'css' => 'text/css',
-'csv' => 'text/csv',
-'doc' => 'application/msword',
-'docx' => 'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
-'eot' => 'application/vnd.ms-fontobject',
-'epub' => 'application/epub+zip',
-'gif' => 'image/gif',
-'htm' => 'text/html',
-'html' => 'text/html',
-'ico' => 'image/x-icon',
-'ics' => 'text/calendar',
-'jar' => 'application/java-archive',
-'jpeg' => 'image/jpeg',
-'jpg' => 'image/jpeg',
-'js' => 'application/javascript',
-'json' => 'application/json',
-'log' => 'text/plain',
-'mid' => 'audio/midi',
-'midi' => 'audio/midi',
-'mpeg' => 'video/mpeg',
-'mpkg' => 'application/vnd.apple.installer+xml',
-'odp' => 'application/vnd.oasis.opendocument.presentation',
-'ods' => 'application/vnd.oasis.opendocument.spreadsheet',
-'odt' => 'application/vnd.oasis.opendocument.text',
-'oga' => 'audio/ogg',
-'ogv' => 'video/ogg',
-'ogx' => 'application/ogg',
-'otf' => 'font/otf',
-'png' => 'image/png',
-'pdf' => 'application/pdf',
-'ppt' => 'application/vnd.ms-powerpoint',
-'pptx' => 'application/vnd.openxmlformats-officedocument.presentationml.presentation',
-'rar' => 'application/x-rar-compressed',
-'rtf' => 'application/rtf',
-'sh' => 'application/x-sh',
-'svg' => 'image/svg+xml',
-'swf' => 'application/x-shockwave-flash',
-'tar' => 'application/x-tar',
-'tif' => 'image/tiff',
-'tiff' => 'image/tiff',
-'ts' => 'application/typescript',
-'ttf' => 'font/ttf',
-'vsd' => 'application/vnd.visio',
-'wav' => 'audio/x-wav',
-'weba' => 'audio/webm',
-'webm' => 'video/webm',
-'webp' => 'image/webp',
-'woff' => 'font/woff',
-'woff2' => 'font/woff2',
-'xhtml' => 'application/xhtml+xml',
-'xls' => 'application/vnd.ms-excel',
-'xlsx' => 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
-'xml' => 'application/xml',
-'xul' => 'application/vnd.mozilla.xul+xml',
-'zip' => 'application/zip',
-'3gp' => 'video/3gpp',
-'3g2' => 'video/3gpp2',
-'7z' => 'application/x-7z-compressed',
 ),
 'http_codes' =>
 array (
@@ -1625,6 +1565,90 @@ array (
 511 => 'Network Authentication Required',
 598 => 'Network read timeout error',
 599 => 'Network connect timeout error',
+),
+'mime_types' =>
+array (
+'aac' => 'audio/aac',
+'abw' => 'application/x-abiword',
+'arc' => 'application/octet-stream',
+'avi' => 'video/x-msvideo',
+'azw' => 'application/vnd.amazon.ebook',
+'bin' => 'application/octet-stream',
+'bz' => 'application/x-bzip',
+'bz2' => 'application/x-bzip2',
+'csh' => 'application/x-csh',
+'css' => 'text/css',
+'csv' => 'text/csv',
+'doc' => 'application/msword',
+'docx' => 'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+'eot' => 'application/vnd.ms-fontobject',
+'epub' => 'application/epub+zip',
+'gif' => 'image/gif',
+'htm' => 'text/html',
+'html' => 'text/html',
+'ico' => 'image/x-icon',
+'ics' => 'text/calendar',
+'jar' => 'application/java-archive',
+'jpeg' => 'image/jpeg',
+'jpg' => 'image/jpeg',
+'js' => 'application/javascript',
+'json' => 'application/json',
+'log' => 'text/plain',
+'mid' => 'audio/midi',
+'midi' => 'audio/midi',
+'mpeg' => 'video/mpeg',
+'mpkg' => 'application/vnd.apple.installer+xml',
+'odp' => 'application/vnd.oasis.opendocument.presentation',
+'ods' => 'application/vnd.oasis.opendocument.spreadsheet',
+'odt' => 'application/vnd.oasis.opendocument.text',
+'oga' => 'audio/ogg',
+'ogv' => 'video/ogg',
+'ogx' => 'application/ogg',
+'otf' => 'font/otf',
+'png' => 'image/png',
+'pdf' => 'application/pdf',
+'ppt' => 'application/vnd.ms-powerpoint',
+'pptx' => 'application/vnd.openxmlformats-officedocument.presentationml.presentation',
+'rar' => 'application/x-rar-compressed',
+'rtf' => 'application/rtf',
+'sh' => 'application/x-sh',
+'svg' => 'image/svg+xml',
+'swf' => 'application/x-shockwave-flash',
+'tar' => 'application/x-tar',
+'tif' => 'image/tiff',
+'tiff' => 'image/tiff',
+'ts' => 'application/typescript',
+'ttf' => 'font/ttf',
+'vsd' => 'application/vnd.visio',
+'wav' => 'audio/x-wav',
+'weba' => 'audio/webm',
+'webm' => 'video/webm',
+'webp' => 'image/webp',
+'woff' => 'font/woff',
+'woff2' => 'font/woff2',
+'xhtml' => 'application/xhtml+xml',
+'xls' => 'application/vnd.ms-excel',
+'xlsx' => 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+'xml' => 'application/xml',
+'xul' => 'application/vnd.mozilla.xul+xml',
+'zip' => 'application/zip',
+'3gp' => 'video/3gpp',
+'3g2' => 'video/3gpp2',
+'7z' => 'application/x-7z-compressed',
+),
+'request_builder' =>
+array (
+'default' =>
+array (
+),
+'backoffice' =>
+array (
+'strict' => false,
+),
+'frontoffice' =>
+array (
+'strict' => false,
+),
 ),
 'routing' =>
 array (
@@ -1926,6 +1950,15 @@ array (
 array (
 'shop_context' => true,
 'payment_kit_activation' => true,
+),
+),
+'backoffice.buttons.update_position' =>
+array (
+'target' => 'updateButtonsPosition@backoffice.buttons',
+'requirements' =>
+array (
+'shop_context' => true,
+'paygreen_connexion' => true,
 ),
 ),
 'front.payment.validation' =>
@@ -2429,9 +2462,1200 @@ array (
 ),
 'types' =>
 array (
-'basic' => 'PGFormComponentsField',
-'object' => 'PGFormComponentsFieldObject',
-'collection' => 'PGFormComponentsFieldCollection',
+'basic' => 'PGI\\Module\\PGForm\\Components\\Fields\\Basic',
+'object' => 'PGI\\Module\\PGForm\\Components\\Fields\\Composite',
+'collection' => 'PGI\\Module\\PGForm\\Components\\Fields\\Collection',
+),
+),
+'form' =>
+array (
+'definitions' =>
+array (
+'translations' =>
+array (
+'model' => 'basic',
+'fields' =>
+array (
+),
+'view' =>
+array (
+'data' =>
+array (
+'validate' => 'misc.forms.default.buttons.save',
+),
+),
+),
+'settings_support' =>
+array (
+'model' => 'basic',
+'fields' =>
+array (
+'behavior_detailed_logs' =>
+array (
+'model' => 'bool.switch',
+'view' =>
+array (
+'data' =>
+array (
+'label' => 'forms.settings_support.fields.detailed_logs.label',
+'help' => 'forms.settings_support.fields.detailed_logs.help',
+),
+),
+),
+),
+'view' =>
+array (
+'data' =>
+array (
+'validate' => 'misc.forms.default.buttons.save',
+),
+),
+),
+'authentication' =>
+array (
+'model' => 'basic',
+'fields' =>
+array (
+'public_key' =>
+array (
+'model' => 'string',
+'required' => true,
+'validators' =>
+array (
+'regexp' =>
+array (
+'format' => '/^(PP|SB)?[a-f0-9]{32}$/',
+'error' => 'forms.authentication.errors.identifier_bad_format',
+),
+),
+'view' =>
+array (
+'data' =>
+array (
+'label' => 'forms.authentication.fields.shop_token.label',
+'attr' =>
+array (
+'maxlength' => 34,
+'size' => 34,
+),
+),
+),
+),
+'private_key' =>
+array (
+'model' => 'string',
+'required' => true,
+'validators' =>
+array (
+'regexp' =>
+array (
+'format' => '/^[a-f0-9]{4}\\-[a-f0-9]{4}\\-[a-f0-9]{4}\\-[a-f0-9]{12}$/',
+'error' => 'forms.authentication.errors.private_key_bad_format',
+),
+),
+'view' =>
+array (
+'data' =>
+array (
+'label' => 'forms.authentication.fields.private_key.label',
+'attr' =>
+array (
+'maxlength' => 27,
+'size' => 34,
+),
+),
+),
+),
+),
+'view' =>
+array (
+'data' =>
+array (
+'validate' => 'misc.forms.default.buttons.save',
+),
+),
+),
+'products' =>
+array (
+'fields' =>
+array (
+'payment_kit_activation' =>
+array (
+'enabled' => true,
+'model' => 'bool.switch',
+'view' =>
+array (
+'data' =>
+array (
+'label' => 'forms.products.fields.payment_kit_activation.label',
+'help' => 'forms.products.fields.payment_kit_activation.help',
+),
+),
+),
+'tree_kit_activation' =>
+array (
+'enabled' => true,
+'model' => 'bool.switch',
+'view' =>
+array (
+'data' =>
+array (
+'label' => 'forms.products.fields.tree_kit_activation.label',
+'help' => 'forms.products.fields.tree_kit_activation.help',
+),
+),
+),
+),
+),
+'config' =>
+array (
+'model' => 'basic',
+'fields' =>
+array (
+'admin_only_visibility' =>
+array (
+'model' => 'choice.expanded.single',
+'format' => 'int',
+'view' =>
+array (
+'data' =>
+array (
+'choices' =>
+array (
+0 => 'forms.config.fields.visibility.values.no',
+1 => 'forms.config.fields.visibility.values.yes',
+),
+'translate' => true,
+'label' => 'forms.config.fields.visibility.label',
+'help' => 'forms.config.fields.visibility.help',
+),
+),
+'enabled' => false,
+),
+'cancel_order_on_refused_payment' =>
+array (
+'model' => 'choice.expanded.single',
+'format' => 'int',
+'view' =>
+array (
+'data' =>
+array (
+'choices' =>
+array (
+0 => 'forms.config.fields.behavior_payment_refused.values.no',
+1 => 'forms.config.fields.behavior_payment_refused.values.yes',
+),
+'translate' => true,
+'label' => 'forms.config.fields.behavior_payment_refused.label',
+'help' => 'forms.config.fields.behavior_payment_refused.help',
+),
+),
+'enabled' => false,
+),
+'behavior_payment_refund' =>
+array (
+'model' => 'bool.switch',
+'view' =>
+array (
+'data' =>
+array (
+'label' => 'forms.config.fields.behavior_transmit_refund.label',
+'help' => 'forms.config.fields.behavior_transmit_refund.help',
+),
+),
+),
+'behavior_delivery_confirmation' =>
+array (
+'model' => 'bool.switch',
+'view' =>
+array (
+'data' =>
+array (
+'label' => 'forms.config.fields.behavior_transmit_delivering.label',
+'help' => 'forms.config.fields.behavior_transmit_delivering.help',
+),
+),
+'enabled' => false,
+),
+'behavior_payment_insite' =>
+array (
+'model' => 'choice.expanded.single',
+'format' => 'int',
+'view' =>
+array (
+'data' =>
+array (
+'choices' =>
+array (
+0 => 'forms.config.fields.behavior_payment_insite.values.external',
+1 => 'forms.config.fields.behavior_payment_insite.values.insite',
+),
+'translate' => true,
+'label' => 'forms.config.fields.behavior_payment_insite.label',
+'help' => 'forms.config.fields.behavior_payment_insite.help',
+),
+),
+),
+'regenerate_cart_on_cancelled_payment' =>
+array (
+'model' => 'bool.switch',
+'view' =>
+array (
+'data' =>
+array (
+'label' => 'forms.config.fields.regenerate_cart_on_cancelled_payment.label',
+'help' => 'forms.config.fields.regenerate_cart_on_cancelled_payment.help',
+),
+),
+),
+'regenerate_cart_on_refused_payment' =>
+array (
+'model' => 'bool.switch',
+'view' =>
+array (
+'data' =>
+array (
+'label' => 'forms.config.fields.regenerate_cart_on_refused_payment.label',
+'help' => 'forms.config.fields.regenerate_cart_on_refused_payment.help',
+),
+),
+),
+),
+'view' =>
+array (
+'data' =>
+array (
+'validate' => 'misc.forms.default.buttons.save',
+),
+),
+),
+'button_filters' =>
+array (
+'model' => 'multipart',
+'fields' =>
+array (
+'id' =>
+array (
+'model' => 'hidden',
+'format' => 'int',
+'required' => true,
+'validators' =>
+array (
+'not_empty' =>
+array (
+'error' => 'forms.button.errors.id_not_found',
+),
+),
+),
+'categories_filtering_mode' =>
+array (
+'model' => 'choice.contracted.single',
+'validators' =>
+array (
+'array.in' =>
+array (
+0 => 'NONE',
+1 => 'STRICT',
+2 => 'FLEXIBLE',
+),
+),
+'view' =>
+array (
+'data' =>
+array (
+'choices' =>
+array (
+'NONE' => 'forms.button_filters.fields.categories_filtering_mode.values.NONE',
+'STRICT' => 'forms.button_filters.fields.categories_filtering_mode.values.STRICT',
+'FLEXIBLE' => 'forms.button_filters.fields.categories_filtering_mode.values.FLEXIBLE',
+),
+'translate' => true,
+'label' => 'forms.button_filters.fields.categories_filtering_mode.label',
+'help' => 'forms.button_filters.fields.categories_filtering_mode.help',
+),
+),
+),
+'filtered_categories' =>
+array (
+'model' => 'choice.double.bool',
+'default' =>
+array (
+),
+'view' =>
+array (
+'data' =>
+array (
+'horizontal_choices' =>
+array (
+0 => 'forms.button_filters.fields.filtered_categories.column',
+),
+'vertical_choices' => 'category.hierarchized',
+'axis' => 'vertical',
+'filterPlaceholder' => 'forms.button_filters.fields.search.placeholder',
+'translate' =>
+array (
+'horizontal_choices' => true,
+),
+'label' => 'forms.button_filters.fields.filtered_categories.label',
+'help' => 'forms.button_filters.fields.filtered_categories.help',
+),
+),
+),
+'cart_amount_limits' =>
+array (
+'model' => 'object',
+'children' =>
+array (
+'min' =>
+array (
+'model' => 'int',
+'default' => 0,
+'view' =>
+array (
+'data' =>
+array (
+'attr' =>
+array (
+'min' => 0,
+),
+),
+'template' => 'fields/partials/input',
+),
+),
+'max' =>
+array (
+'model' => 'int',
+'default' => 0,
+'view' =>
+array (
+'data' =>
+array (
+'attr' =>
+array (
+'min' => 0,
+),
+),
+'template' => 'fields/partials/input',
+),
+),
+),
+'view' =>
+array (
+'name' => 'field.object',
+'data' =>
+array (
+'label' => 'forms.button_filters.fields.cart_amount.label',
+'class' => null,
+'help' => 'forms.button_filters.fields.cart_amount.helper',
+'warning' => 'errors.button.min_amount_greater_than_max_amount',
+),
+'template' => 'fields/bloc-range',
+),
+),
+),
+'view' =>
+array (
+'data' =>
+array (
+'validate' => 'misc.forms.default.buttons.save',
+'columns' =>
+array (
+'categories_filtering' =>
+array (
+0 => 'categories_filtering_mode',
+1 => 'filtered_categories',
+),
+'other_filtering' =>
+array (
+0 => 'cart_amount_limits',
+1 => 'form_key',
+),
+),
+),
+'template' => 'forms/button_filters',
+),
+),
+'button' =>
+array (
+'model' => 'multipart',
+'fields' =>
+array (
+'label' =>
+array (
+'model' => 'collection.translations',
+'view' =>
+array (
+'data' =>
+array (
+'label' => 'forms.button.fields.label.label',
+),
+),
+),
+'payment_type' =>
+array (
+'model' => 'choice.contracted.single',
+'default' => 'CB',
+'validators' =>
+array (
+'array.in' => 'payment_type',
+),
+'view' =>
+array (
+'data' =>
+array (
+'choices' => 'payment_type',
+'label' => 'forms.button.fields.payment_type.label',
+),
+),
+),
+'display_type' =>
+array (
+'model' => 'choice.expanded.single',
+'default' => 'DEFAULT',
+'validators' =>
+array (
+'array.in' => 'display_type',
+),
+'view' =>
+array (
+'data' =>
+array (
+'choices' => 'display_type',
+'translate' => true,
+'label' => 'forms.button.fields.display_type.label',
+),
+),
+),
+'picture' =>
+array (
+'model' => 'object',
+'children' =>
+array (
+'image' =>
+array (
+'type' => 'basic',
+'format' => 'string',
+'view' =>
+array (
+'name' => 'field',
+'data' =>
+array (
+'attr' =>
+array (
+'type' => 'file',
+),
+),
+'template' => 'fields/partials/input',
+),
+),
+'reset' =>
+array (
+'type' => 'basic',
+'format' => 'bool',
+'view' =>
+array (
+'name' => 'field.bool.checkbox',
+'data' =>
+array (
+'label' => 'forms.button.fields.image.default',
+'translate' => true,
+'attr' =>
+array (
+'type' => 'checkbox',
+),
+),
+'template' => 'fields/partials/radio-check',
+),
+),
+),
+'view' =>
+array (
+'name' => 'field.picture',
+'data' =>
+array (
+'class' => null,
+'label' => 'forms.button.fields.image.label',
+),
+'template' => 'fields/bloc-picture',
+),
+),
+'height' =>
+array (
+'model' => 'int',
+'default' => 60,
+'view' =>
+array (
+'data' =>
+array (
+'label' => 'forms.button.fields.height.label',
+'help' => 'forms.button.fields.height.helper',
+'append' => 'forms.button.fields.height.append',
+'attr' =>
+array (
+'min' => 0,
+),
+),
+),
+),
+'payment_mode' =>
+array (
+'model' => 'choice.expanded.single',
+'default' => 'CASH',
+'validators' =>
+array (
+'array.in' => 'payment_mode',
+),
+'view' =>
+array (
+'data' =>
+array (
+'choices' => 'payment_mode',
+'label' => 'forms.button.fields.payment_mode.label',
+),
+),
+),
+'payment_number' =>
+array (
+'model' => 'int',
+'default' => 1,
+'view' =>
+array (
+'data' =>
+array (
+'label' => 'forms.button.fields.payment_number.label',
+'warning' => 'forms.button.fields.payment_number.warning',
+'attr' =>
+array (
+'min' => 1,
+),
+'class' => 'js-hidden-field-togglable',
+),
+),
+),
+'first_payment_part' =>
+array (
+'model' => 'int',
+'default' => 0,
+'view' =>
+array (
+'data' =>
+array (
+'label' => 'forms.button.fields.first_payment_part.label',
+'help' => 'forms.button.fields.first_payment_part.helper',
+'append' => 'forms.button.fields.first_payment_part.append',
+'class' => 'js-hidden-field-togglable',
+'attr' =>
+array (
+'min' => 0,
+'max' => 100,
+),
+),
+),
+),
+'payment_report' =>
+array (
+'model' => 'choice.contracted.single',
+'default' => 0,
+'validators' =>
+array (
+'array.in' => 'payment_report',
+),
+'view' =>
+array (
+'data' =>
+array (
+'choices' => 'payment_report',
+'translate' => true,
+'label' => 'forms.button.fields.payment_report.label',
+'help' => 'forms.button.fields.payment_report.helper',
+'class' => 'js-hidden-field-togglable',
+),
+),
+),
+'order_repeated' =>
+array (
+'model' => 'bool',
+'default' => false,
+'enabled' => false,
+'view' =>
+array (
+'data' =>
+array (
+'label' => 'forms.button.fields.order_repeated.label',
+'help' => 'forms.button.fields.order_repeated.helper',
+'class' => 'js-hidden-field-togglable',
+),
+),
+),
+),
+'view' =>
+array (
+'data' =>
+array (
+'validate' => 'misc.forms.default.buttons.save',
+'columns' =>
+array (
+'appearance' =>
+array (
+0 => 'display_type',
+1 => 'label',
+2 => 'picture',
+3 => 'height',
+),
+'payment' =>
+array (
+0 => 'payment_type',
+),
+'other' =>
+array (
+0 => 'payment_mode',
+1 => 'payment_number',
+2 => 'first_payment_part',
+3 => 'order_repeated',
+4 => 'payment_report',
+5 => 'form_key',
+),
+),
+),
+'template' => 'forms/button',
+),
+),
+'settings_customization' =>
+array (
+'model' => 'basic',
+'fields' =>
+array (
+'footer_display' =>
+array (
+'model' => 'bool.switch',
+'view' =>
+array (
+'data' =>
+array (
+'label' => 'forms.config.fields.behavior_display_footer.label',
+'help' => 'forms.config.fields.behavior_display_footer.help',
+),
+),
+'enabled' => false,
+),
+'footer_color' =>
+array (
+'model' => 'choice.contracted.single',
+'validators' =>
+array (
+'array.in' =>
+array (
+0 => 'white',
+1 => 'green',
+2 => 'black',
+),
+),
+'view' =>
+array (
+'data' =>
+array (
+'choices' =>
+array (
+'white' => 'forms.config.fields.display_footer_color.values.white',
+'green' => 'forms.config.fields.display_footer_color.values.green',
+'black' => 'forms.config.fields.display_footer_color.values.black',
+),
+'translate' => true,
+'label' => 'forms.config.fields.display_footer_color.label',
+),
+),
+'enabled' => false,
+),
+),
+'view' =>
+array (
+'data' =>
+array (
+'validate' => 'misc.forms.default.buttons.save',
+),
+),
+),
+'button_update' =>
+array (
+'extends' => 'button',
+'fields' =>
+array (
+'id' =>
+array (
+'model' => 'hidden',
+'format' => 'int',
+'required' => true,
+'validators' =>
+array (
+'not_empty' =>
+array (
+'error' => 'forms.button.errors.id_not_found',
+),
+),
+),
+),
+),
+'account_activation' =>
+array (
+'model' => 'basic',
+'fields' =>
+array (
+'activation' =>
+array (
+'model' => 'bool.switch',
+'view' =>
+array (
+'data' =>
+array (
+'label' => 'forms.account_activation.fields.activation.label',
+'help' => 'forms.account_activation.fields.activation.help',
+),
+),
+),
+),
+'view' =>
+array (
+'data' =>
+array (
+'validate' => 'misc.forms.default.buttons.save',
+),
+),
+),
+'exclusion_shipping_cost' =>
+array (
+'model' => 'basic',
+'fields' =>
+array (
+'payment_types' =>
+array (
+'model' => 'choice.expanded.multiple',
+'default' =>
+array (
+),
+'view' =>
+array (
+'data' =>
+array (
+'choices' => 'payment_type',
+'label' => 'forms.exclusion_shipping_cost.fields.label.label',
+),
+),
+),
+),
+'view' =>
+array (
+'data' =>
+array (
+'validate' => 'misc.forms.default.buttons.save',
+),
+),
+),
+'eligible_amounts' =>
+array (
+'model' => 'basic',
+'fields' =>
+array (
+'eligible_amounts' =>
+array (
+'model' => 'choice.double.bool',
+'default' =>
+array (
+),
+'view' =>
+array (
+'data' =>
+array (
+'horizontal_choices' => 'payment_type',
+'vertical_choices' => 'category.hierarchized',
+'axis' => 'vertical',
+'filterPlaceholder' => 'forms.eligible_amounts.fields.search.placeholder',
+),
+),
+),
+),
+'view' =>
+array (
+'data' =>
+array (
+'validate' => 'misc.forms.default.buttons.save',
+),
+),
+),
+'tree_shipping_address' =>
+array (
+'model' => 'basic',
+'fields' =>
+array (
+'shipping_address_line_1' =>
+array (
+'model' => 'string',
+'required' => true,
+'view' =>
+array (
+'data' =>
+array (
+'label' => 'forms.tree_shipping_address.fields.line_1.label',
+),
+),
+),
+'shipping_address_line_2' =>
+array (
+'model' => 'string',
+'required' => false,
+'view' =>
+array (
+'data' =>
+array (
+'label' => 'forms.tree_shipping_address.fields.line_2.label',
+),
+),
+),
+'shipping_address_zipcode' =>
+array (
+'model' => 'string',
+'required' => true,
+'view' =>
+array (
+'data' =>
+array (
+'label' => 'forms.tree_shipping_address.fields.zipcode.label',
+),
+),
+),
+'shipping_address_city' =>
+array (
+'model' => 'string',
+'required' => true,
+'view' =>
+array (
+'data' =>
+array (
+'label' => 'forms.tree_shipping_address.fields.city.label',
+),
+),
+),
+'shipping_address_country' =>
+array (
+'model' => 'choice.contracted.single',
+'validators' =>
+array (
+'array.in' => 'countries',
+),
+'required' => true,
+'view' =>
+array (
+'data' =>
+array (
+'choices' => 'countries',
+'translate' => true,
+'label' => 'forms.tree_shipping_address.fields.country.label',
+),
+),
+),
+),
+'view' =>
+array (
+'data' =>
+array (
+'validate' => 'misc.forms.default.buttons.save',
+),
+),
+),
+'tree_bot' =>
+array (
+'model' => 'basic',
+'fields' =>
+array (
+'tree_bot_color' =>
+array (
+'model' => 'colorpicker',
+'view' =>
+array (
+'data' =>
+array (
+'label' => 'forms.tree_bot.fields.tree_bot_color.label',
+'help' => 'forms.tree_bot.fields.tree_bot_color.help',
+),
+),
+),
+'tree_bot_side' =>
+array (
+'model' => 'choice.contracted.single',
+'validators' =>
+array (
+'array.in' =>
+array (
+0 => 'LEFT',
+1 => 'RIGHT',
+),
+),
+'view' =>
+array (
+'data' =>
+array (
+'translate' => true,
+'choices' =>
+array (
+'LEFT' => 'forms.tree_bot.fields.tree_bot_side.choices.LEFT',
+'RIGHT' => 'forms.tree_bot.fields.tree_bot_side.choices.RIGHT',
+),
+'label' => 'forms.tree_bot.fields.tree_bot_side.label',
+'help' => 'forms.tree_bot.fields.tree_bot_side.help',
+),
+),
+),
+'tree_bot_corner' =>
+array (
+'model' => 'choice.contracted.single',
+'validators' =>
+array (
+'array.in' =>
+array (
+0 => 'ROUND',
+1 => 'SQUARE',
+),
+),
+'view' =>
+array (
+'data' =>
+array (
+'translate' => true,
+'choices' =>
+array (
+'ROUND' => 'forms.tree_bot.fields.tree_bot_corner.choices.ROUND',
+'SQUARE' => 'forms.tree_bot.fields.tree_bot_corner.choices.SQUARE',
+),
+'label' => 'forms.tree_bot.fields.tree_bot_corner.label',
+'help' => 'forms.tree_bot.fields.tree_bot_corner.help',
+),
+),
+),
+'tree_bot_details_activated' =>
+array (
+'model' => 'bool.switch',
+'view' =>
+array (
+'data' =>
+array (
+'label' => 'forms.tree_bot.fields.tree_bot_details_activated.label',
+'help' => 'forms.tree_bot.fields.tree_bot_details_activated.help',
+'warning' => 'forms.tree_bot.fields.tree_bot_details_activated.warning',
+),
+),
+),
+),
+'view' =>
+array (
+'data' =>
+array (
+'validate' => 'misc.forms.default.buttons.save',
+),
+),
+),
+'tree_config' =>
+array (
+'model' => 'basic',
+'fields' =>
+array (
+'carbon_offsetting_payer' =>
+array (
+'model' => 'choice.expanded.single',
+'format' => 'string',
+'default' => 'MERCHANT',
+'enabled' => false,
+'view' =>
+array (
+'data' =>
+array (
+'choices' =>
+array (
+'MERCHANT' => 'forms.tree_config.fields.carbon_offsetting_payer.values.MERCHANT',
+'CUSTOMER' => 'forms.tree_config.fields.carbon_offsetting_payer.values.CUSTOMER',
+),
+'attr' =>
+array (
+'disabled' => '',
+),
+'translate' => true,
+'label' => 'forms.tree_config.fields.carbon_offsetting_payer.label',
+'help' => 'forms.tree_config.fields.carbon_offsetting_payer.help',
+'warning' => 'forms.tree_config.fields.carbon_offsetting_payer.warning',
+),
+),
+),
+'tree_api_server' =>
+array (
+'model' => 'choice.contracted.single',
+'validators' =>
+array (
+'array.in' =>
+array (
+0 => 'PROD',
+1 => 'SANDBOX',
+),
+),
+'view' =>
+array (
+'data' =>
+array (
+'choices' =>
+array (
+'PROD' => 'forms.tree_config.fields.tree_api_server.values.PROD',
+'SANDBOX' => 'forms.tree_config.fields.tree_api_server.values.SANDBOX',
+),
+'translate' => true,
+'label' => 'forms.tree_config.fields.tree_api_server.label',
+'help' => 'forms.tree_config.fields.tree_api_server.help',
+),
+),
+),
+'tree_details_url' =>
+array (
+'model' => 'string',
+'view' =>
+array (
+'data' =>
+array (
+'label' => 'forms.tree_config.fields.tree_details_url.label',
+'help' => 'forms.tree_config.fields.tree_details_url.help',
+),
+),
+),
+),
+'view' =>
+array (
+'data' =>
+array (
+'validate' => 'misc.forms.default.buttons.save',
+),
+),
+),
+'carbon_bot_config_global' =>
+array (
+'model' => 'basic',
+'fields' =>
+array (
+'tree_bot_activated' =>
+array (
+'model' => 'bool.switch',
+'view' =>
+array (
+'data' =>
+array (
+'label' => 'forms.carbon_bot_config_global.fields.tree_bot_activated.label',
+'help' => 'forms.carbon_bot_config_global.fields.tree_bot_activated.help',
+),
+),
+),
+'tree_bot_mobile_activated' =>
+array (
+'model' => 'bool.switch',
+'behavior' => 'tree_bot_activation',
+'view' =>
+array (
+'data' =>
+array (
+'label' => 'forms.tree_bot.fields.tree_bot_mobile_activated.label',
+'help' => 'forms.tree_bot.fields.tree_bot_mobile_activated.help',
+),
+),
+),
+),
+'view' =>
+array (
+'data' =>
+array (
+'validate' => 'misc.forms.default.buttons.save',
+),
+),
+),
+'tree_authentication' =>
+array (
+'model' => 'basic',
+'fields' =>
+array (
+'client_id' =>
+array (
+'model' => 'string',
+'required' => true,
+'view' =>
+array (
+'data' =>
+array (
+'label' => 'forms.tree_authentication.fields.client_id.label',
+),
+),
+),
+'login' =>
+array (
+'model' => 'string',
+'required' => true,
+'view' =>
+array (
+'data' =>
+array (
+'label' => 'forms.tree_authentication.fields.login.label',
+),
+),
+),
+'password' =>
+array (
+'model' => 'string',
+'required' => true,
+'view' =>
+array (
+'data' =>
+array (
+'label' => 'forms.tree_authentication.fields.password.label',
+),
+),
+),
+),
+'view' =>
+array (
+'data' =>
+array (
+'validate' => 'misc.forms.default.buttons.save',
+),
+),
+),
+),
+'default' =>
+array (
+),
+'models' =>
+array (
+'basic' =>
+array (
+'view' =>
+array (
+'name' => 'form',
+'data' =>
+array (
+'attr' =>
+array (
+'method' => 'post',
+),
+),
+'template' => 'form',
+),
+),
+'multipart' =>
+array (
+'view' =>
+array (
+'name' => 'form',
+'data' =>
+array (
+'attr' =>
+array (
+'method' => 'post',
+'enctype' => 'multipart/form-data',
+),
+),
+'template' => 'form',
+),
+),
 ),
 ),
 'countries' =>
@@ -2682,1216 +3906,6 @@ array (
 243 => 'ym',
 244 => 'za',
 245 => 'zi',
-),
-'form' =>
-array (
-'definitions' =>
-array (
-'translations' =>
-array (
-'model' => 'basic',
-'fields' =>
-array (
-),
-'view' =>
-array (
-'data' =>
-array (
-'validate' => 'misc.forms.default.buttons.save',
-),
-),
-),
-'settings_support' =>
-array (
-'model' => 'basic',
-'fields' =>
-array (
-'behavior_detailed_logs' =>
-array (
-'model' => 'bool.switch',
-'view' =>
-array (
-'data' =>
-array (
-'label' => 'forms.settings_support.fields.detailed_logs.label',
-'help' => 'forms.settings_support.fields.detailed_logs.help',
-),
-),
-),
-),
-'view' =>
-array (
-'data' =>
-array (
-'validate' => 'misc.forms.default.buttons.save',
-),
-),
-),
-'account_activation' =>
-array (
-'model' => 'basic',
-'fields' =>
-array (
-'activation' =>
-array (
-'model' => 'bool.switch',
-'view' =>
-array (
-'data' =>
-array (
-'label' => 'forms.account_activation.fields.activation.label',
-'help' => 'forms.account_activation.fields.activation.help',
-),
-),
-),
-),
-'view' =>
-array (
-'data' =>
-array (
-'validate' => 'misc.forms.default.buttons.save',
-),
-),
-),
-'authentication' =>
-array (
-'model' => 'basic',
-'fields' =>
-array (
-'public_key' =>
-array (
-'model' => 'string',
-'required' => true,
-'validators' =>
-array (
-'regexp' =>
-array (
-'format' => '/^(PP|SB)?[a-f0-9]{32}$/',
-'error' => 'forms.authentication.errors.identifier_bad_format',
-),
-),
-'view' =>
-array (
-'data' =>
-array (
-'label' => 'forms.authentication.fields.shop_token.label',
-'attr' =>
-array (
-'maxlength' => 34,
-'size' => 34,
-),
-),
-),
-),
-'private_key' =>
-array (
-'model' => 'string',
-'required' => true,
-'validators' =>
-array (
-'regexp' =>
-array (
-'format' => '/^[a-f0-9]{4}\\-[a-f0-9]{4}\\-[a-f0-9]{4}\\-[a-f0-9]{12}$/',
-'error' => 'forms.authentication.errors.private_key_bad_format',
-),
-),
-'view' =>
-array (
-'data' =>
-array (
-'label' => 'forms.authentication.fields.private_key.label',
-'attr' =>
-array (
-'maxlength' => 27,
-'size' => 34,
-),
-),
-),
-),
-),
-'view' =>
-array (
-'data' =>
-array (
-'validate' => 'misc.forms.default.buttons.save',
-),
-),
-),
-'settings_customization' =>
-array (
-'model' => 'basic',
-'fields' =>
-array (
-'footer_display' =>
-array (
-'model' => 'bool.switch',
-'view' =>
-array (
-'data' =>
-array (
-'label' => 'forms.config.fields.behavior_display_footer.label',
-'help' => 'forms.config.fields.behavior_display_footer.help',
-),
-),
-'enabled' => false,
-),
-'footer_color' =>
-array (
-'model' => 'choice.contracted.single',
-'validators' =>
-array (
-'array.in' =>
-array (
-0 => 'white',
-1 => 'green',
-2 => 'black',
-),
-),
-'view' =>
-array (
-'data' =>
-array (
-'choices' =>
-array (
-'white' => 'forms.config.fields.display_footer_color.values.white',
-'green' => 'forms.config.fields.display_footer_color.values.green',
-'black' => 'forms.config.fields.display_footer_color.values.black',
-),
-'translate' => true,
-'label' => 'forms.config.fields.display_footer_color.label',
-),
-),
-'enabled' => false,
-),
-),
-'view' =>
-array (
-'data' =>
-array (
-'validate' => 'misc.forms.default.buttons.save',
-),
-),
-),
-'button_update' =>
-array (
-'extends' => 'button',
-'fields' =>
-array (
-'id' =>
-array (
-'model' => 'hidden',
-'format' => 'int',
-'required' => true,
-'validators' =>
-array (
-'not_empty' =>
-array (
-'error' => 'forms.button.errors.id_not_found',
-),
-),
-),
-),
-),
-'button_filters' =>
-array (
-'model' => 'multipart',
-'fields' =>
-array (
-'id' =>
-array (
-'model' => 'hidden',
-'format' => 'int',
-'required' => true,
-'validators' =>
-array (
-'not_empty' =>
-array (
-'error' => 'forms.button.errors.id_not_found',
-),
-),
-),
-'categories_filtering_mode' =>
-array (
-'model' => 'choice.contracted.single',
-'validators' =>
-array (
-'array.in' =>
-array (
-0 => 'NONE',
-1 => 'STRICT',
-2 => 'FLEXIBLE',
-),
-),
-'view' =>
-array (
-'data' =>
-array (
-'choices' =>
-array (
-'NONE' => 'forms.button_filters.fields.categories_filtering_mode.values.NONE',
-'STRICT' => 'forms.button_filters.fields.categories_filtering_mode.values.STRICT',
-'FLEXIBLE' => 'forms.button_filters.fields.categories_filtering_mode.values.FLEXIBLE',
-),
-'translate' => true,
-'label' => 'forms.button_filters.fields.categories_filtering_mode.label',
-'help' => 'forms.button_filters.fields.categories_filtering_mode.help',
-),
-),
-),
-'filtered_categories' =>
-array (
-'model' => 'choice.double.bool',
-'default' =>
-array (
-),
-'view' =>
-array (
-'data' =>
-array (
-'horizontal_choices' =>
-array (
-0 => 'forms.button_filters.fields.filtered_categories.column',
-),
-'vertical_choices' => 'category.hierarchized',
-'axis' => 'vertical',
-'filterPlaceholder' => 'forms.button_filters.fields.search.placeholder',
-'translate' =>
-array (
-'horizontal_choices' => true,
-),
-'label' => 'forms.button_filters.fields.filtered_categories.label',
-'help' => 'forms.button_filters.fields.filtered_categories.help',
-),
-),
-),
-'cart_amount_limits' =>
-array (
-'model' => 'object',
-'children' =>
-array (
-'min' =>
-array (
-'model' => 'int',
-'default' => 0,
-'view' =>
-array (
-'data' =>
-array (
-'attr' =>
-array (
-'min' => 0,
-),
-),
-'template' => 'fields/partials/input',
-),
-),
-'max' =>
-array (
-'model' => 'int',
-'default' => 0,
-'view' =>
-array (
-'data' =>
-array (
-'attr' =>
-array (
-'min' => 0,
-),
-),
-'template' => 'fields/partials/input',
-),
-),
-),
-'view' =>
-array (
-'name' => 'field.object',
-'data' =>
-array (
-'label' => 'forms.button_filters.fields.cart_amount.label',
-'class' => null,
-'help' => 'forms.button_filters.fields.cart_amount.helper',
-'warning' => 'errors.button.min_amount_greater_than_max_amount',
-),
-'template' => 'fields/bloc-range',
-),
-),
-),
-'view' =>
-array (
-'data' =>
-array (
-'validate' => 'misc.forms.default.buttons.save',
-'columns' =>
-array (
-'categories_filtering' =>
-array (
-0 => 'categories_filtering_mode',
-1 => 'filtered_categories',
-),
-'other_filtering' =>
-array (
-0 => 'cart_amount_limits',
-1 => 'form_key',
-),
-),
-),
-'template' => 'forms/button_filters',
-),
-),
-'products' =>
-array (
-'fields' =>
-array (
-'payment_kit_activation' =>
-array (
-'enabled' => true,
-'model' => 'bool.switch',
-'view' =>
-array (
-'data' =>
-array (
-'label' => 'forms.products.fields.payment_kit_activation.label',
-'help' => 'forms.products.fields.payment_kit_activation.help',
-),
-),
-),
-'tree_kit_activation' =>
-array (
-'enabled' => true,
-'model' => 'bool.switch',
-'view' =>
-array (
-'data' =>
-array (
-'label' => 'forms.products.fields.tree_kit_activation.label',
-'help' => 'forms.products.fields.tree_kit_activation.help',
-),
-),
-),
-),
-),
-'eligible_amounts' =>
-array (
-'model' => 'basic',
-'fields' =>
-array (
-'eligible_amounts' =>
-array (
-'model' => 'choice.double.bool',
-'default' =>
-array (
-),
-'view' =>
-array (
-'data' =>
-array (
-'horizontal_choices' => 'payment_type',
-'vertical_choices' => 'category.hierarchized',
-'axis' => 'vertical',
-'filterPlaceholder' => 'forms.eligible_amounts.fields.search.placeholder',
-),
-),
-),
-),
-'view' =>
-array (
-'data' =>
-array (
-'validate' => 'misc.forms.default.buttons.save',
-),
-),
-),
-'config' =>
-array (
-'model' => 'basic',
-'fields' =>
-array (
-'admin_only_visibility' =>
-array (
-'model' => 'choice.expanded.single',
-'format' => 'int',
-'view' =>
-array (
-'data' =>
-array (
-'choices' =>
-array (
-0 => 'forms.config.fields.visibility.values.no',
-1 => 'forms.config.fields.visibility.values.yes',
-),
-'translate' => true,
-'label' => 'forms.config.fields.visibility.label',
-'help' => 'forms.config.fields.visibility.help',
-),
-),
-'enabled' => false,
-),
-'cancel_order_on_refused_payment' =>
-array (
-'model' => 'choice.expanded.single',
-'format' => 'int',
-'view' =>
-array (
-'data' =>
-array (
-'choices' =>
-array (
-0 => 'forms.config.fields.behavior_payment_refused.values.no',
-1 => 'forms.config.fields.behavior_payment_refused.values.yes',
-),
-'translate' => true,
-'label' => 'forms.config.fields.behavior_payment_refused.label',
-'help' => 'forms.config.fields.behavior_payment_refused.help',
-),
-),
-'enabled' => false,
-),
-'behavior_payment_refund' =>
-array (
-'model' => 'bool.switch',
-'view' =>
-array (
-'data' =>
-array (
-'label' => 'forms.config.fields.behavior_transmit_refund.label',
-'help' => 'forms.config.fields.behavior_transmit_refund.help',
-),
-),
-),
-'behavior_delivery_confirmation' =>
-array (
-'model' => 'bool.switch',
-'view' =>
-array (
-'data' =>
-array (
-'label' => 'forms.config.fields.behavior_transmit_delivering.label',
-'help' => 'forms.config.fields.behavior_transmit_delivering.help',
-),
-),
-'enabled' => false,
-),
-'regenerate_cart_on_cancelled_payment' =>
-array (
-'model' => 'bool.switch',
-'view' =>
-array (
-'data' =>
-array (
-'label' => 'forms.config.fields.regenerate_cart_on_cancelled_payment.label',
-'help' => 'forms.config.fields.regenerate_cart_on_cancelled_payment.help',
-),
-),
-),
-'regenerate_cart_on_refused_payment' =>
-array (
-'model' => 'bool.switch',
-'view' =>
-array (
-'data' =>
-array (
-'label' => 'forms.config.fields.regenerate_cart_on_refused_payment.label',
-'help' => 'forms.config.fields.regenerate_cart_on_refused_payment.help',
-),
-),
-),
-),
-'view' =>
-array (
-'data' =>
-array (
-'validate' => 'misc.forms.default.buttons.save',
-),
-),
-),
-'exclusion_shipping_cost' =>
-array (
-'model' => 'basic',
-'fields' =>
-array (
-'payment_types' =>
-array (
-'model' => 'choice.expanded.multiple',
-'default' =>
-array (
-),
-'view' =>
-array (
-'data' =>
-array (
-'choices' => 'payment_type',
-'label' => 'forms.exclusion_shipping_cost.fields.label.label',
-),
-),
-),
-),
-'view' =>
-array (
-'data' =>
-array (
-'validate' => 'misc.forms.default.buttons.save',
-),
-),
-),
-'button' =>
-array (
-'model' => 'multipart',
-'fields' =>
-array (
-'label' =>
-array (
-'model' => 'collection.translations',
-'view' =>
-array (
-'data' =>
-array (
-'label' => 'forms.button.fields.label.label',
-),
-),
-),
-'payment_type' =>
-array (
-'model' => 'choice.contracted.single',
-'default' => 'CB',
-'validators' =>
-array (
-'array.in' => 'payment_type',
-),
-'view' =>
-array (
-'data' =>
-array (
-'choices' => 'payment_type',
-'label' => 'forms.button.fields.payment_type.label',
-),
-),
-),
-'display_type' =>
-array (
-'model' => 'choice.expanded.single',
-'default' => 'DEFAULT',
-'validators' =>
-array (
-'array.in' => 'display_type',
-),
-'view' =>
-array (
-'data' =>
-array (
-'choices' => 'display_type',
-'translate' => true,
-'label' => 'forms.button.fields.display_type.label',
-),
-),
-),
-'position' =>
-array (
-'model' => 'int',
-'view' =>
-array (
-'data' =>
-array (
-'label' => 'forms.button.fields.position.label',
-'help' => 'forms.button.fields.position.helper',
-'attr' =>
-array (
-'min' => 0,
-),
-),
-),
-),
-'picture' =>
-array (
-'model' => 'object',
-'children' =>
-array (
-'image' =>
-array (
-'type' => 'basic',
-'format' => 'string',
-'view' =>
-array (
-'name' => 'field',
-'data' =>
-array (
-'attr' =>
-array (
-'type' => 'file',
-),
-),
-'template' => 'fields/partials/input',
-),
-),
-'reset' =>
-array (
-'type' => 'basic',
-'format' => 'bool',
-'view' =>
-array (
-'name' => 'field.bool.checkbox',
-'data' =>
-array (
-'label' => 'forms.button.fields.image.default',
-'translate' => true,
-'attr' =>
-array (
-'type' => 'checkbox',
-),
-),
-'template' => 'fields/partials/radio-check',
-),
-),
-),
-'view' =>
-array (
-'name' => 'field.picture',
-'data' =>
-array (
-'class' => null,
-'label' => 'forms.button.fields.image.label',
-),
-'template' => 'fields/bloc-picture',
-),
-),
-'height' =>
-array (
-'model' => 'int',
-'default' => 60,
-'view' =>
-array (
-'data' =>
-array (
-'label' => 'forms.button.fields.height.label',
-'help' => 'forms.button.fields.height.helper',
-'append' => 'forms.button.fields.height.append',
-'attr' =>
-array (
-'min' => 0,
-),
-),
-),
-),
-'integration' =>
-array (
-'model' => 'choice.expanded.single',
-'default' => 'EXTERNAL',
-'validators' =>
-array (
-'array.in' => 'button_integration',
-),
-'view' =>
-array (
-'data' =>
-array (
-'choices' => 'button_integration',
-'translate' => true,
-'label' => 'forms.button.fields.integration.label',
-'help' => 'forms.button.fields.integration.helper',
-),
-),
-),
-'payment_mode' =>
-array (
-'model' => 'choice.expanded.single',
-'default' => 'CASH',
-'validators' =>
-array (
-'array.in' => 'payment_mode',
-),
-'view' =>
-array (
-'data' =>
-array (
-'choices' => 'payment_mode',
-'label' => 'forms.button.fields.payment_mode.label',
-),
-),
-),
-'payment_number' =>
-array (
-'model' => 'int',
-'default' => 1,
-'view' =>
-array (
-'data' =>
-array (
-'label' => 'forms.button.fields.payment_number.label',
-'warning' => 'forms.button.fields.payment_number.warning',
-'attr' =>
-array (
-'min' => 1,
-),
-'class' => 'js-hidden-field-togglable',
-),
-),
-),
-'first_payment_part' =>
-array (
-'model' => 'int',
-'default' => 0,
-'view' =>
-array (
-'data' =>
-array (
-'label' => 'forms.button.fields.first_payment_part.label',
-'help' => 'forms.button.fields.first_payment_part.helper',
-'append' => 'forms.button.fields.first_payment_part.append',
-'class' => 'js-hidden-field-togglable',
-'attr' =>
-array (
-'min' => 0,
-'max' => 100,
-),
-),
-),
-),
-'payment_report' =>
-array (
-'model' => 'choice.contracted.single',
-'default' => 0,
-'validators' =>
-array (
-'array.in' => 'payment_report',
-),
-'view' =>
-array (
-'data' =>
-array (
-'choices' => 'payment_report',
-'translate' => true,
-'label' => 'forms.button.fields.payment_report.label',
-'help' => 'forms.button.fields.payment_report.helper',
-'class' => 'js-hidden-field-togglable',
-),
-),
-),
-'order_repeated' =>
-array (
-'model' => 'bool',
-'default' => false,
-'enabled' => false,
-'view' =>
-array (
-'data' =>
-array (
-'label' => 'forms.button.fields.order_repeated.label',
-'help' => 'forms.button.fields.order_repeated.helper',
-'class' => 'js-hidden-field-togglable',
-),
-),
-),
-),
-'view' =>
-array (
-'data' =>
-array (
-'validate' => 'misc.forms.default.buttons.save',
-'columns' =>
-array (
-'appearance' =>
-array (
-0 => 'display_type',
-1 => 'label',
-2 => 'picture',
-3 => 'height',
-),
-'payment' =>
-array (
-0 => 'payment_type',
-1 => 'payment_mode',
-2 => 'payment_number',
-3 => 'first_payment_part',
-4 => 'order_repeated',
-5 => 'payment_report',
-),
-'other' =>
-array (
-0 => 'cart_amount_limits',
-1 => 'position',
-2 => 'integration',
-3 => 'form_key',
-),
-),
-),
-'template' => 'forms/button',
-),
-),
-'tree_config' =>
-array (
-'model' => 'basic',
-'fields' =>
-array (
-'carbon_offsetting_payer' =>
-array (
-'model' => 'choice.expanded.single',
-'format' => 'string',
-'default' => 'MERCHANT',
-'enabled' => false,
-'view' =>
-array (
-'data' =>
-array (
-'choices' =>
-array (
-'MERCHANT' => 'forms.tree_config.fields.carbon_offsetting_payer.values.MERCHANT',
-'CUSTOMER' => 'forms.tree_config.fields.carbon_offsetting_payer.values.CUSTOMER',
-),
-'attr' =>
-array (
-'disabled' => '',
-),
-'translate' => true,
-'label' => 'forms.tree_config.fields.carbon_offsetting_payer.label',
-'help' => 'forms.tree_config.fields.carbon_offsetting_payer.help',
-'warning' => 'forms.tree_config.fields.carbon_offsetting_payer.warning',
-),
-),
-),
-'tree_api_server' =>
-array (
-'model' => 'choice.contracted.single',
-'validators' =>
-array (
-'array.in' =>
-array (
-0 => 'PROD',
-1 => 'SANDBOX',
-),
-),
-'view' =>
-array (
-'data' =>
-array (
-'choices' =>
-array (
-'PROD' => 'forms.tree_config.fields.tree_api_server.values.PROD',
-'SANDBOX' => 'forms.tree_config.fields.tree_api_server.values.SANDBOX',
-),
-'translate' => true,
-'label' => 'forms.tree_config.fields.tree_api_server.label',
-'help' => 'forms.tree_config.fields.tree_api_server.help',
-),
-),
-),
-'tree_details_url' =>
-array (
-'model' => 'string',
-'view' =>
-array (
-'data' =>
-array (
-'label' => 'forms.tree_config.fields.tree_details_url.label',
-'help' => 'forms.tree_config.fields.tree_details_url.help',
-),
-),
-),
-),
-'view' =>
-array (
-'data' =>
-array (
-'validate' => 'misc.forms.default.buttons.save',
-),
-),
-),
-'carbon_bot_config_global' =>
-array (
-'model' => 'basic',
-'fields' =>
-array (
-'tree_bot_activated' =>
-array (
-'model' => 'bool.switch',
-'view' =>
-array (
-'data' =>
-array (
-'label' => 'forms.carbon_bot_config_global.fields.tree_bot_activated.label',
-'help' => 'forms.carbon_bot_config_global.fields.tree_bot_activated.help',
-),
-),
-),
-'tree_bot_mobile_activated' =>
-array (
-'model' => 'bool.switch',
-'behavior' => 'tree_bot_activation',
-'view' =>
-array (
-'data' =>
-array (
-'label' => 'forms.tree_bot.fields.tree_bot_mobile_activated.label',
-'help' => 'forms.tree_bot.fields.tree_bot_mobile_activated.help',
-),
-),
-),
-),
-'view' =>
-array (
-'data' =>
-array (
-'validate' => 'misc.forms.default.buttons.save',
-),
-),
-),
-'tree_shipping_address' =>
-array (
-'model' => 'basic',
-'fields' =>
-array (
-'shipping_address_line_1' =>
-array (
-'model' => 'string',
-'required' => true,
-'view' =>
-array (
-'data' =>
-array (
-'label' => 'forms.tree_shipping_address.fields.line_1.label',
-),
-),
-),
-'shipping_address_line_2' =>
-array (
-'model' => 'string',
-'required' => false,
-'view' =>
-array (
-'data' =>
-array (
-'label' => 'forms.tree_shipping_address.fields.line_2.label',
-),
-),
-),
-'shipping_address_zipcode' =>
-array (
-'model' => 'string',
-'required' => true,
-'view' =>
-array (
-'data' =>
-array (
-'label' => 'forms.tree_shipping_address.fields.zipcode.label',
-),
-),
-),
-'shipping_address_city' =>
-array (
-'model' => 'string',
-'required' => true,
-'view' =>
-array (
-'data' =>
-array (
-'label' => 'forms.tree_shipping_address.fields.city.label',
-),
-),
-),
-'shipping_address_country' =>
-array (
-'model' => 'choice.contracted.single',
-'validators' =>
-array (
-'array.in' => 'countries',
-),
-'required' => true,
-'view' =>
-array (
-'data' =>
-array (
-'choices' => 'countries',
-'translate' => true,
-'label' => 'forms.tree_shipping_address.fields.country.label',
-),
-),
-),
-),
-'view' =>
-array (
-'data' =>
-array (
-'validate' => 'misc.forms.default.buttons.save',
-),
-),
-),
-'tree_authentication' =>
-array (
-'model' => 'basic',
-'fields' =>
-array (
-'client_id' =>
-array (
-'model' => 'string',
-'required' => true,
-'view' =>
-array (
-'data' =>
-array (
-'label' => 'forms.tree_authentication.fields.client_id.label',
-),
-),
-),
-'login' =>
-array (
-'model' => 'string',
-'required' => true,
-'view' =>
-array (
-'data' =>
-array (
-'label' => 'forms.tree_authentication.fields.login.label',
-),
-),
-),
-'password' =>
-array (
-'model' => 'string',
-'required' => true,
-'view' =>
-array (
-'data' =>
-array (
-'label' => 'forms.tree_authentication.fields.password.label',
-),
-),
-),
-),
-'view' =>
-array (
-'data' =>
-array (
-'validate' => 'misc.forms.default.buttons.save',
-),
-),
-),
-'tree_bot' =>
-array (
-'model' => 'basic',
-'fields' =>
-array (
-'tree_bot_color' =>
-array (
-'model' => 'colorpicker',
-'view' =>
-array (
-'data' =>
-array (
-'label' => 'forms.tree_bot.fields.tree_bot_color.label',
-'help' => 'forms.tree_bot.fields.tree_bot_color.help',
-),
-),
-),
-'tree_bot_side' =>
-array (
-'model' => 'choice.contracted.single',
-'validators' =>
-array (
-'array.in' =>
-array (
-0 => 'LEFT',
-1 => 'RIGHT',
-),
-),
-'view' =>
-array (
-'data' =>
-array (
-'translate' => true,
-'choices' =>
-array (
-'LEFT' => 'forms.tree_bot.fields.tree_bot_side.choices.LEFT',
-'RIGHT' => 'forms.tree_bot.fields.tree_bot_side.choices.RIGHT',
-),
-'label' => 'forms.tree_bot.fields.tree_bot_side.label',
-'help' => 'forms.tree_bot.fields.tree_bot_side.help',
-),
-),
-),
-'tree_bot_corner' =>
-array (
-'model' => 'choice.contracted.single',
-'validators' =>
-array (
-'array.in' =>
-array (
-0 => 'ROUND',
-1 => 'SQUARE',
-),
-),
-'view' =>
-array (
-'data' =>
-array (
-'translate' => true,
-'choices' =>
-array (
-'ROUND' => 'forms.tree_bot.fields.tree_bot_corner.choices.ROUND',
-'SQUARE' => 'forms.tree_bot.fields.tree_bot_corner.choices.SQUARE',
-),
-'label' => 'forms.tree_bot.fields.tree_bot_corner.label',
-'help' => 'forms.tree_bot.fields.tree_bot_corner.help',
-),
-),
-),
-'tree_bot_details_activated' =>
-array (
-'model' => 'bool.switch',
-'view' =>
-array (
-'data' =>
-array (
-'label' => 'forms.tree_bot.fields.tree_bot_details_activated.label',
-'help' => 'forms.tree_bot.fields.tree_bot_details_activated.help',
-'warning' => 'forms.tree_bot.fields.tree_bot_details_activated.warning',
-),
-),
-),
-),
-'view' =>
-array (
-'data' =>
-array (
-'validate' => 'misc.forms.default.buttons.save',
-),
-),
-),
-),
-'default' =>
-array (
-),
-'models' =>
-array (
-'basic' =>
-array (
-'view' =>
-array (
-'name' => 'form',
-'data' =>
-array (
-'attr' =>
-array (
-'method' => 'post',
-),
-),
-'template' => 'form',
-),
-),
-'multipart' =>
-array (
-'view' =>
-array (
-'name' => 'form',
-'data' =>
-array (
-'attr' =>
-array (
-'method' => 'post',
-'enctype' => 'multipart/form-data',
-),
-),
-'template' => 'form',
-),
-),
-),
 ),
 'languages' =>
 array (
@@ -4270,7 +4284,7 @@ array (
 'action' => 'displayList@backoffice.buttons',
 'data' =>
 array (
-'class' => 'pgblock pgblock__max__xxl',
+'class' => 'pgblock',
 ),
 ),
 'form_eligible_amounts' =>
@@ -4491,7 +4505,143 @@ array (
 0 => 'templates:/',
 ),
 ),
-'null_stream' => 'PGViewComponentsNullStream',
+'null_stream' => 'PGI\\Module\\PGView\\Components\\NullStream',
+),
+'servers' =>
+array (
+'backoffice' =>
+array (
+'areas' =>
+array (
+0 => 'backoffice',
+),
+'request_builder' => 'builder.request.backoffice',
+'deflectors' =>
+array (
+0 => 'filter.shop_context',
+1 => 'filter.paygreen_connexion',
+),
+'cleaners' =>
+array (
+'not_found' => 'cleaner.forward.message_page',
+'unauthorized_access' => 'cleaner.forward.message_page',
+'server_error' => 'cleaner.forward.message_page',
+'bad_request' => 'cleaner.forward.message_page',
+'rendering_error' => 'cleaner.forward.message_page',
+),
+'rendering' =>
+array (
+0 =>
+array (
+'if' =>
+array (
+'class' => 'PGI\\Module\\PGServer\\Components\\Responses\\Template',
+),
+'do' => 'return',
+'with' => 'renderer.processor.output_template',
+),
+1 =>
+array (
+'if' =>
+array (
+'class' => 'PGI\\Module\\PGServer\\Components\\Responses\\File',
+),
+'do' => 'continue',
+'with' => 'renderer.transformer.file_2_http',
+),
+2 =>
+array (
+'if' =>
+array (
+'instance' => 'PGI\\Module\\PGServer\\Components\\Responses\\Redirection',
+),
+'do' => 'continue',
+'with' => 'renderer.transformer.redirection_2_http',
+),
+3 =>
+array (
+'if' =>
+array (
+'class' => 'PGI\\Module\\PGServer\\Components\\Responses\\HTTP',
+),
+'do' => 'stop',
+'with' => 'renderer.processor.write_http',
+),
+),
+),
+'front' =>
+array (
+'areas' =>
+array (
+0 => 'front',
+),
+'request_builder' => 'builder.request.frontoffice',
+'cleaners' =>
+array (
+'not_found' => 'cleaner.basic_http.not_found',
+'unauthorized_access' => 'cleaner.basic_http.unauthorized_access',
+'server_error' => 'cleaner.basic_http.server_error',
+'bad_request' => 'cleaner.basic_http.bad_request',
+'rendering_error' => 'cleaner.basic_http.server_error',
+),
+'rendering' =>
+array (
+0 =>
+array (
+'if' =>
+array (
+'class' => 'PGI\\Module\\PGServer\\Components\\Responses\\Template',
+),
+'do' => 'return',
+'with' => 'renderer.processor.output_template',
+),
+1 =>
+array (
+'if' =>
+array (
+'instance' => 'PGI\\Module\\PGServer\\Components\\Responses\\PaygreenModule',
+),
+'do' => 'continue',
+'with' => 'renderer.transformer.paygreen_module_2_array',
+),
+2 =>
+array (
+'if' =>
+array (
+'instance' => 'PGI\\Module\\PGServer\\Components\\Responses\\Collection',
+),
+'do' => 'continue',
+'with' => 'renderer.transformer.array_2_http',
+),
+3 =>
+array (
+'if' =>
+array (
+'instance' => 'PGI\\Module\\PGServer\\Components\\Responses\\File',
+),
+'do' => 'continue',
+'with' => 'renderer.transformer.file_2_http',
+),
+4 =>
+array (
+'if' =>
+array (
+'instance' => 'PGI\\Module\\PGServer\\Components\\Responses\\Redirection',
+),
+'do' => 'continue',
+'with' => 'renderer.transformer.redirection_2_http',
+),
+5 =>
+array (
+'if' =>
+array (
+'instance' => 'PGI\\Module\\PGServer\\Components\\Responses\\HTTP',
+),
+'do' => 'stop',
+'with' => 'renderer.processor.write_http',
+),
+),
+),
 ),
 'menu' =>
 array (
@@ -4626,138 +4776,160 @@ array (
 ),
 ),
 ),
-'servers' =>
+'payment' =>
 array (
-'backoffice' =>
+'metadata' =>
 array (
-'areas' =>
-array (
-0 => 'backoffice',
+0 => 'order_id',
+1 => 'cart_id',
 ),
-'request_builder' => 'builder.request.backoffice',
-'deflectors' =>
+'pictures' =>
 array (
-0 => 'filter.shop_context',
-1 => 'filter.paygreen_connexion',
+'default' => 'logo-cb-visa-mastercard.png',
+'amex' => 'logo-amex.png',
+'ancv' => 'logo-ancv.png',
+'cb' => 'logo-cb-visa-mastercard.png',
+'trd' => 'logo-conecs.png',
+'lunchr' => 'logo-swile.png',
+'restoflash' => 'logo-restoflash.png',
+'sepa' => 'logo-sepa.png',
 ),
-'cleaners' =>
+'entrypoints' =>
 array (
-'not_found' => 'cleaner.forward.message_page',
-'unauthorized_access' => 'cleaner.forward.message_page',
-'server_error' => 'cleaner.forward.message_page',
-'bad_request' => 'cleaner.forward.message_page',
-'rendering_error' => 'cleaner.forward.message_page',
+'customer' => 'front.payment.process_customer_return',
+'ipn' => 'front.payment.receive',
 ),
-'rendering' =>
+'targets' =>
 array (
-0 =>
-array (
-'if' =>
-array (
-'class' => 'PGServerComponentsResponsesTemplateResponse',
+'external' => 'redirect@front.payment',
+'insite' => 'displayIFramePayment@front.payment',
 ),
-'do' => 'return',
-'with' => 'renderer.processor.output_template',
-),
-1 =>
+'insite' =>
 array (
-'if' =>
-array (
-'class' => 'PGServerComponentsResponsesFileResponse',
+'return' => 'front:front.payment.abort',
 ),
-'do' => 'continue',
-'with' => 'renderer.transformer.file_2_http',
-),
-2 =>
+'forwarding' =>
 array (
-'if' =>
+'task' =>
 array (
-'instance' => 'PGServerComponentsResponsesRedirectionResponse',
-),
-'do' => 'continue',
-'with' => 'renderer.transformer.redirection_2_http',
-),
-3 =>
+'success' =>
 array (
-'if' =>
-array (
-'class' => 'PGServerComponentsResponsesHTTPResponse',
+'type' => 'forward',
+'target' => 'dispatchByOrderState@front.customer_return',
 ),
-'do' => 'stop',
-'with' => 'renderer.processor.write_http',
+'payment_aborted' =>
+array (
+'type' => 'forward',
+'target' => 'abortPayment@front.invalid_payments',
+),
+'payment_refused' =>
+array (
+'type' => 'forward',
+'target' => 'refusePayment@front.invalid_payments',
+),
+'pid_locked' =>
+array (
+'type' => 'redirect',
+'link' => 'order.history',
+),
+'fatal_error' =>
+array (
+'type' => 'error',
+'error' => 'frontoffice.payment.results.payment.fatal_error.error',
+),
+'inconsistent_context' =>
+array (
+'type' => 'error',
+'error' => 'frontoffice.payment.results.payment.inconsistent_context.error',
+),
+'pid_not_found' =>
+array (
+'type' => 'error',
+'error' => 'frontoffice.payment.results.payment.pid_not_found.error',
+),
+'workflow_error' =>
+array (
+'type' => 'error',
+'error' => 'frontoffice.payment.results.payment.workflow_error.error',
+),
+'provider_error' =>
+array (
+'type' => 'error',
+'error' => 'frontoffice.payment.results.payment.inconsistent_context.error',
+),
+'paygreen_unavailable' =>
+array (
+'type' => 'message',
+'title' => 'frontoffice.payment.results.payment.paygreen_unavailable.title',
+'message' => 'frontoffice.payment.results.payment.paygreen_unavailable.message',
+'link' =>
+array (
+'name' => 'retry_payment_validation',
+'text' => 'frontoffice.payment.results.payment.paygreen_unavailable.link',
+'reload' => false,
 ),
 ),
 ),
-'front' =>
+'order' =>
 array (
-'areas' =>
+'validate' =>
 array (
-0 => 'front',
+'type' => 'redirect',
+'link' => 'checkout.success',
 ),
-'request_builder' => 'builder.request.frontoffice',
-'cleaners' =>
+'test' =>
 array (
-'not_found' => 'cleaner.basic_http.not_found',
-'unauthorized_access' => 'cleaner.basic_http.unauthorized_access',
-'server_error' => 'cleaner.basic_http.server_error',
-'bad_request' => 'cleaner.basic_http.bad_request',
-'rendering_error' => 'cleaner.basic_http.server_error',
+'extends' => 'validate',
 ),
-'rendering' =>
+'verify' =>
 array (
-0 =>
-array (
-'if' =>
-array (
-'class' => 'PGServerComponentsResponsesTemplateResponse',
+'extends' => 'validate',
 ),
-'do' => 'return',
-'with' => 'renderer.processor.output_template',
-),
-1 =>
+'auth' =>
 array (
-'if' =>
-array (
-'instance' => 'PGServerComponentsResponsesPaygreenModuleResponse',
+'extends' => 'validate',
 ),
-'do' => 'continue',
-'with' => 'renderer.transformer.paygreen_module_2_array',
-),
-2 =>
+'wait' =>
 array (
-'if' =>
-array (
-'instance' => 'PGServerComponentsResponsesArrayResponse',
+'extends' => 'validate',
 ),
-'do' => 'continue',
-'with' => 'renderer.transformer.array_2_http',
-),
-3 =>
+'unknown' =>
 array (
-'if' =>
-array (
-'instance' => 'PGServerComponentsResponsesFileResponse',
+'type' => 'redirect',
+'link' => 'order',
 ),
-'do' => 'continue',
-'with' => 'renderer.transformer.file_2_http',
-),
-4 =>
+'cancel' =>
 array (
-'if' =>
+'type' => 'message',
+'title' => 'frontoffice.payment.results.order.cancel.title',
+'message' => '~message_order_canceled',
+'link' =>
 array (
-'instance' => 'PGServerComponentsResponsesRedirectionResponse',
+'name' => 'order',
+'text' => 'frontoffice.payment.results.order.cancel.link',
 ),
-'do' => 'continue',
-'with' => 'renderer.transformer.redirection_2_http',
 ),
-5 =>
+'error' =>
 array (
-'if' =>
+'type' => 'message',
+'title' => 'frontoffice.payment.results.order.error.title',
+'message' => 'frontoffice.payment.results.order.error.message',
+'link' =>
 array (
-'instance' => 'PGServerComponentsResponsesHTTPResponse',
+'name' => 'order',
+'text' => 'frontoffice.payment.results.order.error.link',
 ),
-'do' => 'stop',
-'with' => 'renderer.processor.write_http',
+),
+'new' =>
+array (
+'type' => 'message',
+'title' => 'frontoffice.payment.results.order.new.title',
+'message' => 'frontoffice.payment.results.order.new.message',
+'link' =>
+array (
+'name' => 'order',
+'text' => 'frontoffice.payment.results.order.new.link',
+),
 ),
 ),
 ),
@@ -4970,163 +5142,6 @@ array (
 ),
 ),
 ),
-'paygreen' =>
-array (
-'backlink' => 'http://paygreen.io/paiement-securise/',
-),
-'payment' =>
-array (
-'pictures' =>
-array (
-'default' => 'logo-cb-visa-mastercard.png',
-'amex' => 'logo-amex.png',
-'ancv' => 'logo-ancv.png',
-'cb' => 'logo-cb-visa-mastercard.png',
-'trd' => 'logo-conecs.png',
-'lunchr' => 'logo-swile.png',
-'restoflash' => 'logo-restoflash.png',
-'sepa' => 'logo-sepa.png',
-),
-'entrypoints' =>
-array (
-'customer' => 'front.payment.process_customer_return',
-'ipn' => 'front.payment.receive',
-),
-'targets' =>
-array (
-'external' => 'redirect@front.payment',
-'insite' => 'displayIFramePayment@front.payment',
-),
-'insite' =>
-array (
-'return' => 'front:front.payment.abort',
-),
-'forwarding' =>
-array (
-'task' =>
-array (
-'success' =>
-array (
-'type' => 'forward',
-'target' => 'dispatchByOrderState@front.customer_return',
-),
-'payment_aborted' =>
-array (
-'type' => 'forward',
-'target' => 'abortPayment@front.invalid_payments',
-),
-'payment_refused' =>
-array (
-'type' => 'forward',
-'target' => 'refusePayment@front.invalid_payments',
-),
-'pid_locked' =>
-array (
-'type' => 'redirect',
-'link' => 'order.history',
-),
-'fatal_error' =>
-array (
-'type' => 'error',
-'error' => 'frontoffice.payment.results.payment.fatal_error.error',
-),
-'inconsistent_context' =>
-array (
-'type' => 'error',
-'error' => 'frontoffice.payment.results.payment.inconsistent_context.error',
-),
-'pid_not_found' =>
-array (
-'type' => 'error',
-'error' => 'frontoffice.payment.results.payment.pid_not_found.error',
-),
-'workflow_error' =>
-array (
-'type' => 'error',
-'error' => 'frontoffice.payment.results.payment.workflow_error.error',
-),
-'provider_error' =>
-array (
-'type' => 'error',
-'error' => 'frontoffice.payment.results.payment.inconsistent_context.error',
-),
-'paygreen_unavailable' =>
-array (
-'type' => 'message',
-'title' => 'frontoffice.payment.results.payment.paygreen_unavailable.title',
-'message' => 'frontoffice.payment.results.payment.paygreen_unavailable.message',
-'link' =>
-array (
-'name' => 'retry_payment_validation',
-'text' => 'frontoffice.payment.results.payment.paygreen_unavailable.link',
-'reload' => false,
-),
-),
-),
-'order' =>
-array (
-'validate' =>
-array (
-'type' => 'redirect',
-'link' => 'checkout.success',
-),
-'test' =>
-array (
-'extends' => 'validate',
-),
-'verify' =>
-array (
-'extends' => 'validate',
-),
-'auth' =>
-array (
-'extends' => 'validate',
-),
-'wait' =>
-array (
-'extends' => 'validate',
-),
-'unknown' =>
-array (
-'type' => 'redirect',
-'link' => 'order',
-),
-'cancel' =>
-array (
-'type' => 'message',
-'title' => 'frontoffice.payment.results.order.cancel.title',
-'message' => '~message_order_canceled',
-'link' =>
-array (
-'name' => 'order',
-'text' => 'frontoffice.payment.results.order.cancel.link',
-),
-),
-'error' =>
-array (
-'type' => 'message',
-'title' => 'frontoffice.payment.results.order.error.title',
-'message' => 'frontoffice.payment.results.order.error.message',
-'link' =>
-array (
-'name' => 'order',
-'text' => 'frontoffice.payment.results.order.error.link',
-),
-),
-'new' =>
-array (
-'type' => 'message',
-'title' => 'frontoffice.payment.results.order.new.title',
-'message' => 'frontoffice.payment.results.order.new.message',
-'link' =>
-array (
-'name' => 'order',
-'text' => 'frontoffice.payment.results.order.new.link',
-),
-),
-),
-),
-),
 'data' =>
 array (
 'payment_report' =>
@@ -5150,26 +5165,14 @@ array (
 'TEXT' => 'forms.button.fields.display_type.values.text',
 ),
 ),
-'oauth_exceptions_messages' =>
+'paygreen' =>
 array (
-1 => 'actions.authentication.save.errors.oauth_server_address_missmatch',
-2 => 'actions.authentication.save.errors.oauth_data_validation',
+'backlink' => 'http://paygreen.io/paiement-securise/',
 ),
 'api' =>
 array (
 'payment' =>
 array (
-'clients' =>
-array (
-'curl' =>
-array (
-'allow_redirection' => true,
-'verify_peer' => true,
-'verify_host' => 2,
-'timeout' => 30,
-'http_version' => '1.1',
-),
-),
 'requests' =>
 array (
 'oauth_access' =>
@@ -5271,9 +5274,20 @@ array (
 'private' => true,
 ),
 ),
+'clients' =>
+array (
+'curl' =>
+array (
+'allow_redirection' => true,
+'verify_peer' => true,
+'verify_host' => 2,
+'timeout' => 30,
+'http_version' => '1.1',
+),
+),
 'responses' =>
 array (
-'class' => 'APIPaymentComponentsResponse',
+'class' => 'PGI\\Module\\APIPayment\\Components\\Response',
 'strict' => true,
 ),
 ),
@@ -5281,7 +5295,7 @@ array (
 array (
 'responses' =>
 array (
-'class' => 'PGClientComponentsResponseJSON',
+'class' => 'PGI\\Module\\PGClient\\Components\\ResponseJSON',
 'validity' => '200-299',
 ),
 'requests' =>
@@ -5442,6 +5456,11 @@ array (
 ),
 ),
 ),
+),
+'oauth_exceptions_messages' =>
+array (
+1 => 'actions.authentication.save.errors.oauth_server_address_missmatch',
+2 => 'actions.authentication.save.errors.oauth_data_validation',
 ),
 'tree' =>
 array (

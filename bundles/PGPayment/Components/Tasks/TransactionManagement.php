@@ -15,15 +15,22 @@
  * @author    PayGreen <contact@paygreen.fr>
  * @copyright 2014 - 2021 Watt Is It
  * @license   https://opensource.org/licenses/mit-license.php MIT License X11
- * @version   2.1.1
+ * @version   2.2.0
  *
  */
 
+namespace PGI\Module\PGPayment\Components\Tasks;
+
+use PGI\Module\APIPayment\Components\Replies\Transaction as TransactionReplyComponent;
+use PGI\Module\PGFramework\Foundations\AbstractTask;
+use PGI\Module\PGShop\Interfaces\Entities\OrderEntityInterface;
+use PGI\Module\PGShop\Interfaces\Provisioners\PostPaymentProvisionerInterface;
+
 /**
- * Class PGPaymentComponentsTasksTransactionManagement
+ * Class TransactionManagement
  * @package PGPayment\Components\Tasks
  */
-class PGPaymentComponentsTasksTransactionManagement extends PGFrameworkFoundationsTask
+class TransactionManagement extends AbstractTask
 {
     const STATE_PAYMENT_REFUSED = 11;
     const STATE_ORDER_CANCELED = 12;
@@ -31,10 +38,10 @@ class PGPaymentComponentsTasksTransactionManagement extends PGFrameworkFoundatio
     const STATE_WORKFLOW_ERROR = 14;
     const STATE_UNNECESSARY_TASK = 15;
 
-    /** @var PGShopInterfacesProvisionersPostPayment */
+    /** @var PostPaymentProvisionerInterface */
     private $provisioner;
 
-    /** @var PGShopInterfacesEntitiesOrder|null  */
+    /** @var OrderEntityInterface|null  */
     private $order = null;
 
     /** @var string|null */
@@ -43,7 +50,7 @@ class PGPaymentComponentsTasksTransactionManagement extends PGFrameworkFoundatio
     /** @var string|null */
     private $orderStateTo = null;
 
-    public function __construct(PGShopInterfacesProvisionersPostPayment $provisioner)
+    public function __construct(PostPaymentProvisionerInterface $provisioner)
     {
         $this->provisioner = $provisioner;
     }
@@ -62,7 +69,7 @@ class PGPaymentComponentsTasksTransactionManagement extends PGFrameworkFoundatio
     }
 
     /**
-     * @return APIPaymentComponentsRepliesTransaction
+     * @return TransactionReplyComponent
      */
     public function getTransaction()
     {
@@ -70,7 +77,7 @@ class PGPaymentComponentsTasksTransactionManagement extends PGFrameworkFoundatio
     }
 
     /**
-     * @return PGShopInterfacesProvisionersPostPayment
+     * @return PostPaymentProvisionerInterface
      */
     public function getProvisioner()
     {
@@ -78,7 +85,7 @@ class PGPaymentComponentsTasksTransactionManagement extends PGFrameworkFoundatio
     }
 
     /**
-     * @return PGShopInterfacesEntitiesOrder|null
+     * @return OrderEntityInterface|null
      */
     public function getOrder()
     {
@@ -86,10 +93,10 @@ class PGPaymentComponentsTasksTransactionManagement extends PGFrameworkFoundatio
     }
 
     /**
-     * @param PGShopInterfacesEntitiesOrder|null $order
+     * @param OrderEntityInterface|null $order
      * @return self
      */
-    public function setOrder(PGShopInterfacesEntitiesOrder $order = null)
+    public function setOrder(OrderEntityInterface $order = null)
     {
         $this->order = $order;
 

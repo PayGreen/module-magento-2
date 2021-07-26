@@ -15,26 +15,41 @@
  * @author    PayGreen <contact@paygreen.fr>
  * @copyright 2014 - 2021 Watt Is It
  * @license   https://opensource.org/licenses/mit-license.php MIT License X11
- * @version   2.1.1
+ * @version   2.2.0
  *
  */
 
+namespace PGI\Module\PGSystem\Components\Service;
+
+use PGI\Module\PGModule\Services\Logger;
+use PGI\Module\PGSystem\Components\Parser as ParserComponent;
+use PGI\Module\PGSystem\Components\Service\CallDelayer as CallDelayerServiceComponent;
+use PGI\Module\PGSystem\Components\Service\Library as LibraryServiceComponent;
+use PGI\Module\PGSystem\Exceptions\ParserConstant as ParserConstantException;
+use PGI\Module\PGSystem\Exceptions\ParserParameter as ParserParameterException;
+use PGI\Module\PGSystem\Interfaces\Services\ConfigurableServiceInterface;
+use PGI\Module\PGSystem\Services\Container;
+use Exception;
+use LogicException;
+use ReflectionException;
+use ReflectionClass;
+
 /**
- * Class PGSystemComponentsServiceBuilder
+ * Class Builder
  * @package PGSystem\Components\Service
  */
-class PGSystemComponentsServiceBuilder
+class Builder
 {
-    /** @var PGSystemServicesContainer */
+    /** @var Container */
     private $container;
 
-    /** @var PGSystemComponentsServiceLibrary */
+    /** @var LibraryServiceComponent */
     private $library;
 
-    /** @var PGSystemComponentsParser */
+    /** @var ParserComponent */
     private $parser;
 
-    /** @var PGSystemComponentsServiceCallDelayer|null */
+    /** @var CallDelayerServiceComponent|null */
     private $callDelayer = null;
 
     private $underConstructionServices = array();
@@ -42,14 +57,14 @@ class PGSystemComponentsServiceBuilder
     private $processing = false;
 
     /**
-     * PGSystemComponentsServiceBuilder constructor.
-     * @param PGSystemServicesContainer $container
-     * @param PGSystemComponentsServiceLibrary $library
+     * Builder constructor.
+     * @param Container $container
+     * @param LibraryServiceComponent $library
      */
     public function __construct(
-        PGSystemServicesContainer $container,
-        PGSystemComponentsServiceLibrary $library,
-        PGSystemComponentsParser $parser
+        Container $container,
+        LibraryServiceComponent $library,
+        ParserComponent $parser
     ) {
         $this->container = $container;
         $this->library = $library;
@@ -80,7 +95,7 @@ class PGSystemComponentsServiceBuilder
     {
         $this->processing = true;
 
-        $this->callDelayer = new PGSystemComponentsServiceCallDelayer($this->container, $this->parser);
+        $this->callDelayer = new CallDelayerServiceComponent($this->container, $this->parser);
 
         try {
             $service = $this->buildService($name);
@@ -92,7 +107,7 @@ class PGSystemComponentsServiceBuilder
             return $service;
         } catch (Exception $exception) {
             if ($this->container->has('logger')) {
-                /** @var PGModuleServicesLogger $logger */
+                /** @var Logger $logger */
                 $logger = $this->container->get('logger');
 
                 $logger->emergency("Error during building the service '$name'.", $exception);
@@ -213,17 +228,17 @@ class PGSystemComponentsServiceBuilder
     }
 
     /**
-     * @param PGSystemInterfacesServicesConfigurable|object $service
+     * @param ConfigurableServiceInterface|object $service
      * @param string $name
      * @param string|array $config
-     * @throws PGSystemExceptionsParserConstant
-     * @throws PGSystemExceptionsParserParameter
+     * @throws ParserConstantException
+     * @throws ParserParameterException
      */
     protected function setConfiguration($service, $name, $config)
     {
-        if (! $service instanceof PGSystemInterfacesServicesConfigurable) {
+        if (! $service instanceof ConfigurableServiceInterface) {
             throw new LogicException(
-                "Service '$name' must implements PGSystemInterfacesServicesConfigurable interface to use 'config' key."
+                "Service '$name' must implements ConfigurableServiceInterface interface to use 'config' key."
             );
         }
 

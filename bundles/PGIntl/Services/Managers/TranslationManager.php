@@ -15,17 +15,26 @@
  * @author    PayGreen <contact@paygreen.fr>
  * @copyright 2014 - 2021 Watt Is It
  * @license   https://opensource.org/licenses/mit-license.php MIT License X11
- * @version   2.1.1
+ * @version   2.2.0
  *
  */
 
+namespace PGI\Module\PGIntl\Services\Managers;
+
+use PGI\Module\PGDatabase\Foundations\AbstractManager;
+use PGI\Module\PGIntl\Interfaces\Entities\TranslationEntityInterface;
+use PGI\Module\PGIntl\Interfaces\Repositories\TranslationRepositoryInterface;
+use PGI\Module\PGModule\Services\Logger;
+use PGI\Module\PGShop\Interfaces\Entities\ShopEntityInterface;
+use Exception;
+
 /**
- * Class PGIntlServicesManagersTranslationManager
+ * Class TranslationManager
  *
  * @package PGIntl\Services\Managers
- * @method PGIntlInterfacesRepositoriesTranslationRepositoryInterface getRepository()
+ * @method TranslationRepositoryInterface getRepository()
  */
-class PGIntlServicesManagersTranslationManager extends PGDatabaseFoundationsManager
+class TranslationManager extends AbstractManager
 {
     private $bin;
     
@@ -86,7 +95,7 @@ class PGIntlServicesManagersTranslationManager extends PGDatabaseFoundationsMana
     {
         $texts = array();
 
-        /** @var PGIntlInterfacesEntitiesTranslationInterface $translation */
+        /** @var TranslationEntityInterface $translation */
         foreach ($translations as $translation) {
             $code = $translation->getCode();
             $language = $translation->getLanguage();
@@ -101,14 +110,14 @@ class PGIntlServicesManagersTranslationManager extends PGDatabaseFoundationsMana
         return $texts;
     }
 
-    public function saveByCode($code, array $texts, PGShopInterfacesEntitiesShop $shop = null, $fieldFormat = false)
+    public function saveByCode($code, array $texts, ShopEntityInterface $shop = null, $fieldFormat = false)
     {
-        /** @var PGModuleServicesLogger $logger */
+        /** @var Logger $logger */
         $logger = $this->getService('logger');
 
         $translations = $this->getRepository()->findByCode($code, $shop);
 
-        /** @var PGIntlInterfacesEntitiesTranslationInterface[] $translations */
+        /** @var TranslationEntityInterface[] $translations */
         $translations = $this->groupTranslationsByLanguage($translations);
 
         $texts = $fieldFormat ? $this->fromFieldFormat($texts) : $texts;
@@ -125,7 +134,7 @@ class PGIntlServicesManagersTranslationManager extends PGDatabaseFoundationsMana
 
                 unset($translations[$language]);
             } else {
-                /** @var PGIntlInterfacesEntitiesTranslationInterface $translation */
+                /** @var TranslationEntityInterface $translation */
                 $translation = $this->getRepository()->create($code, $language, $shop);
 
                 $logger->debug("Creating '$language' translation for code '$code'.");
@@ -138,7 +147,7 @@ class PGIntlServicesManagersTranslationManager extends PGDatabaseFoundationsMana
             }
         }
 
-        /** @var PGIntlInterfacesEntitiesTranslationInterface $translation */
+        /** @var TranslationEntityInterface $translation */
         foreach ($translations as $translation) {
             $language = $translation->getLanguage();
 
@@ -152,12 +161,12 @@ class PGIntlServicesManagersTranslationManager extends PGDatabaseFoundationsMana
 
     public function deleteByCode($code)
     {
-        /** @var PGModuleServicesLogger $logger */
+        /** @var Logger $logger */
         $logger = $this->getService('logger');
 
         $translations = $this->getRepository()->findByCode($code);
 
-        /** @var PGIntlInterfacesEntitiesTranslationInterface $translation */
+        /** @var TranslationEntityInterface $translation */
         foreach ($translations as $translation) {
             $language = $translation->getLanguage();
 
@@ -175,7 +184,7 @@ class PGIntlServicesManagersTranslationManager extends PGDatabaseFoundationsMana
     {
         $texts = array();
 
-        /** @var PGIntlInterfacesEntitiesTranslationInterface $translation */
+        /** @var TranslationEntityInterface $translation */
         foreach ($translations as $translation) {
             $language = $translation->getLanguage();
 

@@ -15,17 +15,22 @@
  * @author    PayGreen <contact@paygreen.fr>
  * @copyright 2014 - 2021 Watt Is It
  * @license   https://opensource.org/licenses/mit-license.php MIT License X11
- * @version   2.1.1
+ * @version   2.2.0
  *
  */
 
+namespace PGI\Module\PGClient\Components;
+
+use PGI\Module\PGClient\Components\Feedback as FeedbackComponent;
+use PGI\Module\PGClient\Components\Request as RequestComponent;
+
 /**
- * Class PGClientComponentsResponse
+ * Class Response
  * @package PGClient\Components
  */
-class PGClientComponentsResponse
+class Response
 {
-    /** @var PGClientComponentsRequest The original request. */
+    /** @var RequestComponent The original request. */
     private $request;
 
     /** @var mixed Data of the response.*/
@@ -35,10 +40,10 @@ class PGClientComponentsResponse
     private $httpCode;
 
     /**
-     * PGClientComponentsResponse constructor.
-     * @param PGClientComponentsFeedback $feedback
+     * Response constructor.
+     * @param FeedbackComponent $feedback
      */
-    public function __construct(PGClientComponentsFeedback $feedback)
+    public function __construct(FeedbackComponent $feedback)
     {
         $this->request = $feedback->getRequest();
         $this->httpCode = (int) $feedback->getCode();
@@ -55,7 +60,7 @@ class PGClientComponentsResponse
     }
 
     /**
-     * @return PGClientComponentsRequest
+     * @return RequestComponent
      */
     public function getRequest()
     {

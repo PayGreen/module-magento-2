@@ -15,21 +15,31 @@
  * @author    PayGreen <contact@paygreen.fr>
  * @copyright 2014 - 2021 Watt Is It
  * @license   https://opensource.org/licenses/mit-license.php MIT License X11
- * @version   2.1.1
+ * @version   2.2.0
  *
  */
 
+namespace PGI\Module\PGPayment\Services\Managers;
+
+use PGI\Module\PGDatabase\Foundations\AbstractManager;
+use PGI\Module\PGPayment\Interfaces\Entities\TransactionEntityInterface;
+use PGI\Module\PGPayment\Interfaces\Repositories\TransactionRepositoryInterface;
+use PGI\Module\PGShop\Interfaces\Entities\OrderEntityInterface;
+use PGI\Module\PGShop\Tools\Price as PriceTool;
+use DateTime;
+use Exception;
+
 /**
- * Class PGPaymentServicesManagersTransactionManager
+ * Class TransactionManager
  *
  * @package PGPayment\Services\Managers
- * @method PGPaymentInterfacesRepositoriesTransactionRepositoryInterface getRepository()
+ * @method TransactionRepositoryInterface getRepository()
  */
-class PGPaymentServicesManagersTransactionManager extends PGDatabaseFoundationsManager
+class TransactionManager extends AbstractManager
 {
     /**
      * @param $id
-     * @return PGPaymentInterfacesEntitiesTransactionInterface
+     * @return TransactionEntityInterface
      */
     public function getByPrimary($id)
     {
@@ -38,7 +48,7 @@ class PGPaymentServicesManagersTransactionManager extends PGDatabaseFoundationsM
 
     /**
      * @param string $pid
-     * @return PGPaymentInterfacesEntitiesTransactionInterface|null
+     * @return TransactionEntityInterface|null
      */
     public function getByPid($pid)
     {
@@ -52,16 +62,16 @@ class PGPaymentServicesManagersTransactionManager extends PGDatabaseFoundationsM
 
     /**
      * @param string $pid
-     * @param PGShopInterfacesEntitiesOrder $order
+     * @param OrderEntityInterface $order
      * @param string $state
      * @param string $mode
      * @param int $amount
-     * @return PGPaymentInterfacesEntitiesTransactionInterface
+     * @return TransactionEntityInterface
      * @throws Exception
      */
-    public function create($pid, PGShopInterfacesEntitiesOrder $order, $state, $mode, $amount)
+    public function create($pid, OrderEntityInterface $order, $state, $mode, $amount)
     {
-        /** @var PGPaymentInterfacesEntitiesTransactionInterface $transaction */
+        /** @var TransactionEntityInterface $transaction */
         $transaction = $this->getRepository()->create();
 
         $transaction
@@ -76,7 +86,7 @@ class PGPaymentServicesManagersTransactionManager extends PGDatabaseFoundationsM
         return $transaction;
     }
 
-    public function save(PGPaymentInterfacesEntitiesTransactionInterface $transaction)
+    public function save(TransactionEntityInterface $transaction)
     {
         if ($transaction->id() > 0) {
             return $this->getRepository()->update($transaction);
@@ -85,7 +95,7 @@ class PGPaymentServicesManagersTransactionManager extends PGDatabaseFoundationsM
         }
     }
 
-    public function delete(PGPaymentInterfacesEntitiesTransactionInterface $transaction)
+    public function delete(TransactionEntityInterface $transaction)
     {
         return $this->getRepository()->delete($transaction);
     }
@@ -110,7 +120,7 @@ class PGPaymentServicesManagersTransactionManager extends PGDatabaseFoundationsM
      */
     public function updateTransaction($pid, $state)
     {
-        /** @var PGPaymentInterfacesEntitiesTransactionInterface $transaction */
+        /** @var TransactionEntityInterface $transaction */
         $transaction = $this->getByPid($pid);
 
         if ($transaction === null) {
@@ -232,10 +242,10 @@ class PGPaymentServicesManagersTransactionManager extends PGDatabaseFoundationsM
     {
         $counts = array();
 
-        /** @var PGPaymentInterfacesEntitiesTransactionInterface $transaction */
+        /** @var TransactionEntityInterface $transaction */
         foreach ($transactions as $transaction) {
             $createdAt = $transaction->getCreatedAt()->getTimestamp();
-            $datetime = new Datetime();
+            $datetime = new DateTime();
             $transactionDay = $datetime->setTimestamp($createdAt)->setTime(0, 0)->format('d/m');
 
             if (array_key_exists($transactionDay, $counts)) {
@@ -285,12 +295,12 @@ class PGPaymentServicesManagersTransactionManager extends PGDatabaseFoundationsM
     {
          $amounts = array();
 
-        /** @var PGPaymentInterfacesEntitiesTransactionInterface $transaction */
+        /** @var TransactionEntityInterface $transaction */
         foreach ($transactions as $transaction) {
             $createdAt = $transaction->getCreatedAt()->getTimestamp();
-            $datetime = new Datetime();
+            $datetime = new DateTime();
             $transactionDay = $datetime->setTimestamp($createdAt)->setTime(0, 0)->format('d/m');
-            $transactionAmount = PGShopToolsPrice::toFloat($transaction->getAmount());
+            $transactionAmount = PriceTool::toFloat($transaction->getAmount());
 
             if (array_key_exists($transactionDay, $amounts)) {
                 $amounts[$transactionDay] += $transactionAmount;

@@ -15,15 +15,22 @@
  * @author    PayGreen <contact@paygreen.fr>
  * @copyright 2014 - 2021 Watt Is It
  * @license   https://opensource.org/licenses/mit-license.php MIT License X11
- * @version   2.1.1
+ * @version   2.2.0
  *
  */
 
+namespace PGI\Module\PGPayment\Services\Repositories;
+
+use PGI\Module\PGDatabase\Foundations\AbstractRepositoryDatabase;
+use PGI\Module\PGPayment\Interfaces\Entities\ProcessingEntityInterface;
+use PGI\Module\PGPayment\Interfaces\Repositories\ProcessingRepositoryInterface;
+use Exception;
+
 /**
- * Class PGPaymentServicesRepositoriesProcessingRepository
+ * Class ProcessingRepository
  * @package PGPayment\Services\Repositories
  */
-class PGPaymentServicesRepositoriesProcessingRepository extends PGDatabaseFoundationsRepositoryDatabase implements PGPaymentInterfacesRepositoriesProcessingRepositoryInterface
+class ProcessingRepository extends AbstractRepositoryDatabase implements ProcessingRepositoryInterface
 {
     /**
      * @inheritdoc
@@ -42,7 +49,7 @@ class PGPaymentServicesRepositoriesProcessingRepository extends PGDatabaseFounda
      */
     public function create(array $data)
     {
-        /** @var PGPaymentInterfacesEntitiesProcessingInterface $result */
+        /** @var ProcessingEntityInterface $result */
         $result = $this->wrapEntity($data);
 
         return $result;
@@ -52,7 +59,7 @@ class PGPaymentServicesRepositoriesProcessingRepository extends PGDatabaseFounda
      * @inheritDoc
      * @throws Exception
      */
-    public function insert(PGPaymentInterfacesEntitiesProcessingInterface $processing)
+    public function insert(ProcessingEntityInterface $processing)
     {
         return $this->insertEntity($processing);
     }
@@ -61,7 +68,7 @@ class PGPaymentServicesRepositoriesProcessingRepository extends PGDatabaseFounda
      * @inheritDoc
      * @throws Exception
      */
-    public function update(PGPaymentInterfacesEntitiesProcessingInterface $processing)
+    public function update(ProcessingEntityInterface $processing)
     {
         return $this->updateEntity($processing);
     }
@@ -70,7 +77,7 @@ class PGPaymentServicesRepositoriesProcessingRepository extends PGDatabaseFounda
      * @inheritDoc
      * @throws Exception
      */
-    public function delete(PGPaymentInterfacesEntitiesProcessingInterface $processing)
+    public function delete(ProcessingEntityInterface $processing)
     {
         return $this->deleteEntity($processing);
     }

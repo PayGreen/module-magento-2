@@ -15,25 +15,31 @@
  * @author    PayGreen <contact@paygreen.fr>
  * @copyright 2014 - 2021 Watt Is It
  * @license   https://opensource.org/licenses/mit-license.php MIT License X11
- * @version   2.1.1
+ * @version   2.2.0
  *
  */
 
+namespace PGI\Module\PGServer\Interfaces;
+
+use PGI\Module\PGServer\Foundations\AbstractRequest;
+use PGI\Module\PGServer\Foundations\AbstractResponse;
+use PGI\Module\PGSystem\Interfaces\Services\ConfigurableServiceInterface;
+
 /**
- * Interface PGServerInterfacesActionInterface
+ * Interface ActionInterface
  * @package PGServer\Interfaces
  */
-interface PGServerInterfacesActionInterface extends PGSystemInterfacesServicesConfigurable
+interface ActionInterface extends ConfigurableServiceInterface
 {
 
     /**
-     * @param PGServerFoundationsAbstractRequest $request
+     * @param AbstractRequest $request
      * @return self
      */
-    public function setRequest(PGServerFoundationsAbstractRequest $request);
+    public function setRequest(AbstractRequest $request);
 
     /**
-     * @return PGServerFoundationsAbstractResponse
+     * @return AbstractResponse
      */
     public function process();
 

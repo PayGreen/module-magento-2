@@ -15,36 +15,45 @@
  * @author    PayGreen <contact@paygreen.fr>
  * @copyright 2014 - 2021 Watt Is It
  * @license   https://opensource.org/licenses/mit-license.php MIT License X11
- * @version   2.1.1
+ * @version   2.2.0
  *
  */
 
+namespace PGI\Module\PGPayment\Services\Listeners;
+
+use PGI\Module\PGModule\Services\Handlers\BehaviorHandler;
+use PGI\Module\PGModule\Services\Logger;
+use PGI\Module\PGPayment\Components\Events\Refund as RefundEventComponent;
+use PGI\Module\PGPayment\Exceptions\Unrefundable as UnrefundableException;
+use PGI\Module\PGPayment\Services\Handlers\RefundHandler;
+use Exception;
+
 /**
- * Class PGPaymentServicesListenersRefundListener
+ * Class RefundListener
  * @package PGPayment\Services\Listeners
  */
-class PGPaymentServicesListenersRefundListener
+class RefundListener
 {
-    /** @var PGPaymentServicesHandlersRefundHandler */
+    /** @var RefundHandler */
     private $refundHandler;
 
-    /** @var PGModuleServicesHandlersBehavior */
+    /** @var BehaviorHandler */
     private $behaviorHandler;
 
-    /** @var PGModuleServicesLogger */
+    /** @var Logger */
     private $logger;
 
     public function __construct(
-        PGPaymentServicesHandlersRefundHandler $refundHandler,
-        PGModuleServicesHandlersBehavior $behaviorHandler,
-        PGModuleServicesLogger $logger
+        RefundHandler $refundHandler,
+        BehaviorHandler $behaviorHandler,
+        Logger $logger
     ) {
         $this->refundHandler = $refundHandler;
         $this->behaviorHandler = $behaviorHandler;
         $this->logger = $logger;
     }
 
-    public function listen(PGPaymentComponentsEventsRefundEvent $event)
+    public function listen(RefundEventComponent $event)
     {
         $this->logger->debug("Refund event catched.");
 
@@ -56,7 +65,7 @@ class PGPaymentServicesListenersRefundListener
 
                 $this->refundHandler->refundOrder($event->getOrder(), $event->getAmount());
             }
-        } catch (PGPaymentExceptionsUnrefundableException $exception) {
+        } catch (UnrefundableException $exception) {
             $this->logger->notice(
                 "Order #{$event->getOrder()->id()} is not refundable : " . $exception->getMessage()
             );

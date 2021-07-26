@@ -14,7 +14,7 @@
  * @author    PayGreen <contact@paygreen.fr>
  * @copyright 2014 - 2021 Watt Is It
  * @license   https://opensource.org/licenses/mit-license.php MIT License X11
- * @version   2.1.1
+ * @version   2.2.0
  *
  *}
 
@@ -64,7 +64,23 @@
 				<p style="font-size: 2em;">{$exception->getMessage()|escape:'htmlall':'UTF-8'}</p>
 				<ol class="text-monospace">
 					{foreach from=$exception->getTrace() item='trace'}
-						<li><strong>{$trace['function']|escape:'htmlall':'UTF-8'}</strong> in {$trace['file']|escape:'htmlall':'UTF-8'} at line {$trace['line']|escape:'htmlall':'UTF-8'}</li>
+						<li>
+							<strong>
+								{if !empty($trace['function'])}
+									{$trace['function']|escape:'htmlall':'UTF-8'}
+								{else}
+									???
+								{/if}
+							</strong>
+							{if !empty($trace['file'])}
+								in
+								{$trace['file']|escape:'htmlall':'UTF-8'}
+								at line
+								{if !empty($trace['line'])}
+									{$trace['line']|escape:'htmlall':'UTF-8'}
+								{/if}
+							{/if}
+						</li>
 					{/foreach}
 				</ol>
 			</div>

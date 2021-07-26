@@ -15,32 +15,39 @@
  * @author    PayGreen <contact@paygreen.fr>
  * @copyright 2014 - 2021 Watt Is It
  * @license   https://opensource.org/licenses/mit-license.php MIT License X11
- * @version   2.1.1
+ * @version   2.2.0
  *
  */
 
+namespace PGI\Module\PGPayment\Services\Managers;
+
+use PGI\Module\PGClient\Exceptions\Response as ResponseException;
+use PGI\Module\PGDatabase\Foundations\AbstractManager;
+use PGI\Module\PGPayment\Entities\PaymentType;
+use PGI\Module\PGPayment\Services\Repositories\PaymentTypeRepository;
+
 /**
- * Class PGPaymentServicesManagersPaymentTypeManager
+ * Class PaymentTypeManager
  *
  * @package PGPayment\Services\Managers
- * @method PGPaymentServicesRepositoriesPaymentTypeRepository getRepository
+ * @method PaymentTypeRepository getRepository
  */
-class PGPaymentServicesManagersPaymentTypeManager extends PGDatabaseFoundationsManager
+class PaymentTypeManager extends AbstractManager
 {
     const SOLIDARITY_ROUNDING = 'ROUNDING';
     const SOLIDARITY_CCARBON = 'CCARBON';
     const SOLIDARITY_DEFAULT = 'DEFAULT';
     const SOLIDARITY_NO = 'NO';
 
-    /** @var PGPaymentEntitiesPaymentType[]  */
+    /** @var PaymentType[]  */
     private $paymentTypes = array();
 
     /** @var string[]  */
     private $codes = array();
 
     /**
-     * @return PGPaymentEntitiesPaymentType[]
-     * @throws PGClientExceptionsResponse
+     * @return PaymentType[]
+     * @throws ResponseException
      */
     public function getAll()
     {
@@ -52,14 +59,14 @@ class PGPaymentServicesManagersPaymentTypeManager extends PGDatabaseFoundationsM
     }
 
     /**
-     * @return PGPaymentEntitiesPaymentType|null
-     * @throws PGClientExceptionsResponse
+     * @return PaymentType|null
+     * @throws ResponseException
      */
     public function getByCode($code)
     {
         $selectedPaymentType = null;
 
-        /** @var PGPaymentEntitiesPaymentType $paymentType */
+        /** @var PaymentType $paymentType */
         foreach ($this->getAll() as $paymentType) {
             if ($paymentType->getCode() === $code) {
                 $selectedPaymentType = $paymentType;
@@ -72,7 +79,7 @@ class PGPaymentServicesManagersPaymentTypeManager extends PGDatabaseFoundationsM
 
     /**
      * @return bool
-     * @throws PGClientExceptionsResponse
+     * @throws ResponseException
      */
     public function hasPaymentTypes()
     {
@@ -83,7 +90,7 @@ class PGPaymentServicesManagersPaymentTypeManager extends PGDatabaseFoundationsM
 
     /**
      * @return string[]
-     * @throws PGClientExceptionsResponse
+     * @throws ResponseException
      */
     public function getCodes()
     {
@@ -91,7 +98,7 @@ class PGPaymentServicesManagersPaymentTypeManager extends PGDatabaseFoundationsM
             /** @var $codes */
             $codes = array();
 
-            /** @var PGPaymentEntitiesPaymentType $paymentType */
+            /** @var PaymentType $paymentType */
             foreach ($this->getAll() as $paymentType) {
                 $codes[] = $paymentType->getCode();
             }
@@ -106,14 +113,14 @@ class PGPaymentServicesManagersPaymentTypeManager extends PGDatabaseFoundationsM
      * get Iframe Sizes ordered by payment method
      *
      * @return array
-     * @throws PGClientExceptionsResponse
+     * @throws ResponseException
      */
     public function getIframeSizeOrderByType()
     {
         /** @var $iframeSizes */
         $iframeSizes = array();
 
-        /** @var PGPaymentEntitiesPaymentType $paymentType */
+        /** @var PaymentType $paymentType */
         foreach ($this->getAll() as $paymentType) {
             $iframeSizes[$paymentType->getCode()] = $paymentType->getIframeConfiguration();
         }
@@ -128,7 +135,7 @@ class PGPaymentServicesManagersPaymentTypeManager extends PGDatabaseFoundationsM
      * @param string $paymentType
      * @param string $paymentMode
      * @return array
-     * @throws PGClientExceptionsResponse
+     * @throws ResponseException
      */
     public function getSizeIFrameFromPayment($solidarityType, $paymentType, $paymentMode)
     {

@@ -15,27 +15,33 @@
  * @author    PayGreen <contact@paygreen.fr>
  * @copyright 2014 - 2021 Watt Is It
  * @license   https://opensource.org/licenses/mit-license.php MIT License X11
- * @version   2.1.1
+ * @version   2.2.0
  *
  */
 
+namespace PGI\Module\PGFramework\Services\Handlers;
+
+use PGI\Module\PGModule\Services\Logger;
+use PGI\Module\PGSystem\Services\Container;
+use Exception;
+
 /**
- * Class PGFrameworkServicesHandlersHookHandler
+ * Class HookHandler
  * @package PGFramework\Services\Handlers
  */
-class PGFrameworkServicesHandlersHookHandler
+class HookHandler
 {
-    /** @var PGSystemServicesContainer */
+    /** @var Container */
     private $container;
 
-    /** @var PGModuleServicesLogger */
+    /** @var Logger */
     private $logger;
 
     private $serviceNames = array();
 
     private $hooks = array();
 
-    public function __construct(PGSystemServicesContainer $container, PGModuleServicesLogger $logger)
+    public function __construct(Container $container, Logger $logger)
     {
         $this->container = $container;
         $this->logger = $logger;

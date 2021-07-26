@@ -15,31 +15,39 @@
  * @author    PayGreen <contact@paygreen.fr>
  * @copyright 2014 - 2021 Watt Is It
  * @license   https://opensource.org/licenses/mit-license.php MIT License X11
- * @version   2.1.1
+ * @version   2.2.0
  *
  */
 
+namespace PGI\Module\PGSystem\Components\Builders;
+
+use PGI\Module\PGSystem\Components\Parameters as ParametersComponent;
+use PGI\Module\PGSystem\Components\Service\Library as LibraryServiceComponent;
+use PGI\Module\PGSystem\Services\Container as PaygreenContainer;
+use PGI\Module\PGSystem\Services\Pathfinder;
+use Exception;
+
 /**
- * Class PGSystemComponentsBuildersContainer
+ * Class Container
  * @package PGSystem\Components\Builders
  */
-class PGSystemComponentsBuildersContainer
+class Container
 {
-    /** @var PGSystemServicesPathfinder */
+    /** @var Pathfinder */
     private $pathfinder;
 
-    public function __construct(PGSystemServicesPathfinder $pathfinder)
+    public function __construct(Pathfinder $pathfinder)
     {
         $this->pathfinder = $pathfinder;
     }
 
     /**
-     * @return PGSystemServicesContainer
+     * @return PaygreenContainer
      * @throws Exception
      */
     public function buildContainer()
     {
-        $container = PGSystemServicesContainer::getInstance();
+        $container = PaygreenContainer::getInstance();
 
         $this->loadServiceLibrary($container);
         $this->loadParameters($container);
@@ -48,12 +56,12 @@ class PGSystemComponentsBuildersContainer
     }
 
     /**
-     * @param PGSystemServicesContainer $container
+     * @param PaygreenContainer $container
      * @throws Exception
      */
-    private function loadServiceLibrary(PGSystemServicesContainer $container)
+    private function loadServiceLibrary(PaygreenContainer $container)
     {
-        /** @var PGSystemComponentsServiceLibrary $library */
+        /** @var LibraryServiceComponent $library */
         $library = $container->get('service.library');
 
         if (defined('PAYGREEN_SUBSET')) {
@@ -68,12 +76,12 @@ class PGSystemComponentsBuildersContainer
     }
 
     /**
-     * @param PGSystemServicesContainer $container
+     * @param PaygreenContainer $container
      * @throws Exception
      */
-    private function loadParameters(PGSystemServicesContainer $container)
+    private function loadParameters(PaygreenContainer $container)
     {
-        /** @var PGSystemComponentsParameters $parameters */
+        /** @var ParametersComponent $parameters */
         $parameters = $container->get('parameters');
 
         if (defined('PAYGREEN_SUBSET')) {

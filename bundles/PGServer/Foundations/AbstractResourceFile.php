@@ -15,15 +15,19 @@
  * @author    PayGreen <contact@paygreen.fr>
  * @copyright 2014 - 2021 Watt Is It
  * @license   https://opensource.org/licenses/mit-license.php MIT License X11
- * @version   2.1.1
+ * @version   2.2.0
  *
  */
 
+namespace PGI\Module\PGServer\Foundations;
+
+use PGI\Module\PGServer\Foundations\AbstractResourceBasic;
+
 /**
- * Class PGServerFoundationsAbstractResourceFile
+ * Class AbstractResourceFile
  * @package PGServer\Foundations
  */
-abstract class PGServerFoundationsAbstractResourceFile extends PGServerFoundationsAbstractResource
+abstract class AbstractResourceFile extends AbstractResourceBasic
 {
     private $path;
 

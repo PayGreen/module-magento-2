@@ -15,31 +15,35 @@
  * @author    PayGreen <contact@paygreen.fr>
  * @copyright 2014 - 2021 Watt Is It
  * @license   https://opensource.org/licenses/mit-license.php MIT License X11
- * @version   2.1.1
+ * @version   2.2.0
  *
  */
 
+namespace PGI\Module\PGServer\Components;
+
+use PGI\Module\PGServer\Foundations\AbstractResourceBasic;
+
 /**
- * Class PGServerComponentsResourceBag
+ * Class ResourceBag
  * @package PGServer\Components
  */
-class PGServerComponentsResourceBag
+class ResourceBag
 {
-    /** @var PGServerFoundationsAbstractResource[] */
+    /** @var AbstractResourceBasic[] */
     private $resources = array();
 
     /**
-     * @param PGServerFoundationsAbstractResource $resource
+     * @param AbstractResourceBasic $resource
      * @return self
      */
-    public function add(PGServerFoundationsAbstractResource $resource)
+    public function add(AbstractResourceBasic $resource)
     {
         $this->resources[] = $resource;
 
         return $this;
     }
 
-    public function merge(PGServerComponentsResourceBag $resources)
+    public function merge(ResourceBag $resources)
     {
         foreach ($resources->get() as $resource) {
             $this->add($resource);

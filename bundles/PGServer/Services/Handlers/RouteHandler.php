@@ -15,19 +15,25 @@
  * @author    PayGreen <contact@paygreen.fr>
  * @copyright 2014 - 2021 Watt Is It
  * @license   https://opensource.org/licenses/mit-license.php MIT License X11
- * @version   2.1.1
+ * @version   2.2.0
  *
  */
 
+namespace PGI\Module\PGServer\Services\Handlers;
+
+use PGI\Module\PGFramework\Services\Handlers\RequirementHandler;
+use PGI\Module\PGSystem\Components\Bag as BagComponent;
+use Exception;
+
 /**
- * Class PGServerServicesHandlersRouteHandler
+ * Class RouteHandler
  * @package PGServer\Services\Handlers
  */
-class PGServerServicesHandlersRouteHandler
+class RouteHandler
 {
     private $routes = array();
 
-    /** @var PGFrameworkServicesHandlersRequirementHandler */
+    /** @var RequirementHandler */
     private $requirementHandler;
 
     public function __construct(array $routes)
@@ -36,9 +42,9 @@ class PGServerServicesHandlersRouteHandler
     }
 
     /**
-     * @param PGFrameworkServicesHandlersRequirementHandler $requirementHandler
+     * @param RequirementHandler $requirementHandler
      */
-    public function setRequirementHandler(PGFrameworkServicesHandlersRequirementHandler $requirementHandler)
+    public function setRequirementHandler(RequirementHandler $requirementHandler)
     {
         $this->requirementHandler = $requirementHandler;
     }
@@ -99,7 +105,7 @@ class PGServerServicesHandlersRouteHandler
 
     /**
      * @param string $name
-     * @return PGSystemComponentsBag
+     * @return BagComponent
      * @throws Exception
      */
     protected function getRouteConfiguration($name)
@@ -108,6 +114,6 @@ class PGServerServicesHandlersRouteHandler
             throw new Exception("Route not found : '$name'.");
         }
 
-        return new PGSystemComponentsBag($this->routes[$name]);
+        return new BagComponent($this->routes[$name]);
     }
 }

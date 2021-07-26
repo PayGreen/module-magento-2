@@ -15,25 +15,31 @@
  * @author    PayGreen <contact@paygreen.fr>
  * @copyright 2014 - 2021 Watt Is It
  * @license   https://opensource.org/licenses/mit-license.php MIT License X11
- * @version   2.1.1
+ * @version   2.2.0
  *
  */
 
+namespace PGI\Module\PGModule\Components\Events;
+
+use PGI\Module\PGModule\Components\Output as OutputComponent;
+use PGI\Module\PGModule\Foundations\AbstractEvent;
+use Exception;
+
 /**
- * Class PGModuleComponentsEventsOutput
+ * Class Output
  * @package PGModule\Components\Events
  */
-class PGModuleComponentsEventsOutput extends PGModuleFoundationsEvent
+class Output extends AbstractEvent
 {
     /** @var string */
     private $name;
 
-    /** @var PGModuleComponentsOutput */
+    /** @var OutputComponent */
     private $output;
 
     private $data = array();
 
-    public function __construct($type, PGModuleComponentsOutput $output, array $data = array())
+    public function __construct($type, OutputComponent $output, array $data = array())
     {
         $this->name = 'OUTPUT.' . strtoupper($type);
 
@@ -50,7 +56,7 @@ class PGModuleComponentsEventsOutput extends PGModuleFoundationsEvent
     }
 
     /**
-     * @return PGModuleComponentsOutput
+     * @return OutputComponent
      */
     public function getOutput()
     {

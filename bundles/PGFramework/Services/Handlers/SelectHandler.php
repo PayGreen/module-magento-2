@@ -15,22 +15,30 @@
  * @author    PayGreen <contact@paygreen.fr>
  * @copyright 2014 - 2021 Watt Is It
  * @license   https://opensource.org/licenses/mit-license.php MIT License X11
- * @version   2.1.1
+ * @version   2.2.0
  *
  */
 
+namespace PGI\Module\PGFramework\Services\Handlers;
+
+use PGI\Module\PGFramework\Interfaces\SelectorInterface;
+use PGI\Module\PGSystem\Foundations\AbstractObject;
+use PGI\Module\PGSystem\Services\Container;
+use Exception;
+use LogicException;
+
 /**
- * Class PGFrameworkServicesHandlersSelectHandler
+ * Class SelectHandler
  * @package PGFramework\Services\Handlers
  */
-class PGFrameworkServicesHandlersSelectHandler extends PGSystemFoundationsObject
+class SelectHandler extends AbstractObject
 {
     private $selectorNames = array();
 
-    /** @var PGSystemServicesContainer */
+    /** @var Container */
     private $container;
 
-    public function __construct(PGSystemServicesContainer $container)
+    public function __construct(Container $container)
     {
         $this->container = $container;
     }
@@ -52,7 +60,7 @@ class PGFrameworkServicesHandlersSelectHandler extends PGSystemFoundationsObject
 
     /**
      * @param string $name
-     * @return PGFrameworkInterfacesSelectorInterface
+     * @return SelectorInterface
      * @throws LogicException
      * @throws Exception
      */
@@ -62,11 +70,11 @@ class PGFrameworkServicesHandlersSelectHandler extends PGSystemFoundationsObject
             throw new LogicException("Unknown selector name : '$name'.");
         }
 
-        /** @var PGFrameworkInterfacesSelectorInterface $validator */
+        /** @var SelectorInterface $validator */
         $selector = $this->container->get($this->selectorNames[$name]);
 
-        if (! $selector instanceof PGFrameworkInterfacesSelectorInterface) {
-            throw new Exception("Selector '$name' must implements PGFrameworkInterfacesSelectorInterface interface.");
+        if (! $selector instanceof SelectorInterface) {
+            throw new Exception("Selector '$name' must implements SelectorInterface interface.");
         }
 
         return $selector;

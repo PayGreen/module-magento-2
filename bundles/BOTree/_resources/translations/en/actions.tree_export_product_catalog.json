@@ -1,0 +1,7 @@
+{
+  "actions": {
+    "tree_export_product_catalog": {
+      "invalid_product_catalog": "Your product catalog is invalid, some of your products do not have names or references."
+    }
+  }
+}

@@ -15,21 +15,21 @@
  * @author    PayGreen <contact@paygreen.fr>
  * @copyright 2014 - 2021 Watt Is It
  * @license   https://opensource.org/licenses/mit-license.php MIT License X11
- * @version   2.1.1
+ * @version   2.2.0
  *
  */
 
 namespace Paygreen\Payment\Model;
 
-use Magento\Checkout\Model\ConfigProviderInterface;
-use PGIntlServicesTranslator;
-use PGSystemServicesContainer;
-use PGServerServicesHandlersLink;
-use PGPaymentServicesHandlersPaymentButtonHandler;
-use PGPaymentInterfacesEntitiesButtonInterface;
-use PGMagentoProvisionersCheckoutProvisioner;
+use Magento\Checkout\Model\ConfigProviderInterface as LocalConfigProviderInterface;
+use PGI\Module\PGIntl\Services\Translator;
+use PGI\Module\PGMagento\Components\Provisioners\Checkout as CheckoutProvisionerComponent;
+use PGI\Module\PGPayment\Interfaces\Entities\ButtonEntityInterface;
+use PGI\Module\PGPayment\Services\Handlers\PaymentButtonHandler;
+use PGI\Module\PGServer\Services\Handlers\LinkHandler;
+use PGI\Module\PGSystem\Services\Container;
 
-class ConfigProvider implements ConfigProviderInterface
+class ConfigProvider implements LocalConfigProviderInterface
 {
     public function __construct()
     {
@@ -38,30 +38,30 @@ class ConfigProvider implements ConfigProviderInterface
 
     protected function getService($name)
     {
-        return PGSystemServicesContainer::getInstance()->get($name);
+        return Container::getInstance()->get($name);
     }
 
     public function getConfig()
     {
         $this->getService('logger')->debug("ConfigProvider called.");
 
-        /** @var PGPaymentServicesHandlersPaymentButtonHandler $paymentButtonHandler */
+        /** @var PaymentButtonHandler $paymentButtonHandler */
         $paymentButtonHandler = $this->getService('handler.payment_button');
 
-        /** @var PGIntlServicesTranslator $translator */
+        /** @var Translator $translator */
         $translator = $this->getService('translator');
 
-        /** @var PGServerServicesHandlersLink $linkHandler */
+        /** @var LinkHandler $linkHandler */
         $linkHandler = $this->getService('handler.link');
 
-        /** @var PGMagentoProvisionersCheckoutProvisioner $checkoutProvisioner */
-        $checkoutProvisioner = new PGMagentoProvisionersCheckoutProvisioner();
+        /** @var CheckoutProvisionerComponent $checkoutProvisioner */
+        $checkoutProvisioner = new CheckoutProvisionerComponent();
 
         $buttons = $this->getService('manager.button')->getValidButtons($checkoutProvisioner);
 
         $formatedButtons = [];
 
-        /** @var PGPaymentInterfacesEntitiesButtonInterface $button */
+        /** @var ButtonEntityInterface $button */
         foreach ($buttons as $button) {
             $formatedButtons[] = array_merge(
                 $button->toArray(),

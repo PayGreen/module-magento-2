@@ -15,11 +15,17 @@
  * @author    PayGreen <contact@paygreen.fr>
  * @copyright 2014 - 2021 Watt Is It
  * @license   https://opensource.org/licenses/mit-license.php MIT License X11
- * @version   2.1.1
+ * @version   2.2.0
  *
  */
 
-class PGMagentoServicesLinkersOrderLinker extends PGMagentoFoundationsAbstractOrderLinker
+namespace PGI\Module\PGMagento\Services\Linkers;
+
+use PGI\Module\PGMagento\Foundations\Linkers\AbstractOrderLinker;
+use PGI\Module\PGShop\Interfaces\Entities\OrderEntityInterface;
+use Exception;
+
+class OrderLinker extends AbstractOrderLinker
 {
     /**
      * @inheritDoc
@@ -27,7 +33,7 @@ class PGMagentoServicesLinkersOrderLinker extends PGMagentoFoundationsAbstractOr
      */
     public function buildUrl(array $data = array())
     {
-        /** @var PGShopInterfacesEntitiesOrder $localOrder */
+        /** @var OrderEntityInterface $localOrder */
         $order = $this->findOrder($data);
 
         return $this->buildFrontUrl('sales/order/view', ['order_id' => $order->id()]);

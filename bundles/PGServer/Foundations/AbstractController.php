@@ -15,47 +15,66 @@
  * @author    PayGreen <contact@paygreen.fr>
  * @copyright 2014 - 2021 Watt Is It
  * @license   https://opensource.org/licenses/mit-license.php MIT License X11
- * @version   2.1.1
+ * @version   2.2.0
  *
  */
 
+namespace PGI\Module\PGServer\Foundations;
+
+use PGI\Module\PGForm\Interfaces\FormInterface;
+use PGI\Module\PGForm\Services\Builders\FormBuilder;
+use PGI\Module\PGFramework\Services\Notifier;
+use PGI\Module\PGModule\Services\Logger;
+use PGI\Module\PGModule\Services\Settings;
+use PGI\Module\PGServer\Components\Requests\Forward as ForwardRequestComponent;
+use PGI\Module\PGServer\Components\Responses\Blank as BlankResponseComponent;
+use PGI\Module\PGServer\Components\Responses\Collection as CollectionResponseComponent;
+use PGI\Module\PGServer\Components\Responses\Forward as ForwardResponseComponent;
+use PGI\Module\PGServer\Components\Responses\Redirection as RedirectionResponseComponent;
+use PGI\Module\PGServer\Components\Responses\Template as TemplateResponseComponent;
+use PGI\Module\PGServer\Exceptions\HTTPNotFound as HTTPNotFoundException;
+use PGI\Module\PGServer\Foundations\AbstractRequest;
+use PGI\Module\PGServer\Services\Handlers\LinkHandler;
+use PGI\Module\PGSystem\Components\Parameters as ParametersComponent;
+use Exception;
+
 /**
- * Class PGServerFoundationsAbstractController
+ * Class AbstractController
  * @package PGServer\Foundations
  */
-abstract class PGServerFoundationsAbstractController
+abstract class AbstractController
 {
-    /** @var PGFrameworkServicesNotifier */
+    /** @var Notifier */
     private $notifier;
 
-    /** @var PGModuleServicesLogger */
+    /** @var Logger */
     private $logger;
 
-    /** @var PGServerServicesHandlersLink */
+    /** @var LinkHandler */
     private $linkHandler;
 
-    /** @var PGServerFoundationsAbstractRequest */
+    /** @var AbstractRequest */
     private $request;
 
-    /** @var PGModuleServicesSettings */
+    /** @var Settings */
     private $settings;
 
-    /** @var PGSystemComponentsParameters */
+    /** @var ParametersComponent */
     private $parameters;
 
-    /** @var PGFormServicesFormBuilder */
+    /** @var FormBuilder */
     private $formBuilder;
 
     /**
-     * @param PGFormServicesFormBuilder
+     * @param FormBuilder
      */
-    public function setFormBuilder(PGFormServicesFormBuilder $formBuilder)
+    public function setFormBuilder(FormBuilder $formBuilder)
     {
         $this->formBuilder = $formBuilder;
     }
 
     /**
-     * @return PGModuleServicesLogger
+     * @return Logger
      */
     protected function getLogger()
     {
@@ -63,15 +82,15 @@ abstract class PGServerFoundationsAbstractController
     }
 
     /**
-     * @param PGModuleServicesLogger
+     * @param Logger
      */
-    public function setLogger(PGModuleServicesLogger $logger)
+    public function setLogger(Logger $logger)
     {
         $this->logger = $logger;
     }
 
     /**
-     * @return PGFrameworkServicesNotifier
+     * @return Notifier
      */
     protected function getNotifier()
     {
@@ -79,15 +98,15 @@ abstract class PGServerFoundationsAbstractController
     }
 
     /**
-     * @param PGFrameworkServicesNotifier
+     * @param Notifier
      */
-    public function setNotifier(PGFrameworkServicesNotifier $notifier)
+    public function setNotifier(Notifier $notifier)
     {
         $this->notifier = $notifier;
     }
 
     /**
-     * @return PGServerServicesHandlersLink
+     * @return LinkHandler
      */
     protected function getLinkHandler()
     {
@@ -95,19 +114,19 @@ abstract class PGServerFoundationsAbstractController
     }
 
     /**
-     * @param PGServerServicesHandlersLink
+     * @param LinkHandler
      */
-    public function setLinkHandler(PGServerServicesHandlersLink $linkHandler)
+    public function setLinkHandler(LinkHandler $linkHandler)
     {
         $this->linkHandler = $linkHandler;
     }
     
 
     /**
-     * @param PGServerFoundationsAbstractRequest $request
+     * @param AbstractRequest $request
      * @return self
      */
-    public function setRequest(PGServerFoundationsAbstractRequest $request)
+    public function setRequest(AbstractRequest $request)
     {
         $this->request = $request;
 
@@ -115,33 +134,33 @@ abstract class PGServerFoundationsAbstractController
     }
 
     /**
-     * @return PGModuleServicesSettings
+     * @return Settings
      */
     protected function getSettings()
     {
         return $this->settings;
     }
 
-    public function setSettings(PGModuleServicesSettings $settings)
+    public function setSettings(Settings $settings)
     {
         $this->settings = $settings;
     }
 
     /**
-     * @return PGSystemComponentsParameters
+     * @return ParametersComponent
      */
     protected function getParameters()
     {
         return $this->parameters;
     }
 
-    public function setParameters(PGSystemComponentsParameters $parameters)
+    public function setParameters(ParametersComponent $parameters)
     {
         $this->parameters = $parameters;
     }
 
     /**
-     * @return PGServerFoundationsAbstractRequest
+     * @return AbstractRequest
      */
     protected function getRequest()
     {
@@ -150,32 +169,32 @@ abstract class PGServerFoundationsAbstractController
 
     protected function success($text)
     {
-        $this->notifier->add(PGFrameworkServicesNotifier::STATE_SUCCESS, $text);
+        $this->notifier->add(Notifier::STATE_SUCCESS, $text);
 
         $this->logger->notice("--SUCCESS--> $text");
     }
 
     protected function notice($text)
     {
-        $this->notifier->add(PGFrameworkServicesNotifier::STATE_NOTICE, $text);
+        $this->notifier->add(Notifier::STATE_NOTICE, $text);
 
         $this->logger->notice("--NOTICE--> $text");
     }
 
     protected function failure($text)
     {
-        $this->notifier->add(PGFrameworkServicesNotifier::STATE_FAILURE, $text);
+        $this->notifier->add(Notifier::STATE_FAILURE, $text);
 
         $this->logger->notice("--FAILURE--> $text");
     }
 
     /**
-     * @return PGServerComponentsResponsesArrayResponse
+     * @return CollectionResponseComponent
      * @throws Exception
      */
     protected function buildArrayResponse(array $data = array())
     {
-        $response = new PGServerComponentsResponsesArrayResponse($this->getRequest());
+        $response = new CollectionResponseComponent($this->getRequest());
 
         $response->tag('API');
 
@@ -185,12 +204,12 @@ abstract class PGServerFoundationsAbstractController
     }
 
     /**
-     * @return PGServerComponentsResponsesEmptyResponse
+     * @return BlankResponseComponent
      * @throws Exception
      */
     protected function buildEmptyResponse()
     {
-        $response = new PGServerComponentsResponsesEmptyResponse($this->getRequest());
+        $response = new BlankResponseComponent($this->getRequest());
 
         $response->tag('API');
 
@@ -200,12 +219,12 @@ abstract class PGServerFoundationsAbstractController
     /**
      * @param string $url
      * @param int|null $code
-     * @return PGServerComponentsResponsesRedirectionResponse
+     * @return RedirectionResponseComponent
      * @throws Exception
      */
     protected function redirect($url, $code = null)
     {
-        $response = new PGServerComponentsResponsesRedirectionResponse($this->getRequest());
+        $response = new RedirectionResponseComponent($this->getRequest());
 
         $response->setUrl($url);
 
@@ -217,35 +236,35 @@ abstract class PGServerFoundationsAbstractController
     }
 
     /**
-     * @throws PGServerExceptionsHTTPNotFoundException
+     * @throws HTTPNotFoundException
      */
     protected function notFound()
     {
-        throw new PGServerExceptionsHTTPNotFoundException();
+        throw new HTTPNotFoundException();
     }
 
     /**
      * @param string $target
      * @param array $data
      * @param bool $transmitHeaders
-     * @return PGServerComponentsResponsesForwardResponse
+     * @return ForwardResponseComponent
      * @throws Exception
      */
     protected function forward($target, array $data = array(), $transmitHeaders = true)
     {
         $headers = $transmitHeaders ? $this->getRequest()->getAllHeaders() :  array();
-        $request = new PGServerComponentsRequestsForwardRequest($target, $data, $headers);
+        $request = new ForwardRequestComponent($target, $data, $headers);
 
-        return new PGServerComponentsResponsesForwardResponse($request);
+        return new ForwardResponseComponent($request);
     }
 
     /**
-     * @return PGServerComponentsResponsesTemplateResponse
+     * @return TemplateResponseComponent
      * @throws Exception
      */
     protected function buildTemplateResponse($template, array $data = array())
     {
-        $response = new PGServerComponentsResponsesTemplateResponse($this->getRequest());
+        $response = new TemplateResponseComponent($this->getRequest());
 
         $response
             ->tag('PGTemplate')
@@ -259,7 +278,7 @@ abstract class PGServerFoundationsAbstractController
     /**
      * @param string $name
      * @param array $data
-     * @return PGFormInterfacesFormInterface
+     * @return FormInterface
      * @throws Exception
      */
     protected function buildForm($name, array $data = array())

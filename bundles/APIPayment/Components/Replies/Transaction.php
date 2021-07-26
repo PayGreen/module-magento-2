@@ -15,15 +15,23 @@
  * @author    PayGreen <contact@paygreen.fr>
  * @copyright 2014 - 2021 Watt Is It
  * @license   https://opensource.org/licenses/mit-license.php MIT License X11
- * @version   2.1.1
+ * @version   2.2.0
  *
  */
 
+namespace PGI\Module\APIPayment\Components\Replies;
+
+use PGI\Module\APIPayment\Components\Replies\TransactionResult as TransactionResultReplyComponent;
+use PGI\Module\PGClient\Exceptions\ResponseMalformed as ResponseMalformedException;
+use PGI\Module\PGClient\Foundations\AbstractReply;
+use DateTime;
+use Exception;
+
 /**
- * Class APIPaymentComponentsRepliesTransaction
+ * Class Transaction
  * @package APIPayment\Components\Replies
  */
-class APIPaymentComponentsRepliesTransaction extends PGClientFoundationsReply
+class Transaction extends AbstractReply
 {
     /** @var int */
     protected $id;
@@ -67,7 +75,7 @@ class APIPaymentComponentsRepliesTransaction extends PGClientFoundationsReply
     /** @var DateTime */
     protected $answeredAt;
 
-    /** @var APIPaymentComponentsRepliesTransactionResult|null  */
+    /** @var TransactionResultReplyComponent|null  */
     protected $result = null;
 
     protected $card = null;
@@ -103,7 +111,7 @@ class APIPaymentComponentsRepliesTransaction extends PGClientFoundationsReply
             ->setScalar('testMode', 'testing', 'bool')
             ->setScalar('idFingerprint', 'fingerPrintPrimary', 'int')
             ->setScalar('rank', 'rank', 'int', false)
-            ->setObject('result', 'result', 'APIPaymentComponentsRepliesTransactionResult')
+            ->setObject('result', 'result', 'PGI\Module\APIPayment\Components\Replies\TransactionResult')
         ;
 
         if ($this->hasRaw('paymentFolder')) {
@@ -130,12 +138,12 @@ class APIPaymentComponentsRepliesTransaction extends PGClientFoundationsReply
 
         if (!in_array($this->getTransactionType(), array('TR', 'PR'))) {
             $message = "Unknown transaction type: '{$this->getTransactionType()}'.";
-            throw new PGClientExceptionsResponseMalformed($message);
+            throw new ResponseMalformedException($message);
         }
 
         if (!in_array($this->getMode(), array('CASH', 'RECURRING', 'XTIME', 'TOKENIZE'))) {
             $message = "Unknown payment mode: '{$this->getMode()}'.";
-            throw new PGClientExceptionsResponseMalformed($message);
+            throw new ResponseMalformedException($message);
         }
 
         if ($this->hasRaw('createdAt') and ($this->getRaw('createdAt') > 0)) {
@@ -298,7 +306,7 @@ class APIPaymentComponentsRepliesTransaction extends PGClientFoundationsReply
     }
 
     /**
-     * @return APIPaymentComponentsRepliesTransactionResult|null
+     * @return TransactionResultReplyComponent|null
      */
     public function getResult()
     {

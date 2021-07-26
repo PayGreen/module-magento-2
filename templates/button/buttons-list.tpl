@@ -14,7 +14,7 @@
  * @author    PayGreen <contact@paygreen.fr>
  * @copyright 2014 - 2021 Watt Is It
  * @license   https://opensource.org/licenses/mit-license.php MIT License X11
- * @version   2.1.1
+ * @version   2.2.0
  *
  *}
 <h2>
@@ -22,15 +22,29 @@
 </h2>
 
 <div class="pgcontainer">
-    {foreach from=$buttons item=button}
-        {include file="button/list-block-button.tpl" button=$button}
-    {/foreach}
+    <table>
+        <thead>
+        <tr>
+            <td></td>
+            <td>{'pages.buttons.list.logo'|pgtrans}</td>
+            <td>{'pages.buttons.list.name'|pgtrans}</td>
+            <td>{'pages.buttons.list.payment_mode'|pgtrans}</td>
+            <td>{'pages.buttons.list.payment_type'|pgtrans}</td>
+            <td>{'pages.buttons.list.actions'|pgtrans}</td>
+        </tr>
+        </thead>
+        <tbody>
+        {foreach from=$buttons item=button}
+            {view name="button.line" button=$button}
+        {/foreach}
+        </tbody>
+    </table>
 </div>
 
 <div class="pgbutton__container pg__mtop-sm">
     <a
-        href="{'backoffice.buttons.display_insert'|toback}"
-        class="pgbutton"
+            href="{'backoffice.buttons.display_insert'|toback}"
+            class="pgbutton"
     >
         {'actions.button.insert.button'|pgtrans}
     </a>

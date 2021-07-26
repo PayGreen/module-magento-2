@@ -15,17 +15,22 @@
  * @author    PayGreen <contact@paygreen.fr>
  * @copyright 2014 - 2021 Watt Is It
  * @license   https://opensource.org/licenses/mit-license.php MIT License X11
- * @version   2.1.1
+ * @version   2.2.0
  *
  */
 
+namespace PGI\Module\PGModule\Components;
+
+use PGI\Module\PGServer\Components\ResourceBag as ResourceBagComponent;
+use PGI\Module\PGServer\Foundations\AbstractResourceBasic;
+
 /**
- * Class PGModuleComponentsOutput
+ * Class Output
  * @package PGModule\Components
  */
-class PGModuleComponentsOutput
+class Output
 {
-    /** @var PGServerComponentsResourceBag */
+    /** @var ResourceBagComponent */
     private $resources;
 
     private $content = '';
@@ -33,14 +38,14 @@ class PGModuleComponentsOutput
     public function __construct($content = '')
     {
         $this->content = $content;
-        $this->resources = new PGServerComponentsResourceBag();
+        $this->resources = new ResourceBagComponent();
     }
 
     /**
-     * @param PGServerFoundationsAbstractResource $resource
+     * @param AbstractResourceBasic $resource
      * @return $this
      */
-    public function addResource(PGServerFoundationsAbstractResource $resource)
+    public function addResource(AbstractResourceBasic $resource)
     {
         $this->resources->add($resource);
 
@@ -48,10 +53,10 @@ class PGModuleComponentsOutput
     }
 
     /**
-     * @param PGServerComponentsResourceBag $resources
+     * @param ResourceBagComponent $resources
      * @return $this
      */
-    public function addResources(PGServerComponentsResourceBag $resources)
+    public function addResources(ResourceBagComponent $resources)
     {
         $this->resources->merge($resources);
 
@@ -59,7 +64,7 @@ class PGModuleComponentsOutput
     }
 
     /**
-     * @return PGServerComponentsResourceBag
+     * @return ResourceBagComponent
      */
     public function getResources()
     {
@@ -108,9 +113,9 @@ class PGModuleComponentsOutput
     }
 
     /**
-     * @param PGModuleComponentsOutput $output
+     * @param Output $output
      */
-    public function merge(PGModuleComponentsOutput $output)
+    public function merge(Output $output)
     {
         $this->addContent($output->getContent());
         $this->addResources($output->getResources());

@@ -15,36 +15,52 @@
  * @author    PayGreen <contact@paygreen.fr>
  * @copyright 2014 - 2021 Watt Is It
  * @license   https://opensource.org/licenses/mit-license.php MIT License X11
- * @version   2.1.1
+ * @version   2.2.0
  *
  */
 
+namespace PGI\Module\PGPayment\Services\Handlers;
+
+use PGI\Module\APIPayment\Components\Response as ResponseComponent;
+use PGI\Module\APIPayment\Services\Facades\ApiFacade;
+use PGI\Module\PGClient\Exceptions\Response as ResponseException;
+use PGI\Module\PGModule\Services\Logger;
+use PGI\Module\PGPayment\Exceptions\Unrefundable as UnrefundableException;
+use PGI\Module\PGPayment\Interfaces\Entities\TransactionEntityInterface;
+use PGI\Module\PGPayment\Services\Facades\PaygreenFacade;
+use PGI\Module\PGPayment\Services\Managers\TransactionManager;
+use PGI\Module\PGShop\Interfaces\Entities\OrderEntityInterface;
+use PGI\Module\PGShop\Services\Managers\OrderManager;
+use PGI\Module\PGSystem\Foundations\AbstractObject;
+use Exception;
+use Paygreen;
+
 /**
- * Class PGPaymentServicesHandlersRefundHandler
+ * Class RefundHandler
  * @package PGPayment\Services\Handlers
  */
-class PGPaymentServicesHandlersRefundHandler extends PGSystemFoundationsObject
+class RefundHandler extends AbstractObject
 {
-    /** @var PGPaymentServicesManagersTransactionManager */
+    /** @var TransactionManager */
     private $transactionManager;
 
-    /** @var PGShopServicesManagersOrder */
+    /** @var OrderManager */
     private $orderManager;
 
-    /** @var APIPaymentServicesApiFacade */
+    /** @var ApiFacade */
     private $apiFacade;
 
-    /** @var PGModuleServicesLogger */
+    /** @var Logger */
     private $logger;
 
-    public function __construct(PGPaymentServicesPaygreenFacade $paygreenFacade, PGModuleServicesLogger $logger)
+    public function __construct(PaygreenFacade $paygreenFacade, Logger $logger)
     {
         $this->apiFacade = $paygreenFacade->getApiFacade();
         $this->logger = $logger;
     }
 
     /**
-     * @param PGShopServicesManagersOrder $orderManager
+     * @param OrderManager $orderManager
      */
     public function setOrderManager($orderManager)
     {
@@ -52,7 +68,7 @@ class PGPaymentServicesHandlersRefundHandler extends PGSystemFoundationsObject
     }
 
     /**
-     * @param PGPaymentServicesManagersTransactionManager $transactionManager
+     * @param TransactionManager $transactionManager
      */
     public function setTransactionManager($transactionManager)
     {
@@ -60,15 +76,15 @@ class PGPaymentServicesHandlersRefundHandler extends PGSystemFoundationsObject
     }
 
     /**
-     * @param PGShopInterfacesEntitiesOrder $order
+     * @param OrderEntityInterface $order
      * @param int $amount
-     * @throws PGClientExceptionsResponse
-     * @throws PGPaymentExceptionsUnrefundableException
+     * @throws ResponseException
+     * @throws UnrefundableException
      * @throws Exception
      */
-    public function refundOrder(PGShopInterfacesEntitiesOrder $order, $amount = 0)
+    public function refundOrder(OrderEntityInterface $order, $amount = 0)
     {
-        /** @var PGPaymentInterfacesEntitiesTransactionInterface $transaction */
+        /** @var TransactionEntityInterface $transaction */
         $transaction = $this->getOrderTransaction($order);
 
         $this->logger->info("Execute refund process for PID '{$transaction->getPid()}' and amount '$amount'.");
@@ -87,14 +103,14 @@ class PGPaymentServicesHandlersRefundHandler extends PGSystemFoundationsObject
     }
 
     /**
-     * @param PGPaymentInterfacesEntitiesTransactionInterface $transaction
+     * @param TransactionEntityInterface $transaction
      * @param $amount
-     * @throws PGClientExceptionsResponse
+     * @throws ResponseException
      * @throws Exception
      */
-    protected function sendRefundRequest(PGPaymentInterfacesEntitiesTransactionInterface $transaction, $amount)
+    protected function sendRefundRequest(TransactionEntityInterface $transaction, $amount)
     {
-        /** @var APIPaymentComponentsResponse $apiResponse */
+        /** @var ResponseComponent $apiResponse */
         $apiResponse = $this->apiFacade->refundOrder(
             $transaction->getPid(),
             round($amount, 2)
@@ -106,33 +122,33 @@ class PGPaymentServicesHandlersRefundHandler extends PGSystemFoundationsObject
     }
 
     /**
-     * @param PGShopInterfacesEntitiesOrder $order
-     * @return PGPaymentInterfacesEntitiesTransactionInterface
-     * @throws PGPaymentExceptionsUnrefundableException
+     * @param OrderEntityInterface $order
+     * @return TransactionEntityInterface
+     * @throws UnrefundableException
      */
-    protected function getOrderTransaction(PGShopInterfacesEntitiesOrder $order)
+    protected function getOrderTransaction(OrderEntityInterface $order)
     {
-        /** @var PGPaymentInterfacesEntitiesTransactionInterface|null $transaction */
+        /** @var TransactionEntityInterface|null $transaction */
         $transaction = $this->transactionManager->getByOrderPrimary($order->id());
 
         if ($transaction === null) {
-            throw new PGPaymentExceptionsUnrefundableException(
+            throw new UnrefundableException(
                 "Unable to retrieve Paygreen transaction for order #{$order->id()}."
             );
         }
 
         if ($transaction->getOrderState() === 'REFUND') {
-            throw new PGPaymentExceptionsUnrefundableException("Order #{$order->id()} is already refunded.");
+            throw new UnrefundableException("Order #{$order->id()} is already refunded.");
         }
 
         if (!in_array($transaction->getMode(), array('CASH', 'TOKENIZE'))) {
-            throw new PGPaymentExceptionsUnrefundableException("Only CASH and TOKENIZE transactions can be refunded.");
+            throw new UnrefundableException("Only CASH and TOKENIZE transactions can be refunded.");
         }
 
         return $transaction;
     }
 
-    protected function updateTransactionOrderState(PGPaymentInterfacesEntitiesTransactionInterface $transaction)
+    protected function updateTransactionOrderState(TransactionEntityInterface $transaction)
     {
         $transaction->setOrderState('REFUND');
 

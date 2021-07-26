@@ -15,29 +15,36 @@
  * @author    PayGreen <contact@paygreen.fr>
  * @copyright 2014 - 2021 Watt Is It
  * @license   https://opensource.org/licenses/mit-license.php MIT License X11
- * @version   2.1.1
+ * @version   2.2.0
  *
  */
 
-class PGMagentoPaymentServicesListenersInstallOrderStateCreationListener
+namespace PGI\Module\PGMagentoPayment\Services\Listeners;
+
+use PGI\Module\PGModule\Components\Events\Module as ModuleEventComponent;
+use PGI\Module\PGModule\Services\Logger;
+use PGI\Module\PGShop\Services\Managers\OrderStateManager;
+use PGI\Module\PGSystem\Components\Parameters as ParametersComponent;
+
+class InstallOrderStateCreationListener
 {
-    /** @var PGShopServicesManagersOrderState */
+    /** @var OrderStateManager */
     private $orderStateManager;
 
-    /** @var PGSystemComponentsParameters */
+    /** @var ParametersComponent */
     private $parameters;
 
-    /** @var PGModuleServicesLogger */
+    /** @var Logger */
     private $logger;
 
-    public function __construct(PGShopServicesManagersOrderState $orderStateManager, PGSystemComponentsParameters $parameters, PGModuleServicesLogger $logger)
+    public function __construct(OrderStateManager $orderStateManager, ParametersComponent $parameters, Logger $logger)
     {
         $this->orderStateManager = $orderStateManager;
         $this->parameters = $parameters;
         $this->logger = $logger;
     }
 
-    public function createOrderStates(PGModuleComponentsEventsModule $event)
+    public function createOrderStates(ModuleEventComponent $event)
     {
         $orderStateDefinitions = $this->parameters['order.states'];
 

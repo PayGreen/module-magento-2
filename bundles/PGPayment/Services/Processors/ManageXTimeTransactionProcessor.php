@@ -15,23 +15,29 @@
  * @author    PayGreen <contact@paygreen.fr>
  * @copyright 2014 - 2021 Watt Is It
  * @license   https://opensource.org/licenses/mit-license.php MIT License X11
- * @version   2.1.1
+ * @version   2.2.0
  *
  */
 
+namespace PGI\Module\PGPayment\Services\Processors;
+
+use PGI\Module\PGPayment\Components\Tasks\TransactionManagement as TransactionManagementTaskComponent;
+use PGI\Module\PGPayment\Foundations\Processors\AbstractPaymentRecordManagementProcessor;
+use Exception;
+
 /**
- * Class PGPaymentServicesProcessorsManageXTimeTransactionProcessor
+ * Class ManageXTimeTransactionProcessor
  * @package PGPayment\Services\Processors
  */
-class PGPaymentServicesProcessorsManageXTimeTransactionProcessor extends PGPaymentFoundationsProcessorsAbstractPaymentRecordManagementProcessor
+class ManageXTimeTransactionProcessor extends AbstractPaymentRecordManagementProcessor
 {
     const PROCESSOR_NAME = 'XTimeTransaction';
 
     /**
-     * @param PGPaymentComponentsTasksTransactionManagement $task
+     * @param TransactionManagementTaskComponent $task
      * @throws Exception
      */
-    protected function refusedTransactionStep(PGPaymentComponentsTasksTransactionManagement $task)
+    protected function refusedTransactionStep(TransactionManagementTaskComponent $task)
     {
         if ($task->getOrder()->getState() === 'WAIT') {
             $this->addSteps(array(

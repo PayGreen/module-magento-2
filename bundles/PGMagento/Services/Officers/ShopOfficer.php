@@ -15,27 +15,31 @@
  * @author    PayGreen <contact@paygreen.fr>
  * @copyright 2014 - 2021 Watt Is It
  * @license   https://opensource.org/licenses/mit-license.php MIT License X11
- * @version   2.1.1
+ * @version   2.2.0
  *
  */
 
-use Magento\Store\Model\StoreManagerInterface;
-use Magento\Framework\App\State;
-use Magento\Framework\App\Area;
-use Magento\Framework\Exception\LocalizedException;
+namespace PGI\Module\PGMagento\Services\Officers;
+
+use Magento\Store\Model\StoreManagerInterface as LocalStoreManagerInterface;
+use Magento\Framework\App\State as LocalState;
+use Magento\Framework\App\Area as LocalArea;
+use Magento\Framework\Exception\LocalizedException as LocalLocalizedException;
+use PGI\Module\PGShop\Interfaces\Officers\ShopOfficerInterface;
+use PGI\Module\PGSystem\Foundations\AbstractObject;
 
 /**
- * Class PGMagentoServicesOfficersShopOfficer
+ * Class ShopOfficer
  * @package PGMagento\Services\Officers
  */
-class PGMagentoServicesOfficersShopOfficer extends PGSystemFoundationsObject implements PGShopInterfacesOfficersShop
+class ShopOfficer extends AbstractObject implements ShopOfficerInterface
 {
     /**
      * @inheritDoc
      */
     public function isMultiShopActivated()
     {
-        /** @var StoreManagerInterface $storeManager */
+        /** @var LocalStoreManagerInterface $storeManager */
         $storeManager = $this->getService('magento')->get('Magento\Store\Model\StoreManagerInterface');
 
         return !$storeManager->isSingleStoreMode();
@@ -46,16 +50,16 @@ class PGMagentoServicesOfficersShopOfficer extends PGSystemFoundationsObject imp
      */
     public function isBackOffice()
     {
-        /** @var State $state */
+        /** @var LocalState $state */
         $state = $this->getService('magento')->get('Magento\Framework\App\State');
 
         try {
             $area = $state->getAreaCode();
-        } catch (LocalizedException $exception) {
+        } catch (LocalLocalizedException $exception) {
             $area = null;
         }
 
-        return ($area === Area::AREA_ADMINHTML);
+        return ($area === LocalArea::AREA_ADMINHTML);
     }
 
     /**

@@ -15,17 +15,21 @@
  * @author    PayGreen <contact@paygreen.fr>
  * @copyright 2014 - 2021 Watt Is It
  * @license   https://opensource.org/licenses/mit-license.php MIT License X11
- * @version   2.1.1
+ * @version   2.2.0
  *
  */
 
-use Magento\Framework\UrlInterface;
+namespace PGI\Module\PGMagento\Services\Linkers;
 
-class PGMagentoServicesLinkersBackofficeLinker extends PGSystemFoundationsObject implements PGServerInterfacesLinkerInterface
+use Magento\Framework\UrlInterface as LocalUrlInterface;
+use PGI\Module\PGServer\Interfaces\LinkerInterface;
+use PGI\Module\PGSystem\Foundations\AbstractObject;
+
+class BackofficeLinker extends AbstractObject implements LinkerInterface
 {
     public function buildUrl(array $data = array())
     {
-        /** @var UrlInterface $urlBuilder */
+        /** @var LocalUrlInterface $urlBuilder */
         $urlBuilder = $this->getService('magento')->get('Magento\Framework\UrlInterface');
 
         return $urlBuilder->getUrl('paygreen/backoffice/index');

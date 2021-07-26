@@ -15,28 +15,39 @@
  * @author    PayGreen <contact@paygreen.fr>
  * @copyright 2014 - 2021 Watt Is It
  * @license   https://opensource.org/licenses/mit-license.php MIT License X11
- * @version   2.1.1
+ * @version   2.2.0
  *
  */
 
-use Magento\Sales\Model\Order;
-use Magento\Framework\App\ObjectManager;
+namespace PGI\Module\PGMagentoPayment\Services\Controllers;
 
-class PGMagentoPaymentServicesControllersInvalidPaymentsController extends PGServerFoundationsAbstractController
+use Magento\Sales\Model\Order as LocalOrder;
+use Magento\Framework\App\ObjectManager as LocalObjectManager;
+use PGI\Module\PGMagento\Services\Handlers\CartHandler;
+use PGI\Module\PGServer\Components\Responses\Forward as ForwardResponseComponent;
+use PGI\Module\PGServer\Components\Responses\Redirection as RedirectionResponseComponent;
+use PGI\Module\PGServer\Foundations\AbstractController;
+use PGI\Module\PGShop\Exceptions\UnauthorizedOrderTransition as UnauthorizedOrderTransitionException;
+use PGI\Module\PGShop\Exceptions\UnnecessaryOrderTransition as UnnecessaryOrderTransitionException;
+use PGI\Module\PGShop\Interfaces\Entities\OrderEntityInterface;
+use PGI\Module\PGShop\Services\Managers\OrderManager;
+use Exception;
+
+class InvalidPaymentsController extends AbstractController
 {
-    /** @var ObjectManager */
+    /** @var LocalObjectManager */
     private $objectManager;
 
-    /** @var PGShopServicesManagersOrder */
+    /** @var OrderManager */
     private $orderManager;
 
-    /** @var PGMagentoServicesHandlersCartHandler */
+    /** @var CartHandler */
     private $cartHandler;
 
     public function __construct(
-        ObjectManager $objectManager,
-        PGShopServicesManagersOrder $orderManager,
-        PGMagentoServicesHandlersCartHandler $cartHandler
+        LocalObjectManager $objectManager,
+        OrderManager $orderManager,
+        CartHandler $cartHandler
     )
     {
         $this->objectManager = $objectManager;
@@ -45,16 +56,16 @@ class PGMagentoPaymentServicesControllersInvalidPaymentsController extends PGSer
     }
 
     /**
-     * @return PGServerComponentsResponsesRedirectionResponse
-     * @throws PGShopExceptionsUnauthorizedOrderTransition
-     * @throws PGShopExceptionsUnnecessaryOrderTransition
+     * @return RedirectionResponseComponent
+     * @throws UnauthorizedOrderTransitionException
+     * @throws UnnecessaryOrderTransitionException
      * @throws Exception
      */
     public function abortPaymentAction()
     {
         $return = 'order.history';
 
-        /** @var PGShopInterfacesEntitiesOrder|null $order */
+        /** @var OrderEntityInterface|null $order */
         $order = $this->getCurrentOrder();
 
         $this->orderManager->updateOrder($order, 'CANCEL', 'CASH');
@@ -69,9 +80,9 @@ class PGMagentoPaymentServicesControllersInvalidPaymentsController extends PGSer
     }
 
     /**
-     * @return PGServerComponentsResponsesForwardResponse
-     * @throws PGShopExceptionsUnauthorizedOrderTransition
-     * @throws PGShopExceptionsUnnecessaryOrderTransition
+     * @return ForwardResponseComponent
+     * @throws UnauthorizedOrderTransitionException
+     * @throws UnnecessaryOrderTransitionException
      * @throws Exception
      */
     public function refusePaymentAction()
@@ -80,7 +91,7 @@ class PGMagentoPaymentServicesControllersInvalidPaymentsController extends PGSer
         $result = 'refused_without_regenerate_cart';
         $details = "frontoffice.payment.results.payment.{$result}.details";
 
-        /** @var PGShopInterfacesEntitiesOrder|null $order */
+        /** @var OrderEntityInterface|null $order */
         $order = $this->getCurrentOrder();
 
         $this->orderManager->updateOrder($order, 'CANCEL', 'CASH');
@@ -106,12 +117,12 @@ class PGMagentoPaymentServicesControllersInvalidPaymentsController extends PGSer
     }
 
     /**
-     * @return PGShopInterfacesEntitiesOrder
+     * @return OrderEntityInterface
      * @throws Exception
      */
     protected function getCurrentOrder()
     {
-        /** @var Order $localOrder */
+        /** @var LocalOrder $localOrder */
         $localOrder = $this->objectManager->get('Magento\Checkout\Model\Session')->getLastRealOrder();
 
         $order = $this->orderManager->getByReference($localOrder->getIncrementId());
@@ -124,12 +135,12 @@ class PGMagentoPaymentServicesControllersInvalidPaymentsController extends PGSer
     }
 
     /**
-     * @param PGShopInterfacesEntitiesOrder $order
+     * @param OrderEntityInterface $order
      * @return bool
      * @throws Exception
      * @todo Implements user_cancel_behavior.
      */
-    protected function rebuildCart(PGShopInterfacesEntitiesOrder $order)
+    protected function rebuildCart(OrderEntityInterface $order)
     {
         if (true || $this->getSettings()->get('user_cancel_behavior')) {
             if ($this->cartHandler->rebuildCart($order)) {

@@ -15,15 +15,22 @@
  * @author    PayGreen <contact@paygreen.fr>
  * @copyright 2014 - 2021 Watt Is It
  * @license   https://opensource.org/licenses/mit-license.php MIT License X11
- * @version   2.1.1
+ * @version   2.2.0
  *
  */
 
+namespace PGI\Module\PGPayment\Entities;
+
+use PGI\Module\PGDatabase\Foundations\AbstractEntityPersisted;
+use PGI\Module\PGPayment\Interfaces\Entities\LockEntityInterface;
+use DateTime;
+use Exception;
+
 /**
- * Class PGPaymentEntitiesLock
+ * Class Lock
  * @package PGPayment\Entities
  */
-class PGPaymentEntitiesLock extends PGDatabaseFoundationsEntityPersisted implements PGPaymentInterfacesEntitiesLockInterface
+class Lock extends AbstractEntityPersisted implements LockEntityInterface
 {
     /**
      * @inheritdoc

@@ -15,21 +15,23 @@
  * @author    PayGreen <contact@paygreen.fr>
  * @copyright 2014 - 2021 Watt Is It
  * @license   https://opensource.org/licenses/mit-license.php MIT License X11
- * @version   2.1.1
+ * @version   2.2.0
  *
  */
 
+namespace PGI\Module\PGTree\Components;
+
 /**
- * Class PGTreeComponentsCarbonOffsettingComputing
+ * Class CarbonOffsettingComputing
  * @package PGTree\Components
  */
-class PGTreeComponentsCarbonOffsettingComputing
+class CarbonOffsettingComputing
 {
     /** @var int */
     private $fingerPrintPrimary;
 
     /**
-     * PGTreeComponentsCarbonOffsettingComputing constructor.
+     * CarbonOffsettingComputing constructor.
      * @param $fingerPrintPrimary
      * @param array $data
      */

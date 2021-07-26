@@ -15,15 +15,22 @@
  * @author    PayGreen <contact@paygreen.fr>
  * @copyright 2014 - 2021 Watt Is It
  * @license   https://opensource.org/licenses/mit-license.php MIT License X11
- * @version   2.1.1
+ * @version   2.2.0
  *
  */
 
+namespace PGI\Module\PGServer\Services\Cleaners;
+
+use PGI\Module\PGServer\Components\Responses\HTTP as HTTPResponseComponent;
+use PGI\Module\PGServer\Foundations\AbstractRequest;
+use PGI\Module\PGServer\Interfaces\CleanerInterface;
+use Exception;
+
 /**
- * Class PGServerServicesCleanersBasicHTTPCleaner
+ * Class BasicHTTPCleaner
  * @package PGServer\Services\Cleaners
  */
-class PGServerServicesCleanersBasicHTTPCleaner implements PGServerInterfacesCleanerInterface
+class BasicHTTPCleaner implements CleanerInterface
 {
     private $status;
 
@@ -36,9 +43,9 @@ class PGServerServicesCleanersBasicHTTPCleaner implements PGServerInterfacesClea
      * @inheritDoc
      * @throws Exception
      */
-    public function processError(PGServerFoundationsAbstractRequest $request, Exception $exception)
+    public function processError(AbstractRequest $request, Exception $exception)
     {
-        $response = new PGServerComponentsResponsesHTTPResponse($request);
+        $response = new HTTPResponseComponent($request);
 
         $response->setStatus($this->status);
 

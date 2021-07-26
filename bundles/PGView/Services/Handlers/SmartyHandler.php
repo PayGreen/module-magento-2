@@ -15,44 +15,55 @@
  * @author    PayGreen <contact@paygreen.fr>
  * @copyright 2014 - 2021 Watt Is It
  * @license   https://opensource.org/licenses/mit-license.php MIT License X11
- * @version   2.1.1
+ * @version   2.2.0
  *
  */
 
+namespace PGI\Module\PGView\Services\Handlers;
+
+use PGI\Module\PGModule\Services\Logger;
+use PGI\Module\PGSystem\Components\Bag as BagComponent;
+use PGI\Module\PGSystem\Foundations\AbstractObject;
+use PGI\Module\PGSystem\Services\Pathfinder;
+use PGI\Module\PGView\Interfaces\Builders\SmartyBuilderInterface;
+use Exception;
+use SmartyException;
+use Smarty;
+
 /**
- * Class PGViewServicesHandlersSmartyHandler
+ * Class SmartyHandler
  * @package PGView\Services\Handlers
  */
-class PGViewServicesHandlersSmartyHandler extends PGSystemFoundationsObject
+class SmartyHandler extends AbstractObject
 {
     /** @var Smarty */
     private $smarty = null;
 
-    /** @var PGSystemServicesPathfinder */
+    /** @var Pathfinder */
     private $pathfinder;
 
-    /** @var PGModuleServicesLogger */
+    /** @var Logger */
     private $logger;
 
-    /** @var PGSystemComponentsBag */
+    /** @var BagComponent */
     private $config;
 
     /**
-     * PGViewServicesHandlersSmartyHandler constructor.
-     * @param PGViewInterfacesSmartyBuilderInterface $smartyBuilder
-     * @param PGSystemServicesPathfinder $pathfinder
-     * @param PGModuleServicesLogger $logger
+     * SmartyHandler constructor.
+     * @param SmartyBuilderInterface $smartyBuilder
+     * @param Pathfinder $pathfinder
+     * @param Logger $logger
      * @throws Exception
      */
     public function __construct(
-        PGViewInterfacesSmartyBuilderInterface $smartyBuilder,
-        PGSystemServicesPathfinder $pathfinder,
-        PGModuleServicesLogger $logger,
+        SmartyBuilderInterface $smartyBuilder,
+        Pathfinder $pathfinder,
+        Logger $logger,
         array $config
     ) {
         $this->pathfinder = $pathfinder;
         $this->logger = $logger;
-        $this->config = new PGSystemComponentsBag($config);
+        $this->config = new BagComponent($config);
 
         $this->smarty = $smartyBuilder->build();
 

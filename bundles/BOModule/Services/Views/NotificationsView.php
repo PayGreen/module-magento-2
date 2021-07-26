@@ -15,26 +15,32 @@
  * @author    PayGreen <contact@paygreen.fr>
  * @copyright 2014 - 2021 Watt Is It
  * @license   https://opensource.org/licenses/mit-license.php MIT License X11
- * @version   2.1.1
+ * @version   2.2.0
  *
  */
 
+namespace PGI\Module\BOModule\Services\Views;
+
+use PGI\Module\PGFramework\Services\Notifier;
+use PGI\Module\PGView\Services\View;
+use Exception;
+
 /**
- * Class BOModuleServicesViewsNotificationsView
+ * Class NotificationsView
  * @package BOModule\Services\Views
  */
-class BOModuleServicesViewsNotificationsView extends PGViewServicesView
+class NotificationsView extends View
 {
-    /** @var PGFrameworkServicesNotifier */
+    /** @var Notifier */
     private $notifier;
 
     private static $NOTIFICATION_CODES = array(
-        PGFrameworkServicesNotifier::STATE_FAILURE => 'failure',
-        PGFrameworkServicesNotifier::STATE_NOTICE => 'notice',
-        PGFrameworkServicesNotifier::STATE_SUCCESS => 'success'
+        Notifier::STATE_FAILURE => 'failure',
+        Notifier::STATE_NOTICE => 'notice',
+        Notifier::STATE_SUCCESS => 'success'
     );
 
-    public function __construct(PGFrameworkServicesNotifier $notifier)
+    public function __construct(Notifier $notifier)
     {
         $this->notifier = $notifier;
 

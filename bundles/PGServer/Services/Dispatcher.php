@@ -15,29 +15,41 @@
  * @author    PayGreen <contact@paygreen.fr>
  * @copyright 2014 - 2021 Watt Is It
  * @license   https://opensource.org/licenses/mit-license.php MIT License X11
- * @version   2.1.1
+ * @version   2.2.0
  *
  */
 
+namespace PGI\Module\PGServer\Services;
+
+use PGI\Module\PGModule\Services\Broadcaster;
+use PGI\Module\PGModule\Services\Logger;
+use PGI\Module\PGServer\Components\Events\Action as ActionEventComponent;
+use PGI\Module\PGServer\Foundations\AbstractController;
+use PGI\Module\PGServer\Foundations\AbstractRequest;
+use PGI\Module\PGServer\Foundations\AbstractResponse;
+use PGI\Module\PGSystem\Foundations\AbstractObject;
+use Exception;
+use LogicException;
+
 /**
- * Class PGServerServicesDispatcher
+ * Class Dispatcher
  * @package PGServer\Services
  */
-class PGServerServicesDispatcher extends PGSystemFoundationsObject
+class Dispatcher extends AbstractObject
 {
     const DEFAULT_ACTION = 'process';
 
     private $controllerNames = array();
 
-    /** @var PGModuleServicesLogger */
+    /** @var Logger */
     private $logger;
 
-    /** @var PGModuleServicesBroadcaster */
+    /** @var Broadcaster */
     private $broadcaster;
 
     public function __construct(
-        PGModuleServicesLogger $logger,
-        PGModuleServicesBroadcaster $broadcaster
+        Logger $logger,
+        Broadcaster $broadcaster
     ) {
         $this->logger = $logger;
         $this->broadcaster = $broadcaster;
@@ -59,12 +71,12 @@ class PGServerServicesDispatcher extends PGSystemFoundationsObject
     }
 
     /**
-     * @param PGServerFoundationsAbstractRequest $request
+     * @param AbstractRequest $request
      * @param string $localization
-     * @return PGServerFoundationsAbstractResponse
+     * @return AbstractResponse
      * @throws Exception
      */
-    public function dispatch(PGServerFoundationsAbstractRequest $request, $localization)
+    public function dispatch(AbstractRequest $request, $localization)
     {
         if (!strpos($localization, '@')) {
             $action = $actionName = self::DEFAULT_ACTION;
@@ -73,7 +85,7 @@ class PGServerServicesDispatcher extends PGSystemFoundationsObject
         } else {
             list($actionName, $controllerName) = explode('@', $localization, 2);
 
-            /** @var PGServerFoundationsAbstractController $controller */
+            /** @var AbstractController $controller */
             $controller = $this->getController($controllerName);
     
             if (!empty($actionName)) {
@@ -91,12 +103,12 @@ class PGServerServicesDispatcher extends PGSystemFoundationsObject
             throw new Exception("Target controller '$class' has no action method '$action'.");
         }
 
-        $event = new PGServerComponentsActionEvent($request, $controller, $controllerName, $actionName);
+        $event = new ActionEventComponent($request, $controller, $controllerName, $actionName);
         $this->broadcaster->fire($event);
 
         $this->logger->debug("Execute method '$action' on '$class'.");
 
-        /** @var PGServerFoundationsAbstractResponse $response */
+        /** @var AbstractResponse $response */
         $response = call_user_func(array($controller, $action));
 
         $this->logger->debug("Response successfully built.");
@@ -106,7 +118,7 @@ class PGServerServicesDispatcher extends PGSystemFoundationsObject
 
     /**
      * @param string $name
-     * @return PGServerFoundationsAbstractController
+     * @return AbstractController
      */
     protected function getController($name)
     {
@@ -114,7 +126,7 @@ class PGServerServicesDispatcher extends PGSystemFoundationsObject
             throw new LogicException("Unknown controller name : '$name'.");
         }
 
-        /** @var PGServerFoundationsAbstractController $controller */
+        /** @var AbstractController $controller */
         $controller = $this->getService($this->controllerNames[$name]);
 
         return $controller;

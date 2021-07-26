@@ -15,18 +15,24 @@
  * @author    PayGreen <contact@paygreen.fr>
  * @copyright 2014 - 2021 Watt Is It
  * @license   https://opensource.org/licenses/mit-license.php MIT License X11
- * @version   2.1.1
+ * @version   2.2.0
  *
  */
 
+namespace PGI\Module\PGMagento\Services\Repositories;
+
+use PGI\Module\PGMagento\Entities\Address;
+use PGI\Module\PGMagento\Foundations\AbstractMagentoRepository;
+use PGI\Module\PGShop\Interfaces\Repositories\AddressRepositoryInterface;
+
 /**
- * Class PGMagentoServicesRepositoriesAddressRepository
+ * Class AddressRepository
  * @package PGMagento\Services\Repositories
  */
-class PGMagentoServicesRepositoriesAddressRepository extends PGMagentoFoundationsAbstractMagentoRepository implements PGShopInterfacesRepositoriesAddress
+class AddressRepository extends AbstractMagentoRepository implements AddressRepositoryInterface
 {
     public function wrapEntity($localEntity)
     {
-        return new PGMagentoEntitiesAddress($localEntity);
+        return new Address($localEntity);
     }
 }

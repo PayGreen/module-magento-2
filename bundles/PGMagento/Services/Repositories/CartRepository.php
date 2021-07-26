@@ -15,22 +15,27 @@
  * @author    PayGreen <contact@paygreen.fr>
  * @copyright 2014 - 2021 Watt Is It
  * @license   https://opensource.org/licenses/mit-license.php MIT License X11
- * @version   2.1.1
+ * @version   2.2.0
  *
  */
 
-use Magento\Checkout\Model\Cart;
+namespace PGI\Module\PGMagento\Services\Repositories;
 
+use Magento\Checkout\Model\Cart as LocalCart;
+use Magento\Quote\Model\Quote as LocalQuote;
+use PGI\Module\PGMagento\Entities\Cart;
+use PGI\Module\PGMagento\Foundations\AbstractMagentoRepository;
+use PGI\Module\PGShop\Interfaces\Repositories\CartRepositoryInterface;
 
 /**
- * Class PGMagentoServicesRepositoriesCartRepository
+ * Class CartRepository
  *
  * @package PGMagento\Services\Repositories
  *
- * @method Magento\Quote\Model\Quote createLocalEntity()
+ * @method LocalQuote createLocalEntity()
  *
  */
-class PGMagentoServicesRepositoriesCartRepository extends PGMagentoFoundationsAbstractMagentoRepository implements PGShopInterfacesRepositoriesCart
+class CartRepository extends AbstractMagentoRepository implements CartRepositoryInterface
 {
     /**
      * @inheritDoc
@@ -51,7 +56,7 @@ class PGMagentoServicesRepositoriesCartRepository extends PGMagentoFoundationsAb
     {
         $cart = null;
 
-        /** @var Cart $localCart */
+        /** @var LocalCart $localCart */
         $localCart = $this->getService('magento')->get('\Magento\Checkout\Model\Cart');
 
         $localCartQuote = $localCart->getQuote();
@@ -65,6 +70,6 @@ class PGMagentoServicesRepositoriesCartRepository extends PGMagentoFoundationsAb
 
     public function wrapEntity($localEntity)
     {
-        return new PGMagentoEntitiesCart($localEntity);
+        return new Cart($localEntity);
     }
 }

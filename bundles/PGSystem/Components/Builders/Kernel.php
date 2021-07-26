@@ -15,26 +15,32 @@
  * @author    PayGreen <contact@paygreen.fr>
  * @copyright 2014 - 2021 Watt Is It
  * @license   https://opensource.org/licenses/mit-license.php MIT License X11
- * @version   2.1.1
+ * @version   2.2.0
  *
  */
 
+namespace PGI\Module\PGSystem\Components\Builders;
+
+use PGI\Module\PGSystem\Components\Kernel as KernelComponent;
+use PGI\Module\PGSystem\Interfaces\BundleInterface;
+use Exception;
+
 /**
- * Class PGSystemComponentsBuildersKernel
+ * Class Kernel
  * @package PGSystem\Components\Builders
  */
-class PGSystemComponentsBuildersKernel
+class Kernel
 {
-    const DEFAULT_BUNDLE_CLASS_NAME = 'PGSystemComponentsBundle';
+    const DEFAULT_BUNDLE_CLASS_NAME = 'PGI\Module\PGSystem\Components\Bundle';
 
     /**
      * @param string $filename
-     * @return PGSystemComponentsKernel
+     * @return KernelComponent
      * @throws Exception
      */
     public function buildKernel($filename)
     {
-        $kernel = new PGSystemComponentsKernel();
+        $kernel = new KernelComponent();
 
         if (!file_exists($filename)) {
             throw new Exception("Bundle file '$filename' not found.");
@@ -43,7 +49,7 @@ class PGSystemComponentsBuildersKernel
         $bundleNames = require($filename);
 
         foreach ($bundleNames as $bundleName) {
-            /** @var PGSystemInterfacesBundle $bundle */
+            /** @var BundleInterface $bundle */
             $bundle = $this->buildBundle($bundleName);
 
             if ($bundle->isActivated()) {
@@ -56,7 +62,7 @@ class PGSystemComponentsBuildersKernel
 
     /**
      * @param string $bundleName
-     * @return PGSystemInterfacesBundle
+     * @return BundleInterface
      */
     private function buildBundle($bundleName)
     {
@@ -65,7 +71,7 @@ class PGSystemComponentsBuildersKernel
             $className = self::DEFAULT_BUNDLE_CLASS_NAME;
         }
 
-        /** @var PGSystemInterfacesBundle $bundle */
+        /** @var BundleInterface $bundle */
         $bundle = new $className($bundleName);
 
         return $bundle;

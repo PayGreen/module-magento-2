@@ -15,15 +15,20 @@
  * @author    PayGreen <contact@paygreen.fr>
  * @copyright 2014 - 2021 Watt Is It
  * @license   https://opensource.org/licenses/mit-license.php MIT License X11
- * @version   2.1.1
+ * @version   2.2.0
  *
  */
 
+namespace PGI\Module\PGFramework\Services;
+
+use PGI\Module\PGFramework\Interfaces\Handlers\SessionHandlerInterface;
+use LogicException;
+
 /**
- * Class PGFrameworkServicesNotifier
+ * Class Notifier
  * @package PGFramework\Services
  */
-class PGFrameworkServicesNotifier
+class Notifier
 {
     const STATE_SUCCESS = 'SUCCESS';
     const STATE_NOTICE = 'NOTICE';
@@ -35,10 +40,10 @@ class PGFrameworkServicesNotifier
 
     private static $VALID_TYPES = array(self::STATE_SUCCESS, self::STATE_NOTICE, self::STATE_FAILURE);
 
-    /** @var PGFrameworkInterfacesHandlersSessionHandlerInterface */
+    /** @var SessionHandlerInterface */
     private $sessionHandler;
 
-    public function __construct(PGFrameworkInterfacesHandlersSessionHandlerInterface $sessionHandler)
+    public function __construct(SessionHandlerInterface $sessionHandler)
     {
         $this->sessionHandler = $sessionHandler;
     }

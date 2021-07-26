@@ -15,32 +15,42 @@
  * @author    PayGreen <contact@paygreen.fr>
  * @copyright 2014 - 2021 Watt Is It
  * @license   https://opensource.org/licenses/mit-license.php MIT License X11
- * @version   2.1.1
+ * @version   2.2.0
  *
  */
 
+namespace PGI\Module\PGPayment\Services\Processors;
+
+use PGI\Module\PGModule\Services\Logger;
+use PGI\Module\PGPayment\Components\Tasks\TransactionManagement as TransactionManagementTaskComponent;
+use PGI\Module\PGPayment\Foundations\Processors\AbstractTransactionManagementProcessor;
+use PGI\Module\PGPayment\Services\Facades\PaygreenFacade;
+use PGI\Module\PGPayment\Services\Managers\TransactionManager;
+use PGI\Module\PGShop\Interfaces\Entities\OrderEntityInterface;
+use Exception;
+
 /**
- * Class PGPaymentServicesProcessorsManageTokenizeTransactionProcessor
+ * Class ManageTokenizeTransactionProcessor
  * @package PGPayment\Services\Processors
  */
-class PGPaymentServicesProcessorsManageTokenizeTransactionProcessor extends PGPaymentFoundationsProcessorsAbstractTransactionManagementProcessor
+class ManageTokenizeTransactionProcessor extends AbstractTransactionManagementProcessor
 {
     const PROCESSOR_NAME = 'TokenizeTransaction';
 
-    protected function defaultStep(PGPaymentComponentsTasksTransactionManagement $task)
+    protected function defaultStep(TransactionManagementTaskComponent $task)
     {
-        /** @var PGShopInterfacesEntitiesOrder|null $order */
+        /** @var OrderEntityInterface|null $order */
         $order = $this->officer->getOrder($task->getProvisioner());
 
         $task->setOrder($order);
 
         switch ($task->getTransaction()->getResult()->getStatus()) {
-            case PGPaymentServicesPaygreenFacade::STATUS_REFUSED:
-            case PGPaymentServicesPaygreenFacade::STATUS_CANCELLING:
+            case PaygreenFacade::STATUS_REFUSED:
+            case PaygreenFacade::STATUS_CANCELLING:
                 $this->pushStep('refusedPayment');
                 break;
 
-            case PGPaymentServicesPaygreenFacade::STATUS_PENDING_EXEC:
+            case PaygreenFacade::STATUS_PENDING_EXEC:
                 $this->pushSteps(array(
                     array('setOrderStatus', array('AUTH')),
                     'saveOrder',
@@ -52,7 +62,7 @@ class PGPaymentServicesProcessorsManageTokenizeTransactionProcessor extends PGPa
 
                 break;
 
-            case PGPaymentServicesPaygreenFacade::STATUS_SUCCESSED:
+            case PaygreenFacade::STATUS_SUCCESSED:
                 $this->pushSteps(array(
                     array('setOrderStatus', array('VALIDATE')),
                     'checkTestingMode',
@@ -72,12 +82,12 @@ class PGPaymentServicesProcessorsManageTokenizeTransactionProcessor extends PGPa
         }
     }
 
-    protected function updateTransactionStep(PGPaymentComponentsTasksTransactionManagement $task)
+    protected function updateTransactionStep(TransactionManagementTaskComponent $task)
     {
-        /** @var PGModuleServicesLogger $logger */
+        /** @var Logger $logger */
         $logger = $this->getService('logger');
 
-        /** @var PGPaymentServicesManagersTransactionManager $transactionManager */
+        /** @var TransactionManager $transactionManager */
         $transactionManager = $this->getService('manager.transaction');
 
         try {

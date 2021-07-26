@@ -15,47 +15,54 @@
  * @author    PayGreen <contact@paygreen.fr>
  * @copyright 2014 - 2021 Watt Is It
  * @license   https://opensource.org/licenses/mit-license.php MIT License X11
- * @version   2.1.1
+ * @version   2.2.0
  *
  */
 
 namespace Paygreen\Payment\Controller\Adminhtml\Backoffice;
 
-use BOModuleServicesHandlersMenuHandler;
 use Exception;
-use Magento\Backend\App\Action;
-use Magento\Backend\App\Action\Context;
-use Magento\Framework\View\Result\PageFactory;
-use PGSystemServicesContainer;
-use PGFrameworkServicesHandlersCacheHandler;
-use PGModuleServicesHandlersSetup;
-use PGIntlServicesTranslator;
-use PGModuleServicesLogger;
-use PGServerServicesServer;
+use Magento\Backend\App\Action as LocalAction;
+use Magento\Backend\App\Action\Context as LocalContext;
+use Magento\Framework\App\RequestInterface;
+use Magento\Framework\View\Result\PageFactory as LocalPageFactory;
+use PGI\Module\PGFramework\Services\Handlers\CacheHandler;
+use PGI\Module\PGModule\Services\Handlers\SetupHandler;
+use PGI\Module\PGModule\Services\Logger;
+use PGI\Module\PGSystem\Services\Container;
 
-class Index extends Action
+class Index extends LocalAction
 {
-    /** @var PageFactory */
+    /** @var LocalPageFactory */
     protected $resultPageFactory;
 
     /**
      * Constructor
      *
-     * @param Context $context
-     * @param PageFactory $resultPageFactory
+     * @param LocalContext $context
+     * @param LocalPageFactory $resultPageFactory
      * @throws Exception
      */
     public function __construct(
-        Context $context,
-        PageFactory $resultPageFactory
+        LocalContext $context,
+        LocalPageFactory $resultPageFactory
     ) {
         require_once PAYGREEN_BOOTSTRAP_SRC;
 
         parent::__construct($context);
 
+        // CsrfAwareAction Magento2.3 compatibility
+        if (interface_exists("Magento\Framework\App\CsrfAwareActionInterface")) {
+            $request = $this->getRequest();
+            if ($request instanceof RequestInterface && $request->isPost() && empty($request->getParam('form_key'))) {
+                $formKey = $this->_objectManager->get(\Magento\Framework\Data\Form\FormKey::class);
+                $request->setParam('form_key', $formKey->getFormKey());
+            }
+        }
+
         $this->resultPageFactory = $resultPageFactory;
 
-        /** @var PGModuleServicesLogger $logger */
+        /** @var Logger $logger */
         $logger = $this->getService('logger');
 
         $logger->debug("Request incoming in back office endpoint.");
@@ -64,7 +71,7 @@ class Index extends Action
     }
 
     /**
-     * @return PageFactory
+     * @return LocalPageFactory
      */
     protected function getResultPageFactory()
     {
@@ -78,7 +85,7 @@ class Index extends Action
      */
     protected function getService(string $name)
     {
-        return PGSystemServicesContainer::getInstance()->get($name);
+        return Container::getInstance()->get($name);
     }
 
     /**
@@ -96,13 +103,13 @@ class Index extends Action
      */
     private function cleanModule()
     {
-        /** @var PGModuleServicesLogger $logger */
+        /** @var Logger $logger */
         $logger = $this->getService('logger');
 
-        /** @var PGFrameworkServicesHandlersCacheHandler $cacheHandler */
+        /** @var CacheHandler $cacheHandler */
         $cacheHandler = $this->getService('handler.cache');
 
-        /** @var PGModuleServicesHandlersSetup $setupHandler */
+        /** @var SetupHandler $setupHandler */
         $setupHandler = $this->getService('handler.setup');
 
         $logger->debug("Cleaning module.");
@@ -118,46 +125,10 @@ class Index extends Action
      */
     public function execute()
     {
-        /** @var PGModuleServicesLogger $logger */
-        $logger = $this->getService('logger');
-
-        /** @var PGServerServicesServer $server */
-        $server = $this->getService('server.backoffice');
-
-        /** @var BOModuleServicesHandlersMenuHandler $menuHandler */
-        $menuHandler = $this->getService('handler.menu');
-
-        try {
-            $logger->debug("Building backoffice output.");
-
-            $server->getRequestBuilder()->setConfig('default_action', $menuHandler->getDefaultAction());
-
-            $server->run();
-        } catch (Exception $exception) {
-            $logger->error("Error during backoffice building : " . $exception->getMessage(), $exception);
-
-            $this->buildErrorOutput();
-
-            throw $exception;
-        }
-
         $page = $this->getResultPageFactory()->create();
 
         $page->setHeader('Cache-Control', 'no-store, no-cache, must-revalidate, max-age=0', true);
 
         return $page;
-    }
-
-    /**
-     * @throws Exception
-     */
-    private function buildErrorOutput()
-    {
-        /** @var PGIntlServicesTranslator $translator */
-        $translator = $this->getService('translator');
-
-        $error = $translator->get('backoffice.errors.interface_construction');
-
-        $this->messageManager->addErrorMessage($error);
     }
 }

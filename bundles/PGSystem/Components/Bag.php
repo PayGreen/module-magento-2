@@ -15,15 +15,21 @@
  * @author    PayGreen <contact@paygreen.fr>
  * @copyright 2014 - 2021 Watt Is It
  * @license   https://opensource.org/licenses/mit-license.php MIT License X11
- * @version   2.1.1
+ * @version   2.2.0
  *
  */
 
+namespace PGI\Module\PGSystem\Components;
+
+use PGI\Module\PGSystem\Tools\Collection as CollectionTool;
+use ArrayAccess;
+use Exception;
+
 /**
- * Class PGSystemComponentsBag
+ * Class Bag
  * @package PGSystem\Components
  */
-class PGSystemComponentsBag implements arrayaccess
+class Bag implements ArrayAccess
 {
     private $data = array();
 
@@ -57,7 +63,7 @@ class PGSystemComponentsBag implements arrayaccess
 
     public function merge(array $data)
     {
-        PGSystemToolsArray::merge($this->data, $data);
+        CollectionTool::merge($this->data, $data);
     }
 
     // ###################################################################

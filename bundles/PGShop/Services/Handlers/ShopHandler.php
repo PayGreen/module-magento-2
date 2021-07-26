@@ -15,68 +15,78 @@
  * @author    PayGreen <contact@paygreen.fr>
  * @copyright 2014 - 2021 Watt Is It
  * @license   https://opensource.org/licenses/mit-license.php MIT License X11
- * @version   2.1.1
+ * @version   2.2.0
  *
  */
 
+namespace PGI\Module\PGShop\Services\Handlers;
+
+use PGI\Module\PGFramework\Interfaces\Handlers\SessionHandlerInterface;
+use PGI\Module\PGModule\Services\Logger;
+use PGI\Module\PGShop\Interfaces\Entities\ShopEntityInterface;
+use PGI\Module\PGShop\Interfaces\Handlers\ShopHandlerInterface;
+use PGI\Module\PGShop\Interfaces\Officers\ShopOfficerInterface;
+use PGI\Module\PGShop\Services\Managers\ShopManager;
+use PGI\Module\PGSystem\Foundations\AbstractObject;
+
 /**
- * Class PGShopServicesHandlersShopHandler
+ * Class ShopHandler
  * @package PGShop\Services\Handlers
  */
-class PGShopServicesHandlersShopHandler extends PGSystemFoundationsObject implements PGShopInterfacesShopHandler
+class ShopHandler extends AbstractObject implements ShopHandlerInterface
 {
     const SESSION_SHOP_KEY = 'paygreen_selected_shop_primary';
 
-    /** @var PGShopInterfacesEntitiesShop */
+    /** @var ShopEntityInterface */
     private $shop = null;
 
-    /** @var PGShopServicesManagersShop */
+    /** @var ShopManager */
     private $shopManager;
 
-    /** @var PGFrameworkInterfacesHandlersSessionHandlerInterface */
+    /** @var SessionHandlerInterface */
     private $sessionHandler;
 
-    /** @var PGShopInterfacesOfficersShop */
+    /** @var ShopOfficerInterface */
     private $shopOfficer;
 
-    /** @var PGModuleServicesLogger */
+    /** @var Logger */
     private $logger;
 
     /**
-     * PGShopInterfacesShopHandler constructor.
-     * @param PGModuleServicesLogger $logger
+     * ShopHandlerInterface constructor.
+     * @param Logger $logger
      */
-    public function __construct(PGModuleServicesLogger $logger)
+    public function __construct(Logger $logger)
     {
         $this->logger = $logger;
     }
 
     /**
-     * @param PGShopServicesManagersShop $shopManager
+     * @param ShopManager $shopManager
      */
-    public function setShopManager(PGShopServicesManagersShop $shopManager)
+    public function setShopManager(ShopManager $shopManager)
     {
         $this->shopManager = $shopManager;
     }
 
     /**
-     * @param PGFrameworkInterfacesHandlersSessionHandlerInterface $sessionHandler
+     * @param SessionHandlerInterface $sessionHandler
      */
-    public function setSessionHandler(PGFrameworkInterfacesHandlersSessionHandlerInterface $sessionHandler)
+    public function setSessionHandler(SessionHandlerInterface $sessionHandler)
     {
         $this->sessionHandler = $sessionHandler;
     }
 
     /**
-     * @param PGShopInterfacesOfficersShop $shopOfficer
+     * @param ShopOfficerInterface $shopOfficer
      */
-    public function setShopOfficer(PGShopInterfacesOfficersShop $shopOfficer)
+    public function setShopOfficer(ShopOfficerInterface $shopOfficer)
     {
         $this->shopOfficer = $shopOfficer;
     }
 
     /**
-     * @return PGShopInterfacesOfficersShop
+     * @return ShopOfficerInterface
      */
     protected function getShopOfficer()
     {
@@ -84,7 +94,7 @@ class PGShopServicesHandlersShopHandler extends PGSystemFoundationsObject implem
     }
 
     /**
-     * @return PGModuleServicesLogger
+     * @return Logger
      */
     public function getLogger()
     {
@@ -92,7 +102,7 @@ class PGShopServicesHandlersShopHandler extends PGSystemFoundationsObject implem
     }
 
     /**
-     * @return PGFrameworkInterfacesHandlersSessionHandlerInterface
+     * @return SessionHandlerInterface
      */
     public function getSessionHandler()
     {
@@ -100,7 +110,7 @@ class PGShopServicesHandlersShopHandler extends PGSystemFoundationsObject implem
     }
 
     /**
-     * @return PGShopServicesManagersShop
+     * @return ShopManager
      */
     public function getShopManager()
     {
@@ -132,7 +142,7 @@ class PGShopServicesHandlersShopHandler extends PGSystemFoundationsObject implem
     }
 
     /**
-     * @return PGShopInterfacesEntitiesShop
+     * @return ShopEntityInterface
      */
     public function getCurrentShop()
     {
@@ -152,9 +162,9 @@ class PGShopServicesHandlersShopHandler extends PGSystemFoundationsObject implem
     }
 
     /**
-     * @param PGShopInterfacesEntitiesShop $shop
+     * @param ShopEntityInterface $shop
      */
-    public function defineCurrentShop(PGShopInterfacesEntitiesShop $shop)
+    public function defineCurrentShop(ShopEntityInterface $shop)
     {
         $this->shop = $shop;
 
@@ -162,11 +172,11 @@ class PGShopServicesHandlersShopHandler extends PGSystemFoundationsObject implem
     }
 
     /**
-     * @return PGShopInterfacesEntitiesShop
+     * @return ShopEntityInterface
      */
     protected function buildCurrentShop()
     {
-        /** @var PGShopInterfacesEntitiesShop $shop */
+        /** @var ShopEntityInterface $shop */
         $shop = null;
 
         if ($this->isMultiShopActivated() && $this->isBackOffice()) {
@@ -181,7 +191,7 @@ class PGShopServicesHandlersShopHandler extends PGSystemFoundationsObject implem
     }
 
     /**
-     * @return PGShopInterfacesEntitiesShop|null
+     * @return ShopEntityInterface|null
      */
     protected function getShopFromSession()
     {

@@ -15,41 +15,41 @@
  * @author    PayGreen <contact@paygreen.fr>
  * @copyright 2014 - 2021 Watt Is It
  * @license   https://opensource.org/licenses/mit-license.php MIT License X11
- * @version   2.1.1
+ * @version   2.2.0
  *
  */
 
 namespace Paygreen\Payment\Observer;
 
-use Magento\Framework\Event\Observer;
-use Magento\Framework\Event\ObserverInterface;
-use PGModuleServicesLogger;
-use PGSystemServicesContainer;
-use PGModuleComponentsEventsDisplay;
-use PGModuleServicesBroadcaster;
+use Magento\Framework\Event\Observer as LocalObserver;
+use Magento\Framework\Event\ObserverInterface as LocalObserverInterface;
+use PGI\Module\PGModule\Components\Events\Display as DisplayEventComponent;
+use PGI\Module\PGModule\Services\Broadcaster;
+use PGI\Module\PGModule\Services\Logger;
+use PGI\Module\PGSystem\Services\Container;
 
-class FrontObserver implements ObserverInterface
+class FrontObserver implements LocalObserverInterface
 {
     public function __construct()
     {
         require_once PAYGREEN_BOOTSTRAP_SRC;
     }
 
-    public function execute(Observer $observer)
+    public function execute(LocalObserver $observer)
     {
-        /** @var PGModuleServicesLogger $logger */
+        /** @var Logger $logger */
         $logger = $this->getService('logger');
         
         $logger->debug("Fire front event controller_front_send_response_before from Magento.");
 
-        /** @var PGModuleServicesBroadcaster $broadcaster */
+        /** @var Broadcaster $broadcaster */
         $broadcaster = $this->getService('broadcaster');
 
-        $broadcaster->fire(new PGModuleComponentsEventsDisplay('frontoffice', 'frontoffice'));
+        $broadcaster->fire(new DisplayEventComponent('frontoffice', 'frontoffice'));
     }
 
     protected function getService($name)
     {
-        return PGSystemServicesContainer::getInstance()->get($name);
+        return Container::getInstance()->get($name);
     }
 }

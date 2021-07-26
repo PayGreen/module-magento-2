@@ -15,40 +15,46 @@
  * @author    PayGreen <contact@paygreen.fr>
  * @copyright 2014 - 2021 Watt Is It
  * @license   https://opensource.org/licenses/mit-license.php MIT License X11
- * @version   2.1.1
+ * @version   2.2.0
  *
  */
 
+namespace PGI\Module\BOModule\Services\Listeners;
+
+use PGI\Module\PGFramework\Services\Notifier;
+use PGI\Module\PGServer\Components\Events\Action as ActionEventComponent;
+use PGI\Module\PGShop\Interfaces\Handlers\ShopHandlerInterface;
+
 /**
- * Class BOModuleServicesListenersShopContextBackofficeListener
+ * Class ShopContextBackofficeListener
  * @package BOModule\Services\Listeners
  */
-class BOModuleServicesListenersShopContextBackofficeListener
+class ShopContextBackofficeListener
 {
-    /** @var PGFrameworkServicesNotifier */
+    /** @var Notifier */
     private $notifier;
 
-    /** @var PGShopInterfacesShopHandler */
+    /** @var ShopHandlerInterface */
     private $shopHandler;
 
     private $bin;
 
     public function __construct(
-        PGFrameworkServicesNotifier $notifier,
-        PGShopInterfacesShopHandler $shopHandler
+        Notifier $notifier,
+        ShopHandlerInterface $shopHandler
     ) {
         $this->notifier = $notifier;
         $this->shopHandler = $shopHandler;
     }
 
-    public function listen(PGServerComponentsActionEvent $event)
+    public function listen(ActionEventComponent $event)
     {
         // Thrashing unused arguments
         $this->bin = $event;
 
         if ($this->shopHandler->isMultiShopActivated() && !$this->shopHandler->isShopContext()) {
             $this->notifier->add(
-                PGFrameworkServicesNotifier::STATE_FAILURE,
+                Notifier::STATE_FAILURE,
                 'misc.backoffice.errors.shop_context_needed'
             );
         }

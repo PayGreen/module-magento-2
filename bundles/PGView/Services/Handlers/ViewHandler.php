@@ -15,29 +15,37 @@
  * @author    PayGreen <contact@paygreen.fr>
  * @copyright 2014 - 2021 Watt Is It
  * @license   https://opensource.org/licenses/mit-license.php MIT License X11
- * @version   2.1.1
+ * @version   2.2.0
  *
  */
 
+namespace PGI\Module\PGView\Services\Handlers;
+
+use PGI\Module\PGFramework\Components\Aggregator as AggregatorComponent;
+use PGI\Module\PGSystem\Services\Pathfinder;
+use PGI\Module\PGView\Interfaces\ViewInterface;
+use PGI\Module\PGView\Services\Handlers\SmartyHandler;
+use Exception;
+
 /**
- * Class PGViewServicesHandlersViewHandler
+ * Class ViewHandler
  * @package PGView\Services\Handlers
  */
-class PGViewServicesHandlersViewHandler
+class ViewHandler
 {
-    /** @var PGFrameworkComponentsAggregator */
+    /** @var AggregatorComponent */
     private $viewAggregator;
 
-    /** @var PGViewServicesHandlersSmartyHandler */
+    /** @var SmartyHandler */
     private $smartyHandler;
 
-    /** @var PGSystemServicesPathfinder */
+    /** @var Pathfinder */
     private $pathfinder;
 
     public function __construct(
-        PGFrameworkComponentsAggregator $viewAggregator,
-        PGViewServicesHandlersSmartyHandler $smartyHandler,
-        PGSystemServicesPathfinder $pathfinder
+        AggregatorComponent $viewAggregator,
+        SmartyHandler $smartyHandler,
+        Pathfinder $pathfinder
     ) {
         $this->viewAggregator = $viewAggregator;
         $this->smartyHandler = $smartyHandler;
@@ -46,7 +54,7 @@ class PGViewServicesHandlersViewHandler
 
     /**
      * @param string $name
-     * @return PGViewInterfacesViewInterface
+     * @return ViewInterface
      * @throws Exception
      */
     public function buildView($name)

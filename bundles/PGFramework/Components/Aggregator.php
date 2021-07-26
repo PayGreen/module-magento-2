@@ -15,25 +15,33 @@
  * @author    PayGreen <contact@paygreen.fr>
  * @copyright 2014 - 2021 Watt Is It
  * @license   https://opensource.org/licenses/mit-license.php MIT License X11
- * @version   2.1.1
+ * @version   2.2.0
  *
  */
 
+namespace PGI\Module\PGFramework\Components;
+
+use PGI\Module\PGSystem\Components\Bag as BagComponent;
+use PGI\Module\PGSystem\Interfaces\Services\ConfigurableServiceInterface;
+use PGI\Module\PGSystem\Services\Container;
+use Exception;
+use LogicException;
+
 /**
- * Class PGFrameworkComponentsAggregator
- * @package PGSystem\Components
+ * Class Aggregator
+ * @package PGFramework\Components
  */
-class PGFrameworkComponentsAggregator implements PGSystemInterfacesServicesConfigurable
+class Aggregator implements ConfigurableServiceInterface
 {
-    /** @var PGSystemServicesContainer */
+    /** @var Container */
     private $container;
 
     private $index = array();
 
-    /** @var PGSystemComponentsBag */
+    /** @var BagComponent */
     private $config;
 
-    public function __construct(PGSystemServicesContainer $container)
+    public function __construct(Container $container)
     {
         $this->container = $container;
 
@@ -42,7 +50,7 @@ class PGFrameworkComponentsAggregator implements PGSystemInterfacesServicesConfi
 
     public function setConfig(array $config)
     {
-        $this->config = new PGSystemComponentsBag($config);
+        $this->config = new BagComponent($config);
     }
 
     public function addConfig(array $config)

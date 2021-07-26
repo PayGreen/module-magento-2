@@ -15,15 +15,21 @@
  * @author    PayGreen <contact@paygreen.fr>
  * @copyright 2014 - 2021 Watt Is It
  * @license   https://opensource.org/licenses/mit-license.php MIT License X11
- * @version   2.1.1
+ * @version   2.2.0
  *
  */
 
+namespace PGI\Module\PGModule\Components;
+
+use PGI\Module\PGFramework\Tools\Version as VersionTool;
+use PGI\Module\PGModule\Services\Upgrader;
+use Exception;
+
 /**
- * Class PGModuleComponentsUpgrade
+ * Class Upgrade
  * @package PGModule\Components
  */
-class PGModuleComponentsUpgrade
+class Upgrade
 {
     private $name;
 
@@ -36,7 +42,7 @@ class PGModuleComponentsUpgrade
     private $type;
 
     /**
-     * PGModuleComponentsUpgrade constructor.
+     * Upgrade constructor.
      * @param string $name
      * @param array $data
      * @throws Exception
@@ -56,7 +62,7 @@ class PGModuleComponentsUpgrade
         if (array_key_exists('priority', $data)) {
             $this->priority = $data['priority'];
         } else {
-            $this->priority = PGModuleServicesUpgrader::DEFAULT_PRIORITY;
+            $this->priority = Upgrader::DEFAULT_PRIORITY;
         }
 
         $this->config = array_key_exists('config', $data) ? $data['config'] : array();
@@ -104,21 +110,21 @@ class PGModuleComponentsUpgrade
 
     public function greaterThan($version)
     {
-        return (PGFrameworkToolsVersion::compare($this->getVersion(), $version) === 1);
+        return (VersionTool::compare($this->getVersion(), $version) === 1);
     }
 
     public function greaterOrEqualThan($version)
     {
-        return (PGFrameworkToolsVersion::compare($this->getVersion(), $version) !== -1);
+        return (VersionTool::compare($this->getVersion(), $version) !== -1);
     }
 
     public function lesserThan($version)
     {
-        return (PGFrameworkToolsVersion::compare($this->getVersion(), $version) === -1);
+        return (VersionTool::compare($this->getVersion(), $version) === -1);
     }
 
     public function lesserOrEqualThan($version)
     {
-        return (PGFrameworkToolsVersion::compare($this->getVersion(), $version) !== 1);
+        return (VersionTool::compare($this->getVersion(), $version) !== 1);
     }
 }

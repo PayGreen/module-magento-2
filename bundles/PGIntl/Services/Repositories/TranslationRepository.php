@@ -15,23 +15,34 @@
  * @author    PayGreen <contact@paygreen.fr>
  * @copyright 2014 - 2021 Watt Is It
  * @license   https://opensource.org/licenses/mit-license.php MIT License X11
- * @version   2.1.1
+ * @version   2.2.0
  *
  */
 
+namespace PGI\Module\PGIntl\Services\Repositories;
+
+use PGI\Module\PGDatabase\Foundations\AbstractRepositoryDatabase;
+use PGI\Module\PGDatabase\Services\Handlers\DatabaseHandler;
+use PGI\Module\PGIntl\Interfaces\Entities\TranslationEntityInterface;
+use PGI\Module\PGIntl\Interfaces\Repositories\TranslationRepositoryInterface;
+use PGI\Module\PGPayment\Interfaces\Entities\TransactionEntityInterface;
+use PGI\Module\PGShop\Interfaces\Entities\ShopEntityInterface;
+use PGI\Module\PGShop\Interfaces\Handlers\ShopHandlerInterface;
+use Exception;
+
 /**
- * Class PGIntlServicesRepositoriesTranslationRepository
+ * Class TranslationRepository
  * @package PGIntl\Services\Repositories
  */
-class PGIntlServicesRepositoriesTranslationRepository extends PGDatabaseFoundationsRepositoryDatabase implements PGIntlInterfacesRepositoriesTranslationRepositoryInterface
+class TranslationRepository extends AbstractRepositoryDatabase implements TranslationRepositoryInterface
 {
-    /** @var PGShopInterfacesShopHandler */
+    /** @var ShopHandlerInterface */
     private $shopHandler;
 
     public function __construct(
-        PGDatabaseServicesDatabaseHandler $databaseHandler,
+        DatabaseHandler $databaseHandler,
         array $config,
-        PGShopInterfacesShopHandler $shopHandler
+        ShopHandlerInterface $shopHandler
     ) {
         parent::__construct($databaseHandler, $config);
 
@@ -42,7 +53,7 @@ class PGIntlServicesRepositoriesTranslationRepository extends PGDatabaseFoundati
      * @inheritdoc
      * @throws Exception
      */
-    public function findByCode($code, PGShopInterfacesEntitiesShop $shop = null)
+    public function findByCode($code, ShopEntityInterface $shop = null)
     {
         $id_shop = $shop ? $shop->id() : $this->shopHandler->getCurrentShopPrimary();
 
@@ -55,13 +66,13 @@ class PGIntlServicesRepositoriesTranslationRepository extends PGDatabaseFoundati
      * @inheritdoc
      * @throws Exception
      */
-    public function findByPattern($pattern, PGShopInterfacesEntitiesShop $shop = null)
+    public function findByPattern($pattern, ShopEntityInterface $shop = null)
     {
         $id_shop = $shop ? $shop->id() : $this->shopHandler->getCurrentShopPrimary();
 
         $pattern = $this->getRequester()->quote($pattern);
 
-        /** @var PGPaymentInterfacesEntitiesTransactionInterface $result */
+        /** @var TransactionEntityInterface $result */
         $result = $this->findAllEntities("`id_shop` = '$id_shop' AND `code` LIKE '$pattern%'");
 
         return $result;
@@ -69,14 +80,14 @@ class PGIntlServicesRepositoriesTranslationRepository extends PGDatabaseFoundati
 
     /**
      * @inheritDoc
-     * @return PGIntlInterfacesEntitiesTranslationInterface
+     * @return TranslationEntityInterface
      * @throws Exception
      */
-    public function create($code, $language, PGShopInterfacesEntitiesShop $shop = null)
+    public function create($code, $language, ShopEntityInterface $shop = null)
     {
         $id_shop = $shop ? $shop->id() : $this->shopHandler->getCurrentShopPrimary();
 
-        /** @var PGIntlInterfacesEntitiesTranslationInterface $translation */
+        /** @var TranslationEntityInterface $translation */
         $translation = $this->wrapEntity(array(
             'code' => $code,
             'language' => $language,
@@ -90,7 +101,7 @@ class PGIntlServicesRepositoriesTranslationRepository extends PGDatabaseFoundati
      * @inheritDoc
      * @throws Exception
      */
-    public function insert(PGIntlInterfacesEntitiesTranslationInterface $translation)
+    public function insert(TranslationEntityInterface $translation)
     {
         return $this->insertEntity($translation);
     }
@@ -99,7 +110,7 @@ class PGIntlServicesRepositoriesTranslationRepository extends PGDatabaseFoundati
      * @inheritDoc
      * @throws Exception
      */
-    public function update(PGIntlInterfacesEntitiesTranslationInterface $translation)
+    public function update(TranslationEntityInterface $translation)
     {
         return $this->updateEntity($translation);
     }
@@ -108,7 +119,7 @@ class PGIntlServicesRepositoriesTranslationRepository extends PGDatabaseFoundati
      * @inheritDoc
      * @throws Exception
      */
-    public function delete(PGIntlInterfacesEntitiesTranslationInterface $translation)
+    public function delete(TranslationEntityInterface $translation)
     {
         return $this->deleteEntity($translation);
     }

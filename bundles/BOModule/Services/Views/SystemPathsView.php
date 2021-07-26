@@ -15,20 +15,26 @@
  * @author    PayGreen <contact@paygreen.fr>
  * @copyright 2014 - 2021 Watt Is It
  * @license   https://opensource.org/licenses/mit-license.php MIT License X11
- * @version   2.1.1
+ * @version   2.2.0
  *
  */
 
+namespace PGI\Module\BOModule\Services\Views;
+
+use PGI\Module\PGSystem\Services\Pathfinder;
+use PGI\Module\PGView\Services\View;
+use Exception;
+
 /**
- * Class BOModuleServicesViewsSystemPathsView
+ * Class SystemPathsView
  * @package BOModule\Services\Views
  */
-class BOModuleServicesViewsSystemPathsView extends PGViewServicesView
+class SystemPathsView extends View
 {
-    /** @var PGSystemServicesPathfinder */
+    /** @var Pathfinder */
     private $pathfinder;
 
-    public function __construct(PGSystemServicesPathfinder $pathfinder)
+    public function __construct(Pathfinder $pathfinder)
     {
         $this->pathfinder = $pathfinder;
 

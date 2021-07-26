@@ -15,20 +15,25 @@
  * @author    PayGreen <contact@paygreen.fr>
  * @copyright 2014 - 2021 Watt Is It
  * @license   https://opensource.org/licenses/mit-license.php MIT License X11
- * @version   2.1.1
+ * @version   2.2.0
  *
  */
 
+namespace PGI\Module\PGFramework\Services\Behaviors;
+
+use PGI\Module\PGModule\Services\Settings;
+use PGI\Module\PGSystem\Foundations\AbstractObject;
+
 /**
- * Class PGFrameworkServicesBehaviorsDetailedLogsBehavior
+ * Class DetailedLogsBehavior
  * @package PGFramework\Services\Behaviors
  */
-class PGFrameworkServicesBehaviorsDetailedLogsBehavior extends PGSystemFoundationsObject
+class DetailedLogsBehavior extends AbstractObject
 {
-    /** @var PGModuleServicesSettings */
+    /** @var Settings */
     private $settings;
 
-    public function __construct(PGModuleServicesSettings $settings)
+    public function __construct(Settings $settings)
     {
         $this->settings = $settings;
     }

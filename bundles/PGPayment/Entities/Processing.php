@@ -15,20 +15,31 @@
  * @author    PayGreen <contact@paygreen.fr>
  * @copyright 2014 - 2021 Watt Is It
  * @license   https://opensource.org/licenses/mit-license.php MIT License X11
- * @version   2.1.1
+ * @version   2.2.0
  *
  */
 
+namespace PGI\Module\PGPayment\Entities;
+
+use PGI\Module\PGDatabase\Foundations\AbstractEntityPersisted;
+use PGI\Module\PGPayment\Interfaces\Entities\ProcessingEntityInterface;
+use PGI\Module\PGShop\Interfaces\Entities\OrderEntityInterface;
+use PGI\Module\PGShop\Interfaces\Entities\ShopEntityInterface;
+use PGI\Module\PGShop\Services\Managers\OrderManager;
+use PGI\Module\PGShop\Services\Managers\ShopManager;
+use PGI\Module\PGShop\Tools\Price as PriceTool;
+use DateTime;
+
 /**
- * Class PGPaymentEntitiesProcessing
+ * Class Processing
  * @package PGPayment\Entities
  */
-class PGPaymentEntitiesProcessing extends PGDatabaseFoundationsEntityPersisted implements PGPaymentInterfacesEntitiesProcessingInterface
+class Processing extends AbstractEntityPersisted implements ProcessingEntityInterface
 {
-    /** @var PGShopInterfacesEntitiesOrder|null */
+    /** @var OrderEntityInterface|null */
     private $order = null;
 
-    /** @var PGShopInterfacesEntitiesShop */
+    /** @var ShopEntityInterface */
     private $shop = null;
 
     /** @inheritDoc */
@@ -49,7 +60,7 @@ class PGPaymentEntitiesProcessing extends PGDatabaseFoundationsEntityPersisted i
 
     protected function loadShop()
     {
-        /** @var PGShopServicesManagersShop $shopManager */
+        /** @var ShopManager $shopManager */
         $shopManager = $this->getService('manager.shop');
 
         $id_shop = $this->getShopPrimary();
@@ -125,7 +136,7 @@ class PGPaymentEntitiesProcessing extends PGDatabaseFoundationsEntityPersisted i
     /** @inheritDoc */
     public function getUserAmount()
     {
-        return PGShopToolsPrice::toFloat($this->getAmount());
+        return PriceTool::toFloat($this->getAmount());
     }
 
     /** @inheritDoc */
@@ -146,7 +157,7 @@ class PGPaymentEntitiesProcessing extends PGDatabaseFoundationsEntityPersisted i
 
     protected function loadOrder()
     {
-        /** @var PGShopServicesManagersOrder $orderManager */
+        /** @var OrderManager $orderManager */
         $orderManager = $this->getService('manager.order');
 
         $id_order = $this->getOrderPrimary();

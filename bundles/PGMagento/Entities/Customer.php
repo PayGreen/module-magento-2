@@ -15,19 +15,25 @@
  * @author    PayGreen <contact@paygreen.fr>
  * @copyright 2014 - 2021 Watt Is It
  * @license   https://opensource.org/licenses/mit-license.php MIT License X11
- * @version   2.1.1
+ * @version   2.2.0
  *
  */
 
-use Magento\Sales\Model\Order;
+namespace PGI\Module\PGMagento\Entities;
+
+use Magento\Sales\Model\Order as LocalOrder;
+use PGI\Module\PGDatabase\Foundations\AbstractEntityWrapped;
+use PGI\Module\PGMagento\Entities\Address;
+use PGI\Module\PGMagento\Entities\Cart;
+use PGI\Module\PGShop\Interfaces\Entities\CustomerEntityInterface;
 
 /**
- * Class PGMagentoEntitiesCart
+ * Class Cart
  *
  * @package PGMagento\Entities
- * @method Order getLocalEntity()
+ * @method LocalOrder getLocalEntity()
  */
-class PGMagentoEntitiesCustomer extends PGDatabaseFoundationsEntityWrapped implements PGShopInterfacesEntitiesCustomer
+class Customer extends AbstractEntityWrapped implements CustomerEntityInterface
 {
     public function getFirstname()
     {
@@ -48,13 +54,13 @@ class PGMagentoEntitiesCustomer extends PGDatabaseFoundationsEntityWrapped imple
     {
         $shippingAddress = $this->getLocalEntity()->getShippingAddress();
 
-        return new PGMagentoEntitiesAddress($shippingAddress);
+        return new Address($shippingAddress);
     }
 
     public function getBillingAddress()
     {
         $billingAddress = $this->getLocalEntity()->getBillingAddress();
 
-        return new PGMagentoEntitiesAddress($billingAddress);
+        return new Address($billingAddress);
     }
 }

@@ -15,17 +15,20 @@
  * @author    PayGreen <contact@paygreen.fr>
  * @copyright 2014 - 2021 Watt Is It
  * @license   https://opensource.org/licenses/mit-license.php MIT License X11
- * @version   2.1.1
+ * @version   2.2.0
  *
  */
 
-use Magento\Framework\App\ObjectManager;
+namespace PGI\Module\PGMagento\Services\Linkers;
 
-class PGMagentoServicesLinkersFrontBasicLinker extends PGMagentoFoundationsAbstractFrontLinker
+use Magento\Framework\App\ObjectManager as LocalObjectManager;
+use PGI\Module\PGMagento\Foundations\Linkers\AbstractFrontLinker;
+
+class FrontBasicLinker extends AbstractFrontLinker
 {
     private $endpoint;
 
-    public function __construct(ObjectManager $objectManager, $endpoint)
+    public function __construct(LocalObjectManager $objectManager, $endpoint)
     {
         parent::__construct($objectManager);
 

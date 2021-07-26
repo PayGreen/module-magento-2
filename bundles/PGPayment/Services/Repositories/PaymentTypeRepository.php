@@ -15,42 +15,51 @@
  * @author    PayGreen <contact@paygreen.fr>
  * @copyright 2014 - 2021 Watt Is It
  * @license   https://opensource.org/licenses/mit-license.php MIT License X11
- * @version   2.1.1
+ * @version   2.2.0
  *
  */
 
+namespace PGI\Module\PGPayment\Services\Repositories;
+
+use PGI\Module\APIPayment\Components\Response as ResponseComponent;
+use PGI\Module\PGDatabase\Foundations\AbstractRepositoryPaygreen;
+use PGI\Module\PGFramework\Services\Handlers\CacheHandler;
+use PGI\Module\PGModule\Services\Logger;
+use PGI\Module\PGPayment\Entities\PaymentType;
+use Exception;
+
 /**
- * Class PGPaymentServicesRepositoriesPaymentTypeRepository
+ * Class PaymentTypeRepository
  *
  * @package PGPayment\Services\Repositories
- * @method PGPaymentEntitiesPaymentType[] wrapList(array $rawEntities)
+ * @method PaymentType[] wrapList(array $rawEntities)
  */
-class PGPaymentServicesRepositoriesPaymentTypeRepository extends PGDatabaseFoundationsRepositoryPaygreen
+class PaymentTypeRepository extends AbstractRepositoryPaygreen
 {
     /**
      * @inheritdoc
      */
     public function getModelClassName()
     {
-        return 'PGPaymentEntitiesPaymentType';
+        return 'PGI\Module\PGPayment\Entities\PaymentType';
     }
 
     /**
-     * @return PGPaymentEntitiesPaymentType[]
+     * @return PaymentType[]
      */
     public function findAll()
     {
-        /** @var PGFrameworkServicesHandlersCacheHandler $cacheHandler */
+        /** @var CacheHandler $cacheHandler */
         $cacheHandler = $this->getService('handler.cache');
 
-        /** @var PGModuleServicesLogger $logger */
+        /** @var Logger $logger */
         $logger = $this->getService('logger');
 
         $rawPaymentTypes = $cacheHandler->loadEntry('payment-types');
 
         if ($rawPaymentTypes === null) {
             try {
-                /** @var APIPaymentComponentsResponse $response */
+                /** @var ResponseComponent $response */
                 $response = $this->getApiFacade()->paymentTypes();
 
                 $rawPaymentTypes = (array) $response->data;

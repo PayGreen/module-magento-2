@@ -15,55 +15,55 @@
  * @author    PayGreen <contact@paygreen.fr>
  * @copyright 2014 - 2021 Watt Is It
  * @license   https://opensource.org/licenses/mit-license.php MIT License X11
- * @version   2.1.1
+ * @version   2.2.0
  *
  */
 
 namespace Paygreen\Payment\Observer;
 
-use Magento\Framework\Event\Observer;
-use Magento\Framework\Event\ObserverInterface;
-use PGModuleServicesLogger;
-use PGSystemServicesContainer;
-use PGModuleServicesBroadcaster;
-use PGShopComponentsEventsLocalOrder;
-use PGMagentoServicesRepositoriesOrderRepository;
-use PGShopInterfacesEntitiesOrder;
-use Magento\Sales\Model\Order;
+use Magento\Framework\Event\Observer as LocalObserver;
+use Magento\Framework\Event\ObserverInterface as LocalObserverInterface;
+use Magento\Sales\Model\Order as LocalOrder;
+use PGI\Module\PGMagento\Services\Repositories\OrderRepository;
+use PGI\Module\PGModule\Services\Broadcaster;
+use PGI\Module\PGModule\Services\Logger;
+use PGI\Module\PGShop\Components\Events\LocalOrder as LocalOrderEventComponent;
+use PGI\Module\PGShop\Interfaces\Entities\OrderEntityInterface;
+use PGI\Module\PGSystem\Services\Container;
 
-class OrderConfirmationObserver implements ObserverInterface
+class OrderConfirmationObserver implements LocalObserverInterface
 {
     public function __construct()
     {
         require_once PAYGREEN_BOOTSTRAP_SRC;
     }
 
-    public function execute(Observer $observer)
+    public function execute(LocalObserver $observer)
     {
-        /** @var PGModuleServicesLogger $logger */
+        /** @var Logger $logger */
         $logger = $this->getService('logger');
 
-        /** @var PGModuleServicesBroadcaster $broadcaster */
+        /** @var Broadcaster $broadcaster */
         $broadcaster = $this->getService('broadcaster');
 
-        /** @var Order $localOrder */
+        /** @var LocalOrder $localOrder */
         $localOrder = $observer->getEvent()->getData('order');
 
-        if ($localOrder instanceof Order) {
+        if ($localOrder instanceof LocalOrder) {
             $logger->debug("Order confirmation for order #{$localOrder->getId()}");
 
-            /** @var PGMagentoServicesRepositoriesOrderRepository $orderRepository */
+            /** @var OrderRepository $orderRepository */
             $orderRepository = $this->getService('repository.order');
 
-            /** @var PGShopInterfacesEntitiesOrder $order */
+            /** @var OrderEntityInterface $order */
             $order = $orderRepository->wrapEntity($localOrder);
 
-            $broadcaster->fire(new PGShopComponentsEventsLocalOrder('VALIDATION', $order));
+            $broadcaster->fire(new LocalOrderEventComponent('VALIDATION', $order));
         }
     }
 
     protected function getService($name)
     {
-        return PGSystemServicesContainer::getInstance()->get($name);
+        return Container::getInstance()->get($name);
     }
 }

@@ -15,17 +15,34 @@
  * @author    PayGreen <contact@paygreen.fr>
  * @copyright 2014 - 2021 Watt Is It
  * @license   https://opensource.org/licenses/mit-license.php MIT License X11
- * @version   2.1.1
+ * @version   2.2.0
  *
  */
 
+namespace PGI\Module\PGPayment\Services\Managers;
+
+use PGI\Module\PGClient\Exceptions\Response as ResponseException;
+use PGI\Module\PGDatabase\Foundations\AbstractManager;
+use PGI\Module\PGIntl\Services\Managers\TranslationManager;
+use PGI\Module\PGModule\Services\Logger;
+use PGI\Module\PGPayment\Data;
+use PGI\Module\PGPayment\Interfaces\Entities\ButtonEntityInterface;
+use PGI\Module\PGPayment\Interfaces\Repositories\ButtonRepositoryInterface;
+use PGI\Module\PGPayment\Services\Facades\PaygreenFacade;
+use PGI\Module\PGPayment\Services\Managers\PaymentTypeManager;
+use PGI\Module\PGShop\Interfaces\Entities\ShopableItemEntityInterface;
+use PGI\Module\PGShop\Interfaces\Provisioners\CheckoutProvisionerInterface;
+use PGI\Module\PGShop\Services\Managers\CategoryManager;
+use PGI\Module\PGShop\Services\Managers\ProductManager;
+use Exception;
+
 /**
- * Class PGPaymentServicesManagersButtonManager
+ * Class ButtonManager
  *
  * @package PGPayment\Services\Managers
- * @method PGPaymentInterfacesRepositoriesButtonRepositoryInterface getRepository()
+ * @method ButtonRepositoryInterface getRepository()
  */
-class PGPaymentServicesManagersButtonManager extends PGDatabaseFoundationsManager
+class ButtonManager extends AbstractManager
 {
     const XTIME_MAX_COMMITMENTS = 4;
     const CATEGORY_FILTERING_MODE_NONE = 'NONE';
@@ -34,7 +51,7 @@ class PGPaymentServicesManagersButtonManager extends PGDatabaseFoundationsManage
 
     /**
      * @param $id
-     * @return PGPaymentInterfacesEntitiesButtonInterface|null
+     * @return ButtonEntityInterface|null
      */
     public function getByPrimary($id)
     {
@@ -42,7 +59,7 @@ class PGPaymentServicesManagersButtonManager extends PGDatabaseFoundationsManage
     }
 
     /**
-     * @return PGPaymentInterfacesEntitiesButtonInterface[]
+     * @return ButtonEntityInterface[]
      */
     public function getAll()
     {
@@ -50,7 +67,7 @@ class PGPaymentServicesManagersButtonManager extends PGDatabaseFoundationsManage
     }
 
     /**
-     * @return PGPaymentInterfacesEntitiesButtonInterface
+     * @return ButtonEntityInterface
      */
     public function getNew()
     {
@@ -66,10 +83,10 @@ class PGPaymentServicesManagersButtonManager extends PGDatabaseFoundationsManage
     }
 
     /**
-     * @param PGPaymentInterfacesEntitiesButtonInterface $button
+     * @param ButtonEntityInterface $button
      * @return bool
      */
-    public function save(PGPaymentInterfacesEntitiesButtonInterface $button)
+    public function save(ButtonEntityInterface $button)
     {
         if ($button->id() > 0) {
             return $this->getRepository()->update($button);
@@ -79,12 +96,12 @@ class PGPaymentServicesManagersButtonManager extends PGDatabaseFoundationsManage
     }
 
     /**
-     * @param PGPaymentInterfacesEntitiesButtonInterface $button
+     * @param ButtonEntityInterface $button
      * @return bool
      */
-    public function delete(PGPaymentInterfacesEntitiesButtonInterface $button)
+    public function delete(ButtonEntityInterface $button)
     {
-        /** @var PGIntlServicesManagersTranslationManager $translationManager */
+        /** @var TranslationManager $translationManager */
         $translationManager = $this->getService('manager.translation');
 
         $result = $this->getRepository()->delete($button);
@@ -94,7 +111,7 @@ class PGPaymentServicesManagersButtonManager extends PGDatabaseFoundationsManage
                 $code = 'button-' . $button->id();
                 $translationManager->deleteByCode($code);
             } catch (Exception $exception) {
-                /** @var PGModuleServicesLogger $logger */
+                /** @var Logger $logger */
                 $logger = $this->getService('logger');
 
                 $logger->error(
@@ -108,20 +125,20 @@ class PGPaymentServicesManagersButtonManager extends PGDatabaseFoundationsManage
     }
 
     /**
-     * @param PGShopInterfacesProvisionersCheckout $checkoutProvisioner
-     * @return PGPaymentInterfacesEntitiesButtonInterface[]
-     * @throws PGClientExceptionsResponse
+     * @param CheckoutProvisionerInterface $checkoutProvisioner
+     * @return ButtonEntityInterface[]
+     * @throws ResponseException
      * @throws Exception
      */
-    public function getValidButtons(PGShopInterfacesProvisionersCheckout $checkoutProvisioner)
+    public function getValidButtons(CheckoutProvisionerInterface $checkoutProvisioner)
     {
-        /** @var PGPaymentInterfacesEntitiesButtonInterface[] $buttons */
+        /** @var ButtonEntityInterface[] $buttons */
         $buttons = $this->getAll();
 
-        /** @var PGPaymentInterfacesEntitiesButtonInterface[] $validButtons */
+        /** @var ButtonEntityInterface[] $validButtons */
         $validButtons = array();
 
-        /** @var PGPaymentInterfacesEntitiesButtonInterface $button */
+        /** @var ButtonEntityInterface $button */
         foreach ($buttons as $button) {
             $isValidAmount = $this->isValidAmount($button, $checkoutProvisioner->getTotalUserAmount());
             $isValidCurrency = $this->isValidCurrency($button, $checkoutProvisioner->getCurrency()->getCode());
@@ -135,8 +152,8 @@ class PGPaymentServicesManagersButtonManager extends PGDatabaseFoundationsManage
         }
 
         usort($validButtons, function (
-            PGPaymentInterfacesEntitiesButtonInterface $a,
-            PGPaymentInterfacesEntitiesButtonInterface $b
+            ButtonEntityInterface $a,
+            ButtonEntityInterface $b
         ) {
             if ($a->getPosition() === $b->getPosition()) {
                 return 0;
@@ -148,11 +165,11 @@ class PGPaymentServicesManagersButtonManager extends PGDatabaseFoundationsManage
     }
 
     /**
-     * @param PGPaymentInterfacesEntitiesButtonInterface $button
+     * @param ButtonEntityInterface $button
      * @param float $userAmount
      * @return bool
      */
-    public function isValidAmount(PGPaymentInterfacesEntitiesButtonInterface $button, $userAmount)
+    public function isValidAmount(ButtonEntityInterface $button, $userAmount)
     {
         /** @var bool $result */
         $result = true;
@@ -170,17 +187,17 @@ class PGPaymentServicesManagersButtonManager extends PGDatabaseFoundationsManage
     }
 
     /**
-     * @param PGPaymentInterfacesEntitiesButtonInterface $button
+     * @param ButtonEntityInterface $button
      * @param array $items
      * @return bool
      * @throws Exception
      */
-    public function hasEligibleProduct(PGPaymentInterfacesEntitiesButtonInterface $button, array $items)
+    public function hasEligibleProduct(ButtonEntityInterface $button, array $items)
     {
-        /** @var PGShopServicesManagersProduct $productManager */
+        /** @var ProductManager $productManager */
         $productManager = $this->getService('manager.product');
 
-        /** @var PGShopInterfacesEntitiesShopableItem $item */
+        /** @var ShopableItemEntityInterface $item */
         foreach ($items as $item) {
             $product = $item->getProduct();
 
@@ -195,22 +212,22 @@ class PGPaymentServicesManagersButtonManager extends PGDatabaseFoundationsManage
     }
 
     /**
-     * @param PGPaymentInterfacesEntitiesButtonInterface $button
+     * @param ButtonEntityInterface $button
      * @param array $items
      * @return bool
      * @throws Exception
      */
-    public function hasEligibleCategories(PGPaymentInterfacesEntitiesButtonInterface $button, array $items)
+    public function hasEligibleCategories(ButtonEntityInterface $button, array $items)
     {
         $filteringMode = $button->getFilteredCategoryMode();
 
         if ($filteringMode !== self::CATEGORY_FILTERING_MODE_NONE) {
-            /** @var PGShopServicesManagersCategory $categoryManager */
+            /** @var CategoryManager $categoryManager */
             $categoryManager = $this->getService('manager.category');
 
             $eligibleProducts = array();
 
-            /** @var PGShopInterfacesEntitiesShopableItem $item */
+            /** @var ShopableItemEntityInterface $item */
             foreach ($items as $item) {
                 $product = $item->getProduct();
 
@@ -245,17 +262,17 @@ class PGPaymentServicesManagersButtonManager extends PGDatabaseFoundationsManage
     }
 
     /**
-     * @param PGPaymentInterfacesEntitiesButtonInterface $button
+     * @param ButtonEntityInterface $button
      * @param bool $skipCompositeTests
      * @return array
-     * @throws PGClientExceptionsResponse
+     * @throws ResponseException
      */
-    public function check(PGPaymentInterfacesEntitiesButtonInterface $button, $skipCompositeTests = false)
+    public function check(ButtonEntityInterface $button, $skipCompositeTests = false)
     {
-        /** @var PGPaymentServicesPaygreenFacade $paygreenFacade */
+        /** @var PaygreenFacade $paygreenFacade */
         $paygreenFacade = $this->getService('paygreen.facade');
 
-        /** @var PGPaymentServicesManagersPaymentTypeManager $paymentTypeManager */
+        /** @var PaymentTypeManager $paymentTypeManager */
         $paymentTypeManager = $this->getService('manager.payment_type');
 
         $errors = array();
@@ -279,31 +296,31 @@ class PGPaymentServicesManagersButtonManager extends PGDatabaseFoundationsManage
         }
 
         if ($button->getPaymentNumber() > 1) {
-            if ($button->getPaymentMode() === PGPaymentData::MODE_CASH) {
+            if ($button->getPaymentMode() === Data::MODE_CASH) {
                 $errors[] = "errors.button.payment_number_with_cash";
-            } elseif ($button->getPaymentMode() == PGPaymentData::MODE_TOKENIZE) {
+            } elseif ($button->getPaymentMode() == Data::MODE_TOKENIZE) {
                 $errors[] = "errors.button.payment_number_with_tokenize";
             }
         } else {
-            if ($button->getPaymentMode() === PGPaymentData::MODE_XTIME) {
+            if ($button->getPaymentMode() === Data::MODE_XTIME) {
                 $errors[] = "errors.button.not_payment_number_with_xtime";
-            } elseif ($button->getPaymentMode() == PGPaymentData::MODE_RECURRING) {
+            } elseif ($button->getPaymentMode() == Data::MODE_RECURRING) {
                 $errors[] = "errors.button.not_payment_number_with_recurring";
             }
         }
 
         if ($button->getPaymentReport() > 0) {
-            if ($button->getPaymentMode() === PGPaymentData::MODE_CASH) {
+            if ($button->getPaymentMode() === Data::MODE_CASH) {
                 $errors[] = "errors.button.payment_report_with_cash";
-            } elseif ($button->getPaymentMode() === PGPaymentData::MODE_TOKENIZE) {
+            } elseif ($button->getPaymentMode() === Data::MODE_TOKENIZE) {
                 $errors[] = "errors.button.payment_report_with_tokenize";
-            } elseif ($button->getPaymentMode() === PGPaymentData::MODE_XTIME) {
+            } elseif ($button->getPaymentMode() === Data::MODE_XTIME) {
                 $errors[] = "errors.button.payment_report_with_xtime";
             }
         }
 
         if ($button->getFirstPaymentPart() !== 0) {
-            if ($button->getPaymentMode() === PGPaymentData::MODE_XTIME) {
+            if ($button->getPaymentMode() === Data::MODE_XTIME) {
                 if (($button->getFirstPaymentPart() <= 0) || ($button->getFirstPaymentPart() >= 100)) {
                     $errors[] = "errors.button.first_payment_part_range";
                 }
@@ -312,7 +329,7 @@ class PGPaymentServicesManagersButtonManager extends PGDatabaseFoundationsManage
             }
         }
 
-        if ($button->isOrderRepeated() && ($button->getPaymentMode() !== PGPaymentData::MODE_RECURRING)) {
+        if ($button->isOrderRepeated() && ($button->getPaymentMode() !== Data::MODE_RECURRING)) {
             $errors[] = "errors.button.order_repeated_without_recurring";
         }
 
@@ -328,10 +345,10 @@ class PGPaymentServicesManagersButtonManager extends PGDatabaseFoundationsManage
     }
 
     /**
-     * @param PGPaymentInterfacesEntitiesButtonInterface $button
+     * @param ButtonEntityInterface $button
      * @return array
      */
-    public function checkFilters(PGPaymentInterfacesEntitiesButtonInterface $button)
+    public function checkFilters(ButtonEntityInterface $button)
     {
         $errors = array();
 
@@ -354,16 +371,16 @@ class PGPaymentServicesManagersButtonManager extends PGDatabaseFoundationsManage
     }
 
     /**
-     * @param PGPaymentInterfacesEntitiesButtonInterface $button
+     * @param ButtonEntityInterface $button
      * @param string $currency
      * @return bool
      */
     public function isValidCurrency($button, $currency)
     {
-        /** @var PGPaymentServicesPaygreenFacade $paygreenFacade */
+        /** @var PaygreenFacade $paygreenFacade */
         $paygreenFacade = $this->getService('paygreen.facade');
 
-        /** @var PGModuleServicesLogger $logger */
+        /** @var Logger $logger */
         $logger = $this->getService('logger');
         
         $buttonPaymentType = $button->getPaymentType();

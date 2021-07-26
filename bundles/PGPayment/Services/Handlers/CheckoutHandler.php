@@ -15,64 +15,74 @@
  * @author    PayGreen <contact@paygreen.fr>
  * @copyright 2014 - 2021 Watt Is It
  * @license   https://opensource.org/licenses/mit-license.php MIT License X11
- * @version   2.1.1
+ * @version   2.2.0
  *
  */
 
+namespace PGI\Module\PGPayment\Services\Handlers;
+
+use PGI\Module\PGFramework\Services\Handlers\RequirementHandler;
+use PGI\Module\PGModule\Interfaces\ModuleFacadeInterface;
+use PGI\Module\PGModule\Services\Logger;
+use PGI\Module\PGPayment\Services\Facades\PaygreenFacade;
+use PGI\Module\PGPayment\Services\Managers\ButtonManager;
+use PGI\Module\PGShop\Interfaces\Provisioners\CheckoutProvisionerInterface;
+use PGI\Module\PGSystem\Foundations\AbstractObject;
+
 /**
- * Class PGPaymentServicesHandlersCheckoutHandler
+ * Class CheckoutHandler
  * @package PGPayment\Services\Handlers
  */
-class PGPaymentServicesHandlersCheckoutHandler extends PGSystemFoundationsObject
+class CheckoutHandler extends AbstractObject
 {
-    /** @var PGPaymentServicesManagersButtonManager */
+    /** @var ButtonManager */
     private $buttonManager;
 
-    /** @var PGPaymentServicesPaygreenFacade */
+    /** @var PaygreenFacade */
     private $paygreenFacade;
 
-    /** @var PGModuleInterfacesModuleFacade */
+    /** @var ModuleFacadeInterface */
     private $moduleFacade;
 
-    /** @var PGFrameworkServicesHandlersRequirementHandler */
+    /** @var RequirementHandler */
     private $requirementHandler;
 
-    /** @var PGModuleServicesLogger */
+    /** @var Logger */
     private $logger;
 
     public function __construct(
-        PGFrameworkServicesHandlersRequirementHandler $requirementHandler,
-        PGModuleServicesLogger $logger
+        RequirementHandler $requirementHandler,
+        Logger $logger
     ) {
         $this->requirementHandler = $requirementHandler;
         $this->logger = $logger;
     }
 
     /**
-     * @param PGPaymentServicesPaygreenFacade $paygreenFacade
+     * @param PaygreenFacade $paygreenFacade
      */
-    public function setPaygreenFacade(PGPaymentServicesPaygreenFacade $paygreenFacade)
+    public function setPaygreenFacade(PaygreenFacade $paygreenFacade)
     {
         $this->paygreenFacade = $paygreenFacade;
     }
 
     /**
-     * @param PGModuleInterfacesModuleFacade $moduleFacade
+     * @param ModuleFacadeInterface $moduleFacade
      */
-    public function setModuleFacade(PGModuleInterfacesModuleFacade $moduleFacade)
+    public function setModuleFacade(ModuleFacadeInterface $moduleFacade)
     {
         $this->moduleFacade = $moduleFacade;
     }
 
     /**
-     * @param PGPaymentServicesManagersButtonManager $buttonManager
+     * @param ButtonManager $buttonManager
      */
-    public function setButtonManager(PGPaymentServicesManagersButtonManager $buttonManager)
+    public function setButtonManager(ButtonManager $buttonManager)
     {
         $this->buttonManager = $buttonManager;
     }
 
-    public function isCheckoutAvailable(PGShopInterfacesProvisionersCheckout $checkoutProvisioner)
+    public function isCheckoutAvailable(CheckoutProvisionerInterface $checkoutProvisioner)
     {
         if (!$this->moduleFacade->isActive()) {
             $this->logger->warning("PayGreen module is deactivated for checkout.");
@@ -99,7 +109,7 @@ class PGPaymentServicesHandlersCheckoutHandler extends PGSystemFoundationsObject
         return true;
     }
 
-    public function hasValidButons(PGShopInterfacesProvisionersCheckout $checkoutProvisioner)
+    public function hasValidButons(CheckoutProvisionerInterface $checkoutProvisioner)
     {
         $buttons = $this->buttonManager->getValidButtons($checkoutProvisioner);
 

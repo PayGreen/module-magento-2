@@ -15,12 +15,17 @@
  * @author    PayGreen <contact@paygreen.fr>
  * @copyright 2014 - 2021 Watt Is It
  * @license   https://opensource.org/licenses/mit-license.php MIT License X11
- * @version   2.1.1
+ * @version   2.2.0
  *
  */
 
+namespace PGI\Module\PGMagento\Services\Repositories;
 
-class PGMagentoServicesRepositoriesProductRepository extends PGMagentoFoundationsAbstractMagentoRepository implements PGShopInterfacesRepositoriesProduct
+use PGI\Module\PGMagento\Entities\Product;
+use PGI\Module\PGMagento\Foundations\AbstractMagentoRepository;
+use PGI\Module\PGShop\Interfaces\Repositories\ProductRepositoryInterface;
+
+class ProductRepository extends AbstractMagentoRepository implements ProductRepositoryInterface
 {
     const ENTITY = 'Magento\Catalog\Model\Product';
     const RESOURCE = 'Magento\Catalog\Model\ResourceModel\Product';
@@ -35,6 +40,6 @@ class PGMagentoServicesRepositoriesProductRepository extends PGMagentoFoundation
 
     public function wrapEntity($localEntity)
     {
-        return new PGMagentoEntitiesProduct($localEntity);
+        return new Product($localEntity);
     }
 }

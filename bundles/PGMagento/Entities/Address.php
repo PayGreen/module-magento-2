@@ -15,20 +15,25 @@
  * @author    PayGreen <contact@paygreen.fr>
  * @copyright 2014 - 2021 Watt Is It
  * @license   https://opensource.org/licenses/mit-license.php MIT License X11
- * @version   2.1.1
+ * @version   2.2.0
  *
  */
 
-use Magento\Directory\Model\CountryFactory;
-use Magento\Sales\Api\Data\OrderAddressInterface;
+namespace PGI\Module\PGMagento\Entities;
+
+use Magento\Directory\Model\CountryFactory as LocalCountryFactory;
+use Magento\Sales\Api\Data\OrderAddressInterface as LocalOrderAddressInterface;
+use PGI\Module\PGDatabase\Foundations\AbstractEntityWrapped;
+use PGI\Module\PGShop\Interfaces\Entities\AddressEntityInterface;
+use PGI\Module\PGSystem\Services\Container;
 
 /**
- * Class PGMagentoEntitiesAddress
+ * Class Address
  *
  * @package PGMagento\Entities
- * @method OrderAddressInterface getLocalEntity()
+ * @method LocalOrderAddressInterface getLocalEntity()
  */
-class PGMagentoEntitiesAddress extends PGDatabaseFoundationsEntityWrapped implements PGShopInterfacesEntitiesAddress
+class Address extends AbstractEntityWrapped implements AddressEntityInterface
 {
     protected function hydrateFromLocalEntity($localEntity)
     {
@@ -47,9 +52,9 @@ class PGMagentoEntitiesAddress extends PGDatabaseFoundationsEntityWrapped implem
 
     public function getCountry()
     {
-        $objectManager = PGSystemServicesContainer::getInstance()->get('magento');
+        $objectManager = Container::getInstance()->get('magento');
 
-        /** @var CountryFactory $countryFactory */
+        /** @var LocalCountryFactory $countryFactory */
         $countryFactory = $objectManager->get('Magento\Directory\Model\CountryFactory');
 
         $countryId = $this->getLocalEntity()->getCountryId();

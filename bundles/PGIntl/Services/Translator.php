@@ -15,28 +15,43 @@
  * @author    PayGreen <contact@paygreen.fr>
  * @copyright 2014 - 2021 Watt Is It
  * @license   https://opensource.org/licenses/mit-license.php MIT License X11
- * @version   2.1.1
+ * @version   2.2.0
  *
  */
 
+namespace PGI\Module\PGIntl\Services;
+
+use PGI\Module\PGIntl\Components\Translation as TranslationComponent;
+use PGI\Module\PGIntl\Services\Handlers\CacheTranslationHandler;
+use PGI\Module\PGIntl\Services\Handlers\LocaleHandler;
+use PGI\Module\PGIntl\Services\Handlers\TranslationHandler;
+use PGI\Module\PGModule\Services\Logger;
+use PGI\Module\PGSystem\Components\Parser as ParserComponent;
+use PGI\Module\PGSystem\Exceptions\Configuration as ConfigurationException;
+use PGI\Module\PGSystem\Exceptions\ParserParameter as ParserParameterException;
+use PGI\Module\PGSystem\Foundations\AbstractObject;
+use PGI\Module\PGSystem\Services\Pathfinder;
+use PGI\Module\PGSystem\Tools\Collection as CollectionTool;
+use Exception;
+
 /**
- * Class PGIntlServicesTranslator
+ * Class Translator
  * @package PGIntl\Services
  */
-class PGIntlServicesTranslator extends PGSystemFoundationsObject
+class Translator extends AbstractObject
 {
     private $sources;
 
-    /** @var PGIntlServicesHandlersCacheTranslationHandler */
+    /** @var CacheTranslationHandler */
     private $cacheHandler;
 
-    /** @var PGIntlServicesHandlersLocaleHandler */
+    /** @var LocaleHandler */
     private $localeHandler;
 
-    /** @var PGSystemServicesPathfinder */
+    /** @var Pathfinder */
     private $pathfinder;
 
-    /** @var PGModuleServicesLogger */
+    /** @var Logger */
     private $logger;
 
     private $translations = array();
@@ -48,27 +63,27 @@ class PGIntlServicesTranslator extends PGSystemFoundationsObject
     const REGEX_TRANSLATION_KEY = "/^[0-9a-zA-Z_-]+(\.[0-9a-zA-Z_-]*)*$/";
 
     /**
-     * PGIntlServicesTranslator constructor.
-     * @param PGIntlServicesHandlersCacheTranslationHandler $cacheHandler
-     * @param PGSystemServicesPathfinder $pathfinder
-     * @param PGIntlServicesHandlersLocaleHandler $localeHandler
-     * @param PGModuleServicesLogger $logger
+     * Translator constructor.
+     * @param CacheTranslationHandler $cacheHandler
+     * @param Pathfinder $pathfinder
+     * @param LocaleHandler $localeHandler
+     * @param Logger $logger
      * @param array $config
-     * @throws PGSystemExceptionsConfiguration
+     * @throws ConfigurationException
      */
     public function __construct(
-        PGIntlServicesHandlersCacheTranslationHandler $cacheHandler,
-        PGSystemServicesPathfinder $pathfinder,
-        PGIntlServicesHandlersLocaleHandler $localeHandler,
-        PGModuleServicesLogger $logger,
+        CacheTranslationHandler $cacheHandler,
+        Pathfinder $pathfinder,
+        LocaleHandler $localeHandler,
+        Logger $logger,
         array $config
     ) {
         if (!array_key_exists('sources', $config)) {
             $message = "Translator configuration should contains 'sources' parameter.";
-            throw new PGSystemExceptionsConfiguration($message);
+            throw new ConfigurationException($message);
         } elseif (!is_array($config['sources'])) {
             $message = "Translator configuration 'sources' parameter should be an array.";
-            throw new PGSystemExceptionsConfiguration($message);
+            throw new ConfigurationException($message);
         }
 
         $this->cacheHandler = $cacheHandler;
@@ -146,7 +161,7 @@ class PGIntlServicesTranslator extends PGSystemFoundationsObject
         foreach ($data as $key => $val) {
             $basedKey = $base ? "$base.$key" : $key;
 
-            if (is_array($val) && !PGSystemToolsArray::isSequential($val)) {
+            if (is_array($val) && !CollectionTool::isSequential($val)) {
                 $this->flatenize($translations, $val, $basedKey);
             } else {
                 $translations[$basedKey] = $val;
@@ -155,7 +170,7 @@ class PGIntlServicesTranslator extends PGSystemFoundationsObject
     }
 
     /**
-     * @param string|PGIntlComponentsTranslation $translation
+     * @param string|TranslationComponent $translation
      * @param string|null $language
      * @return string
      * @throws Exception
@@ -167,10 +182,10 @@ class PGIntlServicesTranslator extends PGSystemFoundationsObject
 
         try {
             if (!is_object($translation)) {
-                $translation = new PGIntlComponentsTranslation($translation);
+                $translation = new TranslationComponent($translation);
             }
 
-            if (!($translation instanceof PGIntlComponentsTranslation)) {
+            if (!($translation instanceof TranslationComponent)) {
                 throw new Exception("Bad format for translation component.");
             }
 
@@ -192,10 +207,10 @@ class PGIntlServicesTranslator extends PGSystemFoundationsObject
     }
 
     /**
-     * @param PGIntlComponentsTranslation $translation
+     * @param TranslationComponent $translation
      * @return string
      */
-    protected function translate(PGIntlComponentsTranslation $translation)
+    protected function translate(TranslationComponent $translation)
     {
         if (preg_match(self::REGEX_TRANSLATION_KEY, $translation->getKey())) {
             $languages = array_unique(array(
@@ -217,9 +232,9 @@ class PGIntlServicesTranslator extends PGSystemFoundationsObject
                 $translatedText = "Missing translation";
             } elseif ($translation->hasData()) {
                 try {
-                    $parser = new PGSystemComponentsParser($translation->getData());
+                    $parser = new ParserComponent($translation->getData());
                     $translatedText = $parser->parseStringParameters($translatedText);
-                } catch (PGSystemExceptionsParserParameter $exception) {
+                } catch (ParserParameterException $exception) {
                     $this->logger->warning("Missing data for translation '{$translation->getKey()}'.", $exception);
                     $translatedText = "Invalid translation";
                 }
@@ -235,14 +250,14 @@ class PGIntlServicesTranslator extends PGSystemFoundationsObject
 
     protected function getCustomTranslation($key)
     {
-        /** @var PGIntlServicesHandlersTranslationHandler $translationHandler */
+        /** @var TranslationHandler $translationHandler */
         $translationHandler = $this->getService('handler.translation');
 
         return $translationHandler->translate($key);
     }
 
     /**
-     * @param string|PGIntlComponentsTranslation $translation
+     * @param string|TranslationComponent $translation
      * @param string|null $language
      * @return bool
      * @throws Exception
@@ -250,10 +265,10 @@ class PGIntlServicesTranslator extends PGSystemFoundationsObject
     public function has($translation, $language = null)
     {
         if (!is_object($translation)) {
-            $translation = new PGIntlComponentsTranslation($translation);
+            $translation = new TranslationComponent($translation);
         }
 
-        if (!($translation instanceof PGIntlComponentsTranslation)) {
+        if (!($translation instanceof TranslationComponent)) {
             throw new Exception("Bad format for translation component.");
         }
 

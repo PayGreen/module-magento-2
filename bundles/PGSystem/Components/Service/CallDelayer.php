@@ -15,30 +15,37 @@
  * @author    PayGreen <contact@paygreen.fr>
  * @copyright 2014 - 2021 Watt Is It
  * @license   https://opensource.org/licenses/mit-license.php MIT License X11
- * @version   2.1.1
+ * @version   2.2.0
  *
  */
 
+namespace PGI\Module\PGSystem\Components\Service;
+
+use PGI\Module\PGSystem\Components\Parser as ParserComponent;
+use PGI\Module\PGSystem\Services\Container;
+use Exception;
+use LogicException;
+
 /**
- * Class PGSystemComponentsServiceCallDelayer
+ * Class CallDelayer
  * @package PGSystem\Components\Service
  */
-class PGSystemComponentsServiceCallDelayer
+class CallDelayer
 {
-    /** @var PGSystemServicesContainer */
+    /** @var Container */
     private $container;
 
-    /** @var PGSystemComponentsParser */
+    /** @var ParserComponent */
     private $parser;
 
     private $delayedCalls = array();
 
     /**
-     * PGSystemComponentsServiceCallDelayer constructor.
-     * @param PGSystemServicesContainer $container
-     * @param PGSystemComponentsParser $parser
+     * CallDelayer constructor.
+     * @param Container $container
+     * @param ParserComponent $parser
      */
-    public function __construct(PGSystemServicesContainer $container, PGSystemComponentsParser $parser)
+    public function __construct(Container $container, ParserComponent $parser)
     {
         $this->container = $container;
         $this->parser = $parser;

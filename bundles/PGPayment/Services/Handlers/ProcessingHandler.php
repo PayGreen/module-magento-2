@@ -15,29 +15,39 @@
  * @author    PayGreen <contact@paygreen.fr>
  * @copyright 2014 - 2021 Watt Is It
  * @license   https://opensource.org/licenses/mit-license.php MIT License X11
- * @version   2.1.1
+ * @version   2.2.0
  *
  */
 
+namespace PGI\Module\PGPayment\Services\Handlers;
+
+use PGI\Module\APIPayment\Components\Replies\Transaction as TransactionReplyComponent;
+use PGI\Module\PGModule\Services\Logger;
+use PGI\Module\PGPayment\Components\Tasks\TransactionManagement as TransactionManagementTaskComponent;
+use PGI\Module\PGPayment\Interfaces\Entities\ProcessingEntityInterface;
+use PGI\Module\PGPayment\Services\Managers\ProcessingManager;
+use PGI\Module\PGShop\Services\Handlers\ShopHandler;
+use Exception;
+
 /**
- * Class PGPaymentServicesHandlersProcessingHandler
+ * Class ProcessingHandler
  * @package PGPayment\Services\Handlers
  */
-class PGPaymentServicesHandlersProcessingHandler
+class ProcessingHandler
 {
-    /** @var PGPaymentServicesManagersProcessingManager */
+    /** @var ProcessingManager */
     private $processingManager;
 
-    /** @var PGShopServicesHandlersShopHandler */
+    /** @var ShopHandler */
     private $shopHandler;
 
-    /** @var PGModuleServicesLogger */
+    /** @var Logger */
     private $logger;
 
     public function __construct(
-        PGPaymentServicesManagersProcessingManager $processingManager,
-        PGShopServicesHandlersShopHandler $shopHandler,
-        PGModuleServicesLogger $logger
+        ProcessingManager $processingManager,
+        ShopHandler $shopHandler,
+        Logger $logger
     ) {
         $this->processingManager = $processingManager;
         $this->shopHandler = $shopHandler;
@@ -45,15 +55,15 @@ class PGPaymentServicesHandlersProcessingHandler
     }
 
     /**
-     * @param APIPaymentComponentsRepliesTransaction $transaction
-     * @return PGPaymentInterfacesEntitiesProcessingInterface
+     * @param TransactionReplyComponent $transaction
+     * @return ProcessingEntityInterface
      * @throws Exception
      */
-    public function loadCachedProcessingResult(APIPaymentComponentsRepliesTransaction $transaction)
+    public function loadCachedProcessingResult(TransactionReplyComponent $transaction)
     {
         $reference = $this->getReference($transaction);
 
-        /** @var PGPaymentInterfacesEntitiesProcessingInterface $processing */
+        /** @var ProcessingEntityInterface $processing */
         $processing = $this->processingManager->getSuccessedProcessingByReference($reference);
 
         if ($processing !== null) {
@@ -64,11 +74,11 @@ class PGPaymentServicesHandlersProcessingHandler
     }
 
     /**
-     * @param PGPaymentComponentsTasksTransactionManagement $task
+     * @param TransactionManagementTaskComponent $task
      * @param bool $isSuccess
      * @throws Exception
      */
-    public function saveProcessing(PGPaymentComponentsTasksTransactionManagement $task, $isSuccess)
+    public function saveProcessing(TransactionManagementTaskComponent $task, $isSuccess)
     {
         $this->processingManager->create(
             $this->getReference($task->getTransaction()),
@@ -82,10 +92,10 @@ class PGPaymentServicesHandlersProcessingHandler
     }
 
     /**
-     * @param APIPaymentComponentsRepliesTransaction $transaction
+     * @param TransactionReplyComponent $transaction
      * @return string
      */
-    public function getReference(APIPaymentComponentsRepliesTransaction $transaction)
+    public function getReference(TransactionReplyComponent $transaction)
     {
         $pid = $transaction->getPid();
 

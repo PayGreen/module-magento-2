@@ -15,15 +15,17 @@
  * @author    PayGreen <contact@paygreen.fr>
  * @copyright 2014 - 2021 Watt Is It
  * @license   https://opensource.org/licenses/mit-license.php MIT License X11
- * @version   2.1.1
+ * @version   2.2.0
  *
  */
 
+namespace PGI\Module\PGFramework\Tools;
+
 /**
- * Class PGFrameworkToolsQuery
+ * Class Query
  * @package PGFramework\Tools
  */
-abstract class PGFrameworkToolsQuery
+abstract class Query
 {
     public static function addParameters($url, array $data)
     {

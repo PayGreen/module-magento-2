@@ -15,36 +15,43 @@
  * @author    PayGreen <contact@paygreen.fr>
  * @copyright 2014 - 2021 Watt Is It
  * @license   https://opensource.org/licenses/mit-license.php MIT License X11
- * @version   2.1.1
+ * @version   2.2.0
  *
  */
 
+namespace PGI\Module\PGIntl\Services\Listeners;
+
+use PGI\Module\PGIntl\Services\Handlers\TranslationHandler;
+use PGI\Module\PGModule\Components\Events\Module as ModuleEventComponent;
+use PGI\Module\PGShop\Interfaces\Entities\ShopEntityInterface;
+use PGI\Module\PGShop\Services\Managers\ShopManager;
+
 /**
- * Class PGIntlServicesListenersInsertDefaultTranslationsListener
+ * Class InsertDefaultTranslationsListener
  * @package PGIntl\Services\Listeners
  */
-class PGIntlServicesListenersInsertDefaultTranslationsListener
+class InsertDefaultTranslationsListener
 {
-    /** @var PGIntlServicesHandlersTranslationHandler */
+    /** @var TranslationHandler */
     private $translationHandler;
 
-    /** @var PGShopServicesManagersShop */
+    /** @var ShopManager */
     private $shopManager;
 
     public function __construct(
-        PGIntlServicesHandlersTranslationHandler $translationHandler,
-        PGShopServicesManagersShop $shopManager
+        TranslationHandler $translationHandler,
+        ShopManager $shopManager
     ) {
         $this->translationHandler = $translationHandler;
         $this->shopManager = $shopManager;
     }
 
-    public function listen(PGModuleComponentsEventsModule $event)
+    public function listen(ModuleEventComponent $event)
     {
         // Thrashing unused arguments
         $this->bin = $event;
 
-        /** @var PGShopInterfacesEntitiesShop $shop */
+        /** @var ShopEntityInterface $shop */
         foreach ($this->shopManager->getAll() as $shop) {
             $this->translationHandler->insertDefaultTranslations($shop);
         }

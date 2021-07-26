@@ -15,17 +15,24 @@
  * @author    PayGreen <contact@paygreen.fr>
  * @copyright 2014 - 2021 Watt Is It
  * @license   https://opensource.org/licenses/mit-license.php MIT License X11
- * @version   2.1.1
+ * @version   2.2.0
  *
  */
 
+namespace PGI\Module\PGModule\Entities;
+
+use PGI\Module\PGDatabase\Foundations\AbstractEntityPersisted;
+use PGI\Module\PGModule\Interfaces\Entities\SettingEntityInterface;
+use PGI\Module\PGShop\Interfaces\Entities\ShopEntityInterface;
+use PGI\Module\PGShop\Interfaces\Repositories\ShopRepositoryInterface;
+
 /**
- * Class PGModuleEntitiesSetting
+ * Class Setting
  * @package PGModule\Entities
  */
-class PGModuleEntitiesSetting extends PGDatabaseFoundationsEntityPersisted implements PGModuleInterfacesEntitiesSetting
+class Setting extends AbstractEntityPersisted implements SettingEntityInterface
 {
-    /** @var PGShopInterfacesEntitiesShop */
+    /** @var ShopEntityInterface */
     private $shop = null;
 
     public function getName()
@@ -46,7 +53,7 @@ class PGModuleEntitiesSetting extends PGDatabaseFoundationsEntityPersisted imple
     public function getShop()
     {
         if (($this->shop === null) && $this->getShopPrimary()) {
-            /** @var PGShopInterfacesRepositoriesShop $shopRepository */
+            /** @var ShopRepositoryInterface $shopRepository */
             $shopRepository = $this->getService('repository.shop');
 
             $this->shop = $shopRepository->findByPrimary($this->getShopPrimary());

@@ -15,29 +15,32 @@
  * @author    PayGreen <contact@paygreen.fr>
  * @copyright 2014 - 2021 Watt Is It
  * @license   https://opensource.org/licenses/mit-license.php MIT License X11
- * @version   2.1.1
+ * @version   2.2.0
  *
  */
 
-use Magento\Framework\App\ObjectManager;
-use Magento\Framework\Locale\Resolver;
-use Magento\User\Model\User;
+namespace PGI\Module\PGMagento\Services\Officers;
+
+use Magento\Framework\App\ObjectManager as LocalObjectManager;
+use Magento\Framework\Locale\Resolver as LocalResolver;
+use Magento\User\Model\User as LocalUser;
+use PGI\Module\PGIntl\Interfaces\Officers\LocaleOfficerInterface;
 
 /**
- * Class PGMagentoServicesOfficersLocaleOfficer
+ * Class LocaleOfficer
  * @package PGMagento\Services\Officers
  */
-class PGMagentoServicesOfficersLocaleOfficer implements PGIntlInterfacesLocaleOfficerInterface
+class LocaleOfficer implements LocaleOfficerInterface
 {
     const LOCAL_SEPARATOR = '_';
 
-    /** @var Resolver */
+    /** @var LocalResolver */
     private $localeResolver;
 
-    /** @var User */
+    /** @var LocalUser */
     private $adminUser;
 
-    public function __construct(ObjectManager $magento)
+    public function __construct(LocalObjectManager $magento)
     {
         $this->localeResolver = $magento->get('Magento\Framework\Locale\Resolver');
         $this->adminUser = $magento->get('Magento\Backend\Model\Auth\Session')->getUser();

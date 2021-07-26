@@ -15,27 +15,45 @@
  * @author    PayGreen <contact@paygreen.fr>
  * @copyright 2014 - 2021 Watt Is It
  * @license   https://opensource.org/licenses/mit-license.php MIT License X11
- * @version   2.1.1
+ * @version   2.2.0
  *
  */
 
+namespace PGI\Module\PGPayment\Services\Processors;
+
+use PGI\Module\APIPayment\Components\Replies\Transaction as TransactionReplyComponent;
+use PGI\Module\APIPayment\Services\Facades\ApiFacade;
+use PGI\Module\PGFramework\Foundations\AbstractProcessor;
+use PGI\Module\PGModule\Interfaces\ModuleFacadeInterface;
+use PGI\Module\PGModule\Services\Handlers\BehaviorHandler;
+use PGI\Module\PGModule\Services\Logger;
+use PGI\Module\PGPayment\Components\Tasks\PaymentValidation as PaymentValidationTaskComponent;
+use PGI\Module\PGPayment\Components\Tasks\TransactionManagement as TransactionManagementTaskComponent;
+use PGI\Module\PGPayment\Interfaces\Entities\ProcessingEntityInterface;
+use PGI\Module\PGPayment\Services\Facades\PaygreenFacade;
+use PGI\Module\PGPayment\Services\Handlers\ProcessingHandler;
+use PGI\Module\PGPayment\Services\Handlers\TestingPaymentHandler;
+use PGI\Module\PGPayment\Services\Managers\LockManager;
+use PGI\Module\PGShop\Interfaces\Officers\PostPaymentOfficerInterface;
+use Exception;
+
 /**
- * Class PGPaymentServicesProcessorsPaymentValidationProcessor
+ * Class PaymentValidationProcessor
  * @package PGPayment\Services\Processors
  */
-class PGPaymentServicesProcessorsPaymentValidationProcessor extends PGFrameworkFoundationsProcessor
+class PaymentValidationProcessor extends AbstractProcessor
 {
     const PROCESSOR_NAME = 'PaymentValidation';
 
     private static $USE_PARENT_PAYMENT_RECORD_BY_PAYMENT_MODE = array('CASH');
 
-    /** @var PGShopInterfacesOfficersPostPayment */
+    /** @var PostPaymentOfficerInterface */
     protected $postPaymentOfficer;
 
-    /** @var PGPaymentServicesHandlersProcessingHandler */
+    /** @var ProcessingHandler */
     protected $processingHandler;
 
-    public function __construct(PGPaymentServicesHandlersProcessingHandler $processingHandler)
+    public function __construct(ProcessingHandler $processingHandler)
     {
         $this->processingHandler = $processingHandler;
 
@@ -52,16 +70,16 @@ class PGPaymentServicesProcessorsPaymentValidationProcessor extends PGFrameworkF
     }
 
     /**
-     * @param PGShopInterfacesOfficersPostPayment $officer
+     * @param PostPaymentOfficerInterface $officer
      */
     public function setPostPaymentOfficer($officer)
     {
         $this->postPaymentOfficer = $officer;
     }
 
-    protected function verifyPIDValidityStep(PGPaymentComponentsTasksPaymentValidation $task)
+    protected function verifyPIDValidityStep(PaymentValidationTaskComponent $task)
     {
-        /** @var PGModuleServicesLogger $logger */
+        /** @var Logger $logger */
         $logger = $this->getService('logger');
 
         if (!$task->getPid()) {
@@ -70,12 +88,12 @@ class PGPaymentServicesProcessorsPaymentValidationProcessor extends PGFrameworkF
         }
     }
 
-    protected function verifyModuleActivationStep(PGPaymentComponentsTasksPaymentValidation $task)
+    protected function verifyModuleActivationStep(PaymentValidationTaskComponent $task)
     {
-        /** @var PGModuleServicesLogger $logger */
+        /** @var Logger $logger */
         $logger = $this->getService('logger');
 
-        /** @var PGModuleInterfacesModuleFacade $moduleFacade */
+        /** @var ModuleFacadeInterface $moduleFacade */
         $moduleFacade = $this->getService('facade.module');
 
         if (!$moduleFacade->isActive()) {
@@ -85,18 +103,18 @@ class PGPaymentServicesProcessorsPaymentValidationProcessor extends PGFrameworkF
     }
 
     /**
-     * @param PGPaymentComponentsTasksPaymentValidation $task
+     * @param PaymentValidationTaskComponent $task
      * @throws Exception
      */
-    protected function putLockStep(PGPaymentComponentsTasksPaymentValidation $task)
+    protected function putLockStep(PaymentValidationTaskComponent $task)
     {
-        /** @var PGModuleServicesLogger $logger */
+        /** @var Logger $logger */
         $logger = $this->getService('logger');
 
-        /** @var PGPaymentServicesManagersLockManager $lockManager */
+        /** @var LockManager $lockManager */
         $lockManager = $this->getService('manager.lock');
 
-        /** @var PGModuleServicesHandlersBehavior $behaviorHandler */
+        /** @var BehaviorHandler $behaviorHandler */
         $behaviorHandler = $this->getService('handler.behavior');
 
         $useTransactionLock = $behaviorHandler->get('use_transaction_lock');
@@ -109,18 +127,18 @@ class PGPaymentServicesProcessorsPaymentValidationProcessor extends PGFrameworkF
         }
     }
 
-    protected function paygreenCallStep(PGPaymentComponentsTasksPaymentValidation $task)
+    protected function paygreenCallStep(PaymentValidationTaskComponent $task)
     {
-        /** @var PGModuleServicesLogger $logger */
+        /** @var Logger $logger */
         $logger = $this->getService('logger');
 
-        /** @var APIPaymentServicesApiFacade $apiFacade */
+        /** @var ApiFacade $apiFacade */
         $apiFacade = $this->getService('paygreen.facade')->getApiFacade();
 
         try {
             $logger->debug("Call API server to get transaction data for PID {$task->getPid()}.");
 
-            /** @var APIPaymentComponentsRepliesTransaction $transaction */
+            /** @var TransactionReplyComponent $transaction */
             $transaction = $apiFacade->getTransactionInfo($task->getPid());
 
             $usePaymentRecord = in_array($transaction->getMode(), self::$USE_PARENT_PAYMENT_RECORD_BY_PAYMENT_MODE);
@@ -130,7 +148,7 @@ class PGPaymentServicesProcessorsPaymentValidationProcessor extends PGFrameworkF
                 $text .= " Call API server to get payment record data for PID {$transaction->getPaymentFolder()}.";
                 $logger->debug($text);
 
-                /** @var APIPaymentComponentsRepliesTransaction $transaction */
+                /** @var TransactionReplyComponent $transaction */
                 $transaction = $apiFacade->getTransactionInfo($transaction->getPaymentFolder());
             }
 
@@ -146,24 +164,24 @@ class PGPaymentServicesProcessorsPaymentValidationProcessor extends PGFrameworkF
         }
     }
 
-    protected function manageAbortedTransactionStep(PGPaymentComponentsTasksPaymentValidation $task)
+    protected function manageAbortedTransactionStep(PaymentValidationTaskComponent $task)
     {
-        /** @var PGModuleServicesLogger $logger */
+        /** @var Logger $logger */
         $logger = $this->getService('logger');
 
-        if ($task->getTransaction()->getResult()->getStatus() === PGPaymentServicesPaygreenFacade::STATUS_PENDING) {
+        if ($task->getTransaction()->getResult()->getStatus() === PaygreenFacade::STATUS_PENDING) {
             $logger->error('Transaction cancelled by user.');
             $task->setStatus($task::STATE_PAYMENT_ABORTED);
         }
     }
 
-    protected function loadTransactionProcessorCacheStep(PGPaymentComponentsTasksPaymentValidation $task)
+    protected function loadTransactionProcessorCacheStep(PaymentValidationTaskComponent $task)
     {
-        /** @var PGModuleServicesLogger $logger */
+        /** @var Logger $logger */
         $logger = $this->getService('logger');
 
         try {
-            /** @var PGPaymentInterfacesEntitiesProcessingInterface $processing */
+            /** @var ProcessingEntityInterface $processing */
             $processing = $this->processingHandler->loadCachedProcessingResult($task->getTransaction());
 
             if ($processing !== null) {
@@ -181,9 +199,9 @@ class PGPaymentServicesProcessorsPaymentValidationProcessor extends PGFrameworkF
         }
     }
 
-    protected function buildProvisionerStep(PGPaymentComponentsTasksPaymentValidation $task)
+    protected function buildProvisionerStep(PaymentValidationTaskComponent $task)
     {
-        /** @var PGModuleServicesLogger $logger */
+        /** @var Logger $logger */
         $logger = $this->getService('logger');
 
         try {
@@ -197,15 +215,15 @@ class PGPaymentServicesProcessorsPaymentValidationProcessor extends PGFrameworkF
     }
 
     /**
-     * @param PGPaymentComponentsTasksPaymentValidation $task
+     * @param PaymentValidationTaskComponent $task
      * @throws Exception
      */
-    protected function switchPaymentModeStep(PGPaymentComponentsTasksPaymentValidation $task)
+    protected function switchPaymentModeStep(PaymentValidationTaskComponent $task)
     {
-        /** @var PGPaymentComponentsTasksTransactionManagement $subTask */
-        $subTask = new PGPaymentComponentsTasksTransactionManagement($task->getProvisioner());
+        /** @var TransactionManagementTaskComponent $subTask */
+        $subTask = new TransactionManagementTaskComponent($task->getProvisioner());
 
-        /** @var PGFrameworkFoundationsProcessor|null $processor */
+        /** @var AbstractProcessor|null $processor */
         $processor = null;
 
         $paymentMode = $task->getTransaction()->getMode();
@@ -256,7 +274,7 @@ class PGPaymentServicesProcessorsPaymentValidationProcessor extends PGFrameworkF
             }
 
             if (PAYGREEN_ENV === 'DEV') {
-                /** @var PGPaymentServicesHandlersTestingPaymentHandler $testingPaymentHandler */
+                /** @var TestingPaymentHandler $testingPaymentHandler */
                 $testingPaymentHandler = $this->getService('handler.payment_testing');
 
                 $testingPaymentHandler->manageFakeOrder($task, $subTask);

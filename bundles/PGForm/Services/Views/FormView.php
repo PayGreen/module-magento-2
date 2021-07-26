@@ -15,23 +15,31 @@
  * @author    PayGreen <contact@paygreen.fr>
  * @copyright 2014 - 2021 Watt Is It
  * @license   https://opensource.org/licenses/mit-license.php MIT License X11
- * @version   2.1.1
+ * @version   2.2.0
  *
  */
 
+namespace PGI\Module\PGForm\Services\Views;
+
+use PGI\Module\PGForm\Components\Form as FormComponent;
+use PGI\Module\PGForm\Foundations\Fields\AbstractBasicField;
+use PGI\Module\PGForm\Interfaces\Views\FormViewInterface;
+use PGI\Module\PGView\Components\Box as BoxComponent;
+use PGI\Module\PGView\Services\View;
+
 /**
- * Class PGFormServicesViewsFormView
+ * Class FormView
  * @package PGForm\Services\Views
  */
-class PGFormServicesViewsFormView extends PGViewServicesView implements PGFormInterfacesFormViewInterface
+class FormView extends View implements FormViewInterface
 {
-    /** @var PGFormComponentsForm */
+    /** @var FormComponent */
     private $form;
 
     private $action;
 
     /**
-     * @return PGFormComponentsForm
+     * @return FormComponent
      */
     public function getForm()
     {
@@ -39,10 +47,10 @@ class PGFormServicesViewsFormView extends PGViewServicesView implements PGFormIn
     }
 
     /**
-     * @param PGFormComponentsForm $form
+     * @param FormComponent $form
      * @return self
      */
-    public function setForm(PGFormComponentsForm $form)
+    public function setForm(FormComponent $form)
     {
         $this->form = $form;
 
@@ -69,10 +77,10 @@ class PGFormServicesViewsFormView extends PGViewServicesView implements PGFormIn
 
         /**
          * @var string $key
-         * @var PGFormFoundationsAbstractField $field
+         * @var AbstractBasicField $field
          */
         foreach ($this->form->getFields() as $key => $field) {
-            $fieldViews[$key] = new PGViewComponentsBox($field->buildView());
+            $fieldViews[$key] = new BoxComponent($field->buildView());
         }
 
         $data['fields'] = $fieldViews;

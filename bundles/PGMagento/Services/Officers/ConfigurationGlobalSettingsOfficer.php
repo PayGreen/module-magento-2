@@ -15,26 +15,29 @@
  * @author    PayGreen <contact@paygreen.fr>
  * @copyright 2014 - 2021 Watt Is It
  * @license   https://opensource.org/licenses/mit-license.php MIT License X11
- * @version   2.1.1
+ * @version   2.2.0
  *
  */
 
-use Magento\Framework\App\ObjectManager;
-use Magento\Framework\App\Cache\Manager;
-use Magento\Framework\App\Config\ScopeConfigInterface;
-use Magento\Config\Model\ResourceModel\Config;
-use Magento\Framework\App\Cache\TypeListInterface;
+namespace PGI\Module\PGMagento\Services\Officers;
+
+use Magento\Framework\App\ObjectManager as LocalObjectManager;
+use Magento\Framework\App\Cache\Manager as LocalManager;
+use Magento\Framework\App\Config\ScopeConfigInterface as LocalScopeConfigInterface;
+use Magento\Config\Model\ResourceModel\Config as LocalConfig;
+use Magento\Framework\App\Cache\TypeListInterface as LocalTypeListInterface;
+use PGI\Module\PGModule\Interfaces\Officers\SettingsOfficerInterface;
 
 /**
- * Class PGMagentoServicesOfficersConfigurationGlobalSettingsOfficer
+ * Class ConfigurationGlobalSettingsOfficer
  * @package PGMagento\Services\Officers
  */
-class PGMagentoServicesOfficersConfigurationGlobalSettingsOfficer implements PGModuleInterfacesOfficersSettings
+class ConfigurationGlobalSettingsOfficer implements SettingsOfficerInterface
 {
-    /** @var ObjectManager */
+    /** @var LocalObjectManager */
     private $objectManager;
 
-    public function __construct(ObjectManager $magento)
+    public function __construct(LocalObjectManager $magento)
     {
         $this->objectManager = $magento;
     }
@@ -44,7 +47,7 @@ class PGMagentoServicesOfficersConfigurationGlobalSettingsOfficer implements PGM
      */
     public function getOption($name, $defaultValue)
     {
-        /** @var ScopeConfigInterface $scope */
+        /** @var LocalScopeConfigInterface $scope */
         $scope = $this->objectManager->get('Magento\Framework\App\Config\ScopeConfigInterface');
 
         $value = $scope->getValue("payment/paygreen/$name");
@@ -57,12 +60,12 @@ class PGMagentoServicesOfficersConfigurationGlobalSettingsOfficer implements PGM
      */
     public function setOption($name, $value)
     {
-        /** @var Config $config */
+        /** @var LocalConfig $config */
         $config = $this->objectManager->get('Magento\Config\Model\ResourceModel\Config');
 
         $config->saveConfig("payment/paygreen/$name", $value);
 
-        /** @var TypeListInterface $cleaner */
+        /** @var LocalTypeListInterface $cleaner */
         $cleaner = $this->objectManager->create('Magento\Framework\App\Cache\TypeListInterface');
 
         $cleaner->cleanType('config');
@@ -70,12 +73,12 @@ class PGMagentoServicesOfficersConfigurationGlobalSettingsOfficer implements PGM
 
     public function unsetOption($name)
     {
-        /** @var Config $config */
+        /** @var LocalConfig $config */
         $config = $this->objectManager->get('Magento\Config\Model\ResourceModel\Config');
 
         $config->deleteConfig("payment/paygreen/$name");
 
-        /** @var TypeListInterface $cleaner */
+        /** @var LocalTypeListInterface $cleaner */
         $cleaner = $this->objectManager->create('Magento\Framework\App\Cache\TypeListInterface');
 
         $cleaner->cleanType('config');
@@ -83,7 +86,7 @@ class PGMagentoServicesOfficersConfigurationGlobalSettingsOfficer implements PGM
 
     public function clean()
     {
-        /** @var Manager $cacheManager */
+        /** @var LocalManager $cacheManager */
         $cacheManager = $this->objectManager->get('Magento\Framework\App\Cache\Manager');
 
         $cacheManager->clean(array('config'));

@@ -15,15 +15,23 @@
  * @author    PayGreen <contact@paygreen.fr>
  * @copyright 2014 - 2021 Watt Is It
  * @license   https://opensource.org/licenses/mit-license.php MIT License X11
- * @version   2.1.1
+ * @version   2.2.0
  *
  */
 
+namespace PGI\Module\PGPayment\Services\Repositories;
+
+use PGI\Module\PGDatabase\Foundations\AbstractRepositoryDatabase;
+use PGI\Module\PGPayment\Interfaces\Entities\RecurringTransactionEntityInterface;
+use PGI\Module\PGPayment\Interfaces\Repositories\RecurringTransactionRepositoryInterface;
+use DateTime;
+use Exception;
+
 /**
- * Class PGPaymentServicesRepositoriesRecurringTransactionRepository
+ * Class RecurringTransactionRepository
  * @package PGPayment\Services\Repositories
  */
-class PGPaymentServicesRepositoriesRecurringTransactionRepository extends PGDatabaseFoundationsRepositoryDatabase implements PGPaymentInterfacesRepositoriesRecurringTransactionRepositoryInterface
+class RecurringTransactionRepository extends AbstractRepositoryDatabase implements RecurringTransactionRepositoryInterface
 {
     /**
      * @inheritdoc
@@ -31,7 +39,7 @@ class PGPaymentServicesRepositoriesRecurringTransactionRepository extends PGData
      */
     public function findByPid($pid)
     {
-        /** @var PGPaymentInterfacesEntitiesRecurringTransactionInterface $result */
+        /** @var RecurringTransactionEntityInterface $result */
         $result = $this->findOneEntity("`pid` = '$pid'");
 
         return $result;
@@ -65,7 +73,7 @@ class PGPaymentServicesRepositoriesRecurringTransactionRepository extends PGData
      * @inheritdoc
      * @throws Exception
      */
-    public function updateState(PGPaymentInterfacesEntitiesRecurringTransactionInterface $transaction, $stateOrderAfter)
+    public function updateState(RecurringTransactionEntityInterface $transaction, $stateOrderAfter)
     {
         $transaction->setStateOrderAfter($stateOrderAfter);
 

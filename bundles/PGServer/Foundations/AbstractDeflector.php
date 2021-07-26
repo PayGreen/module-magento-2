@@ -15,53 +15,67 @@
  * @author    PayGreen <contact@paygreen.fr>
  * @copyright 2014 - 2021 Watt Is It
  * @license   https://opensource.org/licenses/mit-license.php MIT License X11
- * @version   2.1.1
+ * @version   2.2.0
  *
  */
 
+namespace PGI\Module\PGServer\Foundations;
+
+use PGI\Module\PGFramework\Services\Notifier;
+use PGI\Module\PGModule\Services\Logger;
+use PGI\Module\PGServer\Components\Requests\Forward as ForwardRequestComponent;
+use PGI\Module\PGServer\Components\Responses\Forward as ForwardResponseComponent;
+use PGI\Module\PGServer\Components\Responses\HTTP as HTTPResponseComponent;
+use PGI\Module\PGServer\Components\Responses\Redirection as RedirectionResponseComponent;
+use PGI\Module\PGServer\Exceptions\HTTPUnauthorized as HTTPUnauthorizedException;
+use PGI\Module\PGServer\Foundations\AbstractRequest;
+use PGI\Module\PGServer\Interfaces\DeflectorInterface;
+use PGI\Module\PGServer\Services\Handlers\LinkHandler;
+use Exception;
+
 /**
- * Class PGServerFoundationsAbstractDeflector
+ * Class AbstractDeflector
  * @package PGServer\Foundations
  */
-abstract class PGServerFoundationsAbstractDeflector implements PGServerInterfacesDeflectorInterface
+abstract class AbstractDeflector implements DeflectorInterface
 {
-    /** @var PGFrameworkServicesNotifier */
+    /** @var Notifier */
     private $notifier;
 
-    /** @var PGModuleServicesLogger */
+    /** @var Logger */
     private $logger;
 
-    /** @var PGServerServicesHandlersLink */
+    /** @var LinkHandler */
     private $linkHandler;
 
-    /** @var PGServerFoundationsAbstractRequest */
+    /** @var AbstractRequest */
     private $request;
 
     /**
-     * @param PGServerServicesHandlersLink $linkHandler
+     * @param LinkHandler $linkHandler
      */
-    public function setLinkHandler(PGServerServicesHandlersLink $linkHandler)
+    public function setLinkHandler(LinkHandler $linkHandler)
     {
         $this->linkHandler = $linkHandler;
     }
 
     /**
-     * @param PGModuleServicesLogger $logger
+     * @param Logger $logger
      */
-    public function setLogger(PGModuleServicesLogger $logger)
+    public function setLogger(Logger $logger)
     {
         $this->logger = $logger;
     }
 
     /**
-     * @param PGFrameworkServicesNotifier $notifier
+     * @param Notifier $notifier
      */
-    public function setNotifier(PGFrameworkServicesNotifier $notifier)
+    public function setNotifier(Notifier $notifier)
     {
         $this->notifier = $notifier;
     }
 
-    public function process(PGServerFoundationsAbstractRequest $request)
+    public function process(AbstractRequest $request)
     {
         $this->request = $request;
 
@@ -69,12 +83,12 @@ abstract class PGServerFoundationsAbstractDeflector implements PGServerInterface
     }
 
     /**
-     * @return PGServerComponentsResponsesHTTPResponse
+     * @return HTTPResponseComponent
      */
     abstract protected function buildResponse();
 
     /**
-     * @return PGModuleServicesLogger
+     * @return Logger
      */
     protected function getLogger()
     {
@@ -82,7 +96,7 @@ abstract class PGServerFoundationsAbstractDeflector implements PGServerInterface
     }
 
     /**
-     * @return PGFrameworkServicesNotifier
+     * @return Notifier
      */
     protected function getNotifier()
     {
@@ -90,7 +104,7 @@ abstract class PGServerFoundationsAbstractDeflector implements PGServerInterface
     }
 
     /**
-     * @return PGServerServicesHandlersLink
+     * @return LinkHandler
      */
     protected function getLinkHandler()
     {
@@ -98,7 +112,7 @@ abstract class PGServerFoundationsAbstractDeflector implements PGServerInterface
     }
 
     /**
-     * @return PGServerFoundationsAbstractRequest
+     * @return AbstractRequest
      */
     protected function getRequest()
     {
@@ -107,43 +121,43 @@ abstract class PGServerFoundationsAbstractDeflector implements PGServerInterface
 
     protected function success($text)
     {
-        $this->notifier->add(PGFrameworkServicesNotifier::STATE_SUCCESS, $text);
+        $this->notifier->add(Notifier::STATE_SUCCESS, $text);
 
         $this->logger->notice("--SUCCESS--> $text");
     }
 
     protected function notice($text)
     {
-        $this->notifier->add(PGFrameworkServicesNotifier::STATE_NOTICE, $text);
+        $this->notifier->add(Notifier::STATE_NOTICE, $text);
 
         $this->logger->notice("--NOTICE--> $text");
     }
 
     protected function failure($text)
     {
-        $this->notifier->add(PGFrameworkServicesNotifier::STATE_FAILURE, $text);
+        $this->notifier->add(Notifier::STATE_FAILURE, $text);
 
         $this->logger->notice("--FAILURE--> $text");
     }
 
     /**
      * @param string|null $text
-     * @throws PGServerExceptionsHTTPUnauthorizedException
+     * @throws HTTPUnauthorizedException
      */
     protected function unauthorized($text = null)
     {
-        throw new PGServerExceptionsHTTPUnauthorizedException($text);
+        throw new HTTPUnauthorizedException($text);
     }
 
     /**
      * @param string $url
      * @param int|null $code
-     * @return PGServerComponentsResponsesRedirectionResponse
+     * @return RedirectionResponseComponent
      * @throws Exception
      */
     protected function redirect($url, $code = null)
     {
-        $response = new PGServerComponentsResponsesRedirectionResponse($this->getRequest());
+        $response = new RedirectionResponseComponent($this->getRequest());
 
         $response->setUrl($url);
 
@@ -158,14 +172,14 @@ abstract class PGServerFoundationsAbstractDeflector implements PGServerInterface
      * @param string $target
      * @param array $data
      * @param bool $transmitHeaders
-     * @return PGServerComponentsResponsesForwardResponse
+     * @return ForwardResponseComponent
      * @throws Exception
      */
     protected function forward($target, array $data = array(), $transmitHeaders = true)
     {
         $headers = $transmitHeaders ? $this->getRequest()->getAllHeaders() :  array();
-        $request = new PGServerComponentsRequestsForwardRequest($target, $data, $headers);
+        $request = new ForwardRequestComponent($target, $data, $headers);
 
-        return new PGServerComponentsResponsesForwardResponse($request);
+        return new ForwardResponseComponent($request);
     }
 }

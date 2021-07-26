@@ -15,40 +15,49 @@
  * @author    PayGreen <contact@paygreen.fr>
  * @copyright 2014 - 2021 Watt Is It
  * @license   https://opensource.org/licenses/mit-license.php MIT License X11
- * @version   2.1.1
+ * @version   2.2.0
  *
  */
 
+namespace PGI\Module\PGServer\Services;
+
+use PGI\Module\PGFramework\Components\Aggregator as AggregatorComponent;
+use PGI\Module\PGModule\Services\Logger;
+use PGI\Module\PGServer\Foundations\AbstractRequest;
+use PGI\Module\PGServer\Foundations\AbstractResponse;
+use PGI\Module\PGServer\Interfaces\DeflectorInterface;
+use Exception;
+
 /**
- * Class PGServerServicesDerouter
+ * Class Derouter
  * @package PGServer\Services
  */
-class PGServerServicesDerouter
+class Derouter
 {
-    /** @var PGFrameworkComponentsAggregator */
+    /** @var AggregatorComponent */
     private $deflectorAggregator;
 
-    /** @var PGModuleServicesLogger */
+    /** @var Logger */
     private $logger;
 
     public function __construct(
-        PGFrameworkComponentsAggregator $deflectorAggregator,
-        PGModuleServicesLogger $logger
+        AggregatorComponent $deflectorAggregator,
+        Logger $logger
     ) {
         $this->deflectorAggregator = $deflectorAggregator;
         $this->logger = $logger;
     }
 
     /**
-     * @param PGServerFoundationsAbstractRequest $request
+     * @param AbstractRequest $request
      * @param array $deflectorNames
-     * @return PGServerInterfacesDeflectorInterface|null
+     * @return DeflectorInterface|null
      */
-    public function getMatchingDeflector(PGServerFoundationsAbstractRequest $request, array $deflectorNames)
+    public function getMatchingDeflector(AbstractRequest $request, array $deflectorNames)
     {
         try {
             foreach ($deflectorNames as $deflectorName) {
-                /** @var PGServerInterfacesDeflectorInterface $deflector */
+                /** @var DeflectorInterface $deflector */
                 $deflector = $this->deflectorAggregator->getService($deflectorName);
 
                 if ($deflector->isMatching($request)) {
@@ -68,15 +77,15 @@ class PGServerServicesDerouter
     }
 
     /**
-     * @param PGServerFoundationsAbstractRequest $request
+     * @param AbstractRequest $request
      * @param array $deflectorNames
-     * @return PGServerFoundationsAbstractResponse
+     * @return AbstractResponse
      * @throws Exception
      */
-    public function preprocess(PGServerFoundationsAbstractRequest $request, array $deflectorNames)
+    public function preprocess(AbstractRequest $request, array $deflectorNames)
     {
         foreach ($deflectorNames as $deflectorName) {
-            /** @var PGServerInterfacesDeflectorInterface $deflector */
+            /** @var DeflectorInterface $deflector */
             $deflector = $this->deflectorAggregator->getService($deflectorName);
 
             $response = $deflector->process($request);

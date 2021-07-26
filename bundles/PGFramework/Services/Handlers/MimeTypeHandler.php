@@ -15,22 +15,26 @@
  * @author    PayGreen <contact@paygreen.fr>
  * @copyright 2014 - 2021 Watt Is It
  * @license   https://opensource.org/licenses/mit-license.php MIT License X11
- * @version   2.1.1
+ * @version   2.2.0
  *
  */
 
+namespace PGI\Module\PGFramework\Services\Handlers;
+
+use PGI\Module\PGModule\Services\Logger;
+
 /**
- * Class PGFrameworkServicesHandlersMimeTypeHandler
+ * Class MimeTypeHandler
  * @package PGFramework\Services\Handlers
  */
-class PGFrameworkServicesHandlersMimeTypeHandler
+class MimeTypeHandler
 {
     private $mime_types = array();
 
-    /** @var PGModuleServicesLogger */
+    /** @var Logger */
     private $logger;
 
-    public function __construct(PGModuleServicesLogger $logger, array $mime_types)
+    public function __construct(Logger $logger, array $mime_types)
     {
         $this->logger = $logger;
         $this->mime_types = $mime_types;

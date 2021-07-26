@@ -15,24 +15,31 @@
  * @author    PayGreen <contact@paygreen.fr>
  * @copyright 2014 - 2021 Watt Is It
  * @license   https://opensource.org/licenses/mit-license.php MIT License X11
- * @version   2.1.1
+ * @version   2.2.0
  *
  */
 
-class PGMagentoPaymentServicesListenersSetupDatabaseListener
+namespace PGI\Module\PGMagentoPayment\Services\Listeners;
+
+use PGI\Module\PGDatabase\Services\Handlers\DatabaseHandler;
+use PGI\Module\PGModule\Services\Logger;
+use Exception;
+use Paygreen;
+
+class SetupDatabaseListener
 {
-    /** @var PGDatabaseServicesDatabaseHandler */
+    /** @var DatabaseHandler */
     private $databaseHandler;
 
-    /** @var PGModuleServicesLogger */
+    /** @var Logger */
     private $logger;
 
     /**
-     * PGMagentoServicesListenersSetupDatabaseListener constructor.
-     * @param PGDatabaseServicesDatabaseHandler $databaseHandler
-     * @param PGModuleServicesLogger $logger
+     * SetupDatabaseListener constructor.
+     * @param DatabaseHandler $databaseHandler
+     * @param Logger $logger
      */
-    public function __construct(PGDatabaseServicesDatabaseHandler $databaseHandler, PGModuleServicesLogger $logger)
+    public function __construct(DatabaseHandler $databaseHandler, Logger $logger)
     {
         $this->databaseHandler = $databaseHandler;
         $this->logger = $logger;

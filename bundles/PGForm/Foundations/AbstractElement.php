@@ -15,21 +15,27 @@
  * @author    PayGreen <contact@paygreen.fr>
  * @copyright 2014 - 2021 Watt Is It
  * @license   https://opensource.org/licenses/mit-license.php MIT License X11
- * @version   2.1.1
+ * @version   2.2.0
  *
  */
 
+namespace PGI\Module\PGForm\Foundations;
+
+use PGI\Module\PGFramework\Components\Aggregator as AggregatorComponent;
+use PGI\Module\PGView\Interfaces\ViewInterface;
+use Exception;
+
 /**
- * Class PGFormFoundationsAbstractElement
+ * Class AbstractElement
  * @package PGForm\Foundations
  */
-abstract class PGFormFoundationsAbstractElement
+abstract class AbstractElement
 {
     private $name;
 
     private $config = array();
 
-    /** @var PGFrameworkComponentsAggregator */
+    /** @var AggregatorComponent */
     private $viewAggregator;
 
     public function __construct($name, array $config = array())
@@ -39,7 +45,7 @@ abstract class PGFormFoundationsAbstractElement
     }
 
     /**
-     * @param PGFrameworkComponentsAggregator $viewAggregator
+     * @param AggregatorComponent $viewAggregator
      */
     public function setViewAggregator($viewAggregator)
     {
@@ -85,7 +91,7 @@ abstract class PGFormFoundationsAbstractElement
     }
 
     /**
-     * @return PGViewInterfacesViewInterface
+     * @return ViewInterface
      * @throws Exception
      */
     public function buildView()
@@ -96,7 +102,7 @@ abstract class PGFormFoundationsAbstractElement
             throw new Exception("Unable to retrieve view name for current form element : '{$this->getName()}'.");
         }
 
-        /** @var PGViewInterfacesViewInterface $view */
+        /** @var ViewInterface $view */
         $view = $this->viewAggregator->getService($viewConfig['name']);
 
         if (array_key_exists('data', $viewConfig)) {

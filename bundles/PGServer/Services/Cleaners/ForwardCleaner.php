@@ -15,15 +15,23 @@
  * @author    PayGreen <contact@paygreen.fr>
  * @copyright 2014 - 2021 Watt Is It
  * @license   https://opensource.org/licenses/mit-license.php MIT License X11
- * @version   2.1.1
+ * @version   2.2.0
  *
  */
 
+namespace PGI\Module\PGServer\Services\Cleaners;
+
+use PGI\Module\PGServer\Components\Requests\Forward as ForwardRequestComponent;
+use PGI\Module\PGServer\Components\Responses\Forward as ForwardResponseComponent;
+use PGI\Module\PGServer\Foundations\AbstractRequest;
+use PGI\Module\PGServer\Interfaces\CleanerInterface;
+use Exception;
+
 /**
- * Class PGServerServicesCleanersForwardCleaner
+ * Class ForwardCleaner
  * @package PGServer\Services\Cleaners
  */
-class PGServerServicesCleanersForwardCleaner implements PGServerInterfacesCleanerInterface
+class ForwardCleaner implements CleanerInterface
 {
     const FORWARD_RESPONSE_LIMIT = 3;
 
@@ -31,7 +39,7 @@ class PGServerServicesCleanersForwardCleaner implements PGServerInterfacesCleane
 
     private $data = array();
 
-    /** @var PGServerComponentsResponsesForwardResponse[] */
+    /** @var ForwardResponseComponent[] */
     private $forwardResponses = array();
 
     public function __construct($target)
@@ -55,7 +63,7 @@ class PGServerServicesCleanersForwardCleaner implements PGServerInterfacesCleane
      * @inheritDoc
      * @throws Exception
      */
-    public function processError(PGServerFoundationsAbstractRequest $request, Exception $exception)
+    public function processError(AbstractRequest $request, Exception $exception)
     {
         if (count($this->forwardResponses) >= self::FORWARD_RESPONSE_LIMIT) {
             throw $exception;
@@ -66,9 +74,9 @@ class PGServerServicesCleanersForwardCleaner implements PGServerInterfacesCleane
             'exception' => $exception
         ), $this->data);
 
-        $subRequest = new PGServerComponentsRequestsForwardRequest($this->target, $data);
+        $subRequest = new ForwardRequestComponent($this->target, $data);
         
-        $this->forwardResponses[] = new PGServerComponentsResponsesForwardResponse($subRequest);
+        $this->forwardResponses[] = new ForwardResponseComponent($subRequest);
 
         return end($this->forwardResponses);
     }

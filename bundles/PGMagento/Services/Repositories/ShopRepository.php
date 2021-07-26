@@ -15,21 +15,27 @@
  * @author    PayGreen <contact@paygreen.fr>
  * @copyright 2014 - 2021 Watt Is It
  * @license   https://opensource.org/licenses/mit-license.php MIT License X11
- * @version   2.1.1
+ * @version   2.2.0
  *
  */
 
-use Magento\Store\Model\StoreManagerInterface;
-use Magento\Store\Model\Store;
-use Magento\Store\Model\ResourceModel\Group\Collection;
+namespace PGI\Module\PGMagento\Services\Repositories;
+
+use Magento\Store\Model\StoreManagerInterface as LocalStoreManagerInterface;
+use Magento\Store\Model\Store as LocalStore;
+use Magento\Store\Model\ResourceModel\Group\Collection as LocalCollection;
+use PGI\Module\PGMagento\Entities\Shop;
+use PGI\Module\PGMagento\Foundations\AbstractMagentoRepository;
+use PGI\Module\PGShop\Interfaces\Repositories\ShopRepositoryInterface;
+use Exception;
 
 /**
- * Class PGMagentoServicesRepositoriesShopRepository
+ * Class ShopRepository
  * @package PGMagento\Services\Repositories
  *
- * @method PGMagentoEntitiesShop createWrappedEntity(array $data = array())
+ * @method Shop createWrappedEntity(array $data = array())
  */
-class PGMagentoServicesRepositoriesShopRepository extends PGMagentoFoundationsAbstractMagentoRepository implements PGShopInterfacesRepositoriesShop
+class ShopRepository extends AbstractMagentoRepository implements ShopRepositoryInterface
 {
     const ENTITY = 'Magento\Store\Model\Group';
     const RESOURCE = 'Magento\Store\Model\ResourceModel\Group';
@@ -42,7 +48,7 @@ class PGMagentoServicesRepositoriesShopRepository extends PGMagentoFoundationsAb
             throw new Exception("Shop entity can't be created with empty local entity.");
         }
 
-        return new PGMagentoEntitiesShop($localEntity);
+        return new Shop($localEntity);
     }
 
     /**
@@ -51,10 +57,10 @@ class PGMagentoServicesRepositoriesShopRepository extends PGMagentoFoundationsAb
      */
     public function findCurrent()
     {
-        /** @var StoreManagerInterface $storeManager */
+        /** @var LocalStoreManagerInterface $storeManager */
         $storeManager = $this->getService('magento')->get('Magento\Store\Model\StoreManagerInterface');
 
-        /** @var Store $localStore */
+        /** @var LocalStore $localStore */
         $localStore = $storeManager->getStore();
 
         return $this->wrapEntity($localStore->getGroup());
@@ -62,7 +68,7 @@ class PGMagentoServicesRepositoriesShopRepository extends PGMagentoFoundationsAb
 
     public function findAll()
     {
-        /** @var Collection $collection */
+        /** @var LocalCollection $collection */
         $collection = $this->getService('magento')->create('Magento\Store\Model\ResourceModel\Group\Collection');
 
         return $this->wrapEntities($collection);

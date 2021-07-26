@@ -15,22 +15,27 @@
  * @author    PayGreen <contact@paygreen.fr>
  * @copyright 2014 - 2021 Watt Is It
  * @license   https://opensource.org/licenses/mit-license.php MIT License X11
- * @version   2.1.1
+ * @version   2.2.0
  *
  */
 
+namespace PGI\Module\PGFramework\Services\Handlers;
+
+use PGI\Module\PGFramework\Interfaces\Handlers\SessionHandlerInterface;
+use PGI\Module\PGFramework\Interfaces\SuperglobalInterface;
+
 /**
- * Class PGFrameworkServicesHandlersSessionHandler
+ * Class SessionHandler
  * @package PGFramework\Services\Handlers
  */
-class PGFrameworkServicesHandlersSessionHandler implements PGFrameworkInterfacesHandlersSessionHandlerInterface
+class SessionHandler implements SessionHandlerInterface
 {
-    /** @var PGFrameworkInterfacesSuperglobal */
+    /** @var SuperglobalInterface */
     protected $sessionAdapter;
 
     private $bin;
 
-    public function __construct(PGFrameworkInterfacesSuperglobal $sessionAdapter)
+    public function __construct(SuperglobalInterface $sessionAdapter)
     {
         $this->sessionAdapter = $sessionAdapter;
     }

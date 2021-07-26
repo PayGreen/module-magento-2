@@ -15,17 +15,25 @@
  * @author    PayGreen <contact@paygreen.fr>
  * @copyright 2014 - 2021 Watt Is It
  * @license   https://opensource.org/licenses/mit-license.php MIT License X11
- * @version   2.1.1
+ * @version   2.2.0
  *
  */
 
+namespace PGI\Module\PGPayment\Entities;
+
+use PGI\Module\PGDatabase\Foundations\AbstractEntityPersisted;
+use PGI\Module\PGPayment\Interfaces\Entities\RecurringTransactionEntityInterface;
+use PGI\Module\PGShop\Interfaces\Entities\OrderEntityInterface;
+use PGI\Module\PGShop\Services\Managers\OrderManager;
+use DateTime;
+
 /**
- * Class PGPaymentEntitiesRecurringTransaction
+ * Class RecurringTransaction
  * @package PGPayment\Entities
  */
-class PGPaymentEntitiesRecurringTransaction extends PGDatabaseFoundationsEntityPersisted implements PGPaymentInterfacesEntitiesRecurringTransactionInterface
+class RecurringTransaction extends AbstractEntityPersisted implements RecurringTransactionEntityInterface
 {
-    /** @var PGShopInterfacesEntitiesOrder */
+    /** @var OrderEntityInterface */
     private $order = null;
 
     /**
@@ -87,7 +95,7 @@ class PGPaymentEntitiesRecurringTransaction extends PGDatabaseFoundationsEntityP
 
     protected function loadOrder()
     {
-        /** @var PGShopServicesManagersOrder $orderManager */
+        /** @var OrderManager $orderManager */
         $orderManager = $this->getService('manager.order');
 
         $id_order = $this->getOrderPrimary();

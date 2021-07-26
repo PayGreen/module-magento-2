@@ -15,17 +15,23 @@
  * @author    PayGreen <contact@paygreen.fr>
  * @copyright 2014 - 2021 Watt Is It
  * @license   https://opensource.org/licenses/mit-license.php MIT License X11
- * @version   2.1.1
+ * @version   2.2.0
  *
  */
 
+namespace PGI\Module\PGSystem\Components;
+
+use PGI\Module\PGSystem\Components\Bundle as BundleComponent;
+use PGI\Module\PGSystem\Interfaces\BundleInterface;
+use Exception;
+
 /**
- * Class PGSystemComponentsKernel
+ * Class Kernel
  * @package PGSystem\Components
  */
-class PGSystemComponentsKernel
+class Kernel
 {
-    const VERSION = '3.4.5';
+    const VERSION = '3.5.1';
 
     private $bundles = array();
 
@@ -48,7 +54,7 @@ class PGSystemComponentsKernel
 
     /**
      * @param string $bundleName
-     * @return PGSystemComponentsBundle
+     * @return BundleComponent
      * @throws Exception
      */
     public function getBundle($bundleName)
@@ -77,10 +83,10 @@ class PGSystemComponentsKernel
     }
 
     /**
-     * @param PGSystemInterfacesBundle $bundle
+     * @param BundleInterface $bundle
      * @throws Exception
      */
-    public function addBundle(PGSystemInterfacesBundle $bundle)
+    public function addBundle(BundleInterface $bundle)
     {
         if ($this->hasBundle($bundle->getName())) {
             throw new Exception("Bundle already registered : '{$bundle->getName()}'.");

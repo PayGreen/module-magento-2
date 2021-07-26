@@ -15,22 +15,37 @@
  * @author    PayGreen <contact@paygreen.fr>
  * @copyright 2014 - 2021 Watt Is It
  * @license   https://opensource.org/licenses/mit-license.php MIT License X11
- * @version   2.1.1
+ * @version   2.2.0
  *
  */
 
+namespace PGI\Module\PGPayment\Services\Handlers;
+
+use PGI\Module\APIPayment\Components\Response as ResponseComponent;
+use PGI\Module\APIPayment\Exceptions\Payment as PaymentException;
+use PGI\Module\PGClient\Exceptions\Response as ResponseException;
+use PGI\Module\PGPayment\Data;
+use PGI\Module\PGPayment\Interfaces\Entities\ButtonEntityInterface;
+use PGI\Module\PGPayment\Services\Facades\PaygreenFacade;
+use PGI\Module\PGPayment\Services\ResponsabilityChains\PaymentCreationResponsabilityChain;
+use PGI\Module\PGServer\Services\Handlers\LinkHandler;
+use PGI\Module\PGShop\Interfaces\Provisioners\PrePaymentProvisionerInterface;
+use PGI\Module\PGSystem\Components\Bag as BagComponent;
+use PGI\Module\PGSystem\Foundations\AbstractObject;
+use Exception;
+
 /**
- * Class PGPaymentServicesHandlersPaymentCreationHandler
+ * Class PaymentCreationHandler
  * @package PGPayment\Services\Handlers
  */
-class PGPaymentServicesHandlersPaymentCreationHandler extends PGSystemFoundationsObject
+class PaymentCreationHandler extends AbstractObject
 {
-    /** @var PGSystemComponentsBag */
+    /** @var BagComponent */
     private $config;
 
     public function __construct(array $config)
     {
-        $this->config = new PGSystemComponentsBag($config);
+        $this->config = new BagComponent($config);
     }
 
     public function getTarget($name)
@@ -44,7 +59,7 @@ class PGPaymentServicesHandlersPaymentCreationHandler extends PGSystemFoundation
      */
     public function buildCustomerEntrypointURL()
     {
-        /** @var PGServerServicesHandlersLink $linkHandler */
+        /** @var LinkHandler $linkHandler */
         $linkHandler = $this->getService('handler.link');
 
         $customerEntrypoint = $this->config['entrypoints.customer'];
@@ -58,7 +73,7 @@ class PGPaymentServicesHandlersPaymentCreationHandler extends PGSystemFoundation
      */
     public function buildIPNEntrypointURL()
     {
-        /** @var PGServerServicesHandlersLink $linkHandler */
+        /** @var LinkHandler $linkHandler */
         $linkHandler = $this->getService('handler.link');
 
         $ipnEntrypoint = $this->config['entrypoints.ipn'];
@@ -67,18 +82,18 @@ class PGPaymentServicesHandlersPaymentCreationHandler extends PGSystemFoundation
     }
 
     /**
-     * @param PGPaymentInterfacesEntitiesButtonInterface $button
+     * @param ButtonEntityInterface $button
      * @return string
-     * @throws APIPaymentExceptionsPayment
-     * @throws PGClientExceptionsResponse
+     * @throws PaymentException
+     * @throws ResponseException
      * @throws Exception
      */
-    public function buildPayment(PGPaymentInterfacesEntitiesButtonInterface $button)
+    public function buildPayment(ButtonEntityInterface $button)
     {
-        /** @var PGShopInterfacesProvisionersPrePayment $prePaymentProvisioner */
+        /** @var PrePaymentProvisionerInterface $prePaymentProvisioner */
         $prePaymentProvisioner = $this->getService('provisioner.pre_payment');
 
-        /** @var APIPaymentComponentsResponse $response */
+        /** @var ResponseComponent $response */
         $response = $this->createPayment($prePaymentProvisioner, $button);
 
         if (!$response->isSuccess()) {
@@ -89,49 +104,49 @@ class PGPaymentServicesHandlersPaymentCreationHandler extends PGSystemFoundation
     }
 
     /**
-     * @param PGShopInterfacesProvisionersPrePayment $prePaymentProvisioner
-     * @param PGPaymentInterfacesEntitiesButtonInterface $button
+     * @param PrePaymentProvisionerInterface $prePaymentProvisioner
+     * @param ButtonEntityInterface $button
      * @param array $urls
-     * @return APIPaymentComponentsResponse
-     * @throws APIPaymentExceptionsPayment
-     * @throws PGClientExceptionsResponse
+     * @return ResponseComponent
+     * @throws PaymentException
+     * @throws ResponseException
      * @throws Exception
      */
     public function createPayment(
-        PGShopInterfacesProvisionersPrePayment $prePaymentProvisioner,
-        PGPaymentInterfacesEntitiesButtonInterface $button
+        PrePaymentProvisionerInterface $prePaymentProvisioner,
+        ButtonEntityInterface $button
     ) {
-        /** @var PGPaymentServicesPaygreenFacade $paygreenFacade */
+        /** @var PaygreenFacade $paygreenFacade */
         $paygreenFacade = $this->getService('paygreen.facade');
 
-        /** @var PGPaymentServicesResponsabilityChainsPaymentCreation $paymentCreationResponsabilityChain */
+        /** @var PaymentCreationResponsabilityChain $paymentCreationResponsabilityChain */
         $paymentCreationResponsabilityChain = $this->getService('responsability_chain.payment_creation');
 
         $data = $paymentCreationResponsabilityChain->buildPaymentCreationData($button, $prePaymentProvisioner);
 
-        /** @var APIPaymentComponentsResponse|null $response */
+        /** @var ResponseComponent|null $response */
         $response = null;
 
         switch ($button->getPaymentMode()) {
-            case PGPaymentData::MODE_CASH:
+            case Data::MODE_CASH:
                 $response = $paygreenFacade->getApiFacade()->createCash($data);
                 break;
 
-            case PGPaymentData::MODE_RECURRING:
+            case Data::MODE_RECURRING:
                 $response = $paygreenFacade->getApiFacade()->createSubscription($data);
                 break;
 
-            case PGPaymentData::MODE_XTIME:
+            case Data::MODE_XTIME:
                 $response = $paygreenFacade->getApiFacade()->createXTime($data);
                 break;
 
-            case PGPaymentData::MODE_TOKENIZE:
+            case Data::MODE_TOKENIZE:
                 $response = $paygreenFacade->getApiFacade()->createTokenize($data);
                 break;
 
             default:
                 $message = "Unknown payment mode: '{$button->getPaymentMode()}'.";
-                throw new APIPaymentExceptionsPayment($message);
+                throw new PaymentException($message);
         }
 
         return $response;

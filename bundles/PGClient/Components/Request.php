@@ -15,15 +15,19 @@
  * @author    PayGreen <contact@paygreen.fr>
  * @copyright 2014 - 2021 Watt Is It
  * @license   https://opensource.org/licenses/mit-license.php MIT License X11
- * @version   2.1.1
+ * @version   2.2.0
  *
  */
 
+namespace PGI\Module\PGClient\Components;
+
+use LogicException;
+
 /**
- * Class PGClientComponentsRequest
+ * Class Request
  * @package PGClient\Components
  */
-class PGClientComponentsRequest
+class Request
 {
     /** @var string Name of the request. */
     private $name;
@@ -54,7 +58,7 @@ class PGClientComponentsRequest
 
     /**
      * @param array $parameters
-     * @return PGClientComponentsRequest
+     * @return Request
      */
     public function setParameters(array $parameters)
     {
@@ -65,7 +69,7 @@ class PGClientComponentsRequest
 
     /**
      * @param array $headers
-     * @return PGClientComponentsRequest
+     * @return Request
      */
     public function setHeaders(array $headers)
     {
@@ -76,7 +80,7 @@ class PGClientComponentsRequest
 
     /**
      * @param array $headers
-     * @return PGClientComponentsRequest
+     * @return Request
      */
     public function addHeaders(array $headers)
     {
@@ -87,7 +91,7 @@ class PGClientComponentsRequest
 
     /**
      * @param string $method
-     * @return PGClientComponentsRequest
+     * @return Request
      */
     public function setMethod($method)
     {
@@ -183,7 +187,7 @@ class PGClientComponentsRequest
     }
 
     /**
-     * @return PGClientComponentsRequest
+     * @return Request
      */
     public function markAsSent()
     {

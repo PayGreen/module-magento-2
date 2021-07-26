@@ -7,11 +7,33 @@
           "preview": "Aperçu de votre bouton",
           "previewImageAlt": "Image de votre bouton"
         },
-        "payment": {
-          "title": "Type de paiement"
+        "payment_type": {
+          "title": "Type de paiement",
+          "TRD": [
+            "Pour ce moyen de paiement, il faut configurer les montants élligibles ainsi qu’indiquer les frais de ports qui peuvent être exclus ou pas dans la page Moyens de paiement.",
+            "Le moyen de paiement ne sera pas utilisable si aucun produit de la commande n’est élligible.",
+            "En cas de plafond dépassé ou si la commande produit contient des produits non élligibles, un complément en CB sera demandé."
+          ],
+          "LUNCHR": [
+            "Pour ce moyen de paiement, il faut configurer les montants élligibles ainsi qu’indiquer les frais de ports qui peuvent être exclus ou pas dans la page Moyens de paiement.",
+            "Le moyen de paiement ne sera pas utilisable si aucun produit de la commande n’est élligible.",
+            "En cas de plafond dépassé ou si la commande produit contient des produits non élligibles, un complément en CB sera demandé."
+          ],
+          "CB" : [],
+          "CBTRD": [
+            "Pour ce moyen de paiement, il faut configurer les montants élligibles ainsi qu’indiquer les frais de ports qui peuvent être exclus ou pas dans la page Moyens de paiement.",
+            "Le moyen de paiement ne sera pas utilisable si aucun produit de la commande n’est élligible.",
+            "En cas de plafond dépassé ou si la commande produit contient des produits non élligibles, un complément en CB sera demandé."
+          ],
+          "AMEX" : [],
+          "RESTOFLASH": [
+            "Pour ce moyen de paiement, il faut configurer les montants élligibles ainsi qu’indiquer les frais de ports qui peuvent être exclus ou pas dans la page Moyens de paiement.",
+            "Le moyen de paiement ne sera pas utilisable si aucun produit de la commande n’est élligible.",
+            "En cas de plafond dépassé ou si la commande produit contient des produits non élligibles, un complément en CB sera demandé."
+          ]
         },
-        "other": {
-          "title": "Autres réglages"
+        "payment_mode": {
+          "title": "Mode de paiement"
         }
       }
     }

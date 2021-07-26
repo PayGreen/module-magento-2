@@ -15,20 +15,28 @@
  * @author    PayGreen <contact@paygreen.fr>
  * @copyright 2014 - 2021 Watt Is It
  * @license   https://opensource.org/licenses/mit-license.php MIT License X11
- * @version   2.1.1
+ * @version   2.2.0
  *
  */
 
+namespace PGI\Module\PGModule\Services;
+
+use PGI\Module\PGModule\Interfaces\EventInterface;
+use PGI\Module\PGModule\Services\Logger;
+use PGI\Module\PGSystem\Exceptions\Configuration as ConfigurationException;
+use PGI\Module\PGSystem\Services\Container;
+use Exception;
+
 /**
- * Interface PGModuleServicesBroadcaster
+ * Interface Broadcaster
  * @package PGModule\Services
  */
-class PGModuleServicesBroadcaster
+class Broadcaster
 {
-    /** @var PGSystemServicesContainer */
+    /** @var Container */
     private $container;
 
-    /** @var PGModuleServicesLogger */
+    /** @var Logger */
     private $logger;
 
     private $listeners = array();
@@ -39,15 +47,15 @@ class PGModuleServicesBroadcaster
     );
 
     /**
-     * PGModuleServicesBroadcaster constructor.
-     * @param PGSystemServicesContainer $container
-     * @param PGModuleServicesLogger $logger
+     * Broadcaster constructor.
+     * @param Container $container
+     * @param Logger $logger
      * @param array $listeners
-     * @throws PGSystemExceptionsConfiguration
+     * @throws ConfigurationException
      */
     public function __construct(
-        PGSystemServicesContainer $container,
-        PGModuleServicesLogger $logger,
+        Container $container,
+        Logger $logger,
         array $listeners
     ) {
         $this->container = $container;
@@ -60,16 +68,16 @@ class PGModuleServicesBroadcaster
 
     /**
      * @param array $listenerConfiguration
-     * @throws PGSystemExceptionsConfiguration
+     * @throws ConfigurationException
      */
     protected function addListenerConfiguration(array $listenerConfiguration)
     {
         if (!array_key_exists('event', $listenerConfiguration)) {
             $this->logger->critical("Listener declaration must contain 'event' key.", $listenerConfiguration);
-            throw new PGSystemExceptionsConfiguration("Bad listener configuration.");
+            throw new ConfigurationException("Bad listener configuration.");
         } elseif (!array_key_exists('service', $listenerConfiguration)) {
             $this->logger->critical("Listener declaration must contain 'service' key.", $listenerConfiguration);
-            throw new PGSystemExceptionsConfiguration("Bad listener configuration.");
+            throw new ConfigurationException("Bad listener configuration.");
         }
 
         $listenerConfiguration = array_merge(self::$LISTENER_DEFAULT_CONFIGURATION, $listenerConfiguration);
@@ -81,7 +89,9 @@ class PGModuleServicesBroadcaster
         $this->listeners[] = array(
             'service' => $listenerConfiguration['service'],
             'method' => $listenerConfiguration['method'],
-            'events' => array_map('strtoupper', $listenerConfiguration['event']),
+            'events' => array_map(function($var) {
+                return strtoupper($var);
+            }, $listenerConfiguration['event']),
             'priority' => $listenerConfiguration['priority']
         );
     }
@@ -91,7 +101,7 @@ class PGModuleServicesBroadcaster
      * @param string $event
      * @param string $method
      * @param int $priority
-     * @throws PGSystemExceptionsConfiguration
+     * @throws ConfigurationException
      */
     public function addListener($serviceName, $event, $method = 'listen', $priority = 500)
     {
@@ -108,10 +118,10 @@ class PGModuleServicesBroadcaster
     }
 
     /**
-     * @param PGModuleInterfacesEvent $event
+     * @param EventInterface $event
      * @throws Exception
      */
-    public function fire(PGModuleInterfacesEvent $event)
+    public function fire(EventInterface $event)
     {
         $validListeners = array();
 
@@ -147,11 +157,11 @@ class PGModuleServicesBroadcaster
     }
 
     /**
-     * @param PGModuleInterfacesEvent $event
+     * @param EventInterface $event
      * @param $listener
      * @throws Exception
      */
-    protected function callListener(PGModuleInterfacesEvent $event, array $listener)
+    protected function callListener(EventInterface $event, array $listener)
     {
         $serviceName = $listener['service'];
         $method = $listener['method'];

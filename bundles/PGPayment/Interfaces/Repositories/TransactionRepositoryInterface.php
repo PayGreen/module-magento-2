@@ -15,31 +15,36 @@
  * @author    PayGreen <contact@paygreen.fr>
  * @copyright 2014 - 2021 Watt Is It
  * @license   https://opensource.org/licenses/mit-license.php MIT License X11
- * @version   2.1.1
+ * @version   2.2.0
  *
  */
 
+namespace PGI\Module\PGPayment\Interfaces\Repositories;
+
+use PGI\Module\PGDatabase\Interfaces\RepositoryInterface;
+use PGI\Module\PGPayment\Interfaces\Entities\TransactionEntityInterface;
+
 /**
- * Interface PGPaymentInterfacesRepositoriesTransactionRepositoryInterface
+ * Interface TransactionRepositoryInterface
  * @package PGPayment\Interfaces\Repositories
  */
-interface PGPaymentInterfacesRepositoriesTransactionRepositoryInterface extends PGDatabaseInterfacesRepository
+interface TransactionRepositoryInterface extends RepositoryInterface
 {
     /**
      * @param int $id
-     * @return PGPaymentInterfacesEntitiesTransactionInterface|null
+     * @return TransactionEntityInterface|null
      */
     public function findByPrimary($id);
 
     /**
      * @param int $id_order
-     * @return PGPaymentInterfacesEntitiesTransactionInterface|null
+     * @return TransactionEntityInterface|null
      */
     public function findByOrderPrimary($id_order);
 
     /**
      * @param string $pid
-     * @return PGPaymentInterfacesEntitiesTransactionInterface|null
+     * @return TransactionEntityInterface|null
      */
     public function findByPid($pid);
 
@@ -50,27 +55,27 @@ interface PGPaymentInterfacesRepositoriesTransactionRepositoryInterface extends 
     public function countByOrderPrimary($id_order);
 
     /**
-     * @return PGPaymentInterfacesEntitiesTransactionInterface
+     * @return TransactionEntityInterface
      */
     public function create();
 
     /**
-     * @param PGPaymentInterfacesEntitiesTransactionInterface $transaction
+     * @param TransactionEntityInterface $transaction
      * @return bool
      */
-    public function insert(PGPaymentInterfacesEntitiesTransactionInterface $transaction);
+    public function insert(TransactionEntityInterface $transaction);
 
     /**
-     * @param PGPaymentInterfacesEntitiesTransactionInterface $transaction
+     * @param TransactionEntityInterface $transaction
      * @return bool
      */
-    public function update(PGPaymentInterfacesEntitiesTransactionInterface $transaction);
+    public function update(TransactionEntityInterface $transaction);
 
     /**
-     * @param PGPaymentInterfacesEntitiesTransactionInterface $transaction
+     * @param TransactionEntityInterface $transaction
      * @return bool
      */
-    public function delete(PGPaymentInterfacesEntitiesTransactionInterface $transaction);
+    public function delete(TransactionEntityInterface $transaction);
 
     /**
      * @param int $dayIntervalBegin

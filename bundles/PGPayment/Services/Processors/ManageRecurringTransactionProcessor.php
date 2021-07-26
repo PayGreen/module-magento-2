@@ -15,15 +15,19 @@
  * @author    PayGreen <contact@paygreen.fr>
  * @copyright 2014 - 2021 Watt Is It
  * @license   https://opensource.org/licenses/mit-license.php MIT License X11
- * @version   2.1.1
+ * @version   2.2.0
  *
  */
 
+namespace PGI\Module\PGPayment\Services\Processors;
+
+use PGI\Module\PGPayment\Foundations\Processors\AbstractPaymentRecordManagementProcessor;
+
 /**
- * Class PGPaymentServicesProcessorsManageRecurringTransactionProcessor
+ * Class ManageRecurringTransactionProcessor
  * @package PGPayment\Services\Processors
  */
-class PGPaymentServicesProcessorsManageRecurringTransactionProcessor extends PGPaymentFoundationsProcessorsAbstractPaymentRecordManagementProcessor
+class ManageRecurringTransactionProcessor extends AbstractPaymentRecordManagementProcessor
 {
     const PROCESSOR_NAME = 'RecurringTransaction';
 

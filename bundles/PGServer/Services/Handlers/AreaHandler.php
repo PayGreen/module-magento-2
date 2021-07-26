@@ -15,19 +15,24 @@
  * @author    PayGreen <contact@paygreen.fr>
  * @copyright 2014 - 2021 Watt Is It
  * @license   https://opensource.org/licenses/mit-license.php MIT License X11
- * @version   2.1.1
+ * @version   2.2.0
  *
  */
 
+namespace PGI\Module\PGServer\Services\Handlers;
+
+use PGI\Module\PGFramework\Services\Handlers\RequirementHandler;
+use Exception;
+
 /**
- * Class PGServerServicesHandlersAreaHandler
+ * Class AreaHandler
  * @package PGServer\Services\Handlers
  */
-class PGServerServicesHandlersAreaHandler
+class AreaHandler
 {
     private $areas = array();
 
-    /** @var PGFrameworkServicesHandlersRequirementHandler */
+    /** @var RequirementHandler */
     private $requirementHandler;
 
     public function __construct(array $areas)

@@ -15,21 +15,29 @@
  * @author    PayGreen <contact@paygreen.fr>
  * @copyright 2014 - 2021 Watt Is It
  * @license   https://opensource.org/licenses/mit-license.php MIT License X11
- * @version   2.1.1
+ * @version   2.2.0
  *
  */
 
+namespace PGI\Module\PGPayment\Services\Repositories;
+
+use PGI\Module\PGDatabase\Foundations\AbstractRepositoryDatabase;
+use PGI\Module\PGPayment\Interfaces\Entities\LockEntityInterface;
+use PGI\Module\PGPayment\Interfaces\Repositories\LockRepositoryInterface;
+use DateTime;
+use Exception;
+
 /**
- * Class PGPaymentServicesRepositoriesLockRepository
+ * Class LockRepository
  * @package PGPayment\Services\Repositories
  */
-class PGPaymentServicesRepositoriesLockRepository extends PGDatabaseFoundationsRepositoryDatabase implements PGPaymentInterfacesRepositoriesLockRepositoryInterface
+class LockRepository extends AbstractRepositoryDatabase implements LockRepositoryInterface
 {
     private $bin;
 
     /**
      * @inheritdoc
-     * @return PGPaymentInterfacesEntitiesLockInterface
+     * @return LockEntityInterface
      * @throws Exception
      */
     public function create($pid, DateTime $dateTime)
@@ -39,7 +47,7 @@ class PGPaymentServicesRepositoriesLockRepository extends PGDatabaseFoundationsR
 
         $dt = new DateTime();
 
-        /** @var PGPaymentInterfacesEntitiesLockInterface $entity */
+        /** @var LockEntityInterface $entity */
         $entity = $this->wrapEntity(array(
             'pid' => $pid,
             'locked_at' => $dt->getTimestamp()
@@ -52,12 +60,12 @@ class PGPaymentServicesRepositoriesLockRepository extends PGDatabaseFoundationsR
 
     /**
      * @inheritdoc
-     * @return PGPaymentInterfacesEntitiesLockInterface|null
+     * @return LockEntityInterface|null
      * @throws Exception
      */
     public function findByPid($pid)
     {
-        /** @var PGPaymentInterfacesEntitiesLockInterface $result */
+        /** @var LockEntityInterface $result */
         $result = $this->findOneEntity("pid='$pid'");
 
         return $result;
@@ -67,7 +75,7 @@ class PGPaymentServicesRepositoriesLockRepository extends PGDatabaseFoundationsR
      * @inheritdoc
      * @throws Exception
      */
-    public function updateLock(PGPaymentInterfacesEntitiesLockInterface $lock, DateTime $lockedDateTime)
+    public function updateLock(LockEntityInterface $lock, DateTime $lockedDateTime)
     {
         $lockedAt = new DateTime();
         $timestamp = $lockedAt->getTimestamp();

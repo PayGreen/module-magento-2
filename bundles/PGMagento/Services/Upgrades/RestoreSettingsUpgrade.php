@@ -15,40 +15,49 @@
  * @author    PayGreen <contact@paygreen.fr>
  * @copyright 2014 - 2021 Watt Is It
  * @license   https://opensource.org/licenses/mit-license.php MIT License X11
- * @version   2.1.1
+ * @version   2.2.0
  *
  */
 
-use Magento\Framework\App\ObjectManager;
-use Magento\Framework\App\Config\ScopeConfigInterface;
-use Magento\Framework\App\Config\ConfigResource\ConfigInterface;
+namespace PGI\Module\PGMagento\Services\Upgrades;
 
-class PGMagentoServicesUpgradesRestoreSettingsUpgrade implements PGModuleInterfacesUpgrade
+use Magento\Framework\App\ObjectManager as LocalObjectManager;
+use Magento\Framework\App\Config\ScopeConfigInterface as LocalScopeConfigInterface;
+use Magento\Framework\App\Config\ConfigResource\ConfigInterface as LocalConfigInterface;
+use PGI\Module\PGModule\Components\Upgrade as UpgradeComponent;
+use PGI\Module\PGModule\Interfaces\Repositories\SettingRepositoryInterface;
+use PGI\Module\PGModule\Interfaces\UpgradeInterface;
+use PGI\Module\PGModule\Services\Officers\SettingsDatabaseOfficer;
+use PGI\Module\PGShop\Interfaces\Entities\ShopEntityInterface;
+use PGI\Module\PGShop\Interfaces\Handlers\ShopHandlerInterface;
+use Exception;
+
+class RestoreSettingsUpgrade implements UpgradeInterface
 {
-    /** @var ScopeConfigInterface */
+    /** @var LocalScopeConfigInterface */
     private $scopeConfig;
 
-    /** @var ConfigInterface */
+    /** @var LocalConfigInterface */
     private $resourceConfig;
 
-    /** @var PGModuleInterfacesRepositoriesSetting */
+    /** @var SettingRepositoryInterface */
     private $settingRepository;
 
-    /** @var PGShopInterfacesShopHandler */
+    /** @var ShopHandlerInterface */
     private $shopHandler;
 
-    /** @var PGModuleServicesOfficersSettingsDatabase */
+    /** @var SettingsDatabaseOfficer */
     private $basicOfficer;
 
-    /** @var PGModuleServicesOfficersSettingsDatabase */
+    /** @var SettingsDatabaseOfficer */
     private $globalOfficer;
 
     public function __construct(
-        ObjectManager $objectManager,
-        PGModuleInterfacesRepositoriesSetting $settingRepository,
-        PGShopInterfacesShopHandler $shopHandler,
-        PGModuleServicesOfficersSettingsDatabase $basicOfficer,
-        PGModuleServicesOfficersSettingsDatabase $globalOfficer
+        LocalObjectManager $objectManager,
+        SettingRepositoryInterface $settingRepository,
+        ShopHandlerInterface $shopHandler,
+        SettingsDatabaseOfficer $basicOfficer,
+        SettingsDatabaseOfficer $globalOfficer
     ) {
         $this->scopeConfig = $objectManager->get('Magento\Framework\App\Config\ScopeConfigInterface');
         $this->resourceConfig = $objectManager->get('Magento\Framework\App\Config\ConfigResource\ConfigInterface');
@@ -62,9 +71,9 @@ class PGMagentoServicesUpgradesRestoreSettingsUpgrade implements PGModuleInterfa
      * @inheritDoc
      * @throws Exception
      */
-    public function apply(PGModuleComponentsUpgrade $upgradeStage)
+    public function apply(UpgradeComponent $upgradeStage)
     {
-        /** @var PGShopInterfacesEntitiesShop $shop */
+        /** @var ShopEntityInterface $shop */
         $shop = $this->shopHandler->getCurrentShop();
         $keys = $upgradeStage->getConfig('keys');
 

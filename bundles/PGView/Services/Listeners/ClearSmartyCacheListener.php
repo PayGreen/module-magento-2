@@ -15,31 +15,39 @@
  * @author    PayGreen <contact@paygreen.fr>
  * @copyright 2014 - 2021 Watt Is It
  * @license   https://opensource.org/licenses/mit-license.php MIT License X11
- * @version   2.1.1
+ * @version   2.2.0
  *
  */
 
+namespace PGI\Module\PGView\Services\Listeners;
+
+use PGI\Module\PGModule\Components\Events\Module as ModuleEventComponent;
+use PGI\Module\PGModule\Services\Logger;
+use PGI\Module\PGView\Services\Handlers\SmartyHandler;
+use Exception;
+use Smarty;
+
 /**
- * Class PGViewServicesListenersClearSmartyCacheListener
+ * Class ClearSmartyCacheListener
  * @package PGView\Services\Listeners
  */
-class PGViewServicesListenersClearSmartyCacheListener
+class ClearSmartyCacheListener
 {
-    /** @var PGViewServicesHandlersSmartyHandler */
+    /** @var SmartyHandler */
     private $smartyHandler;
 
-    /** @var PGModuleServicesLogger */
+    /** @var Logger */
     private $logger;
 
     private $bin;
 
-    public function __construct(PGViewServicesHandlersSmartyHandler $smartyHandler, PGModuleServicesLogger $logger)
+    public function __construct(SmartyHandler $smartyHandler, Logger $logger)
     {
         $this->smartyHandler = $smartyHandler;
         $this->logger = $logger;
     }
 
-    public function listen(PGModuleComponentsEventsModule $event)
+    public function listen(ModuleEventComponent $event)
     {
         // Thrashing unused arguments
         $this->bin = $event;

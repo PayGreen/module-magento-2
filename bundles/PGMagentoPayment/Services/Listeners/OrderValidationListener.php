@@ -15,35 +15,40 @@
  * @author    PayGreen <contact@paygreen.fr>
  * @copyright 2014 - 2021 Watt Is It
  * @license   https://opensource.org/licenses/mit-license.php MIT License X11
- * @version   2.1.1
+ * @version   2.2.0
  *
  */
 
-use Magento\Framework\App\ObjectManager;
-use Magento\Framework\DB\Transaction;
-use Magento\Sales\Model\Order;
-use Magento\Sales\Model\Order\Invoice;
-use Magento\Sales\Model\Service\InvoiceService;
-use Magento\Sales\Model\Order\Email\Sender\InvoiceSender;
-use Magento\Framework\Exception\LocalizedException;
+namespace PGI\Module\PGMagentoPayment\Services\Listeners;
 
-class PGMagentoPaymentServicesListenersOrderValidationListener
+use Magento\Framework\App\ObjectManager as LocalObjectManager;
+use Magento\Framework\DB\Transaction as LocalTransaction;
+use Magento\Sales\Model\Order as LocalOrder;
+use Magento\Sales\Model\Order\Invoice as LocalInvoice;
+use Magento\Sales\Model\Service\InvoiceService as LocalInvoiceService;
+use Magento\Sales\Model\Order\Email\Sender\InvoiceSender as LocalInvoiceSender;
+use Magento\Framework\Exception\LocalizedException as LocalLocalizedException;
+use PGI\Module\PGModule\Services\Logger;
+use PGI\Module\PGShop\Components\Events\Order as OrderEventComponent;
+use Exception;
+
+class OrderValidationListener
 {
-    /** @var ObjectManager */
+    /** @var LocalObjectManager */
     private $magento;
 
-    /** @var PGModuleServicesLogger */
+    /** @var Logger */
     private $logger;
 
-    public function __construct(ObjectManager $magento, PGModuleServicesLogger $logger)
+    public function __construct(LocalObjectManager $magento, Logger $logger)
     {
         $this->magento = $magento;
         $this->logger = $logger;
     }
 
-    public function saveOrderHistory(PGShopComponentsEventsOrder $event)
+    public function saveOrderHistory(OrderEventComponent $event)
     {
-        /** @var Order $localOrder */
+        /** @var LocalOrder $localOrder */
         $localOrder = $event->getOrder()->getLocalEntity();
 
         $state = $localOrder->getState();
@@ -57,13 +62,13 @@ class PGMagentoPaymentServicesListenersOrderValidationListener
     }
 
     /**
-     * @param PGShopComponentsEventsOrder $event
-     * @throws LocalizedException
+     * @param OrderEventComponent $event
+     * @throws LocalLocalizedException
      * @throws Exception
      */
-    public function createInvoice(PGShopComponentsEventsOrder $event)
+    public function createInvoice(OrderEventComponent $event)
     {
-        /** @var Order $localOrder */
+        /** @var LocalOrder $localOrder */
         $localOrder = $event->getOrder()->getLocalEntity();
 
         if($localOrder->canInvoice()) {
@@ -74,19 +79,19 @@ class PGMagentoPaymentServicesListenersOrderValidationListener
 
             $this->logger->debug("finalizePayment : can invoice ?", $localOrder->canInvoice());
 
-            /** @var InvoiceService $invoiceService */
+            /** @var LocalInvoiceService $invoiceService */
             $invoiceService = $this->magento->get('Magento\Sales\Model\Service\InvoiceService');
 
-            /** @var InvoiceSender $invoiceSender */
+            /** @var LocalInvoiceSender $invoiceSender */
             $invoiceSender = $this->magento->get('Magento\Sales\Model\Order\Email\Sender\InvoiceSender');
 
-            /** @var Invoice $invoice */
+            /** @var LocalInvoice $invoice */
             $invoice = $invoiceService->prepareInvoice($localOrder);
             $invoice->register();
             $invoice->capture();
             $invoice->save();
 
-            /** @var Transaction $magentoTransaction */
+            /** @var LocalTransaction $magentoTransaction */
             $magentoTransaction = $this->magento->create('Magento\Framework\DB\Transaction');
 
             $magentoTransaction

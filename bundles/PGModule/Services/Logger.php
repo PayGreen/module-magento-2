@@ -15,25 +15,35 @@
  * @author    PayGreen <contact@paygreen.fr>
  * @copyright 2014 - 2021 Watt Is It
  * @license   https://opensource.org/licenses/mit-license.php MIT License X11
- * @version   2.1.1
+ * @version   2.2.0
  *
  */
 
+namespace PGI\Module\PGModule\Services;
+
+use PGI\Module\PGFramework\Services\Dumper;
+use PGI\Module\PGModule\Services\Handlers\BehaviorHandler;
+use PGI\Module\PGSystem\Foundations\AbstractObject;
+use PGI\Module\PGSystem\Services\Pathfinder;
+use DateTime;
+use Exception;
+use SplFileObject;
+
 /**
- * Class PGModuleServicesLogger
+ * Class Logger
  * @package PGModule\Services
  */
-class PGModuleServicesLogger extends PGSystemFoundationsObject
+class Logger extends AbstractObject
 {
     const DEFAULT_FORMAT = "<datetime> | *<type>* | <text>";
 
     /** @var SplFileObject|null */
     private $handle;
 
-    /** @var PGFrameworkServicesDumper */
+    /** @var Dumper */
     private $dumper;
 
-    /** @var PGSystemServicesPathfinder */
+    /** @var Pathfinder */
     private $pathfinder;
 
     private $target;
@@ -46,12 +56,12 @@ class PGModuleServicesLogger extends PGSystemFoundationsObject
 
     private $logs = array();
 
-    /** @var PGModuleServicesHandlersBehavior */
+    /** @var BehaviorHandler */
     private $behaviorHandler;
 
     public function __construct(
-        PGFrameworkServicesDumper $dumper,
-        PGSystemServicesPathfinder $pathfinder,
+        Dumper $dumper,
+        Pathfinder $pathfinder,
         $target,
         $format = null
     ) {
@@ -65,9 +75,9 @@ class PGModuleServicesLogger extends PGSystemFoundationsObject
     }
 
     /**
-     * @param PGModuleServicesHandlersBehavior $behaviorHandler
+     * @param BehaviorHandler $behaviorHandler
      */
-    public function setBehaviorHandler(PGModuleServicesHandlersBehavior $behaviorHandler)
+    public function setBehaviorHandler(BehaviorHandler $behaviorHandler)
     {
         $this->behaviorHandler = $behaviorHandler;
     }

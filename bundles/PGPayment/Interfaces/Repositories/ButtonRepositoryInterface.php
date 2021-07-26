@@ -15,29 +15,34 @@
  * @author    PayGreen <contact@paygreen.fr>
  * @copyright 2014 - 2021 Watt Is It
  * @license   https://opensource.org/licenses/mit-license.php MIT License X11
- * @version   2.1.1
+ * @version   2.2.0
  *
  */
 
+namespace PGI\Module\PGPayment\Interfaces\Repositories;
+
+use PGI\Module\PGDatabase\Interfaces\RepositoryInterface;
+use PGI\Module\PGPayment\Interfaces\Entities\ButtonEntityInterface;
+
 /**
- * Interface PGPaymentInterfacesRepositoriesButtonRepositoryInterface
+ * Interface ButtonRepositoryInterface
  * @package PGPayment\Interfaces\Repositories
  */
-interface PGPaymentInterfacesRepositoriesButtonRepositoryInterface extends PGDatabaseInterfacesRepository
+interface ButtonRepositoryInterface extends RepositoryInterface
 {
     /**
      * @param $id int
-     * @return PGPaymentInterfacesEntitiesButtonInterface|null
+     * @return ButtonEntityInterface|null
      */
     public function findByPrimary($id);
 
     /**
-     * @return PGPaymentInterfacesEntitiesButtonInterface[]
+     * @return ButtonEntityInterface[]
      */
     public function findAll();
 
     /**
-     * @return PGPaymentInterfacesEntitiesButtonInterface
+     * @return ButtonEntityInterface
      */
     public function create();
 
@@ -47,20 +52,20 @@ interface PGPaymentInterfacesRepositoriesButtonRepositoryInterface extends PGDat
     public function count();
 
     /**
-     * @param PGPaymentInterfacesEntitiesButtonInterface $button
+     * @param ButtonEntityInterface $button
      * @return bool
      */
-    public function insert(PGPaymentInterfacesEntitiesButtonInterface $button);
+    public function insert(ButtonEntityInterface $button);
 
     /**
-     * @param PGPaymentInterfacesEntitiesButtonInterface $button
+     * @param ButtonEntityInterface $button
      * @return bool
      */
-    public function update(PGPaymentInterfacesEntitiesButtonInterface $button);
+    public function update(ButtonEntityInterface $button);
 
     /**
-     * @param PGPaymentInterfacesEntitiesButtonInterface $button
+     * @param ButtonEntityInterface $button
      * @return bool
      */
-    public function delete(PGPaymentInterfacesEntitiesButtonInterface $button);
+    public function delete(ButtonEntityInterface $button);
 }

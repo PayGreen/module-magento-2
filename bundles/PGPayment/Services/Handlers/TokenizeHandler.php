@@ -15,41 +15,55 @@
  * @author    PayGreen <contact@paygreen.fr>
  * @copyright 2014 - 2021 Watt Is It
  * @license   https://opensource.org/licenses/mit-license.php MIT License X11
- * @version   2.1.1
+ * @version   2.2.0
  *
  */
 
+namespace PGI\Module\PGPayment\Services\Handlers;
+
+use PGI\Module\APIPayment\Services\Facades\ApiFacade;
+use PGI\Module\PGModule\Services\Broadcaster;
+use PGI\Module\PGModule\Services\Handlers\BehaviorHandler;
+use PGI\Module\PGModule\Services\Logger;
+use PGI\Module\PGPayment\Components\Events\TokenizeConfirmation as TokenizeConfirmationEventComponent;
+use PGI\Module\PGPayment\Data;
+use PGI\Module\PGPayment\Services\Facades\PaygreenFacade;
+use PGI\Module\PGPayment\Services\Managers\TransactionManager;
+use PGI\Module\PGShop\Interfaces\Entities\OrderEntityInterface;
+use PGI\Module\PGSystem\Foundations\AbstractObject;
+use Exception;
+
 /**
- * Class PGPaymentServicesHandlersTokenizeHandler
+ * Class TokenizeHandler
  * @package PGPayment\Services\Handlers
  */
-class PGPaymentServicesHandlersTokenizeHandler extends PGSystemFoundationsObject
+class TokenizeHandler extends AbstractObject
 {
-    /** @var PGModuleServicesBroadcaster */
+    /** @var Broadcaster */
     private $broadcaster;
 
-    /** @var PGModuleServicesHandlersBehavior */
+    /** @var BehaviorHandler */
     private $behaviorHandler;
 
-    /** @var PGPaymentServicesManagersTransactionManager */
+    /** @var TransactionManager */
     private $transactionManager;
 
-    /** @var APIPaymentServicesApiFacade */
+    /** @var ApiFacade */
     private $apiFacade;
 
-    /** @var PGModuleServicesLogger */
+    /** @var Logger */
     private $logger;
 
     public function __construct(
-        PGModuleServicesBroadcaster $broadcaster,
-        PGModuleServicesLogger $logger
+        Broadcaster $broadcaster,
+        Logger $logger
     ) {
         $this->broadcaster = $broadcaster;
         $this->logger = $logger;
     }
 
     /**
-     * @param PGPaymentServicesManagersTransactionManager $transactionManager
+     * @param TransactionManager $transactionManager
      */
     public function setTransactionManager($transactionManager)
     {
@@ -57,15 +71,15 @@ class PGPaymentServicesHandlersTokenizeHandler extends PGSystemFoundationsObject
     }
 
     /**
-     * @param PGPaymentServicesPaygreenFacade $paygreenFacade
+     * @param PaygreenFacade $paygreenFacade
      */
-    public function setPaygreenFacade(PGPaymentServicesPaygreenFacade $paygreenFacade)
+    public function setPaygreenFacade(PaygreenFacade $paygreenFacade)
     {
         $this->apiFacade = $paygreenFacade->getApiFacade();
     }
 
     /**
-     * @param PGModuleServicesHandlersBehavior $behaviorHandler
+     * @param BehaviorHandler $behaviorHandler
      */
     public function setBehaviorHandler($behaviorHandler)
     {
@@ -73,11 +87,11 @@ class PGPaymentServicesHandlersTokenizeHandler extends PGSystemFoundationsObject
     }
 
     /**
-     * @param PGShopInterfacesEntitiesOrder $order
+     * @param OrderEntityInterface $order
      * @return bool
      * @throws Exception
      */
-    public function processTokenizedPayments(PGShopInterfacesEntitiesOrder $order)
+    public function processTokenizedPayments(OrderEntityInterface $order)
     {
         $this->logger->debug("Confirm waiting payments for order : '{$order->id()}'.");
 
@@ -91,7 +105,7 @@ class PGPaymentServicesHandlersTokenizeHandler extends PGSystemFoundationsObject
 
             $transaction = $this->transactionManager->getByOrderPrimary($order->id());
 
-            if ($transaction->getMode() === PGPaymentData::MODE_TOKENIZE) {
+            if ($transaction->getMode() === Data::MODE_TOKENIZE) {
                 $this->logger->debug("Tokenized payment validation is running.");
 
                 $pid = $transaction->getPid();
@@ -103,7 +117,7 @@ class PGPaymentServicesHandlersTokenizeHandler extends PGSystemFoundationsObject
 
                 if ($result) {
                     $this->broadcaster->fire(
-                        new PGPaymentComponentsEventsTokenizeConfirmationEvent($order, array($transaction))
+                        new TokenizeConfirmationEventComponent($order, array($transaction))
                     );
                 }
 

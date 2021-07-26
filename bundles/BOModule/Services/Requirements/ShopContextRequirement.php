@@ -15,20 +15,25 @@
  * @author    PayGreen <contact@paygreen.fr>
  * @copyright 2014 - 2021 Watt Is It
  * @license   https://opensource.org/licenses/mit-license.php MIT License X11
- * @version   2.1.1
+ * @version   2.2.0
  *
  */
 
+namespace PGI\Module\BOModule\Services\Requirements;
+
+use PGI\Module\PGFramework\Interfaces\RequirementInterface;
+use PGI\Module\PGShop\Interfaces\Handlers\ShopHandlerInterface;
+
 /**
- * Class BOModuleServicesRequirementsShopContextRequirement
+ * Class ShopContextRequirement
  * @package BOModule\Services\Requirements
  */
-class BOModuleServicesRequirementsShopContextRequirement implements PGFrameworkInterfacesRequirementInterface
+class ShopContextRequirement implements RequirementInterface
 {
-    /** @var PGShopInterfacesShopHandler */
+    /** @var ShopHandlerInterface */
     private $shopHandler;
 
-    public function __construct(PGShopInterfacesShopHandler $shopHandler)
+    public function __construct(ShopHandlerInterface $shopHandler)
     {
         $this->shopHandler = $shopHandler;
     }

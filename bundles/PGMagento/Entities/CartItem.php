@@ -15,17 +15,22 @@
  * @author    PayGreen <contact@paygreen.fr>
  * @copyright 2014 - 2021 Watt Is It
  * @license   https://opensource.org/licenses/mit-license.php MIT License X11
- * @version   2.1.1
+ * @version   2.2.0
  *
  */
 
+namespace PGI\Module\PGMagento\Entities;
+
+use PGI\Module\PGShop\Foundations\Entities\AbstractShopableItemEntity;
+use PGI\Module\PGShop\Interfaces\Repositories\ProductRepositoryInterface;
+
 /**
- * Class PGMagentoEntitiesCartItem
+ * Class CartItem
  *
  * @package PGMagento\Entities
  * @method Magento\Quote\Model\Quote\Item getLocalEntity()
  */
-class PGMagentoEntitiesCartItem extends PGShopFoundationsEntitiesShopableItem
+class CartItem extends AbstractShopableItemEntity
 {
     protected function hydrateFromLocalEntity($localEntity)
     {
@@ -55,7 +60,7 @@ class PGMagentoEntitiesCartItem extends PGShopFoundationsEntitiesShopableItem
      */
     protected function preloadProduct()
     {
-        /** @var PGShopInterfacesRepositoriesProduct $productRepository */
+        /** @var ProductRepositoryInterface $productRepository */
         $productRepository = $this->getService('repository.product');
 
         /** @var Magento\Catalog\Model\Product $localEntity */

@@ -15,15 +15,22 @@
  * @author    PayGreen <contact@paygreen.fr>
  * @copyright 2014 - 2021 Watt Is It
  * @license   https://opensource.org/licenses/mit-license.php MIT License X11
- * @version   2.1.1
+ * @version   2.2.0
  *
  */
 
+namespace PGI\Module\PGSystem\Components;
+
+use PGI\Module\PGSystem\Components\Service\Builder as BuilderServiceComponent;
+use PGI\Module\PGSystem\Exceptions\ParserConstant as ParserConstantException;
+use PGI\Module\PGSystem\Exceptions\ParserParameter as ParserParameterException;
+use Exception;
+
 /**
- * Class PGSystemComponentsParser
+ * Class Parser
  * @package PGSystem\Components
  */
-class PGSystemComponentsParser
+class Parser
 {
     const REGEX_PARAMETER_MATCH = '/(^|[^\\\\])(?<match>%\{(?<key>[a-zA-Z0-9_\-\.]+)\})/';
     const REGEX_PARAMETER_REPLACE = '/(^|[^\\\\])(%%\{%s\})/';
@@ -36,7 +43,7 @@ class PGSystemComponentsParser
     /** @var iterable */
     private $parameters;
 
-    /** @var PGSystemComponentsServiceBuilder */
+    /** @var BuilderServiceComponent */
     private $builder;
 
     public function __construct($parameters)
@@ -45,7 +52,7 @@ class PGSystemComponentsParser
     }
 
     /**
-     * @param PGSystemComponentsServiceBuilder $builder
+     * @param BuilderServiceComponent $builder
      */
     public function setBuilder($builder)
     {
@@ -70,8 +77,8 @@ class PGSystemComponentsParser
     /**
      * @param string|array $arg
      * @return array
-     * @throws PGSystemExceptionsParserConstant
-     * @throws PGSystemExceptionsParserParameter
+     * @throws ParserConstantException
+     * @throws ParserParameterException
      */
     public function parseConfig($arg)
     {
@@ -109,7 +116,7 @@ class PGSystemComponentsParser
      * @param string $var
      * @param array $values
      * @return string
-     * @throws PGSystemExceptionsParserParameter
+     * @throws ParserParameterException
      */
     public function parseStringParameters($var, array $values = array())
     {
@@ -122,7 +129,7 @@ class PGSystemComponentsParser
                 } elseif (array_keys($key, $values)) {
                     $value = $values[$key];
                 } else {
-                    throw new PGSystemExceptionsParserParameter("Target parameters '$key' is not defined.");
+                    throw new ParserParameterException("Target parameters '$key' is not defined.");
                 }
 
                 $pattern = sprintf(self::REGEX_PARAMETER_REPLACE, preg_quote($key));
@@ -138,7 +145,7 @@ class PGSystemComponentsParser
     /**
      * @param mixed $var
      * @return mixed
-     * @throws PGSystemExceptionsParserParameter
+     * @throws ParserParameterException
      */
     public function parseParameter($var)
     {
@@ -147,7 +154,7 @@ class PGSystemComponentsParser
                 $key = substr($var, 1);
 
                 if (!isset($this->parameters[$key])) {
-                    throw new PGSystemExceptionsParserParameter("Target parameters '$key' is not defined.");
+                    throw new ParserParameterException("Target parameters '$key' is not defined.");
                 }
 
                 $var = $this->parameters[$key];
@@ -160,7 +167,7 @@ class PGSystemComponentsParser
     /**
      * @param string $var
      * @return string
-     * @throws PGSystemExceptionsParserConstant
+     * @throws ParserConstantException
      */
     public function parseConstants($var)
     {
@@ -169,7 +176,7 @@ class PGSystemComponentsParser
                 $key = $matches['key'];
 
                 if (!defined($key)) {
-                    throw new PGSystemExceptionsParserConstant("Target constant '$key' is not defined.");
+                    throw new ParserConstantException("Target constant '$key' is not defined.");
                 }
 
                 $pattern = sprintf(self::REGEX_ENV_VAR_REPLACE, preg_quote($key));

@@ -7,14 +7,6 @@
         "label": {
           "label": "Button's label"
         },
-        "integration": {
-          "label": "Payment interface",
-          "helper": "In order to enable in site payment interface, In Site module must be activated on your PayGreen back-office. What's more, your shop URL must be in HTTPS (SSL enabled): if not, your payment button will be disabled.",
-          "values": {
-            "external": "External payment page",
-            "insite": "In site payment interface"
-          }
-        },
         "image": {
           "label": "Button's picture",
           "default": "Use default picture"
@@ -31,10 +23,6 @@
             "picture": "Only picture",
             "text": "Only title"
           }
-        },
-        "position": {
-          "label": "Button display order",
-          "helper": "Choose your button order compared to your other PayGreen payment buttons. Use 0 to let your button order be defined automatically."
         },
         "payment_mode": {
           "label": "Payment mode"

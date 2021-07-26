@@ -15,20 +15,26 @@
  * @author    PayGreen <contact@paygreen.fr>
  * @copyright 2014 - 2021 Watt Is It
  * @license   https://opensource.org/licenses/mit-license.php MIT License X11
- * @version   2.1.1
+ * @version   2.2.0
  *
  */
 
+namespace PGI\Module\PGView\Components;
+
+use PGI\Module\PGSystem\Foundations\AbstractObject;
+use PGI\Module\PGView\Interfaces\ViewInterface;
+use Exception;
+
 /**
- * Class PGViewComponentsBox
+ * Class Box
  * @package PGView\Components
  */
-class PGViewComponentsBox extends PGSystemFoundationsObject
+class Box extends AbstractObject
 {
-    /** @var PGViewInterfacesViewInterface */
+    /** @var ViewInterface */
     private $view;
 
-    public function __construct(PGViewInterfacesViewInterface $view)
+    public function __construct(ViewInterface $view)
     {
         $this->view = $view;
     }

@@ -26,6 +26,14 @@
           "label": "Synchronize delivery confirmations",
           "help": "If you activate this option, then as soon as an order payable on delivery is marked as 'completed', a notification will be automatically sent to the PayGreen server in order to validate the payment."
         },
+        "behavior_payment_insite": {
+          "label": "Payment interface",
+          "help": "In order to enable in site payment interface, In Site module must be activated on your PayGreen back-office. What's more, your shop URL must be in HTTPS (SSL enabled): if not, your payment button will be disabled.",
+          "values": {
+            "external": "External payment page",
+            "insite": "In site payment interface"
+          }
+        },
         "behavior_display_footer": {
           "label": "Display PayGreen security logo",
           "help": "If this option is activated, the PayGreen security logo will be displayed in the bottom of your website."

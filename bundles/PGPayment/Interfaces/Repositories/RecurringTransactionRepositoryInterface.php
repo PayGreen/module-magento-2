@@ -15,25 +15,30 @@
  * @author    PayGreen <contact@paygreen.fr>
  * @copyright 2014 - 2021 Watt Is It
  * @license   https://opensource.org/licenses/mit-license.php MIT License X11
- * @version   2.1.1
+ * @version   2.2.0
  *
  */
 
+namespace PGI\Module\PGPayment\Interfaces\Repositories;
+
+use PGI\Module\PGDatabase\Interfaces\RepositoryInterface;
+use PGI\Module\PGPayment\Interfaces\Entities\RecurringTransactionEntityInterface;
+
 /**
- * Interface PGPaymentInterfacesRepositoriesRecurringTransactionRepositoryInterface
+ * Interface RecurringTransactionRepositoryInterface
  * @package PGPayment\Interfaces\Repositories
  */
-interface PGPaymentInterfacesRepositoriesRecurringTransactionRepositoryInterface extends PGDatabaseInterfacesRepository
+interface RecurringTransactionRepositoryInterface extends RepositoryInterface
 {
     /**
      * @param int $id
-     * @return PGPaymentInterfacesEntitiesRecurringTransactionInterface
+     * @return RecurringTransactionEntityInterface
      */
     public function findByPrimary($id);
 
     /**
      * @param string $pid
-     * @return PGPaymentInterfacesEntitiesRecurringTransactionInterface|null
+     * @return RecurringTransactionEntityInterface|null
      */
     public function findByPid($pid);
 
@@ -45,17 +50,17 @@ interface PGPaymentInterfacesRepositoriesRecurringTransactionRepositoryInterface
      * @param string $mode
      * @param int $amount
      * @param int $rank
-     * @return PGPaymentInterfacesEntitiesRecurringTransactionInterface
+     * @return RecurringTransactionEntityInterface
      */
     public function insert($pid, $id_order, $state, $stateOrderBefore, $mode, $amount, $rank);
 
     /**
-     * @param PGPaymentInterfacesEntitiesRecurringTransactionInterface $transaction
+     * @param RecurringTransactionEntityInterface $transaction
      * @param string $stateOrderAfter
      * @return bool
      */
     public function updateState(
-        PGPaymentInterfacesEntitiesRecurringTransactionInterface $transaction,
+        RecurringTransactionEntityInterface $transaction,
         $stateOrderAfter
     );
 }

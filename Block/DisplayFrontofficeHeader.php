@@ -15,33 +15,40 @@
  * @author    PayGreen <contact@paygreen.fr>
  * @copyright 2014 - 2021 Watt Is It
  * @license   https://opensource.org/licenses/mit-license.php MIT License X11
- * @version   2.1.1
+ * @version   2.2.0
  *
  */
 
 namespace Paygreen\Payment\Block;
 
-use Magento\Framework\View\Element\Template;
-use Magento\Framework\View\Element\Template\Context;
-use PGSystemServicesContainer;
-use PGModuleServicesLogger;
-use PGFrameworkServicesHandlersOutputHandler;
-use PGMagentoServicesMagentoResourceCompiler;
+use Magento\Framework\View\Asset\Repository as LocalRepository;
+use Magento\Framework\View\Element\Template as LocalTemplate;
+use Magento\Framework\View\Element\Template\Context as LocalContext;
+use Magento\Theme\Block\Html\Header\Logo as Logo;
+use PGI\Module\PGMagento\Services\Compilers\StaticResourceCompiler;
+use PGI\Module\PGModule\Services\Logger;
+use PGI\Module\PGModule\Services\Providers\OutputProvider;
+use PGI\Module\PGSystem\Services\Container;
 
-class DisplayFrontofficeHeader extends Template
+class DisplayFrontofficeHeader extends LocalTemplate
 {
-    /** @var \Magento\Framework\View\Asset\Repository */
+    /** @var LocalRepository */
     protected $assetRepository;
 
-    public function __construct(Context $context)
+    /** @var Logo */
+    protected $headerLogo;
+
+    public function __construct(LocalContext $context, Logo $logo)
     {
         parent::__construct($context);
 
         $this->assetRepository = $context->getAssetRepository();
 
+        $this->headerLogo = $logo;
+
         require_once PAYGREEN_BOOTSTRAP_SRC;
 
-        /** @var PGModuleServicesLogger $outputHandler */
+        /** @var Logger $logger */
         $logger = $this->getService('logger.view');
 
         $logger->debug('Successfully init frontoffice header block.');
@@ -49,22 +56,35 @@ class DisplayFrontofficeHeader extends Template
 
     protected function getService($name)
     {
-        return PGSystemServicesContainer::getInstance()->get($name);
+        return Container::getInstance()->get($name);
     }
 
     protected function _toHtml()
     {
-        /** @var PGFrameworkServicesHandlersOutputHandler $outputHandler */
-        $outputHandler = $this->getService('handler.output');
-
-        /** @var PGMagentoServicesMagentoResourceCompiler $magentoResourceCompiler */
+        /** @var StaticResourceCompiler $magentoResourceCompiler */
         $magentoResourceCompiler = $this->getService('compiler.resource.magento');
 
-        /** @var PGModuleServicesLogger $outputHandler */
+        /** @var OutputProvider $outputProvider */
+        $outputProvider = $this->getService('provider.output');
+
         $logger = $this->getService('logger.view');
 
-        $logger->debug("Writing header output.");
+        $channels = array('FRONT.HEAD');
 
-        return $magentoResourceCompiler->compileResources($outputHandler->getResources());
+        $objectManager = $this->getService('magento');
+        $request = $objectManager->get('\Magento\Framework\App\Request\Http');
+        $checkModule = $request->getFullActionName();
+
+        if($checkModule === "pgfront_frontoffice_index"){
+            $logger->debug("PGFrontPage page detected. Loading associated ressources.");
+            $channels[] = 'FRONT.PAYGREEN';
+        } else if($this->headerLogo->isHomePage()) {
+            $logger->debug("Frontoffice home page detected. Loading associated ressources.");
+            $channels[] = 'FRONT.HOME.FOOTER';
+        }
+
+        $resources = $outputProvider->getResources($channels);
+
+        return $magentoResourceCompiler->compileResources($resources);
     }
 }

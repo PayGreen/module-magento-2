@@ -15,22 +15,32 @@
  * @author    PayGreen <contact@paygreen.fr>
  * @copyright 2014 - 2021 Watt Is It
  * @license   https://opensource.org/licenses/mit-license.php MIT License X11
- * @version   2.1.1
+ * @version   2.2.0
  *
  */
 
+namespace PGI\Module\PGMagentoPayment\Services\Officers;
+
+use PGI\Module\APIPayment\Components\Replies\Transaction as TransactionReplyComponent;
+use PGI\Module\PGMagento\Components\Provisioners\PostPayment as PostPaymentProvisionerComponent;
+use PGI\Module\PGShop\Interfaces\Officers\PostPaymentOfficerInterface;
+use PGI\Module\PGShop\Interfaces\Provisioners\PostPaymentProvisionerInterface;
+use PGI\Module\PGShop\Services\Managers\OrderManager;
+use PGI\Module\PGSystem\Foundations\AbstractObject;
+use Exception;
+
 /**
- * Class PGMagentoPaymentServicesOfficersPostPaymentOfficer
- * @package PGMagento\Services\Officers
+ * Class PostPaymentOfficer
+ * @package PGMagentoPayment\Services\Officers
  */
-class PGMagentoPaymentServicesOfficersPostPaymentOfficer extends PGSystemFoundationsObject implements PGShopInterfacesOfficersPostPayment
+class PostPaymentOfficer extends AbstractObject implements PostPaymentOfficerInterface
 {
     /**
      * @inheritdoc
      */
-    public function getOrder(PGShopInterfacesProvisionersPostPayment $provisioner)
+    public function getOrder(PostPaymentProvisionerInterface $provisioner)
     {
-        /** @var PGShopServicesManagersOrder $orderManager */
+        /** @var OrderManager $orderManager */
         $orderManager = $this->getService('manager.order');
 
         return $orderManager->getByPrimary((int) $provisioner->getTransaction()->getOrderPrimary());
@@ -40,7 +50,7 @@ class PGMagentoPaymentServicesOfficersPostPaymentOfficer extends PGSystemFoundat
      * @inheritdoc
      * @throws Exception
      */
-    public function createOrder(PGShopInterfacesProvisionersPostPayment $provisioner, $state)
+    public function createOrder(PostPaymentProvisionerInterface $provisioner, $state)
     {
         throw new Exception("Magento does not require creation of order.");
     }
@@ -49,8 +59,8 @@ class PGMagentoPaymentServicesOfficersPostPaymentOfficer extends PGSystemFoundat
      * @inheritdoc
      * @throws Exception
      */
-    public function buildPostPaymentProvisioner($pid, APIPaymentComponentsRepliesTransaction $transaction)
+    public function buildPostPaymentProvisioner($pid, TransactionReplyComponent $transaction)
     {
-        return new PGMagentoPaymentProvisionersPostPaymentProvisioner($pid, $transaction);
+        return new PostPaymentProvisionerComponent($pid, $transaction);
     }
 }

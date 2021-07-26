@@ -14,7 +14,7 @@
  * @author    PayGreen <contact@paygreen.fr>
  * @copyright 2014 - 2021 Watt Is It
  * @license   https://opensource.org/licenses/mit-license.php MIT License X11
- * @version   2.1.1
+ * @version   2.2.0
  *
  *}
 <form{foreach $attr as $key => $val} {$key}="{$val}"{/foreach}>
@@ -33,17 +33,21 @@
 
         <div class="pgblock pg__flex-1 pgblock__max__md">
             <h2>
-                {'pages.buttons.shared.payment.title'|pgtrans}
+                {'pages.buttons.shared.payment_type.title'|pgtrans}
             </h2>
 
             {foreach $columns.payment as $name}
                 {if isset($fields[$name])}{$fields[$name]}{/if}
             {/foreach}
+
+            {foreach $payment_codes as $code}
+                <div id="pg_payment_text_{$code}" name="payment_text">{'pages.buttons.shared.payment_type.'|cat:$code|pgtranslines}</div>
+            {/foreach}
         </div>
 
         <div class="pgblock pg__flex-1 pgblock__max__md">
             <h2>
-                {'pages.buttons.shared.other.title'|pgtrans}
+                {'pages.buttons.shared.payment_mode.title'|pgtrans}
             </h2>
 
             {foreach $columns.other as $name}

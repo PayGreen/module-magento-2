@@ -15,49 +15,54 @@
  * @author    PayGreen <contact@paygreen.fr>
  * @copyright 2014 - 2021 Watt Is It
  * @license   https://opensource.org/licenses/mit-license.php MIT License X11
- * @version   2.1.1
+ * @version   2.2.0
  *
  */
 
+namespace PGI\Module\PGPayment\Interfaces\Repositories;
+
+use PGI\Module\PGDatabase\Interfaces\RepositoryInterface;
+use PGI\Module\PGPayment\Interfaces\Entities\ProcessingEntityInterface;
+
 /**
- * Interface PGPaymentInterfacesRepositoriesProcessingRepositoryInterface
+ * Interface ProcessingRepositoryInterface
  * @package PGPayment\Interfaces\Repositories
  */
-interface PGPaymentInterfacesRepositoriesProcessingRepositoryInterface extends PGDatabaseInterfacesRepository
+interface ProcessingRepositoryInterface extends RepositoryInterface
 {
     /**
      * @param int $id
-     * @return PGPaymentInterfacesEntitiesProcessingInterface|null
+     * @return ProcessingEntityInterface|null
      */
     public function findByPrimary($id);
 
     /**
      * @param string $reference
-     * @return PGPaymentInterfacesEntitiesProcessingInterface|null
+     * @return ProcessingEntityInterface|null
      */
     public function findSuccessedProcessingByReference($reference);
 
     /**
      * @param array $data
-     * @return PGPaymentInterfacesEntitiesProcessingInterface
+     * @return ProcessingEntityInterface
      */
     public function create(array $data);
 
     /**
-     * @param PGPaymentInterfacesEntitiesProcessingInterface $processing
+     * @param ProcessingEntityInterface $processing
      * @return bool
      */
-    public function insert(PGPaymentInterfacesEntitiesProcessingInterface $processing);
+    public function insert(ProcessingEntityInterface $processing);
 
     /**
-     * @param PGPaymentInterfacesEntitiesProcessingInterface $processing
+     * @param ProcessingEntityInterface $processing
      * @return bool
      */
-    public function update(PGPaymentInterfacesEntitiesProcessingInterface $processing);
+    public function update(ProcessingEntityInterface $processing);
 
     /**
-     * @param PGPaymentInterfacesEntitiesProcessingInterface $processing
+     * @param ProcessingEntityInterface $processing
      * @return bool
      */
-    public function delete(PGPaymentInterfacesEntitiesProcessingInterface $processing);
+    public function delete(ProcessingEntityInterface $processing);
 }

@@ -15,15 +15,23 @@
  * @author    PayGreen <contact@paygreen.fr>
  * @copyright 2014 - 2021 Watt Is It
  * @license   https://opensource.org/licenses/mit-license.php MIT License X11
- * @version   2.1.1
+ * @version   2.2.0
  *
  */
 
+namespace PGI\Module\PGServer\Foundations;
+
+use PGI\Module\PGFramework\Services\Notifier;
+use PGI\Module\PGServer\Foundations\AbstractController;
+use PGI\Module\PGServer\Foundations\AbstractResponse;
+use PGI\Module\PGServer\Interfaces\ActionInterface;
+use Exception;
+
 /**
- * Class PGServerFoundationsAbstractAction
+ * Class AbstractAction
  * @package PGServer\Foundations
  */
-abstract class PGServerFoundationsAbstractAction extends PGServerFoundationsAbstractController implements PGServerInterfacesActionInterface
+abstract class AbstractAction extends AbstractController implements ActionInterface
 {
     private static $DEFAULT = array(
         'success_message' => 'actions.server.notices.result.success'
@@ -60,7 +68,7 @@ abstract class PGServerFoundationsAbstractAction extends PGServerFoundationsAbst
     {
         if ($success && $this->hasConfig('success_message')) {
             $this->getNotifier()->add(
-                PGFrameworkServicesNotifier::STATE_SUCCESS,
+                Notifier::STATE_SUCCESS,
                 $this->getConfig('success_message')
             );
         }
@@ -110,7 +118,7 @@ abstract class PGServerFoundationsAbstractAction extends PGServerFoundationsAbst
     }
 
     /**
-     * @return PGServerFoundationsAbstractResponse
+     * @return AbstractResponse
      */
     abstract public function process();
 }

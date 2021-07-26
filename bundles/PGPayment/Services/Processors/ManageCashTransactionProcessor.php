@@ -15,28 +15,34 @@
  * @author    PayGreen <contact@paygreen.fr>
  * @copyright 2014 - 2021 Watt Is It
  * @license   https://opensource.org/licenses/mit-license.php MIT License X11
- * @version   2.1.1
+ * @version   2.2.0
  *
  */
 
+namespace PGI\Module\PGPayment\Services\Processors;
+
+use PGI\Module\PGPayment\Components\Tasks\TransactionManagement as TransactionManagementTaskComponent;
+use PGI\Module\PGPayment\Foundations\Processors\AbstractTransactionManagementProcessor;
+use PGI\Module\PGPayment\Services\Facades\PaygreenFacade;
+
 /**
- * Class PGPaymentServicesProcessorsManageCashTransactionProcessor
+ * Class ManageCashTransactionProcessor
  * @package PGPayment\Services\Processors
  */
-class PGPaymentServicesProcessorsManageCashTransactionProcessor extends PGPaymentFoundationsProcessorsAbstractTransactionManagementProcessor
+class ManageCashTransactionProcessor extends AbstractTransactionManagementProcessor
 {
     const PROCESSOR_NAME = 'CashTransaction';
 
-    protected function defaultStep(PGPaymentComponentsTasksTransactionManagement $task)
+    protected function defaultStep(TransactionManagementTaskComponent $task)
     {
         switch ($task->getTransaction()->getResult()->getStatus()) {
-            case PGPaymentServicesPaygreenFacade::STATUS_REFUSED:
-            case PGPaymentServicesPaygreenFacade::STATUS_CANCELLING:
+            case PaygreenFacade::STATUS_REFUSED:
+            case PaygreenFacade::STATUS_CANCELLING:
                 $this->pushStep('refusedPayment');
                 break;
 
-            case PGPaymentServicesPaygreenFacade::STATUS_WAITING:
-            case PGPaymentServicesPaygreenFacade::STATUS_SUCCESSED:
+            case PaygreenFacade::STATUS_WAITING:
+            case PaygreenFacade::STATUS_SUCCESSED:
                 $this->pushSteps(array(
                     array('setOrderStatus', array('VALIDATE')),
                     'checkTestingMode',

@@ -15,17 +15,23 @@
  * @author    PayGreen <contact@paygreen.fr>
  * @copyright 2014 - 2021 Watt Is It
  * @license   https://opensource.org/licenses/mit-license.php MIT License X11
- * @version   2.1.1
+ * @version   2.2.0
  *
  */
 
+namespace PGI\Module\PGView\Services;
+
+use PGI\Module\PGView\Interfaces\ViewInterface;
+use PGI\Module\PGView\Services\Handlers\ViewHandler;
+use Exception;
+
 /**
- * Class PGViewServicesView
+ * Class View
  * @package PGView\Services
  */
-class PGViewServicesView implements PGViewInterfacesViewInterface
+class View implements ViewInterface
 {
-    /** @var PGViewServicesHandlersViewHandler */
+    /** @var ViewHandler */
     private $viewHandler;
 
     private $data = array();
@@ -33,15 +39,15 @@ class PGViewServicesView implements PGViewInterfacesViewInterface
     private $template;
 
     /**
-     * @param PGViewServicesHandlersViewHandler $viewHandler
+     * @param ViewHandler $viewHandler
      */
-    public function setViewHandler(PGViewServicesHandlersViewHandler $viewHandler)
+    public function setViewHandler(ViewHandler $viewHandler)
     {
         $this->viewHandler = $viewHandler;
     }
 
     /**
-     * @return PGViewServicesHandlersViewHandler $viewHandler
+     * @return ViewHandler $viewHandler
      */
     public function getViewHandler()
     {

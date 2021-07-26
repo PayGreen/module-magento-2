@@ -15,23 +15,26 @@
  * @author    PayGreen <contact@paygreen.fr>
  * @copyright 2014 - 2021 Watt Is It
  * @license   https://opensource.org/licenses/mit-license.php MIT License X11
- * @version   2.1.1
+ * @version   2.2.0
  *
  */
 
-use Magento\Framework\App\ObjectManager;
-use Magento\Framework\View\Asset\Repository;
+namespace PGI\Module\PGMagento\Services\Handlers;
+
+use Magento\Framework\App\ObjectManager as LocalObjectManager;
+use Magento\Framework\View\Asset\Repository as LocalRepository;
+use PGI\Module\PGModule\Services\Handlers\StaticFileHandler as ParentStaticFileHandler;
 
 /**
- * Class PGMagentoServicesHandlersStaticFileHandler
+ * Class StaticFileHandler
  * @package PGMagento\Services\Handlers
  */
-class PGMagentoServicesHandlersStaticFileHandler extends PGModuleServicesHandlersStaticFile
+class StaticFileHandler extends ParentStaticFileHandler
 {
-    /** @var Repository */
+    /** @var LocalRepository */
     private $assetRepository;
 
-    public function setAssetRepository(ObjectManager $objectManager)
+    public function setAssetRepository(LocalObjectManager $objectManager)
     {
         $this->assetRepository = $objectManager->get('Magento\Framework\View\Asset\Repository');
     }
@@ -42,7 +45,7 @@ class PGMagentoServicesHandlersStaticFileHandler extends PGModuleServicesHandler
      */
     public function getUrl($filename)
     {
-        $separator = Repository::FILE_ID_SEPARATOR;
+        $separator = LocalRepository::FILE_ID_SEPARATOR;
         $module = $this->config['module'];
 
         return $this->assetRepository->getUrl($module . $separator . $this->config['folder'] . $filename);

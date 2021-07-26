@@ -15,23 +15,32 @@
  * @author    PayGreen <contact@paygreen.fr>
  * @copyright 2014 - 2021 Watt Is It
  * @license   https://opensource.org/licenses/mit-license.php MIT License X11
- * @version   2.1.1
+ * @version   2.2.0
  *
  */
 
+namespace PGI\Module\PGServer\Services\Factories;
+
+use PGI\Module\PGModule\Services\Logger;
+use PGI\Module\PGServer\Components\Stage as StageComponent;
+use PGI\Module\PGServer\Components\Trigger as TriggerComponent;
+use PGI\Module\PGServer\Services\Factories\TriggerFactory;
+use PGI\Module\PGSystem\Foundations\AbstractObject;
+use Exception;
+
 /**
- * Class PGServerServicesFactoriesStageFactory
+ * Class StageFactory
  * @package PGServer\Services\Factories
  */
-class PGServerServicesFactoriesStageFactory extends PGSystemFoundationsObject
+class StageFactory extends AbstractObject
 {
-    /** @var PGServerServicesFactoriesTriggerFactory */
+    /** @var TriggerFactory */
     private $triggerFactory;
 
-    /** @var PGModuleServicesLogger */
+    /** @var Logger */
     private $logger;
 
-    public function __construct(PGServerServicesFactoriesTriggerFactory $triggerFactory, PGModuleServicesLogger $logger)
+    public function __construct(TriggerFactory $triggerFactory, Logger $logger)
     {
         $this->triggerFactory = $triggerFactory;
         $this->logger = $logger;
@@ -39,12 +48,12 @@ class PGServerServicesFactoriesStageFactory extends PGSystemFoundationsObject
 
     /**
      * @param array $config
-     * @return PGServerComponentsStage
+     * @return StageComponent
      * @throws Exception
      */
     public function buildStage(array $config)
     {
-        /** @var PGServerComponentsTrigger|null $trigger */
+        /** @var TriggerComponent|null $trigger */
         $trigger = null;
 
         if (array_key_exists('if', $config)) {
@@ -55,8 +64,8 @@ class PGServerServicesFactoriesStageFactory extends PGSystemFoundationsObject
             throw new Exception("Server Stage definition must contains 'do' key.");
         }
 
-        /** @var PGServerComponentsStage $stage */
-        $stage = new PGServerComponentsStage($config, $trigger);
+        /** @var StageComponent $stage */
+        $stage = new StageComponent($config, $trigger);
 
         $stage->setLogger($this->logger);
 

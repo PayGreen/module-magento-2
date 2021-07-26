@@ -15,22 +15,35 @@
  * @author    PayGreen <contact@paygreen.fr>
  * @copyright 2014 - 2021 Watt Is It
  * @license   https://opensource.org/licenses/mit-license.php MIT License X11
- * @version   2.1.1
+ * @version   2.2.0
  *
  */
 
-use Magento\Quote\Model\QuoteFactory;
-use Magento\Sales\Model\Order;
+namespace PGI\Module\PGMagento\Entities;
+
+use Magento\Quote\Model\QuoteFactory as LocalQuoteFactory;
+use Magento\Sales\Model\Order as Localorder;
+use PGI\Module\PGDatabase\Foundations\AbstractEntityWrapped;
+use PGI\Module\PGMagento\Entities\Address;
+use PGI\Module\PGMagento\Entities\Carrier;
+use PGI\Module\PGMagento\Entities\Cart;
+use PGI\Module\PGMagento\Entities\Customer;
+use PGI\Module\PGModule\Services\Logger;
+use PGI\Module\PGShop\Interfaces\Entities\CartEntityInterface;
+use PGI\Module\PGShop\Interfaces\Entities\OrderEntityInterface;
+use PGI\Module\PGShop\Services\Mappers\OrderStateMapper;
+use PGI\Module\PGShop\Tools\Price as PriceTool;
+use Exception;
 
 /**
- * Class PGMagentoEntitiesOrder
+ * Class Order
  *
  * @package PGMagento\Entities
- * @method Order getLocalEntity()
+ * @method LocalOrder getLocalEntity()
  */
-class PGMagentoEntitiesOrder extends PGDatabaseFoundationsEntityWrapped implements PGShopInterfacesEntitiesOrder
+class Order extends AbstractEntityWrapped implements OrderEntityInterface
 {
-    /** @var PGShopInterfacesEntitiesCart|null */
+    /** @var CartEntityInterface|null */
     private $cart = null;
 
     public function __construct($localEntity)
@@ -61,7 +74,7 @@ class PGMagentoEntitiesOrder extends PGDatabaseFoundationsEntityWrapped implemen
      */
     public function getTotalAmount()
     {
-        return PGShopToolsPrice::toInteger($this->getLocalEntity()->getGrandTotal());
+        return PriceTool::toInteger($this->getLocalEntity()->getGrandTotal());
     }
 
     /**
@@ -69,7 +82,7 @@ class PGMagentoEntitiesOrder extends PGDatabaseFoundationsEntityWrapped implemen
      */
     public function getTotalUserAmount()
     {
-        return PGShopToolsPrice::fixFloat($this->getLocalEntity()->getGrandTotal());
+        return PriceTool::fixFloat($this->getLocalEntity()->getGrandTotal());
     }
 
     /**
@@ -85,7 +98,7 @@ class PGMagentoEntitiesOrder extends PGDatabaseFoundationsEntityWrapped implemen
      */
     public function getCustomer()
     {
-        return new PGMagentoEntitiesCustomer($this->getLocalEntity());
+        return new Customer($this->getLocalEntity());
     }
 
     /**
@@ -96,7 +109,7 @@ class PGMagentoEntitiesOrder extends PGDatabaseFoundationsEntityWrapped implemen
         $localBillingAddress = $this->getLocalEntity()->getBillingAddress();
 
         return $localBillingAddress
-            ? new PGMagentoEntitiesAddress($localBillingAddress)
+            ? new Address($localBillingAddress)
             : null;
     }
 
@@ -112,7 +125,7 @@ class PGMagentoEntitiesOrder extends PGDatabaseFoundationsEntityWrapped implemen
 
     public function getState()
     {
-        /** @var PGShopServicesOrderStateMapper $orderStateMapper */
+        /** @var OrderStateMapper $orderStateMapper */
         $orderStateMapper = $this->getService('mapper.order_state');
 
         return $orderStateMapper->getOrderState(array(
@@ -136,7 +149,7 @@ class PGMagentoEntitiesOrder extends PGDatabaseFoundationsEntityWrapped implemen
      */
     protected function loadCart()
     {
-        /** @var QuoteFactory $quoteFactory */
+        /** @var LocalQuoteFactory $quoteFactory */
         $quoteFactory = $this->getService('magento')->get('Magento\Quote\Model\QuoteFactory');
 
         $quote_id = $this->getLocalEntity()->getQuoteId();
@@ -147,7 +160,7 @@ class PGMagentoEntitiesOrder extends PGDatabaseFoundationsEntityWrapped implemen
 
         $localCart = $quoteFactory->create()->load($quote_id);
 
-        $this->cart = new PGMagentoEntitiesCart($localCart);
+        $this->cart = new Cart($localCart);
     }
 
     /**
@@ -157,7 +170,7 @@ class PGMagentoEntitiesOrder extends PGDatabaseFoundationsEntityWrapped implemen
     {
         $shippingAddress = $this->getLocalEntity()->getShippingAddress();
 
-        return new PGMagentoEntitiesAddress($shippingAddress);
+        return new Address($shippingAddress);
     }
 
     /**
@@ -165,7 +178,7 @@ class PGMagentoEntitiesOrder extends PGDatabaseFoundationsEntityWrapped implemen
      */
     public function getCarrier()
     {
-         /** @var PGModuleServicesLogger $logger */
+         /** @var Logger $logger */
         $logger = $this->getService('logger');
 
         $carrierName = $this->getLocalEntity()->getShippingMethod();
@@ -175,7 +188,7 @@ class PGMagentoEntitiesOrder extends PGDatabaseFoundationsEntityWrapped implemen
 
             return null;
         } else {
-            return new PGMagentoEntitiesCarrier($carrierName);
+            return new Carrier($carrierName);
         }
     }
 

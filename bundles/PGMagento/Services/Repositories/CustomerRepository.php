@@ -15,22 +15,26 @@
  * @author    PayGreen <contact@paygreen.fr>
  * @copyright 2014 - 2021 Watt Is It
  * @license   https://opensource.org/licenses/mit-license.php MIT License X11
- * @version   2.1.1
+ * @version   2.2.0
  *
  */
 
-use Magento\Customer\Model\Customer;
+namespace PGI\Module\PGMagento\Services\Repositories;
 
+use Magento\Customer\Model\Customer as LocalCustomer;
+use PGI\Module\PGMagento\Entities\Customer;
+use PGI\Module\PGMagento\Foundations\AbstractMagentoRepository;
+use PGI\Module\PGShop\Interfaces\Repositories\CustomerRepositoryInterface;
 
 /**
- * Class PGMagentoServicesRepositoriesCustomerRepository
+ * Class CustomerRepository
  *
  * @package PGMagento\Services\Repositories
  *
- * @method Magento\Customer\Model\Customer createLocalEntity()
+ * @method LocalCustomer createLocalEntity()
  *
  */
-class PGMagentoServicesRepositoriesCustomerRepository extends PGMagentoFoundationsAbstractMagentoRepository implements PGShopInterfacesRepositoriesCustomer
+class CustomerRepository extends AbstractMagentoRepository implements CustomerRepositoryInterface
 {
     /**
      * @inheritDoc
@@ -51,7 +55,7 @@ class PGMagentoServicesRepositoriesCustomerRepository extends PGMagentoFoundatio
     {
         $customer = null;
 
-        /** @var Customer $localCustomer */
+        /** @var LocalCustomer $localCustomer */
         $localCustomer = $this->getService('magento')->get('\Magento\Customer\Model\Customer');
 
         if ($localCustomer !== null) {
@@ -63,6 +67,6 @@ class PGMagentoServicesRepositoriesCustomerRepository extends PGMagentoFoundatio
 
     public function wrapEntity($localEntity)
     {
-        return new PGMagentoEntitiesCustomer($localEntity);
+        return new Customer($localEntity);
     }
 }

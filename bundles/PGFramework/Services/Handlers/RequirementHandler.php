@@ -15,20 +15,26 @@
  * @author    PayGreen <contact@paygreen.fr>
  * @copyright 2014 - 2021 Watt Is It
  * @license   https://opensource.org/licenses/mit-license.php MIT License X11
- * @version   2.1.1
+ * @version   2.2.0
  *
  */
 
+namespace PGI\Module\PGFramework\Services\Handlers;
+
+use PGI\Module\PGFramework\Components\Aggregator as AggregatorComponent;
+use PGI\Module\PGFramework\Interfaces\RequirementInterface;
+use Exception;
+
 /**
- * Class PGFrameworkServicesHandlersRequirementHandler
+ * Class RequirementHandler
  * @package PGFramework\Services\Handlers
  */
-class PGFrameworkServicesHandlersRequirementHandler
+class RequirementHandler
 {
-    /** @var PGFrameworkComponentsAggregator */
+    /** @var AggregatorComponent */
     private $requirementAggregator;
 
-    public function __construct(PGFrameworkComponentsAggregator $requirementAggregator)
+    public function __construct(AggregatorComponent $requirementAggregator)
     {
         $this->requirementAggregator = $requirementAggregator;
     }
@@ -41,7 +47,7 @@ class PGFrameworkServicesHandlersRequirementHandler
      */
     public function isFulfilled($name, $arguments = null)
     {
-        /** @var PGFrameworkInterfacesRequirementInterface $requirement */
+        /** @var RequirementInterface $requirement */
         $requirement = $this->requirementAggregator->getService($name);
 
         return $requirement->isFulfilled($arguments);

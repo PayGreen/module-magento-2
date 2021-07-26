@@ -15,22 +15,26 @@
  * @author    PayGreen <contact@paygreen.fr>
  * @copyright 2014 - 2021 Watt Is It
  * @license   https://opensource.org/licenses/mit-license.php MIT License X11
- * @version   2.1.1
+ * @version   2.2.0
  *
  */
 
-use Magento\Framework\App\ObjectManager;
-use Magento\Framework\Data\Form\FormKey;
+namespace PGI\Module\PGMagento\Services\Builders;
 
-class PGMagentoServicesBuildersFormBuilder extends PGFormServicesFormBuilder
+use Magento\Framework\App\ObjectManager as LocalObjectManager;
+use Magento\Framework\Data\Form\FormKey as LocalFormKey;
+use PGI\Module\PGForm\Services\Builders\FormBuilder as ParentFormBuilder;
+use Exception;
+
+class FormBuilder extends ParentFormBuilder
 {
-    /** @var FormKey */
+    /** @var LocalFormKey */
     protected $formKey;
 
     /**
-     * @param ObjectManager $objectManager
+     * @param LocalObjectManager $objectManager
      */
-    public function setFormKey(ObjectManager $objectManager)
+    public function setFormKey(LocalObjectManager $objectManager)
     {
         $this->formKey = $objectManager->get('Magento\Framework\Data\Form\FormKey');
     }

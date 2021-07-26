@@ -15,32 +15,44 @@
  * @author    PayGreen <contact@paygreen.fr>
  * @copyright 2014 - 2021 Watt Is It
  * @license   https://opensource.org/licenses/mit-license.php MIT License X11
- * @version   2.1.1
+ * @version   2.2.0
  *
  */
 
+namespace PGI\Module\PGView\Services\Handlers;
+
+use PGI\Module\PGFramework\Services\Handlers\RequirementHandler;
+use PGI\Module\PGModule\Components\Output as OutputComponent;
+use PGI\Module\PGServer\Components\Requests\Internal as InternalRequestComponent;
+use PGI\Module\PGServer\Components\Responses\Template as TemplateResponseComponent;
+use PGI\Module\PGServer\Foundations\AbstractResponse;
+use PGI\Module\PGServer\Services\Dispatcher;
+use PGI\Module\PGSystem\Components\Bag as BagComponent;
+use PGI\Module\PGView\Services\Handlers\ViewHandler;
+use Exception;
+
 /**
- * Class PGViewServicesHandlersBlockHandler
+ * Class BlockHandler
  * @package PGView\Services\Handlers
  */
-class PGViewServicesHandlersBlockHandler
+class BlockHandler
 {
-    /** @var PGViewServicesHandlersViewHandler */
+    /** @var ViewHandler */
     private $viewHandler;
 
-    /** @var PGFrameworkServicesHandlersRequirementHandler */
+    /** @var RequirementHandler */
     private $requirementHandler;
 
-    /** @var PGServerServicesDispatcher */
+    /** @var Dispatcher */
     private $dispatcher;
 
-    /** @var PGSystemComponentsBag[] */
+    /** @var BagComponent[] */
     private $config = array();
 
     public function __construct(
-        PGViewServicesHandlersViewHandler $viewHandler,
-        PGFrameworkServicesHandlersRequirementHandler $requirementHandler,
-        PGServerServicesDispatcher $dispatcher,
+        ViewHandler $viewHandler,
+        RequirementHandler $requirementHandler,
+        Dispatcher $dispatcher,
         array $config
     ) {
         $this->viewHandler = $viewHandler;
@@ -48,18 +60,18 @@ class PGViewServicesHandlersBlockHandler
         $this->dispatcher = $dispatcher;
 
         foreach ($config as $name => $block) {
-            $this->config[$name] = new PGSystemComponentsBag($block);
+            $this->config[$name] = new BagComponent($block);
         }
     }
 
     /**
      * @param string $target
-     * @return PGModuleComponentsOutput
+     * @return OutputComponent
      * @throws Exception
      */
     public function getBlocks($target)
     {
-        $aggregatedBlocks = new PGModuleComponentsOutput();
+        $aggregatedBlocks = new OutputComponent();
 
         foreach($this->buildBlocks($target) as $block) {
             $aggregatedBlocks->merge($block);
@@ -70,7 +82,7 @@ class PGViewServicesHandlersBlockHandler
 
     /**
      * @param string $target
-     * @return PGModuleComponentsOutput[]
+     * @return OutputComponent[]
      * @throws Exception
      */
     private function buildBlocks($target)
@@ -108,20 +120,20 @@ class PGViewServicesHandlersBlockHandler
     }
 
     /**
-     * @param PGSystemComponentsBag $config
+     * @param BagComponent $config
      * @param array $data
-     * @return PGModuleComponentsOutput
+     * @return OutputComponent
      * @throws Exception
      */
-    private function buildBlock(PGSystemComponentsBag $config, array $data)
+    private function buildBlock(BagComponent $config, array $data)
     {
         if ($config['view']) {
             $html = $this->viewHandler->renderView($config['view'], $data);
-            $block = new PGModuleComponentsOutput($html);
+            $block = new OutputComponent($html);
         } elseif ($config['template']) {
             $data['content'] = $this->viewHandler->renderTemplate($config['template'], $data);
             $html = $this->viewHandler->renderTemplate('blocks/layout', $data);
-            $block = new PGModuleComponentsOutput($html);
+            $block = new OutputComponent($html);
         } elseif ($config['action']) {
             $block = $this->buildActionBlock($config['action'], $data);
         } else {
@@ -133,12 +145,12 @@ class PGViewServicesHandlersBlockHandler
 
     private function buildActionBlock($action, array $data)
     {
-        $request = new PGServerComponentsRequestsInternalRequest($data);
+        $request = new InternalRequestComponent($data);
 
-        /** @var PGServerFoundationsAbstractResponse $response */
+        /** @var AbstractResponse $response */
         $response = $this->dispatcher->dispatch($request, $action);
 
-        if (!$response instanceof PGServerComponentsResponsesTemplateResponse) {
+        if (!$response instanceof TemplateResponseComponent) {
             throw new Exception("Block handler only support TemplateResponses.");
         }
 
@@ -146,7 +158,7 @@ class PGViewServicesHandlersBlockHandler
 
         $html = $this->viewHandler->renderTemplate('blocks/layout', $data);
 
-        $output = new PGModuleComponentsOutput($html);
+        $output = new OutputComponent($html);
 
         $output->addResources($response->getResources());
 

@@ -15,17 +15,23 @@
  * @author    PayGreen <contact@paygreen.fr>
  * @copyright 2014 - 2021 Watt Is It
  * @license   https://opensource.org/licenses/mit-license.php MIT License X11
- * @version   2.1.1
+ * @version   2.2.0
  *
  */
 
+namespace PGI\Module\PGMagento\Entities;
+
+use PGI\Module\PGShop\Foundations\Entities\AbstractProductEntity;
+use PGI\Module\PGShop\Interfaces\Entities\ProductEntityInterface;
+use PGI\Module\PGShop\Services\Managers\CategoryManager;
+
 /**
- * Class PGMagentoEntitiesProduct
+ * Class Product
  *
  * @package PGMagento\Entities
  * @method Magento\Catalog\Model\Product getLocalEntity()
  */
-class PGMagentoEntitiesProduct extends PGShopFoundationsEntitiesProduct implements PGShopInterfacesEntitiesProduct
+class Product extends AbstractProductEntity implements ProductEntityInterface
 {
     protected function hydrateFromLocalEntity($localEntity)
     {
@@ -58,7 +64,7 @@ class PGMagentoEntitiesProduct extends PGShopFoundationsEntitiesProduct implemen
      */
     protected function preloadCategories()
     {
-        /** @var PGShopServicesManagersCategory $categoryManager */
+        /** @var CategoryManager $categoryManager */
         $categoryManager = $this->getService('manager.category');
 
         $categories = array();

@@ -15,15 +15,22 @@
  * @author    PayGreen <contact@paygreen.fr>
  * @copyright 2014 - 2021 Watt Is It
  * @license   https://opensource.org/licenses/mit-license.php MIT License X11
- * @version   2.1.1
+ * @version   2.2.0
  *
  */
 
+namespace PGI\Module\PGModule\Services;
+
+use PGI\Module\PGModule\Interfaces\Officers\SettingsOfficerInterface;
+use PGI\Module\PGSystem\Foundations\AbstractObject;
+use PGI\Module\PGSystem\Services\Container;
+use Exception;
+
 /**
- * Class PGModuleServicesSettings
+ * Class Settings
  * @package PGModule\Services
  */
-class PGModuleServicesSettings extends PGSystemFoundationsObject
+class Settings extends AbstractObject
 {
     /** @var array */
     private $definitions;
@@ -31,24 +38,24 @@ class PGModuleServicesSettings extends PGSystemFoundationsObject
     /** @var array */
     private $config;
 
-    /** @var PGSystemServicesContainer */
+    /** @var Container */
     private $container;
 
-    /** @var PGModuleInterfacesOfficersSettings */
+    /** @var SettingsOfficerInterface */
     private $basicOfficer = null;
 
-    /** @var PGModuleInterfacesOfficersSettings */
+    /** @var SettingsOfficerInterface */
     private $globalOfficer = null;
 
-    /** @var PGModuleInterfacesOfficersSettings */
+    /** @var SettingsOfficerInterface */
     private $systemOfficer = null;
 
     /**
-     * PGModuleServicesSettings constructor.
-     * @param PGSystemServicesContainer $container
+     * Settings constructor.
+     * @param Container $container
      * @param array $config
      */
-    public function __construct(PGSystemServicesContainer $container, array $config)
+    public function __construct(Container $container, array $config)
     {
         $this->container = $container;
         $this->config = $config;
@@ -177,12 +184,12 @@ class PGModuleServicesSettings extends PGSystemFoundationsObject
 
     /**
      * @param string $name
-     * @return PGModuleInterfacesOfficersSettings
+     * @return SettingsOfficerInterface
      * @throws Exception
      */
     protected function getOfficer($name)
     {
-        /** @var PGModuleInterfacesOfficersSettings $officer */
+        /** @var SettingsOfficerInterface $officer */
         $officer = null;
 
         if ($this->isSystem($name)) {

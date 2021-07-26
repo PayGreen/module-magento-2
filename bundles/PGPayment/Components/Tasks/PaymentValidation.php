@@ -15,15 +15,22 @@
  * @author    PayGreen <contact@paygreen.fr>
  * @copyright 2014 - 2021 Watt Is It
  * @license   https://opensource.org/licenses/mit-license.php MIT License X11
- * @version   2.1.1
+ * @version   2.2.0
  *
  */
 
+namespace PGI\Module\PGPayment\Components\Tasks;
+
+use PGI\Module\APIPayment\Components\Replies\Transaction as TransactionReplyComponent;
+use PGI\Module\PGFramework\Foundations\AbstractTask;
+use PGI\Module\PGShop\Interfaces\Entities\OrderEntityInterface;
+use PGI\Module\PGShop\Interfaces\Provisioners\PostPaymentProvisionerInterface;
+
 /**
- * Class PGPaymentComponentsTasksPaymentValidation
+ * Class PaymentValidation
  * @package PGPayment\Components\Tasks
  */
-class PGPaymentComponentsTasksPaymentValidation extends PGFrameworkFoundationsTask
+class PaymentValidation extends AbstractTask
 {
     const STATE_PID_LOCKED = 11;
     const STATE_PAYMENT_ABORTED = 12;
@@ -37,16 +44,16 @@ class PGPaymentComponentsTasksPaymentValidation extends PGFrameworkFoundationsTa
     /** @var string */
     private $pid;
 
-    /** @var APIPaymentComponentsRepliesTransaction */
+    /** @var TransactionReplyComponent */
     private $transaction;
 
-    /** @var PGShopInterfacesEntitiesOrder|null  */
+    /** @var OrderEntityInterface|null  */
     private $order = null;
 
     /** @var string|null */
     private $finalOrderState = null;
 
-    /** @var PGShopInterfacesProvisionersPostPayment|null */
+    /** @var PostPaymentProvisionerInterface|null */
     private $postPaymentProvisioner = null;
 
     public function __construct($pid)
@@ -68,7 +75,7 @@ class PGPaymentComponentsTasksPaymentValidation extends PGFrameworkFoundationsTa
     }
 
     /**
-     * @return APIPaymentComponentsRepliesTransaction
+     * @return TransactionReplyComponent
      */
     public function getTransaction()
     {
@@ -76,7 +83,7 @@ class PGPaymentComponentsTasksPaymentValidation extends PGFrameworkFoundationsTa
     }
 
     /**
-     * @param APIPaymentComponentsRepliesTransaction $transaction
+     * @param TransactionReplyComponent $transaction
      */
     public function setTransaction($transaction)
     {
@@ -84,7 +91,7 @@ class PGPaymentComponentsTasksPaymentValidation extends PGFrameworkFoundationsTa
     }
 
     /**
-     * @return PGShopInterfacesEntitiesOrder|null
+     * @return OrderEntityInterface|null
      */
     public function getOrder()
     {
@@ -92,7 +99,7 @@ class PGPaymentComponentsTasksPaymentValidation extends PGFrameworkFoundationsTa
     }
 
     /**
-     * @param PGShopInterfacesEntitiesOrder|null $order
+     * @param OrderEntityInterface|null $order
      * @return self
      */
     public function setOrder($order = null)
@@ -119,7 +126,7 @@ class PGPaymentComponentsTasksPaymentValidation extends PGFrameworkFoundationsTa
     }
 
     /**
-     * @return PGShopInterfacesProvisionersPostPayment|null
+     * @return PostPaymentProvisionerInterface|null
      */
     public function getProvisioner()
     {
@@ -127,7 +134,7 @@ class PGPaymentComponentsTasksPaymentValidation extends PGFrameworkFoundationsTa
     }
 
     /**
-     * @param PGShopInterfacesProvisionersPostPayment|null $postPaymentProvisioner
+     * @param PostPaymentProvisionerInterface|null $postPaymentProvisioner
      */
     public function setProvisioner($postPaymentProvisioner)
     {

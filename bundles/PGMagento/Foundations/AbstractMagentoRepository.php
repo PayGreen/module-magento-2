@@ -15,19 +15,27 @@
  * @author    PayGreen <contact@paygreen.fr>
  * @copyright 2014 - 2021 Watt Is It
  * @license   https://opensource.org/licenses/mit-license.php MIT License X11
- * @version   2.1.1
+ * @version   2.2.0
  *
  */
 
-use Magento\Framework\ObjectManagerInterface;
-use Magento\Framework\Model\ResourceModel\Db\AbstractDb;
-use Magento\Framework\Model\AbstractModel;
+namespace PGI\Module\PGMagento\Foundations;
+
+use Magento\Framework\Exception\LocalizedException as LocalLocalizedException;
+use Magento\Framework\ObjectManagerInterface as LocalObjectManagerInterface;
+use Magento\Framework\Model\ResourceModel\Db\AbstractDb as LocalAbstractDb;
+use Magento\Framework\Model\AbstractModel as LocalAbstractModel;
+use PGI\Module\PGDatabase\Interfaces\RepositoryWrappedEntityInterface;
+use PGI\Module\PGDatabase\Services\Handlers\DatabaseHandler;
+use PGI\Module\PGModule\Services\Logger;
+use PGI\Module\PGSystem\Foundations\AbstractObject;
+use Exception;
 
 /**
- * Class PGMagentoFoundationsAbstractMagentoRepository
+ * Class AbstractMagentoRepository
  * @package PGMagento\Foundations
  */
-abstract class PGMagentoFoundationsAbstractMagentoRepository extends PGSystemFoundationsObject implements PGDatabaseInterfacesRepositoryWrappedEntity
+abstract class AbstractMagentoRepository extends AbstractObject implements RepositoryWrappedEntityInterface
 {
     /**
      * @inheritdoc
@@ -41,7 +49,7 @@ abstract class PGMagentoFoundationsAbstractMagentoRepository extends PGSystemFou
     {
         $entities = array();
 
-        /** @var AbstractModel $localEmptyEntity */
+        /** @var LocalAbstractModel $localEmptyEntity */
         foreach ($localEntities as $localEmptyEntity) {
             $entities[] = $this->findByPrimary($localEmptyEntity->getId());
         }
@@ -58,11 +66,11 @@ abstract class PGMagentoFoundationsAbstractMagentoRepository extends PGSystemFou
     }
 
     /**
-     * @return AbstractDb
+     * @return LocalAbstractDb
      */
     protected function getResourceObject()
     {
-        /** @var ObjectManagerInterface $objectManager */
+        /** @var LocalObjectManagerInterface $objectManager */
         $objectManager = $this->getService('magento');
 
         return $objectManager->get(static::RESOURCE);
@@ -78,10 +86,10 @@ abstract class PGMagentoFoundationsAbstractMagentoRepository extends PGSystemFou
 
     protected function findByField($field, $data)
     {
-        /** @var AbstractDb $resource */
+        /** @var LocalAbstractDb $resource */
         $resource = $this->getResourceObject();
 
-        /** @var AbstractModel $entity */
+        /** @var LocalAbstractModel $entity */
         $entity = $this->createLocalEntity();
 
         $resource->load($entity, $data, $field);
@@ -91,12 +99,12 @@ abstract class PGMagentoFoundationsAbstractMagentoRepository extends PGSystemFou
 
     protected function createLocalEntity(array $data = [])
     {
-        /** @var ObjectManagerInterface $objectManager */
+        /** @var LocalObjectManagerInterface $objectManager */
         $objectManager = $this->getService('magento');
 
         $factory = $objectManager->get($this->getEntityClass() . 'Factory');
 
-        /** @var AbstractModel $localEntity */
+        /** @var LocalAbstractModel $localEntity */
         $localEntity = $factory->create();
 
         foreach($data as $key => $val) {
@@ -107,16 +115,16 @@ abstract class PGMagentoFoundationsAbstractMagentoRepository extends PGSystemFou
     }
 
     /**
-     * @param AbstractModel $localEntity
+     * @param LocalAbstractModel $localEntity
      * @return bool
      * @throws Exception
      */
-    protected function insertLocalEntity(AbstractModel $localEntity)
+    protected function insertLocalEntity(LocalAbstractModel $localEntity)
     {
-        /** @var PGModuleServicesLogger $logger */
+        /** @var Logger $logger */
         $logger = $this->getService('logger');
 
-        /** @var AbstractDb $resource */
+        /** @var LocalAbstractDb $resource */
         $resource = $this->getResourceObject();
 
         $primaryColumn = $resource->getIdFieldName();
@@ -138,16 +146,16 @@ abstract class PGMagentoFoundationsAbstractMagentoRepository extends PGSystemFou
     }
 
     /**
-     * @param AbstractModel $localEntity
+     * @param LocalAbstractModel $localEntity
      * @return bool
      * @throws Exception
      */
-    protected function updateLocalEntity(AbstractModel $localEntity)
+    protected function updateLocalEntity(LocalAbstractModel $localEntity)
     {
-        /** @var PGModuleServicesLogger $logger */
+        /** @var Logger $logger */
         $logger = $this->getService('logger');
 
-        /** @var AbstractDb $resource */
+        /** @var LocalAbstractDb $resource */
         $resource = $this->getResourceObject();
 
         $primaryColumn = $resource->getIdFieldName();
@@ -169,16 +177,16 @@ abstract class PGMagentoFoundationsAbstractMagentoRepository extends PGSystemFou
     }
 
     /**
-     * @param AbstractModel $localEntity
+     * @param LocalAbstractModel $localEntity
      * @return bool
      * @throws Exception
      */
-    protected function deleteLocalEntity(AbstractModel $localEntity)
+    protected function deleteLocalEntity(LocalAbstractModel $localEntity)
     {
-        /** @var PGModuleServicesLogger $logger */
+        /** @var Logger $logger */
         $logger = $this->getService('logger');
 
-        /** @var AbstractDb $resource */
+        /** @var LocalAbstractDb $resource */
         $resource = $this->getResourceObject();
 
         $primaryColumn = $resource->getIdFieldName();
@@ -201,7 +209,7 @@ abstract class PGMagentoFoundationsAbstractMagentoRepository extends PGSystemFou
 
     /**
      * @return string
-     * @throws \Magento\Framework\Exception\LocalizedException
+     * @throws LocalLocalizedException
      */
     protected function getTable()
     {
@@ -209,11 +217,11 @@ abstract class PGMagentoFoundationsAbstractMagentoRepository extends PGSystemFou
     }
 
     /**
-     * @return PGDatabaseServicesDatabaseHandler
+     * @return DatabaseHandler
      */
     protected function getDatabaseHandler()
     {
-        /** @var PGDatabaseServicesDatabaseHandler $databaseHandler */
+        /** @var DatabaseHandler $databaseHandler */
         $databaseHandler = $this->getService('handler.database');
 
         return $databaseHandler;

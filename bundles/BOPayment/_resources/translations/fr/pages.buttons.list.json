@@ -5,7 +5,12 @@
         "breadcrumb": "Tous mes boutons",
         "title": "Tous mes boutons de paiement",
         "error": "La configuration de ce bouton de paiement est incorrecte.",
-        "image": "Image de votre bouton de paiement"
+        "image": "Image de votre bouton de paiement",
+        "logo": "Image",
+        "name": "Libellé",
+        "payment_mode": "Mode de paiement",
+        "payment_type": "Moyen de paiement",
+        "actions": "Actions"
       }
     }
   }

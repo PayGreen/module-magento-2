@@ -15,15 +15,22 @@
  * @author    PayGreen <contact@paygreen.fr>
  * @copyright 2014 - 2021 Watt Is It
  * @license   https://opensource.org/licenses/mit-license.php MIT License X11
- * @version   2.1.1
+ * @version   2.2.0
  *
  */
 
+namespace PGI\Module\PGPayment\Entities;
+
+use PGI\Module\PGDatabase\Foundations\AbstractEntityPersisted;
+use PGI\Module\PGIntl\Services\Handlers\TranslationHandler;
+use PGI\Module\PGPayment\Interfaces\Entities\ButtonEntityInterface;
+use PGI\Module\PGShop\Interfaces\Repositories\CategoryRepositoryInterface;
+
 /**
- * Class PGPaymentEntitiesButton
+ * Class Button
  * @package PGPayment\Entities
  */
-class PGPaymentEntitiesButton extends PGDatabaseFoundationsEntityPersisted implements PGPaymentInterfacesEntitiesButtonInterface
+class Button extends AbstractEntityPersisted implements ButtonEntityInterface
 {
     private $label = null;
 
@@ -42,7 +49,7 @@ class PGPaymentEntitiesButton extends PGDatabaseFoundationsEntityPersisted imple
     public function getLabel()
     {
         if (($this->label === null) && ($this->id() > 0)) {
-            /** @var PGIntlServicesHandlersTranslationHandler $translationHandler */
+            /** @var TranslationHandler $translationHandler */
             $translationHandler = $this->getService('handler.translation');
 
             $key = 'button-' . $this->id();
@@ -127,24 +134,6 @@ class PGPaymentEntitiesButton extends PGDatabaseFoundationsEntityPersisted imple
     /**
      * @inheritdoc
      */
-    public function getIntegration()
-    {
-        return (string) $this->get('integration');
-    }
-
-    /**
-     * @inheritdoc
-     */
-    public function setIntegration($integration)
-    {
-        $this->set('integration', $integration);
-
-        return $this;
-    }
-
-    /**
-     * @inheritdoc
-     */
     public function getMaxAmount()
     {
         return (int) $this->get('maxAmount');
@@ -221,7 +210,7 @@ class PGPaymentEntitiesButton extends PGDatabaseFoundationsEntityPersisted imple
      */
     public function getFilteredCategories()
     {
-        /** @var PGShopInterfacesRepositoriesCategory $categoryRepository */
+        /** @var CategoryRepositoryInterface $categoryRepository */
         $categoryRepository = $this->getService('repository.category');
 
         if (!empty($this->filteredCategories)) {

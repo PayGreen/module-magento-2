@@ -15,38 +15,47 @@
  * @author    PayGreen <contact@paygreen.fr>
  * @copyright 2014 - 2021 Watt Is It
  * @license   https://opensource.org/licenses/mit-license.php MIT License X11
- * @version   2.1.1
+ * @version   2.2.0
  *
  */
 
+namespace PGI\Module\PGIntl\Services\Handlers;
+
+use PGI\Module\PGIntl\Services\Handlers\LocaleHandler;
+use PGI\Module\PGIntl\Services\Managers\TranslationManager;
+use PGI\Module\PGModule\Services\Logger;
+use PGI\Module\PGShop\Interfaces\Entities\ShopEntityInterface;
+use PGI\Module\PGSystem\Foundations\AbstractObject;
+use Exception;
+
 /**
- * Class PGIntlServicesHandlersTranslationHandler
+ * Class TranslationHandler
  * @package PGIntl\Services\Handlers
  */
-class PGIntlServicesHandlersTranslationHandler extends PGSystemFoundationsObject
+class TranslationHandler extends AbstractObject
 {
     private $config = array();
 
-    /** @var PGIntlServicesManagersTranslationManager */
+    /** @var TranslationManager */
     private $translationManager;
 
-    /** @var PGIntlServicesHandlersLocaleHandler */
+    /** @var LocaleHandler */
     private $localeHandler;
 
-    /** @var PGModuleServicesLogger */
+    /** @var Logger */
     private $logger;
 
     /**
-     * PGIntlServicesHandlersTranslationHandler constructor.
-     * @param PGIntlServicesManagersTranslationManager $translationManager
-     * @param PGIntlServicesHandlersLocaleHandler $localeHandler
-     * @param PGModuleServicesLogger $logger
+     * TranslationHandler constructor.
+     * @param TranslationManager $translationManager
+     * @param LocaleHandler $localeHandler
+     * @param Logger $logger
      * @param array $config
      */
     public function __construct(
-        PGIntlServicesManagersTranslationManager $translationManager,
-        PGIntlServicesHandlersLocaleHandler $localeHandler,
-        PGModuleServicesLogger $logger,
+        TranslationManager $translationManager,
+        LocaleHandler $localeHandler,
+        Logger $logger,
         array $config
     ) {
         $this->translationManager = $translationManager;
@@ -112,11 +121,11 @@ class PGIntlServicesHandlersTranslationHandler extends PGSystemFoundationsObject
     }
 
     /**
-     * @param PGShopInterfacesEntitiesShop|null $shop
+     * @param ShopEntityInterface|null $shop
      * @param array $codes
      * @return bool
      */
-    public function insertDefaultTranslations(PGShopInterfacesEntitiesShop $shop = null, array $codes = array())
+    public function insertDefaultTranslations(ShopEntityInterface $shop = null, array $codes = array())
     {
         $this->logger->notice("Install default translations.");
 

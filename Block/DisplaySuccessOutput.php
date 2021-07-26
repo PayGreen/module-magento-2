@@ -15,29 +15,29 @@
  * @author    PayGreen <contact@paygreen.fr>
  * @copyright 2014 - 2021 Watt Is It
  * @license   https://opensource.org/licenses/mit-license.php MIT License X11
- * @version   2.1.1
+ * @version   2.2.0
  *
  */
 
 namespace Paygreen\Payment\Block;
 
 use Exception;
-use Magento\Checkout\Model\Session as CheckoutSession;
-use Magento\Framework\View\Element\Template;
-use Magento\Framework\View\Element\Template\Context;
-use PGSystemServicesContainer;
-use PGModuleServicesLogger;
-use PGModuleServicesProvidersOutput;
-use PGMagentoServicesRepositoriesOrderRepository;
-use Magento\Sales\Model\Order;
-use PGModuleComponentsOutput;
+use Magento\Checkout\Model\Session as LocalSession;
+use Magento\Framework\View\Element\Template as LocalTemplate;
+use Magento\Framework\View\Element\Template\Context as LocalContext;
+use Magento\Sales\Model\Order as LocalOrder;
+use PGI\Module\PGMagento\Services\Repositories\OrderRepository;
+use PGI\Module\PGModule\Components\Output as OutputComponent;
+use PGI\Module\PGModule\Services\Logger;
+use PGI\Module\PGModule\Services\Providers\OutputProvider;
+use PGI\Module\PGSystem\Services\Container;
 
-class DisplaySuccessOutput extends Template
+class DisplaySuccessOutput extends LocalTemplate
 {
-    /** @var CheckoutSession  */
+    /** @var LocalSession  */
     protected $checkoutSession;
 
-    public function __construct(CheckoutSession $checkoutSession, Context $context)
+    public function __construct(LocalSession $checkoutSession, LocalContext $context)
     {
         parent::__construct($context);
 
@@ -48,12 +48,12 @@ class DisplaySuccessOutput extends Template
 
     protected function getService($name)
     {
-        return PGSystemServicesContainer::getInstance()->get($name);
+        return Container::getInstance()->get($name);
     }
 
     protected function _toHtml()
     {
-        /** @var PGModuleServicesLogger $logger */
+        /** @var Logger $logger */
         $logger = $this->getService('logger.view');
 
         $content = parent::_toHtml();
@@ -71,29 +71,29 @@ class DisplaySuccessOutput extends Template
      */
     public function getContent()
     {
-        /** @var PGModuleServicesLogger $logger */
+        /** @var Logger $logger */
         $logger = $this->getService('logger.view');
 
-        /** @var PGModuleServicesProvidersOutput */
+        /** @var OutputProvider */
         $outputProvider = $this->getService('provider.output');
 
-        /** @var Order $localOrder */
+        /** @var LocalOrder $localOrder */
         $localOrder = $this->checkoutSession->getLastRealOrder();
 
         $content = '';
 
-        if ($localOrder instanceof Order) {
-            $logger->debug("Build FUNNEL.CONFIRMATION channel for order #{$localOrder->getId()}");
-
-            /** @var PGMagentoServicesRepositoriesOrderRepository $orderRepository */
+        if ($localOrder instanceof LocalOrder) {
+            /** @var OrderRepository $orderRepository */
             $orderRepository = $this->getService('repository.order');
 
-            /** @var PGModuleComponentsOutput $output */
-            $output = $outputProvider->getZoneOutput('FUNNEL.CONFIRMATION', array(
+            /** @var OutputComponent $output */
+            $output = $outputProvider->getZoneOutput('FRONT.FUNNEL.CONFIRMATION', array(
                 'order' => $orderRepository->wrapEntity($localOrder)
             ));
 
             $content = $output->getContent();
+        } else {
+            $logger->warning("LocalOrder is not correctly defined in Build FRONT.FUNNEL.CONFIRMATION");
         }
 
         return $content;

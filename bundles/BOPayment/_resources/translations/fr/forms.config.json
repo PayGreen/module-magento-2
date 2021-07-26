@@ -26,6 +26,14 @@
           "label": "Synchroniser les confirmations de livraison",
           "help": "Si vous activez cette option, alors dès qu'une commande payable à la livraison sera marquée comme 'terminée', une notification sera automatiquement envoyée au serveur PayGreen afin de valider le paiement."
         },
+        "behavior_payment_insite": {
+          "label": "Interface de paiement",
+          "help": "Pour activer l'interface de paiement in site, le module In Site doit être activé via votre back-office PayGreen. Par ailleurs, l'URL de votre e-commerce doit être en HTTPS (SSL activé), sans quoi votre bouton de paiement sera désactivé.",
+          "values": {
+            "external": "Page de paiement déportée",
+            "insite": "Interface de paiement in site"
+          }
+        },
         "behavior_display_footer": {
           "label": "Afficher le logo de sécurité PayGreen",
           "help": "Si cette option est activée, le logo Paiement sécurisé par PayGreen sera affiché en bas de votre site."

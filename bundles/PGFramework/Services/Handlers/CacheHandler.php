@@ -15,15 +15,23 @@
  * @author    PayGreen <contact@paygreen.fr>
  * @copyright 2014 - 2021 Watt Is It
  * @license   https://opensource.org/licenses/mit-license.php MIT License X11
- * @version   2.1.1
+ * @version   2.2.0
  *
  */
 
+namespace PGI\Module\PGFramework\Services\Handlers;
+
+use PGI\Module\PGModule\Services\Logger;
+use PGI\Module\PGModule\Services\Settings;
+use PGI\Module\PGSystem\Services\Pathfinder;
+use DateTime;
+use Exception;
+
 /**
- * Class PGFrameworkServicesHandlersCacheHandler
+ * Class CacheHandler
  * @package PGFramework\Services\Handlers
  */
-class PGFrameworkServicesHandlersCacheHandler
+class CacheHandler
 {
     const DEFAULT_TTL = 60;
 
@@ -33,20 +41,20 @@ class PGFrameworkServicesHandlersCacheHandler
     /** @var array */
     private $cached_entries = array();
 
-    /** @var PGSystemServicesPathfinder */
+    /** @var Pathfinder */
     private $pathfinder;
 
-    /** @var PGModuleServicesSettings */
+    /** @var Settings */
     private $settings;
 
-    /** @var PGModuleServicesLogger */
+    /** @var Logger */
     private $logger;
 
     public function __construct(
         array $parameters,
-        PGSystemServicesPathfinder $pathfinder,
-        PGModuleServicesSettings $settings,
-        PGModuleServicesLogger $logger
+        Pathfinder $pathfinder,
+        Settings $settings,
+        Logger $logger
     ) {
         $this->entries = $parameters['entries'];
 

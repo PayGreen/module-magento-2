@@ -15,29 +15,37 @@
  * @author    PayGreen <contact@paygreen.fr>
  * @copyright 2014 - 2021 Watt Is It
  * @license   https://opensource.org/licenses/mit-license.php MIT License X11
- * @version   2.1.1
+ * @version   2.2.0
  *
  */
 
+namespace PGI\Module\PGIntl\Services\Handlers;
+
+use PGI\Module\PGModule\Services\Logger;
+use PGI\Module\PGModule\Services\Settings;
+use PGI\Module\PGSystem\Foundations\AbstractObject;
+use PGI\Module\PGSystem\Services\Pathfinder;
+use Exception;
+
 /**
- * Class PGIntlServicesHandlersCacheTranslationHandler
+ * Class CacheTranslationHandler
  * @package PGIntl\Services\Handlers
  */
-class PGIntlServicesHandlersCacheTranslationHandler extends PGSystemFoundationsObject
+class CacheTranslationHandler extends AbstractObject
 {
-    /** @var PGSystemServicesPathfinder */
+    /** @var Pathfinder */
     private $pathfinder;
 
-    /** @var PGModuleServicesSettings */
+    /** @var Settings */
     private $settings;
 
-    /** @var PGModuleServicesLogger */
+    /** @var Logger */
     private $logger;
 
     public function __construct(
-        PGSystemServicesPathfinder $pathfinder,
-        PGModuleServicesSettings $settings,
-        PGModuleServicesLogger $logger
+        Pathfinder $pathfinder,
+        Settings $settings,
+        Logger $logger
     ) {
         $this->pathfinder = $pathfinder;
         $this->settings = $settings;

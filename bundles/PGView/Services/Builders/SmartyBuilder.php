@@ -15,30 +15,38 @@
  * @author    PayGreen <contact@paygreen.fr>
  * @copyright 2014 - 2021 Watt Is It
  * @license   https://opensource.org/licenses/mit-license.php MIT License X11
- * @version   2.1.1
+ * @version   2.2.0
  *
  */
 
+namespace PGI\Module\PGView\Services\Builders;
+
+use PGI\Module\PGSystem\Components\Bag as BagComponent;
+use PGI\Module\PGSystem\Services\Pathfinder;
+use PGI\Module\PGView\Interfaces\Builders\SmartyBuilderInterface;
+use Exception;
+use Smarty;
+
 /**
- * Class PGViewServicesBuildersSmartyBuilder
+ * Class SmartyBuilder
  * @package PGView\Services\Builders
  */
-class PGViewServicesBuildersSmartyBuilder implements PGViewInterfacesSmartyBuilderInterface
+class SmartyBuilder implements SmartyBuilderInterface
 {
-    /** @var PGSystemServicesPathfinder */
+    /** @var Pathfinder */
     protected $pathfinder;
 
     protected $config;
 
     /**
-     * PGViewServicesBuildersSmartyBuilder constructor.
-     * @param PGSystemServicesPathfinder $pathfinder
+     * SmartyBuilder constructor.
+     * @param Pathfinder $pathfinder
      * @param array $config
      */
-    public function __construct(PGSystemServicesPathfinder $pathfinder, array $config)
+    public function __construct(Pathfinder $pathfinder, array $config)
     {
         $this->pathfinder = $pathfinder;
-        $this->config = new PGSystemComponentsBag($config);
+        $this->config = new BagComponent($config);
     }
 
     /**

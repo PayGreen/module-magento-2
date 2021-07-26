@@ -15,15 +15,21 @@
  * @author    PayGreen <contact@paygreen.fr>
  * @copyright 2014 - 2021 Watt Is It
  * @license   https://opensource.org/licenses/mit-license.php MIT License X11
- * @version   2.1.1
+ * @version   2.2.0
  *
  */
 
+namespace PGI\Module\PGForm\Foundations;
+
+use PGI\Module\PGForm\Interfaces\ValidatorInterface;
+use PGI\Module\PGIntl\Components\Translation as TranslationComponent;
+use Exception;
+
 /**
- * Class PGFormFoundationsAbstractValidator
+ * Class AbstractValidator
  * @package PGForm\Foundations
  */
-abstract class PGFormFoundationsAbstractValidator implements PGFormInterfacesValidatorInterface
+abstract class AbstractValidator implements ValidatorInterface
 {
     const ERROR_TRANSLATION_KEY = null;
 
@@ -46,7 +52,7 @@ abstract class PGFormFoundationsAbstractValidator implements PGFormInterfacesVal
         if (!$test) {
             $this->errors[] = $this->getErrorText();
         } else {
-            /** @var PGFormInterfacesValidatorInterface $child */
+            /** @var ValidatorInterface $child */
             foreach ($this->children as $child) {
                 if (!$child->validate($value)->isValid()) {
                     $this->errors = array_merge($this->errors, $child->getErrors());
@@ -128,7 +134,7 @@ abstract class PGFormFoundationsAbstractValidator implements PGFormInterfacesVal
             throw new Exception("Validator has no error text defined.");
         }
 
-        return new PGIntlComponentsTranslation($text, $this->getErrorData());
+        return new TranslationComponent($text, $this->getErrorData());
     }
 
     protected function getErrorData()
@@ -136,7 +142,7 @@ abstract class PGFormFoundationsAbstractValidator implements PGFormInterfacesVal
         return array();
     }
 
-    public function addChild(PGFormInterfacesValidatorInterface $child)
+    public function addChild(ValidatorInterface $child)
     {
         $this->children[] = $child;
     }

@@ -15,15 +15,20 @@
  * @author    PayGreen <contact@paygreen.fr>
  * @copyright 2014 - 2021 Watt Is It
  * @license   https://opensource.org/licenses/mit-license.php MIT License X11
- * @version   2.1.1
+ * @version   2.2.0
  *
  */
 
+namespace PGI\Module\PGIntl\Entities;
+
+use PGI\Module\PGDatabase\Foundations\AbstractEntityPersisted;
+use PGI\Module\PGIntl\Interfaces\Entities\TranslationEntityInterface;
+
 /**
- * Class PGIntlEntitiesTranslation
+ * Class Translation
  * @package PGIntl\Entities
  */
-class PGIntlEntitiesTranslation extends PGDatabaseFoundationsEntityPersisted implements PGIntlInterfacesEntitiesTranslationInterface
+class Translation extends AbstractEntityPersisted implements TranslationEntityInterface
 {
     /**
      * @inheritDoc

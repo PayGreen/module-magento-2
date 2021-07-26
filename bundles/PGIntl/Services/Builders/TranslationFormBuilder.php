@@ -15,15 +15,23 @@
  * @author    PayGreen <contact@paygreen.fr>
  * @copyright 2014 - 2021 Watt Is It
  * @license   https://opensource.org/licenses/mit-license.php MIT License X11
- * @version   2.1.1
+ * @version   2.2.0
  *
  */
 
+namespace PGI\Module\PGIntl\Services\Builders;
+
+use PGI\Module\PGForm\Interfaces\FormInterface;
+use PGI\Module\PGForm\Services\Builders\FieldBuilder;
+use PGI\Module\PGForm\Services\Builders\FormBuilder;
+use Exception;
+use ReflectionException;
+
 /**
- * Class PGIntlServicesBuildersTranslationFormBuilder
+ * Class TranslationFormBuilder
  * @package PGIntl\Services\Builders
  */
-class PGIntlServicesBuildersTranslationFormBuilder
+class TranslationFormBuilder
 {
     const TRANSLATION_FORM_NAME = 'translations';
 
@@ -31,18 +39,18 @@ class PGIntlServicesBuildersTranslationFormBuilder
         'model' => 'collection.translations'
     );
 
-    /** @var PGFormServicesFormBuilder */
+    /** @var FormBuilder */
     private $formBuilder;
 
-    /** @var PGFormServicesFieldBuilder */
+    /** @var FieldBuilder */
     private $fieldBuilder;
 
     /** @var array */
     private $translations;
 
     public function __construct(
-        PGFormServicesFormBuilder $formBuilder,
-        PGFormServicesFieldBuilder $fieldBuilder,
+        FormBuilder $formBuilder,
+        FieldBuilder $fieldBuilder,
         array $translations
     ) {
         $this->formBuilder = $formBuilder;
@@ -53,7 +61,7 @@ class PGIntlServicesBuildersTranslationFormBuilder
     /**
      * @param string $tag
      * @param array $values
-     * @return PGFormInterfacesFormInterface
+     * @return FormInterface
      * @throws ReflectionException
      * @throws Exception
      */

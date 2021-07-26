@@ -15,15 +15,20 @@
  * @author    PayGreen <contact@paygreen.fr>
  * @copyright 2014 - 2021 Watt Is It
  * @license   https://opensource.org/licenses/mit-license.php MIT License X11
- * @version   2.1.1
+ * @version   2.2.0
  *
  */
 
+namespace PGI\Module\PGForm\Interfaces;
+
+use PGI\Module\PGForm\Interfaces\Views\FormViewInterface;
+use PGI\Module\PGFramework\Components\Aggregator as AggregatorComponent;
+
 /**
- * Interface PGFormInterfacesElementInterface
+ * Interface ElementInterface
  * @package PGForm\Interfaces
  */
-interface PGFormInterfacesElementInterface
+interface ElementInterface
 {
     /**
      * @return bool
@@ -36,12 +41,12 @@ interface PGFormInterfacesElementInterface
     public function getErrors();
 
     /**
-     * @return PGFormInterfacesFormViewInterface
+     * @return FormViewInterface
      */
     public function buildView();
 
     /**
-     * @param PGFrameworkComponentsAggregator $viewAggregator
+     * @param AggregatorComponent $viewAggregator
      */
     public function setViewAggregator($viewAggregator);
 }

@@ -5,7 +5,12 @@
         "breadcrumb": "All my buttons",
         "title": "All my payment buttons",
         "error": "Your payment button's config is incorrect.",
-        "image": "Your payment button's picture"
+        "image": "Your payment button's picture",
+        "logo": "Picture",
+        "name": "Wording",
+        "payment_mode": "Payment mode",
+        "payment_type": "Payment method",
+        "actions": "Actions"
       }
     }
   }

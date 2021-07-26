@@ -15,22 +15,28 @@
  * @author    PayGreen <contact@paygreen.fr>
  * @copyright 2014 - 2021 Watt Is It
  * @license   https://opensource.org/licenses/mit-license.php MIT License X11
- * @version   2.1.1
+ * @version   2.2.0
  *
  */
 
+namespace PGI\Module\PGForm\Services\Validators;
+
+use PGI\Module\PGForm\Foundations\AbstractValidator;
+use PGI\Module\PGFramework\Services\Handlers\SelectHandler;
+use Exception;
+
 /**
- * Class PGFormServicesValidatorsArrayInValidator
+ * Class ArrayInValidator
  * @package PGForm\Services\Validators
  */
-class PGFormServicesValidatorsArrayInValidator extends PGFormFoundationsAbstractValidator
+class ArrayInValidator extends AbstractValidator
 {
     const ERROR_TRANSLATION_KEY = 'errors.validator.array_in';
 
-    /** @var PGFrameworkServicesHandlersSelectHandler */
+    /** @var SelectHandler */
     private $selectHandler;
 
-    public function __construct(PGFrameworkServicesHandlersSelectHandler $selectHandler)
+    public function __construct(SelectHandler $selectHandler)
     {
         $this->selectHandler = $selectHandler;
     }

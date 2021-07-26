@@ -15,17 +15,27 @@
  * @author    PayGreen <contact@paygreen.fr>
  * @copyright 2014 - 2021 Watt Is It
  * @license   https://opensource.org/licenses/mit-license.php MIT License X11
- * @version   2.1.1
+ * @version   2.2.0
  *
  */
 
+namespace PGI\Module\PGPayment\Foundations\Processors;
+
+use PGI\Module\PGModule\Services\Logger;
+use PGI\Module\PGPayment\Components\Tasks\TransactionManagement as TransactionManagementTaskComponent;
+use PGI\Module\PGPayment\Foundations\Processors\AbstractTransactionManagementProcessor;
+use PGI\Module\PGPayment\Services\Facades\PaygreenFacade;
+use PGI\Module\PGPayment\Services\Managers\RecurringTransactionManager;
+use PGI\Module\PGShop\Interfaces\Entities\OrderEntityInterface;
+use Exception;
+
 /**
- * Class PGPaymentFoundationsProcessorsAbstractPaymentRecordManagementProcessor
+ * Class AbstractPaymentRecordManagementProcessor
  * @package PGPayment\Foundations\Processors
  */
-abstract class PGPaymentFoundationsProcessorsAbstractPaymentRecordManagementProcessor extends PGPaymentFoundationsProcessorsAbstractTransactionManagementProcessor
+abstract class AbstractPaymentRecordManagementProcessor extends AbstractTransactionManagementProcessor
 {
-    protected function defaultStep(PGPaymentComponentsTasksTransactionManagement $task)
+    protected function defaultStep(TransactionManagementTaskComponent $task)
     {
         switch ($task->getTransaction()->getTransactionType()) {
             case 'PR':
@@ -45,15 +55,15 @@ abstract class PGPaymentFoundationsProcessorsAbstractPaymentRecordManagementProc
         }
     }
 
-    protected function paymentRecordWorkflowStep(PGPaymentComponentsTasksTransactionManagement $task)
+    protected function paymentRecordWorkflowStep(TransactionManagementTaskComponent $task)
     {
         switch ($task->getTransaction()->getResult()->getStatus()) {
-            case PGPaymentServicesPaygreenFacade::STATUS_REFUSED:
-            case PGPaymentServicesPaygreenFacade::STATUS_CANCELLING:
+            case PaygreenFacade::STATUS_REFUSED:
+            case PaygreenFacade::STATUS_CANCELLING:
                 $this->pushStep('refusedPayment');
                 break;
 
-            case PGPaymentServicesPaygreenFacade::STATUS_SUCCESSED:
+            case PaygreenFacade::STATUS_SUCCESSED:
                 $this->pushSteps(array(
                     array('setOrderStatus', array('WAIT')),
                     'saveOrder',
@@ -71,11 +81,11 @@ abstract class PGPaymentFoundationsProcessorsAbstractPaymentRecordManagementProc
         }
     }
 
-    protected function transactionWorkflowStep(PGPaymentComponentsTasksTransactionManagement $task)
+    protected function transactionWorkflowStep(TransactionManagementTaskComponent $task)
     {
         switch ($task->getTransaction()->getResult()->getStatus()) {
-            case PGPaymentServicesPaygreenFacade::STATUS_REFUSED:
-            case PGPaymentServicesPaygreenFacade::STATUS_CANCELLING:
+            case PaygreenFacade::STATUS_REFUSED:
+            case PaygreenFacade::STATUS_CANCELLING:
                 $this->pushSteps(array(
                     'refusedTransaction',
                     array('setStatus', array(
@@ -85,7 +95,7 @@ abstract class PGPaymentFoundationsProcessorsAbstractPaymentRecordManagementProc
 
                 break;
 
-            case PGPaymentServicesPaygreenFacade::STATUS_SUCCESSED:
+            case PaygreenFacade::STATUS_SUCCESSED:
                 $this->pushSteps(array(
                     array('setOrderStatus', array('VALIDATE')),
                     'checkTestingMode',
@@ -103,9 +113,9 @@ abstract class PGPaymentFoundationsProcessorsAbstractPaymentRecordManagementProc
         }
     }
 
-    protected function loadRequiredOrderStep(PGPaymentComponentsTasksTransactionManagement $task)
+    protected function loadRequiredOrderStep(TransactionManagementTaskComponent $task)
     {
-        /** @var PGShopInterfacesEntitiesOrder|null $order */
+        /** @var OrderEntityInterface|null $order */
         $order = $this->officer->getOrder($task->getProvisioner());
 
         if ($order === null) {
@@ -115,12 +125,12 @@ abstract class PGPaymentFoundationsProcessorsAbstractPaymentRecordManagementProc
         }
     }
 
-    protected function insertRecurringTransactionStep(PGPaymentComponentsTasksTransactionManagement $task)
+    protected function insertRecurringTransactionStep(TransactionManagementTaskComponent $task)
     {
-        /** @var PGModuleServicesLogger $logger */
+        /** @var Logger $logger */
         $logger = $this->getService('logger');
 
-        /** @var PGPaymentServicesManagersRecurringTransactionManager $recurringTransactionManager */
+        /** @var RecurringTransactionManager $recurringTransactionManager */
         $recurringTransactionManager = $this->getService('manager.recurring_transaction');
 
         $transaction = $recurringTransactionManager->getByPid($task->getPid());
@@ -146,12 +156,12 @@ abstract class PGPaymentFoundationsProcessorsAbstractPaymentRecordManagementProc
         }
     }
 
-    protected function finalizeRecurringTransactionStep(PGPaymentComponentsTasksTransactionManagement $task)
+    protected function finalizeRecurringTransactionStep(TransactionManagementTaskComponent $task)
     {
-        /** @var PGModuleServicesLogger $logger */
+        /** @var Logger $logger */
         $logger = $this->getService('logger');
 
-        /** @var PGPaymentServicesManagersRecurringTransactionManager $recurringTransactionManager */
+        /** @var RecurringTransactionManager $recurringTransactionManager */
         $recurringTransactionManager = $this->getService('manager.recurring_transaction');
 
         try {

@@ -15,17 +15,25 @@
  * @author    PayGreen <contact@paygreen.fr>
  * @copyright 2014 - 2021 Watt Is It
  * @license   https://opensource.org/licenses/mit-license.php MIT License X11
- * @version   2.1.1
+ * @version   2.2.0
  *
  */
 
+namespace PGI\Module\PGPayment\Entities;
+
+use PGI\Module\PGDatabase\Foundations\AbstractEntityPersisted;
+use PGI\Module\PGPayment\Interfaces\Entities\TransactionEntityInterface;
+use PGI\Module\PGShop\Interfaces\Entities\OrderEntityInterface;
+use PGI\Module\PGShop\Services\Managers\OrderManager;
+use DateTime;
+
 /**
- * Class PGPaymentEntitiesTransaction
+ * Class Transaction
  * @package PGPayment\Entities
  */
-class PGPaymentEntitiesTransaction extends PGDatabaseFoundationsEntityPersisted implements PGPaymentInterfacesEntitiesTransactionInterface
+class Transaction extends AbstractEntityPersisted implements TransactionEntityInterface
 {
-    /** @var PGShopInterfacesEntitiesOrder */
+    /** @var OrderEntityInterface */
     private $order = null;
 
     /**
@@ -65,7 +73,7 @@ class PGPaymentEntitiesTransaction extends PGDatabaseFoundationsEntityPersisted 
 
     protected function loadOrder()
     {
-        /** @var PGShopServicesManagersOrder $orderManager */
+        /** @var OrderManager $orderManager */
         $orderManager = $this->getService('manager.order');
 
         $id_order = $this->getOrderPrimary();
@@ -73,7 +81,7 @@ class PGPaymentEntitiesTransaction extends PGDatabaseFoundationsEntityPersisted 
         $this->order = $orderManager->getByPrimary($id_order);
     }
 
-    public function setOrder(PGShopInterfacesEntitiesOrder $order)
+    public function setOrder(OrderEntityInterface $order)
     {
         $this->order = $order;
 

@@ -15,17 +15,27 @@
  * @author    PayGreen <contact@paygreen.fr>
  * @copyright 2014 - 2021 Watt Is It
  * @license   https://opensource.org/licenses/mit-license.php MIT License X11
- * @version   2.1.1
+ * @version   2.2.0
  *
  */
 
+namespace PGI\Module\PGMagento\Entities;
+
+use PGI\Module\PGMagento\Entities\Address;
+use PGI\Module\PGMagento\Entities\Carrier;
+use PGI\Module\PGMagento\Entities\CartItem;
+use PGI\Module\PGMagento\Entities\Currency;
+use PGI\Module\PGModule\Services\Logger;
+use PGI\Module\PGShop\Foundations\Entities\AbstractCartEntity;
+use PGI\Module\PGShop\Tools\Price as PriceTool;
+
 /**
- * Class PGMagentoEntitiesCart
+ * Class Cart
  *
  * @package PGMagento\Entities
  * @method Magento\Quote\Model\Quote getLocalEntity()
  */
-class PGMagentoEntitiesCart extends PGShopFoundationsEntitiesCart
+class Cart extends AbstractCartEntity
 {
     protected function hydrateFromLocalEntity($localEntity)
     {
@@ -44,7 +54,7 @@ class PGMagentoEntitiesCart extends PGShopFoundationsEntitiesCart
     {
         $price = $this->getLocalEntity()->getGrandTotal();
 
-        return PGShopToolsPrice::toInteger($price);
+        return PriceTool::toInteger($price);
     }
 
     /**
@@ -54,7 +64,7 @@ class PGMagentoEntitiesCart extends PGShopFoundationsEntitiesCart
     {
         $price = $this->getLocalEntity()->getShippingAddress()->getShippingInclTax();
 
-        return PGShopToolsPrice::toInteger($price);
+        return PriceTool::toInteger($price);
     }
 
     /**
@@ -84,7 +94,7 @@ class PGMagentoEntitiesCart extends PGShopFoundationsEntitiesCart
     {
         $currency = $this->getLocalEntity()->getCurrency();
 
-        return new PGMagentoEntitiesCurrency($currency);
+        return new Currency($currency);
     }
 
     /**
@@ -95,7 +105,7 @@ class PGMagentoEntitiesCart extends PGShopFoundationsEntitiesCart
         $items = array();
 
         foreach ($this->getLocalEntity()->getItemsCollection() as $item) {
-            $items[] = new PGMagentoEntitiesCartItem($item);
+            $items[] = new CartItem($item);
         }
 
         return $items;
@@ -108,7 +118,7 @@ class PGMagentoEntitiesCart extends PGShopFoundationsEntitiesCart
     {
         $shippingAddress = $this->getLocalEntity()->getShippingAddress();
 
-        return new PGMagentoEntitiesAddress($shippingAddress);
+        return new Address($shippingAddress);
     }
 
     /**
@@ -118,7 +128,7 @@ class PGMagentoEntitiesCart extends PGShopFoundationsEntitiesCart
     {
         $billingAddress = $this->getLocalEntity()->getBillingAddress();
 
-        return new PGMagentoEntitiesAddress($billingAddress);
+        return new Address($billingAddress);
     }
 
     /**
@@ -126,7 +136,7 @@ class PGMagentoEntitiesCart extends PGShopFoundationsEntitiesCart
      */
     public function getCarrier()
     {
-        /** @var PGModuleServicesLogger $logger */
+        /** @var Logger $logger */
         $logger = $this->getService('logger');
 
         $carrierName = $this->getLocalEntity()->getShippingAddress()->getShippingMethod();
@@ -136,7 +146,7 @@ class PGMagentoEntitiesCart extends PGShopFoundationsEntitiesCart
             
             return null;
         } else {
-            return new PGMagentoEntitiesCarrier($carrierName);
+            return new Carrier($carrierName);
         }
     }
 }

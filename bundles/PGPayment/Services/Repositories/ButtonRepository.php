@@ -15,22 +15,31 @@
  * @author    PayGreen <contact@paygreen.fr>
  * @copyright 2014 - 2021 Watt Is It
  * @license   https://opensource.org/licenses/mit-license.php MIT License X11
- * @version   2.1.1
+ * @version   2.2.0
  *
  */
 
+namespace PGI\Module\PGPayment\Services\Repositories;
+
+use PGI\Module\PGDatabase\Foundations\AbstractRepositoryDatabase;
+use PGI\Module\PGDatabase\Services\Handlers\DatabaseHandler;
+use PGI\Module\PGPayment\Interfaces\Entities\ButtonEntityInterface;
+use PGI\Module\PGPayment\Interfaces\Repositories\ButtonRepositoryInterface;
+use PGI\Module\PGShop\Interfaces\Handlers\ShopHandlerInterface;
+use Exception;
+
 /**
- * Class PGPaymentServicesRepositoriesButtonRepository
+ * Class ButtonRepository
  * @package PGPayment\Services\Repositories
  */
-class PGPaymentServicesRepositoriesButtonRepository extends PGDatabaseFoundationsRepositoryDatabase implements PGPaymentInterfacesRepositoriesButtonRepositoryInterface
+class ButtonRepository extends AbstractRepositoryDatabase implements ButtonRepositoryInterface
 {
-    /** @var PGShopInterfacesShopHandler */
+    /** @var ShopHandlerInterface */
     private $shopHandler;
 
     public function __construct(
-        PGDatabaseServicesDatabaseHandler $databaseHandler,
-        PGShopInterfacesShopHandler $shopHandler,
+        DatabaseHandler $databaseHandler,
+        ShopHandlerInterface $shopHandler,
         array $config
     ) {
         parent::__construct($databaseHandler, $config);
@@ -61,7 +70,6 @@ class PGPaymentServicesRepositoriesButtonRepository extends PGDatabaseFoundation
         return $this->wrapEntity(array(
             'paymentNumber' => 1,
             'displayType' => 'DEFAULT',
-            'integration' => 'EXTERNAL',
             'paymentType' => 'CB',
             'paymentMode' => 'CASH',
             'height' => 60,
@@ -73,7 +81,7 @@ class PGPaymentServicesRepositoriesButtonRepository extends PGDatabaseFoundation
      * @inheritdoc
      * @throws Exception
      */
-    public function insert(PGPaymentInterfacesEntitiesButtonInterface $button)
+    public function insert(ButtonEntityInterface $button)
     {
         return $this->insertEntity($button);
     }
@@ -82,7 +90,7 @@ class PGPaymentServicesRepositoriesButtonRepository extends PGDatabaseFoundation
      * @inheritdoc
      * @throws Exception
      */
-    public function update(PGPaymentInterfacesEntitiesButtonInterface $button)
+    public function update(ButtonEntityInterface $button)
     {
         return $this->updateEntity($button);
     }
@@ -91,7 +99,7 @@ class PGPaymentServicesRepositoriesButtonRepository extends PGDatabaseFoundation
      * @inheritdoc
      * @throws Exception
      */
-    public function delete(PGPaymentInterfacesEntitiesButtonInterface $button)
+    public function delete(ButtonEntityInterface $button)
     {
         return $this->deleteEntity($button);
     }

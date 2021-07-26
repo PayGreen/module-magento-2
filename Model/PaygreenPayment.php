@@ -15,27 +15,27 @@
  * @author    PayGreen <contact@paygreen.fr>
  * @copyright 2014 - 2021 Watt Is It
  * @license   https://opensource.org/licenses/mit-license.php MIT License X11
- * @version   2.1.1
+ * @version   2.2.0
  *
  */
 
 namespace Paygreen\Payment\Model;
 
-use Magento\Payment\Model\Method\AbstractMethod;
-use Magento\Payment\Model\InfoInterface;
-use PGSystemServicesContainer;
-use PGMagentoEntitiesOrder;
-use PGModuleServicesHandlersBehavior;
-use PGPaymentComponentsEventsRefundEvent;
-use PGModuleServicesBroadcaster;
-use PGShopInterfacesProvisionersCheckout;
-use PGMagentoProvisionersCheckoutProvisioner;
-use PGPaymentServicesHandlersCheckoutHandler;
-use PGModuleInterfacesModuleFacade;
+use Magento\Payment\Model\Method\AbstractMethod as LocalAbstractMethod;
+use Magento\Payment\Model\InfoInterface as LocalInfoInterface;
+use PGI\Module\PGMagento\Components\Provisioners\Checkout as CheckoutProvisionerComponent;
+use PGI\Module\PGMagento\Entities\Order;
+use PGI\Module\PGModule\Interfaces\ModuleFacadeInterface;
+use PGI\Module\PGModule\Services\Broadcaster;
+use PGI\Module\PGModule\Services\Handlers\BehaviorHandler;
+use PGI\Module\PGPayment\Components\Events\Refund as RefundEventComponent;
+use PGI\Module\PGPayment\Services\Handlers\CheckoutHandler;
+use PGI\Module\PGShop\Interfaces\Provisioners\CheckoutProvisionerInterface;
+use PGI\Module\PGSystem\Services\Container;
 
 require_once PAYGREEN_BOOTSTRAP_SRC;
 
-class PaygreenPayment extends AbstractMethod
+class PaygreenPayment extends LocalAbstractMethod
 {
     public $_code = 'paygreenpayment';
 
@@ -54,7 +54,7 @@ class PaygreenPayment extends AbstractMethod
 
     protected function getService ($name)
     {
-        return PGSystemServicesContainer::getInstance()->get($name);
+        return Container::getInstance()->get($name);
     }
 
     public function getTitle()
@@ -64,7 +64,7 @@ class PaygreenPayment extends AbstractMethod
 
     public function isActive($storeId = null)
     {
-        /** @var PGModuleInterfacesModuleFacade $moduleFacade */
+        /** @var ModuleFacadeInterface $moduleFacade */
         $moduleFacade = $this->getService('facade.module');
 
         return parent::isActive($storeId) && $moduleFacade->isActive();
@@ -72,7 +72,7 @@ class PaygreenPayment extends AbstractMethod
 
     public function canRefund()
     {
-        /** @var PGModuleServicesHandlersBehavior $behaviorHandler */
+        /** @var BehaviorHandler $behaviorHandler */
         $behaviorHandler = $this->getService('handler.behavior');
 
         $canRefund = parent::canRefund();
@@ -80,23 +80,23 @@ class PaygreenPayment extends AbstractMethod
         return ($canRefund && $behaviorHandler->get('transmission_on_refund'));
     }
 
-    public function refund(InfoInterface $payment, $amount)
+    public function refund(LocalInfoInterface $payment, $amount)
     {
         $this->getService('logger')->debug("PaygreenPayment::refund", $amount);
 
-        /** @var PGModuleServicesBroadcaster $broadcaster */
+        /** @var Broadcaster $broadcaster */
         $broadcaster = $this->getService('broadcaster');
 
-        $order = new PGMagentoEntitiesOrder($payment->getOrder());
+        $order = new Order($payment->getOrder());
 
-        $event = new PGPaymentComponentsEventsRefundEvent($order, $amount);
+        $event = new RefundEventComponent($order, $amount);
 
         $broadcaster->fire($event);
 
         return $this;
     }
 
-    public function authorize(InfoInterface $payment, $amount)
+    public function authorize(LocalInfoInterface $payment, $amount)
     {
         $this->getService('logger')->debug("PaygreenPayment::authorize", $amount);
 
@@ -112,7 +112,7 @@ class PaygreenPayment extends AbstractMethod
         return 'authorize';
     }
 
-    public function capture(InfoInterface $payment, $amount)
+    public function capture(LocalInfoInterface $payment, $amount)
     {
         $this->getService('logger')->debug("PaygreenPayment::capture", $amount);
 
@@ -121,11 +121,11 @@ class PaygreenPayment extends AbstractMethod
 
     public function canUseCheckout()
     {
-        /** @var PGPaymentServicesHandlersCheckoutHandler $checkoutHandler */
+        /** @var CheckoutHandler $checkoutHandler */
         $checkoutHandler = $this->getService('handler.checkout');
 
-        /** @var PGShopInterfacesProvisionersCheckout $checkoutProvisioner */
-        $checkoutProvisioner = new PGMagentoProvisionersCheckoutProvisioner();
+        /** @var CheckoutProvisionerInterface $checkoutProvisioner */
+        $checkoutProvisioner = new CheckoutProvisionerComponent();
 
         return $checkoutHandler->isCheckoutAvailable($checkoutProvisioner);
     }

@@ -15,34 +15,40 @@
  * @author    PayGreen <contact@paygreen.fr>
  * @copyright 2014 - 2021 Watt Is It
  * @license   https://opensource.org/licenses/mit-license.php MIT License X11
- * @version   2.1.1
+ * @version   2.2.0
  *
  */
 
+namespace PGI\Module\PGPayment\Components;
+
+use PGI\Module\PGPayment\Interfaces\Entities\ButtonEntityInterface;
+use PGI\Module\PGShop\Interfaces\Provisioners\PrePaymentProvisionerInterface;
+use ArrayAccess;
+
 /**
- * Class PGPaymentComponentsPaymentProject
+ * Class PaymentProject
  * @package PGPayment\Components
  */
-class PGPaymentComponentsPaymentProject implements arrayaccess
+class PaymentProject implements ArrayAccess
 {
     private $data = array();
 
-    /** @var PGPaymentInterfacesEntitiesButtonInterface */
+    /** @var ButtonEntityInterface */
     private $button;
 
-    /** @var PGShopInterfacesProvisionersPrePayment */
+    /** @var PrePaymentProvisionerInterface */
     private $prePaymentProvisionner;
 
     public function __construct(
-        PGPaymentInterfacesEntitiesButtonInterface $button,
-        PGShopInterfacesProvisionersPrePayment $prePaymentProvisionner
+        ButtonEntityInterface $button,
+        PrePaymentProvisionerInterface $prePaymentProvisionner
     ) {
         $this->button = $button;
         $this->prePaymentProvisionner = $prePaymentProvisionner;
     }
 
     /**
-     * @return PGPaymentInterfacesEntitiesButtonInterface
+     * @return ButtonEntityInterface
      */
     public function getButton()
     {
@@ -50,7 +56,7 @@ class PGPaymentComponentsPaymentProject implements arrayaccess
     }
 
     /**
-     * @return PGShopInterfacesProvisionersPrePayment
+     * @return PrePaymentProvisionerInterface
      */
     public function getPrePaymentProvisionner()
     {

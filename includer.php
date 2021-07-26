@@ -15,14 +15,14 @@
  * @author    PayGreen <contact@paygreen.fr>
  * @copyright 2014 - 2021 Watt Is It
  * @license   https://opensource.org/licenses/mit-license.php MIT License X11
- * @version   2.1.1
+ * @version   2.2.0
  *
  */
 
-require_once(PAYGREEN_VENDOR_DIR . DS . 'PGSystem' . DS . 'Interfaces' . DS . 'BootstrapBuilder.php');
-require_once(PAYGREEN_VENDOR_DIR . DS . 'PGSystem' . DS . 'Interfaces' . DS . 'Bundle.php');
-require_once(PAYGREEN_VENDOR_DIR . DS . 'PGSystem' . DS . 'Interfaces' . DS . 'Storage.php');
-require_once(PAYGREEN_VENDOR_DIR . DS . 'PGSystem' . DS . 'Bootstrap.php');
+require_once(PAYGREEN_VENDOR_DIR . DS . 'PGSystem' . DS . 'Interfaces' . DS . 'Builders' . DS . 'BootstrapBuilderInterface.php');
+require_once(PAYGREEN_VENDOR_DIR . DS . 'PGSystem' . DS . 'Interfaces' . DS . 'BundleInterface.php');
+require_once(PAYGREEN_VENDOR_DIR . DS . 'PGSystem' . DS . 'Interfaces' . DS . 'StorageInterface.php');
+require_once(PAYGREEN_VENDOR_DIR . DS . 'PGSystem' . DS . 'Components' . DS . 'Bootstrap.php');
 require_once(PAYGREEN_VENDOR_DIR . DS . 'PGSystem' . DS . 'Components' . DS . 'Builders' . DS . 'Kernel.php');
 require_once(PAYGREEN_VENDOR_DIR . DS . 'PGSystem' . DS . 'Components' . DS . 'Builders' . DS . 'Container.php');
 require_once(PAYGREEN_VENDOR_DIR . DS . 'PGSystem' . DS . 'Components' . DS . 'Builders' . DS . 'AutoloaderBundles.php');
@@ -30,9 +30,9 @@ require_once(PAYGREEN_VENDOR_DIR . DS . 'PGSystem' . DS . 'Components' . DS . 'B
 require_once(PAYGREEN_VENDOR_DIR . DS . 'PGSystem' . DS . 'Components' . DS . 'Bundle.php');
 require_once(PAYGREEN_VENDOR_DIR . DS . 'PGSystem' . DS . 'Components' . DS . 'Kernel.php');
 require_once(PAYGREEN_VENDOR_DIR . DS . 'PGSystem' . DS . 'Services' . DS . 'Pathfinder.php');
-require_once(PAYGREEN_VENDOR_DIR . DS . 'PGSystem' . DS . 'Foundations' . DS . 'Storage.php');
-require_once(PAYGREEN_VENDOR_DIR . DS . 'PGSystem' . DS . 'Foundations' . DS . 'StorageFile.php');
+require_once(PAYGREEN_VENDOR_DIR . DS . 'PGSystem' . DS . 'Foundations' . DS . 'AbstractStorage.php');
+require_once(PAYGREEN_VENDOR_DIR . DS . 'PGSystem' . DS . 'Foundations' . DS . 'AbstractStorageFile.php');
 require_once(PAYGREEN_VENDOR_DIR . DS . 'PGSystem' . DS . 'Components' . DS . 'Storages' . DS . 'JSONFile.php');
 require_once(PAYGREEN_VENDOR_DIR . DS . 'PGSystem' . DS . 'Components' . DS . 'Storages' . DS . 'BlackHole.php');
-require_once(PAYGREEN_VENDOR_DIR . DS . 'PGSystem' . DS . 'Services' . DS . 'Autoloaders' . DS . 'Uncamelified.php');
-require_once(PAYGREEN_VENDOR_DIR . DS . 'PGSystem' . DS . 'Services' . DS . 'Autoloaders' . DS . 'Compiled.php');
+require_once(PAYGREEN_VENDOR_DIR . DS . 'PGSystem' . DS . 'Services' . DS . 'Autoloaders' . DS . 'CamelifiedAutoloader.php');
+require_once(PAYGREEN_VENDOR_DIR . DS . 'PGSystem' . DS . 'Services' . DS . 'Autoloaders' . DS . 'CompiledAutoloader.php');

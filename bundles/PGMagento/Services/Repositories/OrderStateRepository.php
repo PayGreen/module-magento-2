@@ -15,11 +15,19 @@
  * @author    PayGreen <contact@paygreen.fr>
  * @copyright 2014 - 2021 Watt Is It
  * @license   https://opensource.org/licenses/mit-license.php MIT License X11
- * @version   2.1.1
+ * @version   2.2.0
  *
  */
 
-class PGMagentoServicesRepositoriesOrderStateRepository extends PGMagentoFoundationsAbstractMagentoRepository implements PGShopInterfacesRepositoriesOrderState
+namespace PGI\Module\PGMagento\Services\Repositories;
+
+use PGI\Module\PGMagento\Entities\OrderState;
+use PGI\Module\PGMagento\Foundations\AbstractMagentoRepository;
+use PGI\Module\PGShop\Interfaces\Repositories\OrderStateRepositoryInterface;
+use PGI\Module\PGSystem\Exceptions\Configuration as ConfigurationException;
+use Exception;
+
+class OrderStateRepository extends AbstractMagentoRepository implements OrderStateRepositoryInterface
 {
     const ENTITY = 'Magento\Sales\Model\Order\Status';
     const RESOURCE = 'Magento\Sales\Model\ResourceModel\Order\Status';
@@ -33,43 +41,43 @@ class PGMagentoServicesRepositoriesOrderStateRepository extends PGMagentoFoundat
 
     public function wrapEntity($localEntity)
     {
-        return new PGMagentoEntitiesOrderState($localEntity);
+        return new OrderState($localEntity);
     }
 
     /**
      * @inheritdoc
-     * @throws PGSystemExceptionsConfiguration
+     * @throws ConfigurationException
      * @throws Exception
      */
     public function create($code, $name, array $metadata = array())
     {
         if (!array_key_exists($code, $this->definitions)) {
             $message = "Code definition not found : '$code'.";
-            throw new PGSystemExceptionsConfiguration($message);
+            throw new ConfigurationException($message);
         } elseif (!is_array($this->definitions[$code])) {
             $message = "Uncorrectly defined order state : '$code'.";
-            throw new PGSystemExceptionsConfiguration($message);
+            throw new ConfigurationException($message);
         } elseif (!array_key_exists('create', $this->definitions[$code]) || !$this->definitions[$code]['create']) {
             $message = "This state can not be created : '$code'.";
-            throw new PGSystemExceptionsConfiguration($message);
+            throw new ConfigurationException($message);
         } elseif (!array_key_exists('source', $this->definitions[$code])) {
             $message = "Target state has no 'source' field : '$code'.";
-            throw new PGSystemExceptionsConfiguration($message);
+            throw new ConfigurationException($message);
         } elseif (!is_array($this->definitions[$code]['source'])) {
             $message = "Target state 'source' must be an array : '$code'.";
-            throw new PGSystemExceptionsConfiguration($message);
+            throw new ConfigurationException($message);
         } elseif (!array_key_exists('state', $this->definitions[$code]['source'])) {
             $message = "Target state has no 'state' field : '$code'.";
-            throw new PGSystemExceptionsConfiguration($message);
+            throw new ConfigurationException($message);
         } elseif (!is_string($this->definitions[$code]['source']['state'])) {
             $message = "Target state 'state' field must be a string : '$code'.";
-            throw new PGSystemExceptionsConfiguration($message);
+            throw new ConfigurationException($message);
         } elseif (!array_key_exists('status', $this->definitions[$code]['source'])) {
             $message = "Target state has no 'status' field : '$code'.";
-            throw new PGSystemExceptionsConfiguration($message);
+            throw new ConfigurationException($message);
         } elseif (!is_string($this->definitions[$code]['source']['status'])) {
             $message = "Target state 'status' field must be a string : '$code'.";
-            throw new PGSystemExceptionsConfiguration($message);
+            throw new ConfigurationException($message);
         }
 
         $metadata = array();

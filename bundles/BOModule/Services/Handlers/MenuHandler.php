@@ -15,23 +15,30 @@
  * @author    PayGreen <contact@paygreen.fr>
  * @copyright 2014 - 2021 Watt Is It
  * @license   https://opensource.org/licenses/mit-license.php MIT License X11
- * @version   2.1.1
+ * @version   2.2.0
  *
  */
 
+namespace PGI\Module\BOModule\Services\Handlers;
+
+use PGI\Module\PGServer\Services\Handlers\LinkHandler;
+use PGI\Module\PGServer\Services\Handlers\RouteHandler;
+use PGI\Module\PGSystem\Components\Bag as BagComponent;
+use Exception;
+
 /**
- * Class BOModuleServicesHandlersMenuHandler
+ * Class MenuHandler
  * @package BOModule\Services\Handlers
  */
-class BOModuleServicesHandlersMenuHandler
+class MenuHandler
 {
-    /** @var PGSystemComponentsBag[] */
+    /** @var BagComponent[] */
     private $config = array();
 
-    /** @var PGServerServicesHandlersRouteHandler */
+    /** @var RouteHandler */
     private $routeHandler;
 
-    /** @var PGServerServicesHandlersLink */
+    /** @var LinkHandler */
     private $linkHandler;
 
     private $entries = array();
@@ -39,8 +46,8 @@ class BOModuleServicesHandlersMenuHandler
     private $default;
 
     public function __construct(
-        PGServerServicesHandlersRouteHandler $routeHandler,
-        PGServerServicesHandlersLink $linkHandler,
+        RouteHandler $routeHandler,
+        LinkHandler $linkHandler,
         array $config
     ) {
         $this->routeHandler = $routeHandler;
@@ -69,7 +76,7 @@ class BOModuleServicesHandlersMenuHandler
         $compiledEntries = array();
 
         foreach ($entries as $code => $entry) {
-            $entry = new PGSystemComponentsBag($entry);
+            $entry = new BagComponent($entry);
 
             if ($this->isDisplayed($entry)) {
                 $compiledEntry = array(
@@ -96,11 +103,11 @@ class BOModuleServicesHandlersMenuHandler
     }
 
     /**
-     * @param PGSystemComponentsBag $entry
+     * @param BagComponent $entry
      * @return bool
      * @throws Exception
      */
-    protected function isDisplayed(PGSystemComponentsBag $entry)
+    protected function isDisplayed(BagComponent $entry)
     {
         $isDisplayed = false;
 
@@ -108,13 +115,17 @@ class BOModuleServicesHandlersMenuHandler
             $isDisplayed = $this->routeHandler->areRequirementsFulfilled($entry['action']);
         } elseif ($entry['children']) {
             foreach ($entry['children'] as $child) {
-                $child = new PGSystemComponentsBag($child);
+                $child = new BagComponent($child);
 
                 if ($this->isDisplayed($child)) {
                     $isDisplayed = true;
                     break;
                 }
             }
+        }
+
+        if ($entry['enabled'] === false) {
+            $isDisplayed = false;
         }
 
         return $isDisplayed;

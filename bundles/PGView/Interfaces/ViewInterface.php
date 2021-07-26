@@ -15,15 +15,17 @@
  * @author    PayGreen <contact@paygreen.fr>
  * @copyright 2014 - 2021 Watt Is It
  * @license   https://opensource.org/licenses/mit-license.php MIT License X11
- * @version   2.1.1
+ * @version   2.2.0
  *
  */
 
+namespace PGI\Module\PGView\Interfaces;
+
 /**
- * Interface PGViewInterfacesViewInterface
+ * Interface ViewInterface
  * @package PGView\Interfaces
  */
-interface PGViewInterfacesViewInterface
+interface ViewInterface
 {
     /**
      * @param array $data

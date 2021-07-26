@@ -15,21 +15,29 @@
  * @author    PayGreen <contact@paygreen.fr>
  * @copyright 2014 - 2021 Watt Is It
  * @license   https://opensource.org/licenses/mit-license.php MIT License X11
- * @version   2.1.1
+ * @version   2.2.0
  *
  */
 
+namespace PGI\Module\PGPayment\Entities;
+
+use PGI\Module\PGDatabase\Foundations\AbstractEntityPersisted;
+use PGI\Module\PGPayment\Interfaces\Entities\CategoryHasPaymentTypeEntityInterface;
+use PGI\Module\PGShop\Interfaces\Entities\CategoryEntityInterface;
+use PGI\Module\PGShop\Services\Managers\CategoryManager;
+use Exception;
+
 /**
- * Class PGPaymentEntitiesCategoryHasPaymentType
+ * Class CategoryHasPaymentType
  * @package PGPayment\Entities
  */
-class PGPaymentEntitiesCategoryHasPaymentType extends PGDatabaseFoundationsEntityPersisted implements PGPaymentInterfacesEntitiesCategoryHasPaymentTypeInterface
+class CategoryHasPaymentType extends AbstractEntityPersisted implements CategoryHasPaymentTypeEntityInterface
 {
-    /** @var null|PGShopInterfacesEntitiesCategory */
+    /** @var null|CategoryEntityInterface */
     private $category = null;
 
     /**
-     * @return PGShopInterfacesEntitiesCategory
+     * @return CategoryEntityInterface
      * @throws Exception
      */
     public function getCategory()
@@ -46,7 +54,7 @@ class PGPaymentEntitiesCategoryHasPaymentType extends PGDatabaseFoundationsEntit
      */
     protected function loadCategory()
     {
-        /** @var PGShopServicesManagersCategory $categoryManager */
+        /** @var CategoryManager $categoryManager */
         $categoryManager = $this->getService('manager.category');
 
         $id_category = $this->getCategoryPrimary();

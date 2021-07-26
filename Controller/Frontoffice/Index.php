@@ -15,37 +15,31 @@
  * @author    PayGreen <contact@paygreen.fr>
  * @copyright 2014 - 2021 Watt Is It
  * @license   https://opensource.org/licenses/mit-license.php MIT License X11
- * @version   2.1.1
+ * @version   2.2.0
  *
  */
 
 namespace Paygreen\Payment\Controller\Frontoffice;
 
 use Exception;
-use Magento\Framework\App\Action\Context;
-use Magento\Framework\App\Action\Action;
-use Magento\Framework\View\Result\PageFactory;
-use Paygreen;
-use PGSystemServicesContainer;
-use PGServerServicesServer;
-use PGModuleServicesLogger;
-use PGFrameworkServicesHandlersOutputHandler;
-use PGServerComponentsResourcesStyleFileResource;
+use Magento\Framework\App\Action\Context as LocalContext;
+use Magento\Framework\App\Action\Action as LocalAction;
+use Magento\Framework\View\Result\PageFactory as LocalPageFactory;
 
-class Index extends Action
+class Index extends LocalAction
 {
-    /** @var PageFactory */
+    /** @var LocalPageFactory */
     protected $resultPageFactory;
 
     /**
      * Constructor
      *
-     * @param Context $context
-     * @param PageFactory $resultPageFactory
+     * @param LocalContext $context
+     * @param LocalPageFactory $resultPageFactory
      */
     public function __construct(
-        Context $context,
-        PageFactory $resultPageFactory
+        LocalContext $context,
+        LocalPageFactory $resultPageFactory
     ) {
         require_once PAYGREEN_BOOTSTRAP_SRC;
 
@@ -55,21 +49,11 @@ class Index extends Action
     }
 
     /**
-     * @return PageFactory
+     * @return LocalPageFactory
      */
     protected function getResultPageFactory()
     {
         return $this->resultPageFactory;
-    }
-
-    /**
-     * @param string $name
-     * @return object
-     * @throws Exception
-     */
-    protected function getService(string $name)
-    {
-        return PGSystemServicesContainer::getInstance()->get($name);
     }
 
     /**
@@ -78,29 +62,6 @@ class Index extends Action
      */
     public function execute()
     {
-        /** @var PGModuleServicesLogger $logger */
-        $logger = $this->getService('logger');
-
-        /** @var PGServerServicesServer $server */
-        $server = $this->getService('server.front');
-
-        /** @var PGFrameworkServicesHandlersOutputHandler $outputHandler */
-        $outputHandler = $this->getService('handler.output');
-
-        try {
-            $logger->debug("Building frontoffice output.");
-
-            $server->run();
-
-            $outputHandler->addResource(new PGServerComponentsResourcesStyleFileResource('/css/frontoffice.css'));
-
-            $logger->debug("Frontoffice output successfully built.");
-        } catch (Exception $exception) {
-            $logger->error("Error during frontoffice building : " . $exception->getMessage(), $exception);
-
-            throw $exception;
-        }
-
         $page = $this->getResultPageFactory()->create();
 
         $page->setHeader('Cache-Control', 'no-store, no-cache, must-revalidate, max-age=0', true);

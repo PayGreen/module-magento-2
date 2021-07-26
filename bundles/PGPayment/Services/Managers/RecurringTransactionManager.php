@@ -15,21 +15,28 @@
  * @author    PayGreen <contact@paygreen.fr>
  * @copyright 2014 - 2021 Watt Is It
  * @license   https://opensource.org/licenses/mit-license.php MIT License X11
- * @version   2.1.1
+ * @version   2.2.0
  *
  */
 
+namespace PGI\Module\PGPayment\Services\Managers;
+
+use PGI\Module\PGDatabase\Foundations\AbstractManager;
+use PGI\Module\PGPayment\Interfaces\Entities\RecurringTransactionEntityInterface;
+use PGI\Module\PGPayment\Interfaces\Repositories\RecurringTransactionRepositoryInterface;
+use Exception;
+
 /**
- * Class PGPaymentServicesManagersRecurringTransactionManager
+ * Class RecurringTransactionManager
  *
  * @package PGPayment\Services\Managers
- * @method PGPaymentInterfacesRepositoriesRecurringTransactionRepositoryInterface getRepository()
+ * @method RecurringTransactionRepositoryInterface getRepository()
  */
-class PGPaymentServicesManagersRecurringTransactionManager extends PGDatabaseFoundationsManager
+class RecurringTransactionManager extends AbstractManager
 {
     /**
      * @param $id
-     * @return PGPaymentInterfacesEntitiesRecurringTransactionInterface
+     * @return RecurringTransactionEntityInterface
      */
     public function getByPrimary($id)
     {
@@ -38,7 +45,7 @@ class PGPaymentServicesManagersRecurringTransactionManager extends PGDatabaseFou
 
     /**
      * @param string $pid
-     * @return PGPaymentInterfacesEntitiesRecurringTransactionInterface|null
+     * @return RecurringTransactionEntityInterface|null
      */
     public function getByPid($pid)
     {
@@ -53,7 +60,7 @@ class PGPaymentServicesManagersRecurringTransactionManager extends PGDatabaseFou
      * @param string $mode
      * @param int $amount
      * @param int $rank
-     * @return PGPaymentInterfacesEntitiesRecurringTransactionInterface
+     * @return RecurringTransactionEntityInterface
      */
     public function insertTransaction($pid, $id_order, $state, $stateOrderBefore, $mode, $amount, $rank)
     {
@@ -68,7 +75,7 @@ class PGPaymentServicesManagersRecurringTransactionManager extends PGDatabaseFou
      */
     public function updateTransaction($pid, $stateOrderAfter)
     {
-        /** @var PGPaymentInterfacesEntitiesRecurringTransactionInterface $transaction */
+        /** @var RecurringTransactionEntityInterface $transaction */
         $transaction = $this->getByPid($pid);
 
         if ($transaction === null) {

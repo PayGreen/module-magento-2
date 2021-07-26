@@ -15,22 +15,27 @@
  * @author    PayGreen <contact@paygreen.fr>
  * @copyright 2014 - 2021 Watt Is It
  * @license   https://opensource.org/licenses/mit-license.php MIT License X11
- * @version   2.1.1
+ * @version   2.2.0
  *
  */
 
+namespace PGI\Module\PGSystem\Services;
+
+use PGI\Module\PGSystem\Components\Kernel as KernelComponent;
+use Exception;
+
 /**
- * Class PGSystemServicesPathfinder
+ * Class Pathfinder
  * @package PGSystem\Services
  */
-class PGSystemServicesPathfinder
+class Pathfinder
 {
-    /** @var PGSystemComponentsKernel */
+    /** @var KernelComponent */
     private $kernel;
 
     private $bases = array();
 
-    public function __construct(PGSystemComponentsKernel $kernel, array $bases = array())
+    public function __construct(KernelComponent $kernel, array $bases = array())
     {
         $this->kernel = $kernel;
 

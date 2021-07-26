@@ -15,16 +15,20 @@
  * @author    PayGreen <contact@paygreen.fr>
  * @copyright 2014 - 2021 Watt Is It
  * @license   https://opensource.org/licenses/mit-license.php MIT License X11
- * @version   2.1.1
+ * @version   2.2.0
  *
  */
 
+namespace PGI\Module\PGMagento\Entities;
+
+use PGI\Module\PGShop\Interfaces\Entities\CarrierEntityInterface;
+
 /**
- * Class PGMagentoEntitiesCarrier
+ * Class Carrier
  *
  * @package PGMagento\Entities
  */
-class PGMagentoEntitiesCarrier implements PGShopInterfacesEntitiesCarrier
+class Carrier implements CarrierEntityInterface
 {
     /** @var string */
     private $name;

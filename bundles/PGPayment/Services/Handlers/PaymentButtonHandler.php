@@ -15,32 +15,39 @@
  * @author    PayGreen <contact@paygreen.fr>
  * @copyright 2014 - 2021 Watt Is It
  * @license   https://opensource.org/licenses/mit-license.php MIT License X11
- * @version   2.1.1
+ * @version   2.2.0
  *
  */
 
+namespace PGI\Module\PGPayment\Services\Handlers;
+
+use PGI\Module\PGFramework\Services\Handlers\PictureHandler;
+use PGI\Module\PGModule\Services\Handlers\StaticFileHandler;
+use PGI\Module\PGModule\Services\Logger;
+use PGI\Module\PGPayment\Interfaces\Entities\ButtonEntityInterface;
+
 /**
- * Class PGPaymentServicesHandlersPaymentButtonHandler
+ * Class PaymentButtonHandler
  * @package PGPayment\Services\Handlers
  */
-class PGPaymentServicesHandlersPaymentButtonHandler
+class PaymentButtonHandler
 {
-    /** @var PGModuleServicesLogger */
+    /** @var Logger */
     private $logger;
 
-    /** @var PGFrameworkServicesHandlersPictureHandler */
+    /** @var PictureHandler */
     private $pictureHandler;
 
-    /** @var PGModuleServicesHandlersStaticFile */
+    /** @var StaticFileHandler */
     private $staticFileHandler;
 
     /** @var array */
     private $paymentDefaultPictures;
 
     public function __construct(
-        PGModuleServicesLogger $logger,
-        PGFrameworkServicesHandlersPictureHandler $pictureHandler,
-        PGModuleServicesHandlersStaticFile $staticFileHandler,
+        Logger $logger,
+        PictureHandler $pictureHandler,
+        StaticFileHandler $staticFileHandler,
         array $paymentDefaultPictures = array()
     ) {
         $this->logger = $logger;
@@ -50,10 +57,10 @@ class PGPaymentServicesHandlersPaymentButtonHandler
     }
 
     /**
-     * @param PGPaymentInterfacesEntitiesButtonInterface $button
+     * @param ButtonEntityInterface $button
      * @return string
      */
-    public function getButtonFinalUrl(PGPaymentInterfacesEntitiesButtonInterface $button)
+    public function getButtonFinalUrl(ButtonEntityInterface $button)
     {
         $filename = $button->getImageSrc();
 
@@ -65,7 +72,7 @@ class PGPaymentServicesHandlersPaymentButtonHandler
         return $this->pictureHandler->getUrl($filename);
     }
 
-    protected function getDefaultButtonPicture(PGPaymentInterfacesEntitiesButtonInterface $button)
+    protected function getDefaultButtonPicture(ButtonEntityInterface $button)
     {
         $buttonPaymentType = strtolower($button->getPaymentType());
 

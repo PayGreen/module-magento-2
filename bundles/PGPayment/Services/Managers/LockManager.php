@@ -15,17 +15,26 @@
  * @author    PayGreen <contact@paygreen.fr>
  * @copyright 2014 - 2021 Watt Is It
  * @license   https://opensource.org/licenses/mit-license.php MIT License X11
- * @version   2.1.1
+ * @version   2.2.0
  *
  */
+
+namespace PGI\Module\PGPayment\Services\Managers;
+
+use PGI\Module\PGDatabase\Foundations\AbstractManager;
+use PGI\Module\PGModule\Services\Logger;
+use PGI\Module\PGPayment\Interfaces\Entities\LockEntityInterface;
+use PGI\Module\PGPayment\Interfaces\Repositories\LockRepositoryInterface;
+use DateTime;
+use Exception;
 
 /**
  * Class PaygreenTransactionLockManager
  *
  * @package PGPayment\Services\Managers
- * @method PGPaymentInterfacesRepositoriesLockRepositoryInterface getRepository
+ * @method LockRepositoryInterface getRepository
  */
-class PGPaymentServicesManagersLockManager extends PGDatabaseFoundationsManager
+class LockManager extends AbstractManager
 {
     const LOCK_DURATION = 3;
     const LOCK_REPEAT = 3;
@@ -33,7 +42,7 @@ class PGPaymentServicesManagersLockManager extends PGDatabaseFoundationsManager
 
     /**
      * @param $pid
-     * @return PGPaymentInterfacesEntitiesLockInterface|null
+     * @return LockEntityInterface|null
      */
     public function getByPid($pid)
     {
@@ -42,7 +51,7 @@ class PGPaymentServicesManagersLockManager extends PGDatabaseFoundationsManager
 
     /**
      * @param $pid
-     * @return PGPaymentInterfacesEntitiesLockInterface
+     * @return LockEntityInterface
      * @throws Exception
      */
     public function create($pid)
@@ -58,7 +67,7 @@ class PGPaymentServicesManagersLockManager extends PGDatabaseFoundationsManager
      */
     public function isLocked($pid, $repeat = 0)
     {
-        /** @var PGModuleServicesLogger $logger */
+        /** @var Logger $logger */
         $logger = $this->getService('logger');
 
         if ($repeat > self::LOCK_REPEAT) {

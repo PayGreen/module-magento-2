@@ -15,33 +15,40 @@
  * @author    PayGreen <contact@paygreen.fr>
  * @copyright 2014 - 2021 Watt Is It
  * @license   https://opensource.org/licenses/mit-license.php MIT License X11
- * @version   2.1.1
+ * @version   2.2.0
  *
  */
 
+namespace PGI\Module\PGIntl\Services\Listeners;
+
+use PGI\Module\PGIntl\Services\Handlers\CacheTranslationHandler;
+use PGI\Module\PGModule\Components\Events\Module as ModuleEventComponent;
+use PGI\Module\PGModule\Services\Logger;
+use Exception;
+
 /**
- * Class PGIntlServicesListenersResetTranslationCacheListener
+ * Class ResetTranslationCacheListener
  * @package PGIntl\Services\Listeners
  */
-class PGIntlServicesListenersResetTranslationCacheListener
+class ResetTranslationCacheListener
 {
-    /** @var PGIntlServicesHandlersCacheTranslationHandler */
+    /** @var CacheTranslationHandler */
     private $cacheHandler;
 
-    /** @var PGModuleServicesLogger */
+    /** @var Logger */
     private $logger;
 
     private $bin;
 
     public function __construct(
-        PGIntlServicesHandlersCacheTranslationHandler $cacheHandler,
-        PGModuleServicesLogger $logger
+        CacheTranslationHandler $cacheHandler,
+        Logger $logger
     ) {
         $this->cacheHandler = $cacheHandler;
         $this->logger = $logger;
     }
 
-    public function listen(PGModuleComponentsEventsModule $event)
+    public function listen(ModuleEventComponent $event)
     {
         // Thrashing unused arguments
         $this->bin = $event;

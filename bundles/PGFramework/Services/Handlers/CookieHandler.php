@@ -15,25 +15,30 @@
  * @author    PayGreen <contact@paygreen.fr>
  * @copyright 2014 - 2021 Watt Is It
  * @license   https://opensource.org/licenses/mit-license.php MIT License X11
- * @version   2.1.1
+ * @version   2.2.0
  *
  */
 
+namespace PGI\Module\PGFramework\Services\Handlers;
+
+use PGI\Module\PGFramework\Interfaces\SuperglobalInterface;
+use PGI\Module\PGModule\Services\Logger;
+
 /**
- * Class PGFrameworkServicesHandlersCookieHandler
+ * Class CookieHandler
  * @package PGFramework\Services\Handlers
  */
-class PGFrameworkServicesHandlersCookieHandler
+class CookieHandler
 {
-    /** @var PGFrameworkInterfacesSuperglobal */
+    /** @var SuperglobalInterface */
     private $cookieAdapter;
     
-    /** @var PGModuleServicesLogger */
+    /** @var Logger */
     private $logger;
 
     public function __construct(
-        PGFrameworkInterfacesSuperglobal $cookieAdapter,
-        PGModuleServicesLogger $logger
+        SuperglobalInterface $cookieAdapter,
+        Logger $logger
     ) {
         $this->cookieAdapter = $cookieAdapter;
         $this->logger = $logger;

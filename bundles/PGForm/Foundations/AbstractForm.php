@@ -15,17 +15,27 @@
  * @author    PayGreen <contact@paygreen.fr>
  * @copyright 2014 - 2021 Watt Is It
  * @license   https://opensource.org/licenses/mit-license.php MIT License X11
- * @version   2.1.1
+ * @version   2.2.0
  *
  */
 
+namespace PGI\Module\PGForm\Foundations;
+
+use PGI\Module\PGForm\Foundations\AbstractElement;
+use PGI\Module\PGForm\Interfaces\Fields\BasicFieldInterface;
+use PGI\Module\PGForm\Interfaces\FormInterface;
+use PGI\Module\PGForm\Interfaces\Views\FormViewInterface;
+use PGI\Module\PGView\Interfaces\ViewInterface;
+use ArrayAccess;
+use Exception;
+
 /**
- * Class PGFormFoundationsAbstractForm
+ * Class AbstractForm
  * @package PGForm\Foundations
  */
-abstract class PGFormFoundationsAbstractForm extends PGFormFoundationsAbstractElement implements ArrayAccess, PGFormInterfacesFormInterface
+abstract class AbstractForm extends AbstractElement implements ArrayAccess, FormInterface
 {
-    /** @var PGFormInterfacesFieldInterface[] */
+    /** @var BasicFieldInterface[] */
     private $fields = array();
 
     private $bin;
@@ -56,7 +66,7 @@ abstract class PGFormFoundationsAbstractForm extends PGFormFoundationsAbstractEl
     /**
      * @inheritDoc
      */
-    public function addField($name, PGFormInterfacesFieldInterface $field)
+    public function addField($name, BasicFieldInterface $field)
     {
         $this->fields[$name] = $field;
 
@@ -175,16 +185,16 @@ abstract class PGFormFoundationsAbstractForm extends PGFormFoundationsAbstractEl
     }
 
     /**
-     * @return PGViewInterfacesViewInterface
+     * @return ViewInterface
      * @throws Exception
      */
     public function buildView()
     {
-        /** @var PGFormInterfacesFormViewInterface $view */
+        /** @var FormViewInterface $view */
         $view = parent::buildView();
 
-        if (!$view instanceof PGFormInterfacesFormViewInterface) {
-            $details = "View must implements PGFormInterfacesFormViewInterface.";
+        if (!$view instanceof FormViewInterface) {
+            $details = "View must implements FormViewInterface.";
             throw new Exception(
                 "Invalid view for current form : '{$this->getName()}'. $details"
             );

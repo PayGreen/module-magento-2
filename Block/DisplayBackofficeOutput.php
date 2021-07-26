@@ -15,22 +15,22 @@
  * @author    PayGreen <contact@paygreen.fr>
  * @copyright 2014 - 2021 Watt Is It
  * @license   https://opensource.org/licenses/mit-license.php MIT License X11
- * @version   2.1.1
+ * @version   2.2.0
  *
  */
 
 namespace Paygreen\Payment\Block;
 
-use Magento\Framework\View\Element\Template;
-use Magento\Framework\View\Element\Template\Context;
-use PGSystemServicesContainer;
-use PGModuleServicesLogger;
-use PGFrameworkServicesHandlersOutputHandler;
-use PGMagentoServicesMagentoResourceCompiler;
+use Magento\Framework\View\Element\Template as LocalTemplate;
+use Magento\Framework\View\Element\Template\Context as LocalContext;
+use PGI\Module\PGFramework\Services\Handlers\OutputHandler;
+use PGI\Module\PGModule\Services\Logger;
+use PGI\Module\PGModule\Services\Providers\OutputProvider;
+use PGI\Module\PGSystem\Services\Container;
 
-class DisplayBackofficeOutput extends Template
+class DisplayBackofficeOutput extends LocalTemplate
 {
-    public function __construct(Context $context)
+    public function __construct(LocalContext $context)
     {
         parent::__construct($context);
 
@@ -39,22 +39,21 @@ class DisplayBackofficeOutput extends Template
 
     protected function getService($name)
     {
-        return PGSystemServicesContainer::getInstance()->get($name);
+        return Container::getInstance()->get($name);
     }
 
     protected function _toHtml()
     {
-        /** @var PGFrameworkServicesHandlersOutputHandler $outputHandler */
-        $outputHandler = $this->getService('handler.output');
+        /** @var OutputProvider $outputProvider */
+        $outputProvider = $this->getService('provider.output');
 
-        /** @var PGMagentoServicesMagentoResourceCompiler $magentoResourceCompiler */
-        $magentoResourceCompiler = $this->getService('compiler.resource.magento');
-
-        /** @var PGModuleServicesLogger $outputHandler */
+        /** @var Logger $outputHandler */
         $logger = $this->getService('logger.view');
 
-        $content = $outputHandler->getContent();
-        $content .= $magentoResourceCompiler->compileResources($outputHandler->getResources());
+        /** @var OutputHandler $output */
+        $output = $outputProvider->getZoneOutput('BACK.PAYGREEN');
+
+        $content = $output->getContent();
 
         $size = strlen($content);
 

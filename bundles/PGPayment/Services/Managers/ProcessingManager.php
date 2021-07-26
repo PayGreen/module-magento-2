@@ -15,21 +15,33 @@
  * @author    PayGreen <contact@paygreen.fr>
  * @copyright 2014 - 2021 Watt Is It
  * @license   https://opensource.org/licenses/mit-license.php MIT License X11
- * @version   2.1.1
+ * @version   2.2.0
  *
  */
 
+namespace PGI\Module\PGPayment\Services\Managers;
+
+use PGI\Module\APIPayment\Components\Replies\Transaction as TransactionReplyComponent;
+use PGI\Module\PGDatabase\Foundations\AbstractManager;
+use PGI\Module\PGPayment\Components\Tasks\TransactionManagement as TransactionManagementTaskComponent;
+use PGI\Module\PGPayment\Interfaces\Entities\ProcessingEntityInterface;
+use PGI\Module\PGPayment\Interfaces\Repositories\ProcessingRepositoryInterface;
+use PGI\Module\PGShop\Interfaces\Entities\OrderEntityInterface;
+use PGI\Module\PGShop\Interfaces\Entities\ShopEntityInterface;
+use DateTime;
+use Exception;
+
 /**
- * Class PGPaymentServicesManagersProcessingManager
+ * Class ProcessingManager
  *
  * @package PGPayment\Services\Managers
- * @method PGPaymentInterfacesRepositoriesProcessingRepositoryInterface getRepository()
+ * @method ProcessingRepositoryInterface getRepository()
  */
-class PGPaymentServicesManagersProcessingManager extends PGDatabaseFoundationsManager
+class ProcessingManager extends AbstractManager
 {
     /**
      * @param string $reference
-     * @return PGPaymentInterfacesEntitiesProcessingInterface|null
+     * @return ProcessingEntityInterface|null
      */
     public function getSuccessedProcessingByReference($reference)
     {
@@ -39,21 +51,21 @@ class PGPaymentServicesManagersProcessingManager extends PGDatabaseFoundationsMa
     /**
      * @param string $reference
      * @param bool $isSuccess
-     * @param PGShopInterfacesEntitiesShop $shop
-     * @param PGPaymentComponentsTasksTransactionManagement $paymentValidationTask
-     * @param APIPaymentComponentsRepliesTransaction $transaction
-     * @param PGShopInterfacesEntitiesOrder|null $order
+     * @param ShopEntityInterface $shop
+     * @param TransactionManagementTaskComponent $paymentValidationTask
+     * @param TransactionReplyComponent $transaction
+     * @param OrderEntityInterface|null $order
      * @param string $stateFrom
-     * @return PGPaymentInterfacesEntitiesProcessingInterface
+     * @return ProcessingEntityInterface
      * @throws Exception
      */
     public function create(
         $reference,
         $isSuccess,
-        PGShopInterfacesEntitiesShop $shop,
-        PGPaymentComponentsTasksTransactionManagement $paymentValidationTask,
-        APIPaymentComponentsRepliesTransaction $transaction,
-        PGShopInterfacesEntitiesOrder $order = null,
+        ShopEntityInterface $shop,
+        TransactionManagementTaskComponent $paymentValidationTask,
+        TransactionReplyComponent $transaction,
+        OrderEntityInterface $order = null,
         $stateFrom = null
     ) {
         $taskStatus = $paymentValidationTask->getStatusName($paymentValidationTask->getStatus());
@@ -86,11 +98,11 @@ class PGPaymentServicesManagersProcessingManager extends PGDatabaseFoundationsMa
     }
 
     /**
-     * @param PGPaymentInterfacesEntitiesProcessingInterface $processing
+     * @param ProcessingEntityInterface $processing
      * @return bool
      * @throws Exception
      */
-    public function addEcho(PGPaymentInterfacesEntitiesProcessingInterface $processing)
+    public function addEcho(ProcessingEntityInterface $processing)
     {
         $processing->addEcho(new DateTime());
 

@@ -15,21 +15,27 @@
  * @author    PayGreen <contact@paygreen.fr>
  * @copyright 2014 - 2021 Watt Is It
  * @license   https://opensource.org/licenses/mit-license.php MIT License X11
- * @version   2.1.1
+ * @version   2.2.0
  *
  */
 
+namespace PGI\Module\PGServer\Services\Cleaners;
+
+use PGI\Module\PGServer\Foundations\AbstractRequest;
+use PGI\Module\PGServer\Interfaces\CleanerInterface;
+use Exception;
+
 /**
- * Class PGServerServicesCleanersBasicThrowCleaner
+ * Class BasicThrowCleaner
  * @package PGServer\Services\Cleaners
  */
-class PGServerServicesCleanersBasicThrowCleaner implements PGServerInterfacesCleanerInterface
+class BasicThrowCleaner implements CleanerInterface
 {
     /**
      * @inheritDoc
      * @throws Exception
      */
-    public function processError(PGServerFoundationsAbstractRequest $request, Exception $exception)
+    public function processError(AbstractRequest $request, Exception $exception)
     {
         throw $exception;
     }

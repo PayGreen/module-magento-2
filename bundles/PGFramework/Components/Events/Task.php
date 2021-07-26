@@ -15,17 +15,22 @@
  * @author    PayGreen <contact@paygreen.fr>
  * @copyright 2014 - 2021 Watt Is It
  * @license   https://opensource.org/licenses/mit-license.php MIT License X11
- * @version   2.1.1
+ * @version   2.2.0
  *
  */
 
+namespace PGI\Module\PGFramework\Components\Events;
+
+use PGI\Module\PGFramework\Interfaces\TaskInterface;
+use PGI\Module\PGModule\Foundations\AbstractEvent;
+
 /**
- * Class PGFrameworkComponentsEventsTask
+ * Class Task
  * @package PGFramework\Components\Events
  */
-class PGFrameworkComponentsEventsTask extends PGModuleFoundationsEvent
+class Task extends AbstractEvent
 {
-    /** @var PGFrameworkInterfacesTaskInterface */
+    /** @var TaskInterface */
     private $task;
 
     /** @var string */
@@ -33,14 +38,14 @@ class PGFrameworkComponentsEventsTask extends PGModuleFoundationsEvent
 
     public function __construct(
         $name,
-        PGFrameworkInterfacesTaskInterface $task
+        TaskInterface $task
     ){
         $this->name = 'TASK.' . strtoupper($name) . '.' . $task->getStatusName($task->getStatus());
         $this->task = $task;
     }
 
     /**
-     * @return PGFrameworkInterfacesTaskInterface
+     * @return TaskInterface
      */
     public function getTask(){
 

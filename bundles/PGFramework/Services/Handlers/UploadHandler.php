@@ -15,22 +15,28 @@
  * @author    PayGreen <contact@paygreen.fr>
  * @copyright 2014 - 2021 Watt Is It
  * @license   https://opensource.org/licenses/mit-license.php MIT License X11
- * @version   2.1.1
+ * @version   2.2.0
  *
  */
 
+namespace PGI\Module\PGFramework\Services\Handlers;
+
+use PGI\Module\PGFramework\Components\UploadedFile as UploadedFileComponent;
+use PGI\Module\PGModule\Services\Logger;
+use PGI\Module\PGSystem\Foundations\AbstractObject;
+
 /**
- * Class PGFrameworkServicesHandlersUploadHandler
- * @package PGFramework\Services
+ * Class UploadHandler
+ * @package PGFramework\Services\Handlers
  */
-class PGFrameworkServicesHandlersUploadHandler extends PGSystemFoundationsObject
+class UploadHandler extends AbstractObject
 {
     private $files = array();
 
-    /** @var PGModuleServicesLogger */
+    /** @var Logger */
     private $logger;
 
-    public function __construct(PGModuleServicesLogger $logger)
+    public function __construct(Logger $logger)
     {
         $this->logger = $logger;
 
@@ -77,7 +83,7 @@ class PGFrameworkServicesHandlersUploadHandler extends PGSystemFoundationsObject
     private function buildRecursive(array &$data)
     {
         if ($this->isValidUploadedDataFile($data)) {
-            $data = new PGFrameworkComponentsUploadedFile($data);
+            $data = new UploadedFileComponent($data);
 
             $this->logger->info("Uploaded file : {$data->getRealName()}");
         } else {

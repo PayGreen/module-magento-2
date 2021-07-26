@@ -15,17 +15,25 @@
  * @author    PayGreen <contact@paygreen.fr>
  * @copyright 2014 - 2021 Watt Is It
  * @license   https://opensource.org/licenses/mit-license.php MIT License X11
- * @version   2.1.1
+ * @version   2.2.0
  *
  */
 
+namespace PGI\Module\PGSystem\Components\Service;
+
+use PGI\Module\PGSystem\Components\Bag as BagComponent;
+use PGI\Module\PGSystem\Services\Container;
+use ArrayAccess;
+use Exception;
+use LogicException;
+
 /**
- * Class PGSystemComponentsServiceLibrary
+ * Class Library
  * @package PGSystem\Components\Service
  */
-class PGSystemComponentsServiceLibrary implements arrayaccess
+class Library implements ArrayAccess
 {
-    /** @var PGSystemComponentsBag  */
+    /** @var BagComponent  */
     private $definitions;
 
     /** @var string */
@@ -34,7 +42,7 @@ class PGSystemComponentsServiceLibrary implements arrayaccess
     private $bin;
 
     /**
-     * PGSystemServicesContainer constructor.
+     * Container constructor.
      */
     public function __construct()
     {
@@ -54,7 +62,7 @@ class PGSystemComponentsServiceLibrary implements arrayaccess
 
     private function buildDefinitionBag()
     {
-        $this->definitions = new PGSystemComponentsBag();
+        $this->definitions = new BagComponent();
 
         $this->definitions->setDotSeparator(false);
     }
@@ -155,11 +163,11 @@ class PGSystemComponentsServiceLibrary implements arrayaccess
         return (!array_key_exists('shared', $definition) || ($definition['shared'] !== false));
     }
 
-    public function isStatic($name)
+    public function isFixed($name)
     {
         $definition = $this->getDefinition($name);
 
-        return (array_key_exists('static', $definition) && ($definition['static'] === true));
+        return (array_key_exists('fixed', $definition) && ($definition['fixed'] === true));
     }
 
     // ###################################################################

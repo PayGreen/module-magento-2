@@ -7,14 +7,6 @@
         "label": {
           "label": "Intitulé du bouton"
         },
-        "integration": {
-          "label": "Interface de paiement",
-          "helper": "Pour activer l'interface de paiement in site, le module In Site doit être activé via votre back-office PayGreen. Par ailleurs, l'URL de votre e-commerce doit être en HTTPS (SSL activé), sans quoi votre bouton de paiement sera désactivé.",
-          "values": {
-            "external": "Page de paiement déportée",
-            "insite": "Interface de paiement in site"
-          }
-        },
         "image": {
           "label": "Image du bouton",
           "default": "Utiliser l'image par défaut"
@@ -31,10 +23,6 @@
             "picture": "Uniquement l'image",
             "text": "Uniquement l'intitulé"
           }
-        },
-        "position": {
-          "label": "Ordre d'affichage du bouton",
-          "helper": "Définissez la position de votre bouton par rapport à vos autres boutons de paiement PayGreen. Indiquez 0 pour que la position de votre bouton soit définie automatiquement."
         },
         "payment_mode": {
           "label": "Mode de paiement"

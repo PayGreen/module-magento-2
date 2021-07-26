@@ -15,34 +15,40 @@
  * @author    PayGreen <contact@paygreen.fr>
  * @copyright 2014 - 2021 Watt Is It
  * @license   https://opensource.org/licenses/mit-license.php MIT License X11
- * @version   2.1.1
+ * @version   2.2.0
  *
  */
 
+namespace PGI\Module\PGServer\Foundations;
+
+use PGI\Module\PGServer\Foundations\AbstractRequest;
+use PGI\Module\PGSystem\Foundations\AbstractObject;
+use Exception;
+
 /**
- * Class PGServerFoundationsAbstractResponse
+ * Class AbstractResponse
  * @package PGServer\Foundations
  */
-abstract class PGServerFoundationsAbstractResponse extends PGSystemFoundationsObject
+abstract class AbstractResponse extends AbstractObject
 {
     private $tags = array();
 
-    /** @var PGServerFoundationsAbstractRequest|null */
+    /** @var AbstractRequest|null */
     private $request = null;
 
-    /** @var PGServerFoundationsAbstractResponse|null */
+    /** @var AbstractResponse|null */
     private $previousResponse = null;
 
     /**
-     * PGServerFoundationsAbstractResponse constructor.
-     * @param PGServerFoundationsAbstractRequest|PGServerFoundationsAbstractResponse $previous
+     * AbstractResponse constructor.
+     * @param AbstractRequest|AbstractResponse $previous
      * @throws Exception
      */
     public function __construct($previous)
     {
-        if ($previous instanceof PGServerFoundationsAbstractRequest) {
+        if ($previous instanceof AbstractRequest) {
             $this->request = $previous;
-        } elseif ($previous instanceof PGServerFoundationsAbstractResponse) {
+        } elseif ($previous instanceof AbstractResponse) {
             $this->previousResponse = $previous;
         } else {
             throw new Exception("A response must be attached to a request or a previous response.");
@@ -50,7 +56,7 @@ abstract class PGServerFoundationsAbstractResponse extends PGSystemFoundationsOb
     }
 
     /**
-     * @return PGServerFoundationsAbstractRequest
+     * @return AbstractRequest
      * @throws Exception
      */
     public function getRequest()
@@ -65,7 +71,7 @@ abstract class PGServerFoundationsAbstractResponse extends PGSystemFoundationsOb
     }
 
     /**
-     * @return PGServerFoundationsAbstractResponse|null
+     * @return AbstractResponse|null
      */
     public function getPreviousResponse()
     {

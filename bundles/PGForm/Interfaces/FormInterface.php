@@ -15,15 +15,20 @@
  * @author    PayGreen <contact@paygreen.fr>
  * @copyright 2014 - 2021 Watt Is It
  * @license   https://opensource.org/licenses/mit-license.php MIT License X11
- * @version   2.1.1
+ * @version   2.2.0
  *
  */
 
+namespace PGI\Module\PGForm\Interfaces;
+
+use PGI\Module\PGForm\Interfaces\ElementInterface;
+use PGI\Module\PGForm\Interfaces\Fields\BasicFieldInterface;
+
 /**
- * Interface PGFormInterfacesFormInterface
+ * Interface FormInterface
  * @package PGForm\Interfaces
  */
-interface PGFormInterfacesFormInterface extends PGFormInterfacesElementInterface
+interface FormInterface extends ElementInterface
 {
     /**
      * @return string[]
@@ -31,20 +36,20 @@ interface PGFormInterfacesFormInterface extends PGFormInterfacesElementInterface
     public function getKeys();
 
     /**
-     * @return PGFormInterfacesFieldInterface[]
+     * @return BasicFieldInterface[]
      */
     public function getFields();
 
     /**
      * @param string $name
-     * @param PGFormInterfacesFieldInterface $field
+     * @param BasicFieldInterface $field
      * @return mixed
      */
-    public function addField($name, PGFormInterfacesFieldInterface $field);
+    public function addField($name, BasicFieldInterface $field);
 
     /**
      * @param string $name
-     * @return PGFormInterfacesFieldInterface
+     * @return BasicFieldInterface
      */
     public function getField($name);
 

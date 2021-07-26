@@ -15,20 +15,26 @@
  * @author    PayGreen <contact@paygreen.fr>
  * @copyright 2014 - 2021 Watt Is It
  * @license   https://opensource.org/licenses/mit-license.php MIT License X11
- * @version   2.1.1
+ * @version   2.2.0
  *
  */
 
-use Magento\Sales\Model\Order;
+namespace PGI\Module\PGMagento\Services\Repositories;
+
+use Magento\Sales\Model\Order as LocalOrder;
+use PGI\Module\PGMagento\Entities\Order;
+use PGI\Module\PGMagento\Foundations\AbstractMagentoRepository;
+use PGI\Module\PGShop\Interfaces\Entities\OrderEntityInterface;
+use PGI\Module\PGShop\Interfaces\Repositories\OrderRepositoryInterface;
 
 /**
- * Class PGMagentoServicesRepositoriesOrderRepository
+ * Class OrderRepository
  *
  * @package PGMagento\Services\Repositories
  *
- * @method Magento\Sales\Model\Order createLocalEntity()
+ * @method LocalOrder createLocalEntity()
  */
-class PGMagentoServicesRepositoriesOrderRepository extends PGMagentoFoundationsAbstractMagentoRepository implements PGShopInterfacesRepositoriesOrder
+class OrderRepository extends AbstractMagentoRepository implements OrderRepositoryInterface
 {
     const ENTITY = 'Magento\Sales\Model\Order';
     const RESOURCE = 'Magento\Sales\Model\ResourceModel\Order';
@@ -53,23 +59,23 @@ class PGMagentoServicesRepositoriesOrderRepository extends PGMagentoFoundationsA
 
     public function wrapEntity($localEntity)
     {
-        return new PGMagentoEntitiesOrder($localEntity);
+        return new Order($localEntity);
     }
 
     /**
      * @inheritDoc
      */
-    public function findRefundedAmount(PGShopInterfacesEntitiesOrder $order)
+    public function findRefundedAmount(OrderEntityInterface $order)
     {
-        /** @var Order $localOrder */
+        /** @var LocalOrder $localOrder */
         $localOrder = $order->getLocalEntity();
 
         return $localOrder->getTotalRefunded();
     }
 
-    public function updateOrderState(PGShopInterfacesEntitiesOrder $order, array $localState)
+    public function updateOrderState(OrderEntityInterface $order, array $localState)
     {
-        /** @var Order $localEntity */
+        /** @var LocalOrder $localEntity */
         $localEntity = $order->getLocalEntity();
 
         $localEntity

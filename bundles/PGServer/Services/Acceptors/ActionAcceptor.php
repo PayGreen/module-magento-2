@@ -15,17 +15,22 @@
  * @author    PayGreen <contact@paygreen.fr>
  * @copyright 2014 - 2021 Watt Is It
  * @license   https://opensource.org/licenses/mit-license.php MIT License X11
- * @version   2.1.1
+ * @version   2.2.0
  *
  */
 
+namespace PGI\Module\PGServer\Services\Acceptors;
+
+use PGI\Module\PGServer\Foundations\AbstractAcceptor;
+use PGI\Module\PGServer\Foundations\AbstractResponse;
+
 /**
- * Class PGServerServicesAcceptorsActionAcceptor
+ * Class ActionAcceptor
  * @package PGServer\Services\Acceptors
  */
-class PGServerServicesAcceptorsActionAcceptor extends PGServerFoundationsAbstractAcceptor
+class ActionAcceptor extends AbstractAcceptor
 {
-    public function isValid(PGServerFoundationsAbstractResponse $response, $config)
+    public function isValid(AbstractResponse $response, $config)
     {
         $action = $response->getRequest()->getAction();
 

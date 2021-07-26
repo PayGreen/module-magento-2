@@ -15,15 +15,20 @@
  * @author    PayGreen <contact@paygreen.fr>
  * @copyright 2014 - 2021 Watt Is It
  * @license   https://opensource.org/licenses/mit-license.php MIT License X11
- * @version   2.1.1
+ * @version   2.2.0
  *
  */
 
+namespace PGI\Module\APIPayment\Components;
+
+use PGI\Module\PGClient\Components\ResponseJSON as ResponseJSONComponent;
+use PGI\Module\PGClient\Exceptions\ResponseMalformed as ResponseMalformedException;
+
 /**
- * Class APIPaymentComponentsResponse
+ * Class Response
  * @package APIPayment\Components
  */
-class APIPaymentComponentsResponse extends PGClientComponentsResponseJSON
+class Response extends ResponseJSONComponent
 {
     /** @var int */
     private $code;
@@ -36,7 +41,7 @@ class APIPaymentComponentsResponse extends PGClientComponentsResponseJSON
 
     /**
      * @inheritDoc
-     * @throws PGClientExceptionsResponseMalformed
+     * @throws ResponseMalformedException
      */
     public function format($data)
     {
@@ -48,7 +53,7 @@ class APIPaymentComponentsResponse extends PGClientComponentsResponseJSON
             || !property_exists($data, 'code')
             || !property_exists($data, 'data')
         ) {
-            throw new PGClientExceptionsResponseMalformed("Malformed response.");
+            throw new ResponseMalformedException("Malformed response.");
         }
 
         $this->code = (int) $data->code;

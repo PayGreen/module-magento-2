@@ -7,11 +7,33 @@
           "preview": "Your button's preview",
           "previewImageAlt": "Your button's picture"
         },
-        "payment": {
-          "title": "Payment type"
+        "payment_type": {
+          "title": "Payment type",
+          "TRD": [
+            "For this payment method, you must configure the eligible amounts as well as indicate the shipping costs that may or may not be excluded on the Payment methods page.",
+            "The payment method will not be usable if no product in the order is eligible.",
+            "If the ceiling is exceeded or if the product order contains non-eligible products, an additional credit card will be requested."
+          ],
+          "LUNCHR": [
+            "For this payment method, you must configure the eligible amounts as well as indicate the shipping costs that may or may not be excluded on the Payment methods page.",
+            "The payment method will not be usable if no product in the order is eligible.",
+            "If the ceiling is exceeded or if the product order contains non-eligible products, an additional credit card will be requested."
+          ],
+          "CB" : [],
+          "CBTRD": [
+            "For this payment method, you must configure the eligible amounts as well as indicate the shipping costs that may or may not be excluded on the Payment methods page.",
+            "The payment method will not be usable if no product in the order is eligible.",
+            "If the ceiling is exceeded or if the product order contains non-eligible products, an additional credit card will be requested."
+          ],
+          "AMEX" : [],
+          "RESTOFLASH": [
+            "For this payment method, you must configure the eligible amounts as well as indicate the shipping costs that may or may not be excluded on the Payment methods page.",
+            "The payment method will not be usable if no product in the order is eligible.",
+            "If the ceiling is exceeded or if the product order contains non-eligible products, an additional credit card will be requested."
+          ]
         },
-        "other": {
-          "title": "Other settings"
+        "payment_mode": {
+          "title": "Payment mode"
         }
       }
     }

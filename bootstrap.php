@@ -15,9 +15,17 @@
  * @author    PayGreen <contact@paygreen.fr>
  * @copyright 2014 - 2021 Watt Is It
  * @license   https://opensource.org/licenses/mit-license.php MIT License X11
- * @version   2.1.1
+ * @version   2.2.0
  *
  */
+
+use Magento\Framework\App\ObjectManager as LocalObjectManager;
+use Magento\Framework\Filesystem\DirectoryList as LocalDirectoryList;
+use PGI\Module\PGModule\Services\Handlers\SetupHandler;
+use PGI\Module\PGModule\Services\Logger;
+use PGI\Module\PGShop\Interfaces\Entities\ShopEntityInterface;
+use PGI\Module\PGShop\Interfaces\Handlers\ShopHandlerInterface;
+use PGI\Module\PGSystem\Components\Bootstrap as BootstrapComponent;
 
 // #############################################################################################
 // Setting module constants
@@ -28,11 +36,11 @@ try {
         define('DS', DIRECTORY_SEPARATOR);
     }
 
-    define('PAYGREEN_MODULE_VERSION', '2.1.1');
+    define('PAYGREEN_MODULE_VERSION', '2.2.0');
 
-    $objectManager = \Magento\Framework\App\ObjectManager::getInstance();
+    $objectManager = LocalObjectManager::getInstance();
 
-    /** @var \Magento\Framework\Filesystem\DirectoryList $directory */
+    /** @var LocalDirectoryList $directory */
     $directory = $objectManager->get('\Magento\Framework\Filesystem\DirectoryList');
 
     define('PAYGREEN_MODULE_NAME', 'paygreen');
@@ -47,7 +55,7 @@ try {
 // Running Bootstrap
 // #############################################################################################
 
-    $bootstrap = new PGSystemBootstrap();
+    $bootstrap = new BootstrapComponent();
 
     $bootstrap
         ->buildKernel(PAYGREEN_DATA_DIR)
@@ -66,7 +74,7 @@ try {
 
     if (PAYGREEN_AUTOLOADING || (PAYGREEN_ENV === 'DEV')) {
         if (PAYGREEN_ENV === 'DEV') {
-            $bootstrap->registerAutoloader('PGSystemComponentsBuildersAutoloaderCompiled');
+            $bootstrap->registerAutoloader('PGI\Module\PGSystem\Components\Builders\AutoloaderCompiled');
         } else {
             $bootstrap->registerAutoloader();
         }
@@ -79,23 +87,23 @@ try {
         ))
     ;
 
-    /** @var PGShopInterfacesShopHandler $shopHandler */
+    /** @var ShopHandlerInterface $shopHandler */
     $shopHandler = $bootstrap->getContainer()->get('handler.shop');
 
-    /** @var PGShopInterfacesEntitiesShop $shop */
+    /** @var ShopEntityInterface $shop */
     $shop = $shopHandler->getCurrentShop();
 
     if ($shopHandler->isMultiShopActivated()) {
         define('PAYGREEN_CACHE_PREFIX', 'shop-' . $shop->id());
     }
 
-    $bootstrap->setup(PGModuleServicesHandlersSetup::UPGRADE);
+    $bootstrap->setup(SetupHandler::UPGRADE);
 
     // #############################################################################################
     // Logging End of bootstrap
     // #############################################################################################
 
-    /** @var PGModuleServicesLogger $logger */
+    /** @var Logger $logger */
     $logger = $bootstrap->getContainer()->get('logger');
 
     $logger->debug("Current shop detected : {$shop->getName()} #{$shop->id()}.");

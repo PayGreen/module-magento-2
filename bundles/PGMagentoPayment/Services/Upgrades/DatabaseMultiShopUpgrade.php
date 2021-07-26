@@ -15,21 +15,29 @@
  * @author    PayGreen <contact@paygreen.fr>
  * @copyright 2014 - 2021 Watt Is It
  * @license   https://opensource.org/licenses/mit-license.php MIT License X11
- * @version   2.1.1
+ * @version   2.2.0
  *
  */
 
-class PGMagentoPaymentServicesUpgradesDatabaseMultiShopUpgrade implements PGModuleInterfacesUpgrade
+namespace PGI\Module\PGMagentoPayment\Services\Upgrades;
+
+use PGI\Module\PGDatabase\Services\Handlers\DatabaseHandler;
+use PGI\Module\PGModule\Components\Upgrade as UpgradeComponent;
+use PGI\Module\PGModule\Interfaces\UpgradeInterface;
+use PGI\Module\PGShop\Interfaces\Handlers\ShopHandlerInterface;
+use Exception;
+
+class DatabaseMultiShopUpgrade implements UpgradeInterface
 {
-    /** @var PGDatabaseServicesDatabaseHandler */
+    /** @var DatabaseHandler */
     private $databaseHandler;
 
-    /** @var PGShopInterfacesShopHandler */
+    /** @var ShopHandlerInterface */
     private $shopHandler;
 
     public function __construct(
-        PGDatabaseServicesDatabaseHandler $databaseHandler,
-        PGShopInterfacesShopHandler $shopHandler
+        DatabaseHandler $databaseHandler,
+        ShopHandlerInterface $shopHandler
     ) {
         $this->databaseHandler = $databaseHandler;
         $this->shopHandler = $shopHandler;
@@ -39,7 +47,7 @@ class PGMagentoPaymentServicesUpgradesDatabaseMultiShopUpgrade implements PGModu
      * @inheritDoc
      * @throws Exception
      */
-    public function apply(PGModuleComponentsUpgrade $upgradeStage)
+    public function apply(UpgradeComponent $upgradeStage)
     {
         $id_shop = $this->shopHandler->getCurrentShopPrimary();
 

@@ -15,34 +15,40 @@
  * @author    PayGreen <contact@paygreen.fr>
  * @copyright 2014 - 2021 Watt Is It
  * @license   https://opensource.org/licenses/mit-license.php MIT License X11
- * @version   2.1.1
+ * @version   2.2.0
  *
  */
 
+namespace PGI\Module\PGPayment\Interfaces\Repositories;
+
+use PGI\Module\PGDatabase\Interfaces\RepositoryInterface;
+use PGI\Module\PGPayment\Interfaces\Entities\LockEntityInterface;
+use DateTime;
+
 /**
- * Interface PGPaymentInterfacesRepositoriesLockRepositoryInterface
+ * Interface LockRepositoryInterface
  * @package PGPayment\Interfaces\Repositories
  */
-interface PGPaymentInterfacesRepositoriesLockRepositoryInterface extends PGDatabaseInterfacesRepository
+interface LockRepositoryInterface extends RepositoryInterface
 {
     /**
      * @param string $pid
      * @param DateTime $datetime
-     * @return PGPaymentInterfacesEntitiesLockInterface
+     * @return LockEntityInterface
      */
     public function create($pid, DateTime $datetime);
 
     /**
      * Find entity with his ID.
      * @param string $pid
-     * @return PGPaymentInterfacesEntitiesLockInterface|null
+     * @return LockEntityInterface|null
      */
     public function findByPid($pid);
 
     /**
-     * @param PGPaymentInterfacesEntitiesLockInterface $lock
+     * @param LockEntityInterface $lock
      * @param DateTime $lockedTimestamp
      * @return bool
      */
-    public function updateLock(PGPaymentInterfacesEntitiesLockInterface $lock, DateTime $lockedTimestamp);
+    public function updateLock(LockEntityInterface $lock, DateTime $lockedTimestamp);
 }

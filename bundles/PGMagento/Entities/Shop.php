@@ -15,17 +15,22 @@
  * @author    PayGreen <contact@paygreen.fr>
  * @copyright 2014 - 2021 Watt Is It
  * @license   https://opensource.org/licenses/mit-license.php MIT License X11
- * @version   2.1.1
+ * @version   2.2.0
  *
  */
 
+namespace PGI\Module\PGMagento\Entities;
+
+use PGI\Module\PGDatabase\Foundations\AbstractEntityWrapped;
+use PGI\Module\PGShop\Interfaces\Entities\ShopEntityInterface;
+
 /**
- * Class PGMagentoEntitiesShop
+ * Class Shop
  *
  * @package PGMagento\Entities
  * @method Magento\Store\Model\Group getLocalEntity()
  */
-class PGMagentoEntitiesShop extends PGDatabaseFoundationsEntityWrapped implements PGShopInterfacesEntitiesShop
+class Shop extends AbstractEntityWrapped implements ShopEntityInterface
 {
     public function id()
     {

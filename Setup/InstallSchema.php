@@ -15,36 +15,37 @@
  * @author    PayGreen <contact@paygreen.fr>
  * @copyright 2014 - 2021 Watt Is It
  * @license   https://opensource.org/licenses/mit-license.php MIT License X11
- * @version   2.1.1
+ * @version   2.2.0
  *
  */
 
 namespace Paygreen\Payment\Setup;
 
-use PGModuleServicesHandlersSetup;
-use Magento\Framework\Setup\InstallSchemaInterface;
-use Magento\Framework\Setup\SchemaSetupInterface;
-use Magento\Framework\Setup\ModuleContextInterface;
+use Magento\Framework\Setup\InstallSchemaInterface as LocalInstallSchemaInterface;
+use Magento\Framework\Setup\SchemaSetupInterface as LocalSchemaSetupInterface;
+use Magento\Framework\Setup\ModuleContextInterface as LocalModuleContextInterface;
+use PGI\Module\PGModule\Services\Handlers\SetupHandler;
+use PGI\Module\PGSystem\Foundations\AbstractObject;
 
 require_once PAYGREEN_BOOTSTRAP_SRC;
 
-class InstallSchema extends \PGSystemFoundationsObject implements InstallSchemaInterface
+class InstallSchema extends AbstractObject implements LocalInstallSchemaInterface
 {
     /**
-     * @param SchemaSetupInterface $installer
-     * @param ModuleContextInterface $context
+     * @param LocalSchemaSetupInterface $installer
+     * @param LocalModuleContextInterface $context
      * {@inheritdoc}
      */
     public function install(
-            SchemaSetupInterface $installer,
-            ModuleContextInterface $context)
+        LocalSchemaSetupInterface $installer,
+        LocalModuleContextInterface $context)
     {
         $installer->startSetup();
 
-        /** @var PGModuleServicesHandlersSetup $setupHandler */
+        /** @var SetupHandler $setupHandler */
         $setupHandler = $this->getService('handler.setup');
 
-        $setupHandler->run(PGModuleServicesHandlersSetup::INSTALL);
+        $setupHandler->run(SetupHandler::INSTALL);
 
         $installer->endSetup();
     }

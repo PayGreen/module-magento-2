@@ -15,14 +15,18 @@
  * @author    PayGreen <contact@paygreen.fr>
  * @copyright 2014 - 2021 Watt Is It
  * @license   https://opensource.org/licenses/mit-license.php MIT License X11
- * @version   2.1.1
+ * @version   2.2.0
  *
  */
 
+namespace PGI\Module\PGClient\Exceptions;
+
+use Exception;
+
 /**
- * Class PGClientExceptionsResponse
+ * Class Response
  * @package PGClient\Exceptions
  */
-class PGClientExceptionsResponse extends Exception
+class Response extends Exception
 {
 }

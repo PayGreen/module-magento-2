@@ -15,36 +15,46 @@
  * @author    PayGreen <contact@paygreen.fr>
  * @copyright 2014 - 2021 Watt Is It
  * @license   https://opensource.org/licenses/mit-license.php MIT License X11
- * @version   2.1.1
+ * @version   2.2.0
  *
  */
 
+namespace PGI\Module\PGModule\Services;
+
+use PGI\Module\PGFramework\Components\Aggregator as AggregatorComponent;
+use PGI\Module\PGModule\Components\Upgrade as UpgradeComponent;
+use PGI\Module\PGModule\Interfaces\UpgradeInterface;
+use PGI\Module\PGModule\Services\Logger;
+use PGI\Module\PGModule\Services\Settings;
+use PGI\Module\PGSystem\Foundations\AbstractObject;
+use Exception;
+
 /**
- * Class PGModuleServicesUpgrader
+ * Class Upgrader
  * @package PGModule\Services
  */
-class PGModuleServicesUpgrader extends PGSystemFoundationsObject
+class Upgrader extends AbstractObject
 {
     const DEFAULT_PRIORITY = 500;
 
-    /** @var PGFrameworkComponentsAggregator */
+    /** @var AggregatorComponent */
     private $upgradeAggregator;
 
-    /** @var PGModuleServicesLogger */
+    /** @var Logger */
     private $logger;
 
     /** @var array */
     private $upgrades;
 
     /**
-     * PGModuleServicesSettings constructor.
-     * @param PGFrameworkComponentsAggregator $upgradeAggregator
-     * @param PGModuleServicesLogger $logger
+     * Settings constructor.
+     * @param AggregatorComponent $upgradeAggregator
+     * @param Logger $logger
      * @param array $upgrades
      */
     public function __construct(
-        PGFrameworkComponentsAggregator $upgradeAggregator,
-        PGModuleServicesLogger $logger,
+        AggregatorComponent $upgradeAggregator,
+        Logger $logger,
         array $upgrades
     ) {
         $this->upgradeAggregator = $upgradeAggregator;
@@ -59,12 +69,12 @@ class PGModuleServicesUpgrader extends PGSystemFoundationsObject
      */
     public function upgrade($from, $to)
     {
-        /** @var PGModuleComponentsUpgrade[] $upgradeStages */
+        /** @var UpgradeComponent[] $upgradeStages */
         $upgradeStages = $this->buildUpgradeList($from, $to);
 
-        /** @var PGModuleComponentsUpgrade $upgradeStage */
+        /** @var UpgradeComponent $upgradeStage */
         foreach ($upgradeStages as $upgradeStage) {
-            /** @var PGModuleInterfacesUpgrade $upgrade */
+            /** @var UpgradeInterface $upgrade */
             $upgrade = $this->upgradeAggregator->getService($upgradeStage->getType());
 
             $this->logger->info(
@@ -87,7 +97,7 @@ class PGModuleServicesUpgrader extends PGSystemFoundationsObject
     /**
      * @param string $from
      * @param string $to
-     * @return PGModuleComponentsUpgrade[]
+     * @return UpgradeComponent[]
      * @throws Exception
      */
     protected function buildUpgradeList($from, $to)
@@ -95,7 +105,7 @@ class PGModuleServicesUpgrader extends PGSystemFoundationsObject
         $upgradeStages = array();
 
         foreach ($this->upgrades as $upgradeName => $upgradeConfig) {
-            $upgradeStage = new PGModuleComponentsUpgrade($upgradeName, $upgradeConfig);
+            $upgradeStage = new UpgradeComponent($upgradeName, $upgradeConfig);
 
             if ($upgradeStage->greaterThan($from) && ($upgradeStage->lesserOrEqualThan($to))) {
                 $upgradeStages[] = $upgradeStage;
@@ -103,8 +113,8 @@ class PGModuleServicesUpgrader extends PGSystemFoundationsObject
         }
 
         usort($upgradeStages, function (
-            PGModuleComponentsUpgrade $stage1,
-            PGModuleComponentsUpgrade $stage2
+            UpgradeComponent $stage1,
+            UpgradeComponent $stage2
         ) {
             if ($stage1->lesserThan($stage2->getVersion())) {
                 return -1;

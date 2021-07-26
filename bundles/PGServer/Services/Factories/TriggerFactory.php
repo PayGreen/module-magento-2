@@ -15,29 +15,38 @@
  * @author    PayGreen <contact@paygreen.fr>
  * @copyright 2014 - 2021 Watt Is It
  * @license   https://opensource.org/licenses/mit-license.php MIT License X11
- * @version   2.1.1
+ * @version   2.2.0
  *
  */
 
+namespace PGI\Module\PGServer\Services\Factories;
+
+use PGI\Module\PGModule\Services\Logger;
+use PGI\Module\PGServer\Components\Trigger as TriggerComponent;
+use PGI\Module\PGServer\Foundations\AbstractAcceptor;
+use PGI\Module\PGSystem\Foundations\AbstractObject;
+use PGI\Module\PGSystem\Services\Container;
+use Exception;
+
 /**
- * Class PGServerServicesFactoriesTriggerFactory
+ * Class TriggerFactory
  * @package PGServer\Services\Factories
  */
-class PGServerServicesFactoriesTriggerFactory extends PGSystemFoundationsObject
+class TriggerFactory extends AbstractObject
 {
-    /** @var PGServerFoundationsAbstractAcceptor[] */
+    /** @var AbstractAcceptor[] */
     private $acceptors = array();
 
     /** @var string[] */
     private $acceptorServiceNames = array();
 
-    /** @var PGSystemServicesContainer */
+    /** @var Container */
     private $container;
 
-    /** @var PGModuleServicesLogger */
+    /** @var Logger */
     private $logger;
 
-    public function __construct(PGSystemServicesContainer $container, PGModuleServicesLogger $logger)
+    public function __construct(Container $container, Logger $logger)
     {
         $this->container = $container;
         $this->logger = $logger;
@@ -54,7 +63,7 @@ class PGServerServicesFactoriesTriggerFactory extends PGSystemFoundationsObject
      */
     public function buildTrigger(array $config)
     {
-        $trigger = new PGServerComponentsTrigger();
+        $trigger = new TriggerComponent();
 
         try {
             foreach ($config as $acceptorCode => $acceptorConfig) {
@@ -86,12 +95,12 @@ class PGServerServicesFactoriesTriggerFactory extends PGSystemFoundationsObject
 
     /**
      * @param string $code
-     * @return PGServerFoundationsAbstractAcceptor
+     * @return AbstractAcceptor
      * @throws Exception
      */
     protected function getAcceptor($code)
     {
-        /** @var PGServerFoundationsAbstractAcceptor $acceptor */
+        /** @var AbstractAcceptor $acceptor */
         $acceptor = null;
 
         if (array_key_exists($code, $this->acceptors)) {

@@ -15,20 +15,26 @@
  * @author    PayGreen <contact@paygreen.fr>
  * @copyright 2014 - 2021 Watt Is It
  * @license   https://opensource.org/licenses/mit-license.php MIT License X11
- * @version   2.1.1
+ * @version   2.2.0
  *
  */
 
+namespace PGI\Module\PGClient\Components;
+
+use PGI\Module\PGClient\Components\Response as ResponseComponent;
+use PGI\Module\PGClient\Exceptions\ResponseMalformed as ResponseMalformedException;
+use stdClass;
+
 /**
- * Class PGClientComponentsResponseJSON
- * @package PGClient\Components\Responses
+ * Class ResponseJSON
+ * @package PGClient\Components
  */
-class PGClientComponentsResponseJSON extends PGClientComponentsResponse
+class ResponseJSON extends ResponseComponent
 {
     /**
      * @param string $data
      * @return stdClass
-     * @throws PGClientExceptionsResponseMalformed
+     * @throws ResponseMalformedException
      */
     protected function format($data)
     {
@@ -37,7 +43,7 @@ class PGClientComponentsResponseJSON extends PGClientComponentsResponse
         $decodedata = @json_decode($data);
 
         if (!$decodedata instanceof stdClass) {
-            throw new PGClientExceptionsResponseMalformed("Invalid JSON result.");
+            throw new ResponseMalformedException("Invalid JSON result.");
         }
 
         return $decodedata;

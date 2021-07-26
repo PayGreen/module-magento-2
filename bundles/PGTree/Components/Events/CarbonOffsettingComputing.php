@@ -15,33 +15,41 @@
  * @author    PayGreen <contact@paygreen.fr>
  * @copyright 2014 - 2021 Watt Is It
  * @license   https://opensource.org/licenses/mit-license.php MIT License X11
- * @version   2.1.1
+ * @version   2.2.0
  *
  */
 
+namespace PGI\Module\PGTree\Components\Events;
+
+use PGI\Module\PGModule\Foundations\AbstractEvent;
+use PGI\Module\PGShop\Interfaces\Entities\CarrierEntityInterface;
+use PGI\Module\PGShop\Interfaces\Entities\CustomerEntityInterface;
+use PGI\Module\PGShop\Interfaces\ShopableInterface;
+use PGI\Module\PGTree\Components\CarbonOffsettingComputing as CarbonOffsettingComputingComponent;
+
 /**
- * Class PGTreeComponentsEventsCarbonOffsettingComputing
+ * Class CarbonOffsettingComputing
  * @package PGTree\Components\Events
  */
-class PGTreeComponentsEventsCarbonOffsettingComputing extends PGModuleFoundationsEvent
+class CarbonOffsettingComputing extends AbstractEvent
 {
-    /** @var PGTreeComponentsCarbonOffsettingComputing */
+    /** @var CarbonOffsettingComputingComponent */
     private $carbonOffsettingComputing;
 
-    /** @var PGShopInterfacesShopable|null */
+    /** @var ShopableInterface|null */
     private $shopable;
 
-    /** @var PGShopInterfacesEntitiesCustomer|null */
+    /** @var CustomerEntityInterface|null */
     private $customer;
 
-    /** @var PGShopInterfacesEntitiesCarrier|null */
+    /** @var CarrierEntityInterface|null */
     private $carrier;
 
     public function __construct(
-        PGTreeComponentsCarbonOffsettingComputing $carbonOffsettingComputing,
-        PGShopInterfacesShopable $shopable = null,
-        PGShopInterfacesEntitiesCustomer $customer = null,
-        PGShopInterfacesEntitiesCarrier $carrier = null
+        CarbonOffsettingComputingComponent $carbonOffsettingComputing,
+        ShopableInterface $shopable = null,
+        CustomerEntityInterface $customer = null,
+        CarrierEntityInterface $carrier = null
     ) {
         $this->carbonOffsettingComputing = $carbonOffsettingComputing;
         $this->shopable = $shopable;
@@ -58,7 +66,7 @@ class PGTreeComponentsEventsCarbonOffsettingComputing extends PGModuleFoundation
     }
 
     /**
-     * @return PGTreeComponentsCarbonOffsettingComputing
+     * @return CarbonOffsettingComputingComponent
      */
     public function getCarbonOffsettingComputing()
     {
@@ -66,7 +74,7 @@ class PGTreeComponentsEventsCarbonOffsettingComputing extends PGModuleFoundation
     }
 
     /**
-     * @return PGShopInterfacesShopable|null
+     * @return ShopableInterface|null
      */
     public function getShopable()
     {
@@ -74,7 +82,7 @@ class PGTreeComponentsEventsCarbonOffsettingComputing extends PGModuleFoundation
     }
 
     /**
-     * @return PGShopInterfacesEntitiesCustomer|null
+     * @return CustomerEntityInterface|null
      */
     public function getCustomer()
     {
@@ -82,7 +90,7 @@ class PGTreeComponentsEventsCarbonOffsettingComputing extends PGModuleFoundation
     }
 
     /**
-     * @return PGShopInterfacesEntitiesCarrier|null
+     * @return CarrierEntityInterface|null
      */
     public function getCarrier()
     {

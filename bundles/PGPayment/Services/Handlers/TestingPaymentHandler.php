@@ -15,33 +15,43 @@
  * @author    PayGreen <contact@paygreen.fr>
  * @copyright 2014 - 2021 Watt Is It
  * @license   https://opensource.org/licenses/mit-license.php MIT License X11
- * @version   2.1.1
+ * @version   2.2.0
  *
  */
 
+namespace PGI\Module\PGPayment\Services\Handlers;
+
+use PGI\Module\PGModule\Services\Logger;
+use PGI\Module\PGPayment\Components\Tasks\PaymentValidation as PaymentValidationTaskComponent;
+use PGI\Module\PGPayment\Components\Tasks\TransactionManagement as TransactionManagementTaskComponent;
+use PGI\Module\PGSystem\Foundations\AbstractObject;
+use PGI\Module\PGSystem\Services\Pathfinder;
+use DateTime;
+use Exception;
+
 /**
- * Class PGPaymentServicesHandlersTestingPaymentHandler
+ * Class TestingPaymentHandler
  * @package PGPayment\Services\Handlers
  */
-class PGPaymentServicesHandlersTestingPaymentHandler extends PGSystemFoundationsObject
+class TestingPaymentHandler extends AbstractObject
 {
     const FILENAME_LAST_PAYMENT_RESULT = 'last-payment-result.json';
     const FILENAME_LAST_PAYMENT_SENT = 'last-payment-sent.json';
     const FILENAME_FAKE_PAYMENT_DATA = 'fake-payment-data.json';
 
-    /** @var PGModuleServicesLogger */
+    /** @var Logger */
     private $logger;
 
-    /** @var PGModuleServicesLogger */
+    /** @var Logger */
     private $apiLogger;
 
-    /** @var PGSystemServicesPathfinder */
+    /** @var Pathfinder */
     private $pathfinder;
 
     public function __construct(
-        PGModuleServicesLogger $logger,
-        PGModuleServicesLogger $apiLogger,
-        PGSystemServicesPathfinder $pathfinder
+        Logger $logger,
+        Logger $apiLogger,
+        Pathfinder $pathfinder
     ) {
         $this->logger = $logger;
         $this->apiLogger = $apiLogger;
@@ -49,13 +59,13 @@ class PGPaymentServicesHandlersTestingPaymentHandler extends PGSystemFoundations
     }
 
     /**
-     * @param PGPaymentComponentsTasksPaymentValidation $task
-     * @param PGPaymentComponentsTasksTransactionManagement $subTask
+     * @param PaymentValidationTaskComponent $task
+     * @param TransactionManagementTaskComponent $subTask
      * @throws Exception
      */
     public function manageFakeOrder(
-        PGPaymentComponentsTasksPaymentValidation $task,
-        PGPaymentComponentsTasksTransactionManagement $subTask
+        PaymentValidationTaskComponent $task,
+        TransactionManagementTaskComponent $subTask
     ) {
         $data = array(
             'task' => $task->getStatusName($task->getStatus()),

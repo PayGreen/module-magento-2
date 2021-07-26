@@ -15,15 +15,19 @@
  * @author    PayGreen <contact@paygreen.fr>
  * @copyright 2014 - 2021 Watt Is It
  * @license   https://opensource.org/licenses/mit-license.php MIT License X11
- * @version   2.1.1
+ * @version   2.2.0
  *
  */
 
+namespace PGI\Module\PGForm\Services\Formatters;
+
+use PGI\Module\PGForm\Foundations\AbstractFormatter;
+
 /**
- * Class PGFormServicesFormattersIntegerFormatter
+ * Class IntegerFormatter
  * @package PGForm\Services\Formatters
  */
-class PGFormServicesFormattersIntegerFormatter extends PGFormFoundationsAbstractFormatter
+class IntegerFormatter extends AbstractFormatter
 {
     const TEXT = 'errors.formatter.integer';
 

@@ -15,22 +15,30 @@
  * @author    PayGreen <contact@paygreen.fr>
  * @copyright 2014 - 2021 Watt Is It
  * @license   https://opensource.org/licenses/mit-license.php MIT License X11
- * @version   2.1.1
+ * @version   2.2.0
  *
  */
 
+namespace PGI\Module\PGPayment\Services\Repositories;
+
+use PGI\Module\PGDatabase\Foundations\AbstractRepositoryDatabase;
+use PGI\Module\PGDatabase\Services\Handlers\DatabaseHandler;
+use PGI\Module\PGPayment\Interfaces\Repositories\CategoryHasPaymentTypeRepositoryInterface;
+use PGI\Module\PGShop\Interfaces\Handlers\ShopHandlerInterface;
+use Exception;
+
 /**
- * Class PGPaymentServicesRepositoriesCategoryHasPaymentTypeRepository
+ * Class CategoryHasPaymentTypeRepository
  * @package PGPayment\Services\Repositories
  */
-class PGPaymentServicesRepositoriesCategoryHasPaymentTypeRepository extends PGDatabaseFoundationsRepositoryDatabase implements PGPaymentInterfacesRepositoriesCategoryHasPaymentTypeRepositoryInterface
+class CategoryHasPaymentTypeRepository extends AbstractRepositoryDatabase implements CategoryHasPaymentTypeRepositoryInterface
 {
-    /** @var PGShopInterfacesShopHandler */
+    /** @var ShopHandlerInterface */
     private $shopHandler;
 
     public function __construct(
-        PGDatabaseServicesDatabaseHandler $databaseHandler,
-        PGShopInterfacesShopHandler $shopHandler,
+        DatabaseHandler $databaseHandler,
+        ShopHandlerInterface $shopHandler,
         array $config
     ) {
         parent::__construct($databaseHandler, $config);

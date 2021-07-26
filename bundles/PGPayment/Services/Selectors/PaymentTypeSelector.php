@@ -15,21 +15,27 @@
  * @author    PayGreen <contact@paygreen.fr>
  * @copyright 2014 - 2021 Watt Is It
  * @license   https://opensource.org/licenses/mit-license.php MIT License X11
- * @version   2.1.1
+ * @version   2.2.0
  *
  */
 
+namespace PGI\Module\PGPayment\Services\Selectors;
+
+use PGI\Module\PGClient\Exceptions\Response as ResponseException;
+use PGI\Module\PGFramework\Foundations\AbstractSelector;
+use PGI\Module\PGPayment\Services\Managers\PaymentTypeManager;
+
 /**
- * Class PGPaymentServicesSelectorsPaymentTypeSelector
+ * Class PaymentTypeSelector
  * @package PGPayment\Services\Selectors
  */
-class PGPaymentServicesSelectorsPaymentTypeSelector extends PGFrameworkFoundationsSelector
+class PaymentTypeSelector extends AbstractSelector
 {
-    /** @var PGPaymentServicesManagersPaymentTypeManager */
+    /** @var PaymentTypeManager */
     private $paymentTypeManager;
 
     /**
-     * @param PGPaymentServicesManagersPaymentTypeManager $paymentTypeManager
+     * @param PaymentTypeManager $paymentTypeManager
      */
     public function setPaymentTypeManager($paymentTypeManager)
     {
@@ -38,7 +44,7 @@ class PGPaymentServicesSelectorsPaymentTypeSelector extends PGFrameworkFoundatio
 
     /**
      * @return array
-     * @throws PGClientExceptionsResponse
+     * @throws ResponseException
      */
     protected function buildChoices()
     {

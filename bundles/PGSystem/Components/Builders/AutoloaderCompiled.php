@@ -15,27 +15,34 @@
  * @author    PayGreen <contact@paygreen.fr>
  * @copyright 2014 - 2021 Watt Is It
  * @license   https://opensource.org/licenses/mit-license.php MIT License X11
- * @version   2.1.1
+ * @version   2.2.0
  *
  */
 
+namespace PGI\Module\PGSystem\Components\Builders;
+
+use PGI\Module\PGSystem\Components\Bootstrap as BootstrapComponent;
+use PGI\Module\PGSystem\Interfaces\Builders\BootstrapBuilderInterface;
+use PGI\Module\PGSystem\Services\Autoloaders\CompiledAutoloader;
+use Exception;
+
 /**
- * Class PGSystemComponentsBuildersAutoloaderCompiled
+ * Class AutoloaderCompiled
  * @package PGSystem\Components\Builders
  */
-class PGSystemComponentsBuildersAutoloaderCompiled implements PGSystemInterfacesBootstrapBuilder
+class AutoloaderCompiled implements BootstrapBuilderInterface
 {
-    /** @var PGSystemBootstrap */
+    /** @var BootstrapComponent */
     private $bootstrap;
 
-    public function __construct(PGSystemBootstrap $bootstrap)
+    public function __construct(BootstrapComponent $bootstrap)
     {
         $this->bootstrap = $bootstrap;
     }
 
     /**
      * @param array $config
-     * @return PGSystemServicesAutoloadersCompiled
+     * @return CompiledAutoloader
      * @throws Exception
      */
     public function build(array $config = array())
@@ -46,6 +53,6 @@ class PGSystemComponentsBuildersAutoloaderCompiled implements PGSystemInterfaces
 
         $index = require $this->bootstrap->getPathfinder()->toAbsolutePath('data:/autoloader.php');
 
-        return new PGSystemServicesAutoloadersCompiled(PAYGREEN_VENDOR_DIR, $index);
+        return new CompiledAutoloader(PAYGREEN_VENDOR_DIR, $index);
     }
 }

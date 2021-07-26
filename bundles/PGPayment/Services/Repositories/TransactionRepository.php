@@ -15,26 +15,35 @@
  * @author    PayGreen <contact@paygreen.fr>
  * @copyright 2014 - 2021 Watt Is It
  * @license   https://opensource.org/licenses/mit-license.php MIT License X11
- * @version   2.1.1
+ * @version   2.2.0
  *
  */
 
+namespace PGI\Module\PGPayment\Services\Repositories;
+
+use PGI\Module\PGDatabase\Foundations\AbstractRepositoryDatabase;
+use PGI\Module\PGPayment\Interfaces\Entities\TransactionEntityInterface;
+use PGI\Module\PGPayment\Interfaces\Repositories\TransactionRepositoryInterface;
+use PGI\Module\PGShop\Tools\Price as PriceTool;
+use DateTime;
+use Exception;
+
 /**
- * Class PGPaymentServicesRepositoriesTransactionRepository
+ * Class TransactionRepository
  * @package PGPayment\Services\Repositories
  */
-class PGPaymentServicesRepositoriesTransactionRepository extends PGDatabaseFoundationsRepositoryDatabase implements PGPaymentInterfacesRepositoriesTransactionRepositoryInterface
+class TransactionRepository extends AbstractRepositoryDatabase implements TransactionRepositoryInterface
 {
     const NB_SECONDS_IN_A_DAY = 86400;
 
     /**
      * @inheritdoc
-     * @return PGPaymentInterfacesEntitiesTransactionInterface|null
+     * @return TransactionEntityInterface|null
      * @throws Exception
      */
     public function findByPid($pid)
     {
-        /** @var PGPaymentInterfacesEntitiesTransactionInterface $result */
+        /** @var TransactionEntityInterface $result */
         $result = $this->findOneEntity("`pid` = '$pid'");
 
         return $result;
@@ -42,12 +51,12 @@ class PGPaymentServicesRepositoriesTransactionRepository extends PGDatabaseFound
 
     /**
      * @inheritdoc
-     * @return PGPaymentInterfacesEntitiesTransactionInterface|null
+     * @return TransactionEntityInterface|null
      * @throws Exception
      */
     public function findByOrderPrimary($id_order)
     {
-        /** @var PGPaymentInterfacesEntitiesTransactionInterface $result */
+        /** @var TransactionEntityInterface $result */
         $result = $this->findOneEntity("`id_order` = '$id_order'");
 
         return $result;
@@ -55,12 +64,12 @@ class PGPaymentServicesRepositoriesTransactionRepository extends PGDatabaseFound
 
     /**
      * @inheritDoc
-     * @return PGPaymentInterfacesEntitiesTransactionInterface
+     * @return TransactionEntityInterface
      * @throws Exception
      */
     public function create()
     {
-        /** @var PGPaymentInterfacesEntitiesTransactionInterface $result */
+        /** @var TransactionEntityInterface $result */
         $result = $this->wrapEntity();
 
         return $result;
@@ -70,7 +79,7 @@ class PGPaymentServicesRepositoriesTransactionRepository extends PGDatabaseFound
      * @inheritDoc
      * @throws Exception
      */
-    public function insert(PGPaymentInterfacesEntitiesTransactionInterface $transaction)
+    public function insert(TransactionEntityInterface $transaction)
     {
         return $this->insertEntity($transaction);
     }
@@ -79,7 +88,7 @@ class PGPaymentServicesRepositoriesTransactionRepository extends PGDatabaseFound
      * @inheritDoc
      * @throws Exception
      */
-    public function update(PGPaymentInterfacesEntitiesTransactionInterface $transaction)
+    public function update(TransactionEntityInterface $transaction)
     {
         return $this->updateEntity($transaction);
     }
@@ -88,7 +97,7 @@ class PGPaymentServicesRepositoriesTransactionRepository extends PGDatabaseFound
      * @inheritDoc
      * @throws Exception
      */
-    public function delete(PGPaymentInterfacesEntitiesTransactionInterface $transaction)
+    public function delete(TransactionEntityInterface $transaction)
     {
         return $this->deleteEntity($transaction);
     }
@@ -146,7 +155,7 @@ class PGPaymentServicesRepositoriesTransactionRepository extends PGDatabaseFound
 
         $amount = $this->getRequester()->fetchValue($sql);
 
-        return PGShopToolsPrice::toFloat($amount);
+        return PriceTool::toFloat($amount);
     }
 
     /**

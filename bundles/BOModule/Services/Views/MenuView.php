@@ -15,29 +15,37 @@
  * @author    PayGreen <contact@paygreen.fr>
  * @copyright 2014 - 2021 Watt Is It
  * @license   https://opensource.org/licenses/mit-license.php MIT License X11
- * @version   2.1.1
+ * @version   2.2.0
  *
  */
 
+namespace PGI\Module\BOModule\Services\Views;
+
+use PGI\Module\BOModule\Services\Handlers\MenuHandler;
+use PGI\Module\PGShop\Interfaces\Handlers\ShopHandlerInterface;
+use PGI\Module\PGShop\Services\Managers\ShopManager;
+use PGI\Module\PGView\Services\View;
+use Exception;
+
 /**
- * Class BOModuleServicesViewsMenuView
+ * Class MenuView
  * @package BOModule\Services\Views
  */
-class BOModuleServicesViewsMenuView extends PGViewServicesView
+class MenuView extends View
 {
-    /** @var BOModuleServicesHandlersMenuHandler */
+    /** @var MenuHandler */
     private $menuHandler;
 
-    /** @var PGShopServicesManagersShop */
+    /** @var ShopManager */
     private $shopManager;
 
-    /** @var PGShopInterfacesShopHandler */
+    /** @var ShopHandlerInterface */
     private $shopHandler;
 
     public function __construct(
-        BOModuleServicesHandlersMenuHandler $menuHandler,
-        PGShopServicesManagersShop $shopManager,
-        PGShopInterfacesShopHandler $shopHandler
+        MenuHandler $menuHandler,
+        ShopManager $shopManager,
+        ShopHandlerInterface $shopHandler
     ) {
         $this->menuHandler = $menuHandler;
         $this->shopManager = $shopManager;

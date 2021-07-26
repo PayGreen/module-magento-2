@@ -15,29 +15,34 @@
  * @author    PayGreen <contact@paygreen.fr>
  * @copyright 2014 - 2021 Watt Is It
  * @license   https://opensource.org/licenses/mit-license.php MIT License X11
- * @version   2.1.1
+ * @version   2.2.0
  *
  */
 
+namespace PGI\Module\PGServer\Components;
+
+use PGI\Module\PGServer\Foundations\AbstractAcceptor;
+use PGI\Module\PGServer\Foundations\AbstractResponse;
+
 /**
- * Class PGServerComponentsTrigger
+ * Class Trigger
  * @package PGServer\Components
  */
-class PGServerComponentsTrigger
+class Trigger
 {
     private $steps = array();
 
-    public function addAcceptor(PGServerFoundationsAbstractAcceptor $acceptor, $config)
+    public function addAcceptor(AbstractAcceptor $acceptor, $config)
     {
         $this->steps[] = array($acceptor, $config);
     }
 
-    public function isTriggered(PGServerFoundationsAbstractResponse $response)
+    public function isTriggered(AbstractResponse $response)
     {
-        /** @var PGServerFoundationsAbstractAcceptor $acceptor */
+        /** @var AbstractAcceptor $acceptor */
         foreach ($this->steps as $step) {
             /**
-             * @var PGServerFoundationsAbstractAcceptor $acceptor
+             * @var AbstractAcceptor $acceptor
              * @var array $config
              */
             list($acceptor, $config) = $step;

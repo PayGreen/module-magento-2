@@ -15,29 +15,37 @@
  * @author    PayGreen <contact@paygreen.fr>
  * @copyright 2014 - 2021 Watt Is It
  * @license   https://opensource.org/licenses/mit-license.php MIT License X11
- * @version   2.1.1
+ * @version   2.2.0
  *
  */
 
+namespace PGI\Module\PGServer\Components;
+
+use PGI\Module\PGModule\Services\Logger;
+use PGI\Module\PGServer\Components\Trigger as TriggerComponent;
+use PGI\Module\PGServer\Foundations\AbstractResponse;
+use PGI\Module\PGSystem\Foundations\AbstractObject;
+use Exception;
+
 /**
- * Class PGServerComponentsStage
+ * Class Stage
  * @package PGServer\Components
  */
-class PGServerComponentsStage extends PGSystemFoundationsObject
+class Stage extends AbstractObject
 {
     private $config;
 
-    /** @var PGServerComponentsTrigger|null */
+    /** @var TriggerComponent|null */
     private $trigger;
 
-    /** @var PGModuleServicesLogger */
+    /** @var Logger */
     private $logger;
 
     public $do;
 
     public $with;
 
-    public function __construct(array $config, PGServerComponentsTrigger $trigger = null)
+    public function __construct(array $config, TriggerComponent $trigger = null)
     {
         $this->config = $config;
         $this->trigger = $trigger;
@@ -62,7 +70,7 @@ class PGServerComponentsStage extends PGSystemFoundationsObject
     }
 
     /**
-     * @return PGModuleServicesLogger
+     * @return Logger
      */
     protected function getLogger()
     {
@@ -70,28 +78,28 @@ class PGServerComponentsStage extends PGSystemFoundationsObject
     }
 
     /**
-     * @param PGModuleServicesLogger $logger
+     * @param Logger $logger
      */
-    public function setLogger(PGModuleServicesLogger $logger)
+    public function setLogger(Logger $logger)
     {
         $this->logger = $logger;
     }
 
     /**
-     * @param PGServerFoundationsAbstractResponse $response
+     * @param AbstractResponse $response
      * @return bool
      */
-    public function isTriggered(PGServerFoundationsAbstractResponse $response)
+    public function isTriggered(AbstractResponse $response)
     {
         return ($this->trigger === null) ? true : $this->trigger->isTriggered($response);
     }
 
     /**
-     * @param PGServerFoundationsAbstractResponse $response
+     * @param AbstractResponse $response
      * @return mixed
      * @throws Exception
      */
-    protected function callService(PGServerFoundationsAbstractResponse $response)
+    protected function callService(AbstractResponse $response)
     {
         if ($this->with === null) {
             throw new Exception("Server Stage must specify service to perform action.");
@@ -111,11 +119,11 @@ class PGServerComponentsStage extends PGSystemFoundationsObject
     }
 
     /**
-     * @param PGServerFoundationsAbstractResponse $response
-     * @return PGServerFoundationsAbstractResponse|null
+     * @param AbstractResponse $response
+     * @return AbstractResponse|null
      * @throws Exception
      */
-    public function execute(PGServerFoundationsAbstractResponse $response)
+    public function execute(AbstractResponse $response)
     {
         if ($this->with !== null) {
             $this->getLogger()->debug("Process Response with '@{$this->with}'.");

@@ -15,15 +15,17 @@
  * @author    PayGreen <contact@paygreen.fr>
  * @copyright 2014 - 2021 Watt Is It
  * @license   https://opensource.org/licenses/mit-license.php MIT License X11
- * @version   2.1.1
+ * @version   2.2.0
  *
  */
 
+namespace PGI\Module\PGShop\Tools;
+
 /**
- * Class PGShopToolsPrice
+ * Class Price
  * @package PGShop\Tools
  */
-abstract class PGShopToolsPrice
+abstract class Price
 {
     /**
      * @param float $value

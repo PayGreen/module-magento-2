@@ -15,40 +15,51 @@
  * @author    PayGreen <contact@paygreen.fr>
  * @copyright 2014 - 2021 Watt Is It
  * @license   https://opensource.org/licenses/mit-license.php MIT License X11
- * @version   2.1.1
+ * @version   2.2.0
  *
  */
 
+namespace PGI\Module\PGServer\Services;
+
+use PGI\Module\PGModule\Services\Logger;
+use PGI\Module\PGServer\Components\Requests\HTTP as HTTPRequestComponent;
+use PGI\Module\PGServer\Exceptions\HTTPNotFound as HTTPNotFoundException;
+use PGI\Module\PGServer\Exceptions\HTTPUnauthorized as HTTPUnauthorizedException;
+use PGI\Module\PGServer\Services\Handlers\AreaHandler;
+use PGI\Module\PGServer\Services\Handlers\RouteHandler;
+use PGI\Module\PGSystem\Foundations\AbstractObject;
+use Exception;
+
 /**
- * Class PGServerServicesRouter
+ * Class Router
  * @package PGServer\Services
  */
-class PGServerServicesRouter extends PGSystemFoundationsObject
+class Router extends AbstractObject
 {
-    /** @var PGServerServicesHandlersAreaHandler */
+    /** @var AreaHandler */
     private $areaHandler;
 
-    /** @var PGServerServicesHandlersRouteHandler */
+    /** @var RouteHandler */
     private $routeHandler;
 
     public function __construct(
-        PGServerServicesHandlersAreaHandler $areaHandler,
-        PGServerServicesHandlersRouteHandler $routeHandler
+        AreaHandler $areaHandler,
+        RouteHandler $routeHandler
     ) {
         $this->areaHandler = $areaHandler;
         $this->routeHandler = $routeHandler;
     }
 
     /**
-     * @param PGServerComponentsRequestsHTTPRequest $request
+     * @param HTTPRequestComponent $request
      * @param array $areas
      * @return string
-     * @throws PGServerExceptionsHTTPNotFoundException
+     * @throws HTTPNotFoundException
      * @throws Exception
      */
-    public function getTarget(PGServerComponentsRequestsHTTPRequest $request, array $areas)
+    public function getTarget(HTTPRequestComponent $request, array $areas)
     {
-        /** @var PGModuleServicesLogger $logger */
+        /** @var Logger $logger */
         $logger = $this->getService('logger');
 
         $action = $request->getAction();
@@ -66,26 +77,26 @@ class PGServerServicesRouter extends PGSystemFoundationsObject
 
     /**
      * @param string $action
-     * @throws PGServerExceptionsHTTPNotFoundException
+     * @throws HTTPNotFoundException
      */
     protected function verifyRoute($action)
     {
         if (!$this->routeHandler->has($action)) {
-            throw new PGServerExceptionsHTTPNotFoundException("Action '$action' not found.");
+            throw new HTTPNotFoundException("Action '$action' not found.");
         }
     }
 
     /**
      * @param string $action
      * @param array $areas
-     * @throws PGServerExceptionsHTTPNotFoundException
+     * @throws HTTPNotFoundException
      */
     protected function verifyArea($action, array $areas)
     {
         try {
             $area = $this->areaHandler->getRouteArea($action);
         } catch (Exception $exception) {
-            throw new PGServerExceptionsHTTPNotFoundException(
+            throw new HTTPNotFoundException(
                 "Unable to retrieve route area : " . $exception->getMessage(),
                 $exception->getCode(),
                 $exception
@@ -93,18 +104,18 @@ class PGServerServicesRouter extends PGSystemFoundationsObject
         }
 
         if (!in_array($area, $areas)) {
-            throw new PGServerExceptionsHTTPNotFoundException("Action '$action' not found in any area of this server.");
+            throw new HTTPNotFoundException("Action '$action' not found in any area of this server.");
         }
     }
 
     /**
      * @param string $action
-     * @throws PGServerExceptionsHTTPUnauthorizedException
+     * @throws HTTPUnauthorizedException
      */
     protected function verifyRequirements($action)
     {
         if (!$this->routeHandler->areRequirementsFulfilled($action)) {
-            throw new PGServerExceptionsHTTPUnauthorizedException("Route '$action' requirements are not fulfilled.");
+            throw new HTTPUnauthorizedException("Route '$action' requirements are not fulfilled.");
         }
     }
 }

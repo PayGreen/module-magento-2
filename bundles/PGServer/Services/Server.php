@@ -15,17 +15,42 @@
  * @author    PayGreen <contact@paygreen.fr>
  * @copyright 2014 - 2021 Watt Is It
  * @license   https://opensource.org/licenses/mit-license.php MIT License X11
- * @version   2.1.1
+ * @version   2.2.0
  *
  */
 
+namespace PGI\Module\PGServer\Services;
+
+use PGI\Module\PGModule\Services\Logger;
+use PGI\Module\PGServer\Components\Requests\Blank as BlankRequestComponent;
+use PGI\Module\PGServer\Components\Requests\Forward as ForwardRequestComponent;
+use PGI\Module\PGServer\Components\Requests\HTTP as HTTPRequestComponent;
+use PGI\Module\PGServer\Components\Responses\Blank as BlankResponseComponent;
+use PGI\Module\PGServer\Components\Responses\Forward as ForwardResponseComponent;
+use PGI\Module\PGServer\Components\Stage as StageComponent;
+use PGI\Module\PGServer\Exceptions\HTTPBadRequest as HTTPBadRequestException;
+use PGI\Module\PGServer\Exceptions\HTTPNotFound as HTTPNotFoundException;
+use PGI\Module\PGServer\Exceptions\HTTPUnauthorized as HTTPUnauthorizedException;
+use PGI\Module\PGServer\Foundations\AbstractRequest;
+use PGI\Module\PGServer\Foundations\AbstractResponse;
+use PGI\Module\PGServer\Foundations\AbstractStage;
+use PGI\Module\PGServer\Interfaces\CleanerInterface;
+use PGI\Module\PGServer\Services\Builders\RequestBuilder;
+use PGI\Module\PGServer\Services\Derouter;
+use PGI\Module\PGServer\Services\Dispatcher;
+use PGI\Module\PGServer\Services\Factories\StageFactory;
+use PGI\Module\PGServer\Services\Router;
+use PGI\Module\PGSystem\Components\Bag as BagComponent;
+use PGI\Module\PGSystem\Foundations\AbstractObject;
+use Exception;
+
 /**
- * Class PGServerServicesServer
+ * Class Server
  * @package PGServer\Services
  */
-class PGServerServicesServer extends PGSystemFoundationsObject
+class Server extends AbstractObject
 {
-    /** @var PGSystemComponentsBag */
+    /** @var BagComponent */
     private $config;
 
     private $defaultConfig = array(
@@ -41,40 +66,40 @@ class PGServerServicesServer extends PGSystemFoundationsObject
         )
     );
 
-    /** @var PGServerServicesDispatcher */
+    /** @var Dispatcher */
     private $dispatcher;
 
-    /** @var PGServerServicesRouter */
+    /** @var Router */
     private $router;
 
-    /** @var PGServerServicesDerouter */
+    /** @var Derouter */
     private $derouter;
 
-    /** @var PGModuleServicesLogger */
+    /** @var Logger */
     private $logger;
 
-    /** @var PGServerServicesFactoriesStageFactory */
+    /** @var StageFactory */
     private $stageFactory;
 
-    /** @var PGServerFoundationsAbstractStage[] */
+    /** @var AbstractStage[] */
     private $stages = array();
 
     /**
-     * PGServerServicesServer constructor.
-     * @param PGServerServicesRouter $router
-     * @param PGServerServicesDerouter $derouter
-     * @param PGServerServicesDispatcher $dispatcher
-     * @param PGModuleServicesLogger $logger
-     * @param PGServerServicesFactoriesStageFactory $stageFactory
+     * Server constructor.
+     * @param Router $router
+     * @param Derouter $derouter
+     * @param Dispatcher $dispatcher
+     * @param Logger $logger
+     * @param StageFactory $stageFactory
      * @param array $config
      * @throws Exception
      */
     public function __construct(
-        PGServerServicesRouter $router,
-        PGServerServicesDerouter $derouter,
-        PGServerServicesDispatcher $dispatcher,
-        PGModuleServicesLogger $logger,
-        PGServerServicesFactoriesStageFactory $stageFactory,
+        Router $router,
+        Derouter $derouter,
+        Dispatcher $dispatcher,
+        Logger $logger,
+        StageFactory $stageFactory,
         array $config
     ) {
         $this->router = $router;
@@ -83,7 +108,7 @@ class PGServerServicesServer extends PGSystemFoundationsObject
         $this->logger = $logger;
         $this->stageFactory = $stageFactory;
 
-        $this->config = new PGSystemComponentsBag($this->defaultConfig);
+        $this->config = new BagComponent($this->defaultConfig);
         $this->config->merge($config);
 
         if (!is_array($this->config['areas'])) {
@@ -93,7 +118,7 @@ class PGServerServicesServer extends PGSystemFoundationsObject
 
     /**
      * @param string $type
-     * @return PGServerInterfacesCleanerInterface
+     * @return CleanerInterface
      * @throws Exception
      */
     protected function getCleaner($type)
@@ -109,7 +134,7 @@ class PGServerServicesServer extends PGSystemFoundationsObject
 
         $service = $this->getService($serviceName);
 
-        if ($service instanceof PGServerInterfacesCleanerInterface) {
+        if ($service instanceof CleanerInterface) {
             return $service;
         } else {
             throw new Exception("Target service : '$serviceName' is not a valid Cleaner.");
@@ -120,12 +145,12 @@ class PGServerServicesServer extends PGSystemFoundationsObject
      * @param string $type
      * @param Exception $exception
      * @param null $request
-     * @return PGServerFoundationsAbstractResponse
+     * @return AbstractResponse
      * @throws Exception
      */
     protected function clean($type, Exception $exception, $request = null)
     {
-        /** @var PGServerInterfacesCleanerInterface $cleaner */
+        /** @var CleanerInterface $cleaner */
         $cleaner = $this->getCleaner($type);
 
         $type = strtoupper($type);
@@ -133,24 +158,24 @@ class PGServerServicesServer extends PGSystemFoundationsObject
         $this->logger->error("Server error type '$type' has occurred : " . $exception->getMessage(), $exception);
 
         if ($request === null) {
-            $request = new PGServerComponentsRequestsEmptyRequest();
+            $request = new BlankRequestComponent();
         }
 
         return $cleaner->processError($request, $exception);
     }
 
     /**
-     * @return PGServerServicesRequestBuilder
+     * @return RequestBuilder
      * @throws Exception
      */
     public function getRequestBuilder()
     {
         $defaultRequestBuilderServiceName = $this->config['request_builder'];
 
-        /** @var PGServerServicesRequestBuilder $requestBuilder */
+        /** @var RequestBuilder $requestBuilder */
         $requestBuilder = $this->getService($defaultRequestBuilderServiceName);
 
-        if (!$requestBuilder instanceof PGServerServicesRequestBuilder) {
+        if (!$requestBuilder instanceof RequestBuilder) {
             throw new Exception("Target service '$defaultRequestBuilderServiceName' is not a valid RequestBuilder.");
         }
 
@@ -159,7 +184,7 @@ class PGServerServicesServer extends PGSystemFoundationsObject
 
     /**
      * @param mixed|null $context
-     * @return PGServerFoundationsAbstractResponse|null
+     * @return AbstractResponse|null
      * @throws Exception
      */
     public function run($context = null)
@@ -171,10 +196,10 @@ class PGServerServicesServer extends PGSystemFoundationsObject
         do {
             $continue = false;
 
-            /** @var PGServerFoundationsAbstractResponse $response */
+            /** @var AbstractResponse $response */
             $response = $this->buildResponse($context, $request);
 
-            if (!$response instanceof PGServerComponentsResponsesForwardResponse) {
+            if (!$response instanceof ForwardResponseComponent) {
                 try {
                     return $this->renderResponse($response);
                 } catch (Exception $exception) {
@@ -183,7 +208,7 @@ class PGServerServicesServer extends PGSystemFoundationsObject
                 }
             }
 
-            if ($response instanceof PGServerComponentsResponsesForwardResponse) {
+            if ($response instanceof ForwardResponseComponent) {
                 $this->logger->debug("Forwarding root process to '{$response->getRequest()->getTarget()}'.");
                 $request = $response->getRequest();
                 $continue = true;
@@ -193,28 +218,28 @@ class PGServerServicesServer extends PGSystemFoundationsObject
 
     /**
      * @param mixed|null $context
-     * @param PGServerFoundationsAbstractRequest|null $request
-     * @return PGServerFoundationsAbstractResponse|null
+     * @param AbstractRequest|null $request
+     * @return AbstractResponse|null
      * @throws Exception
      */
-    protected function buildResponse($context = null, PGServerFoundationsAbstractRequest $request = null)
+    protected function buildResponse($context = null, AbstractRequest $request = null)
     {
         $this->logger->debug("Build response process.");
 
         try {
             if ($request === null) {
-                /** @var PGServerFoundationsAbstractRequest $request */
+                /** @var AbstractRequest $request */
                 $request = $this->getRequestBuilder()->buildRequest($context);
             }
 
             do {
                 $continue = false;
 
-                /** @var PGServerFoundationsAbstractResponse $response */
+                /** @var AbstractResponse $response */
                 $response = $this->processRequest($request);
 
-                if ($response instanceof PGServerComponentsResponsesForwardResponse) {
-                    /** @var PGServerComponentsRequestsForwardRequest $request */
+                if ($response instanceof ForwardResponseComponent) {
+                    /** @var ForwardRequestComponent $request */
                     $request = $response->getRequest();
 
                     $this->logger->debug("Forwarding response process to '{$request->getTarget()}'.");
@@ -222,7 +247,7 @@ class PGServerServicesServer extends PGSystemFoundationsObject
                     $continue = true;
                 }
             } while ($continue);
-        } catch (PGServerExceptionsHTTPBadRequestException $exception) {
+        } catch (HTTPBadRequestException $exception) {
             $response = $this->clean('bad_request', $exception);
         } catch (Exception $exception) {
             $response = $this->clean('server_error', $exception, $request);
@@ -232,24 +257,24 @@ class PGServerServicesServer extends PGSystemFoundationsObject
     }
 
     /**
-     * @param PGServerFoundationsAbstractRequest $request
-     * @return PGServerFoundationsAbstractResponse
+     * @param AbstractRequest $request
+     * @return AbstractResponse
      * @throws Exception
      */
-    protected function processRequest(PGServerFoundationsAbstractRequest $request)
+    protected function processRequest(AbstractRequest $request)
     {
         $class = get_class($request);
         $this->logger->debug("Build response from request with type '$class'.");
 
-        /** @var PGServerFoundationsAbstractResponse $response */
+        /** @var AbstractResponse $response */
         $response = null;
 
         try {
-            if ($request instanceof PGServerComponentsRequestsEmptyRequest) {
-                return new PGServerComponentsResponsesEmptyResponse($request);
-            } elseif ($request instanceof PGServerComponentsRequestsForwardRequest) {
+            if ($request instanceof BlankRequestComponent) {
+                return new BlankResponseComponent($request);
+            } elseif ($request instanceof ForwardRequestComponent) {
                 $target = $request->getTarget();
-            } elseif ($request instanceof PGServerComponentsRequestsHTTPRequest) {
+            } elseif ($request instanceof HTTPRequestComponent) {
                 $target = $this->router->getTarget($request, $this->config['areas']);
             } else {
                 $class = get_class($request);
@@ -265,9 +290,9 @@ class PGServerServicesServer extends PGSystemFoundationsObject
             } else {
                 $response = $this->dispatcher->dispatch($request, $target);
             }
-        } catch (PGServerExceptionsHTTPNotFoundException $exception) {
+        } catch (HTTPNotFoundException $exception) {
             $response = $this->clean('not_found', $exception, $request);
-        } catch (PGServerExceptionsHTTPUnauthorizedException $exception) {
+        } catch (HTTPUnauthorizedException $exception) {
             $response = $this->clean('unauthorized_access', $exception, $request);
         }
 
@@ -275,12 +300,12 @@ class PGServerServicesServer extends PGSystemFoundationsObject
     }
 
     /**
-     * @param PGServerFoundationsAbstractResponse $response
-     * @param PGServerComponentsStage[] $stages
-     * @return PGServerFoundationsAbstractResponse
+     * @param AbstractResponse $response
+     * @param StageComponent[] $stages
+     * @return AbstractResponse
      * @throws Exception
      */
-    protected function renderResponse(PGServerFoundationsAbstractResponse $response, array $stages = array())
+    protected function renderResponse(AbstractResponse $response, array $stages = array())
     {
         if (empty($stages)) {
             $stages = $this->getStages();
@@ -288,7 +313,7 @@ class PGServerServicesServer extends PGSystemFoundationsObject
 
         $this->logger->debug("Running rendering process for : " . get_class($response));
 
-        /** @var PGServerComponentsStage $stage */
+        /** @var StageComponent $stage */
         foreach ($stages as $stage) {
             if ($stage->isTriggered($response)) {
                 $this->logger->debug("Execute stage action : '{$stage->do}'.");
@@ -326,7 +351,7 @@ class PGServerServicesServer extends PGSystemFoundationsObject
     }
 
     /**
-     * @return PGServerComponentsStage[]
+     * @return StageComponent[]
      * @throws Exception
      */
     protected function getStages()
@@ -344,7 +369,7 @@ class PGServerServicesServer extends PGSystemFoundationsObject
 
     /**
      * @param array $renderers
-     * @return PGServerComponentsStage[]
+     * @return StageComponent[]
      * @throws Exception
      */
     protected function buildStages(array $renderers)

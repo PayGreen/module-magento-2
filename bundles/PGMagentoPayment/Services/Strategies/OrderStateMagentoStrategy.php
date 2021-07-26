@@ -15,19 +15,27 @@
  * @author    PayGreen <contact@paygreen.fr>
  * @copyright 2014 - 2021 Watt Is It
  * @license   https://opensource.org/licenses/mit-license.php MIT License X11
- * @version   2.1.1
+ * @version   2.2.0
  *
  */
 
-class PGMagentoPaymentServicesStrategiesOrderStateMagentoStrategy extends PGShopFoundationsOrderStateMapperStrategy
+namespace PGI\Module\PGMagentoPayment\Services\Strategies;
+
+use PGI\Module\PGShop\Foundations\AbstractOrderStateMapperStrategy;
+use PGI\Module\PGShop\Interfaces\Entities\OrderStateEntityInterface;
+use PGI\Module\PGShop\Services\Managers\OrderStateManager;
+use PGI\Module\PGSystem\Exceptions\Configuration as ConfigurationException;
+use Exception;
+
+class OrderStateMagentoStrategy extends AbstractOrderStateMapperStrategy
 {
-    /** @var PGShopServicesManagersOrderState */
+    /** @var OrderStateManager */
     private $orderStateManager;
 
     /**
-     * @param PGShopServicesManagersOrderState $orderStateManager
+     * @param OrderStateManager $orderStateManager
      */
-    public function setOrderStateManager(PGShopServicesManagersOrderState $orderStateManager)
+    public function setOrderStateManager(OrderStateManager $orderStateManager)
     {
         $this->orderStateManager = $orderStateManager;
     }
@@ -36,7 +44,7 @@ class PGMagentoPaymentServicesStrategiesOrderStateMagentoStrategy extends PGShop
      * @param array $localState
      * @return string|null
      * @throws Exception
-     * @throws PGSystemExceptionsConfiguration
+     * @throws ConfigurationException
      */
     public function getState(array $localState)
     {
@@ -53,10 +61,10 @@ class PGMagentoPaymentServicesStrategiesOrderStateMagentoStrategy extends PGShop
         foreach ($this->getDefinitions() as $state => $definition) {
             if (!array_key_exists('state', $definition)) {
                 $message = "Field 'state' not found in orderState definition : '$state'.";
-                throw new PGSystemExceptionsConfiguration($message);
+                throw new ConfigurationException($message);
             } elseif (!array_key_exists('status', $definition)) {
                 $message = "Field 'status' not found in orderState definition : '$state'.";
-                throw new PGSystemExceptionsConfiguration($message);
+                throw new ConfigurationException($message);
             }
 
             if (($localState['state'] === $definition['state']) && ($localState['status'] === $definition['status'])) {
@@ -71,7 +79,7 @@ class PGMagentoPaymentServicesStrategiesOrderStateMagentoStrategy extends PGShop
      * @param string $state
      * @return array
      * @throws Exception
-     * @throws PGSystemExceptionsConfiguration
+     * @throws ConfigurationException
      */
     public function getLocalState($state)
     {
@@ -82,10 +90,10 @@ class PGMagentoPaymentServicesStrategiesOrderStateMagentoStrategy extends PGShop
             throw new Exception($message);
         } elseif (!array_key_exists('state', $definitions[$state])) {
             $message = "Field 'state' not found in orderState definition : '$state'.";
-            throw new PGSystemExceptionsConfiguration($message);
+            throw new ConfigurationException($message);
         } elseif (!array_key_exists('status', $definitions[$state])) {
             $message = "Field 'status' not found in orderState definition : '$state'.";
-            throw new PGSystemExceptionsConfiguration($message);
+            throw new ConfigurationException($message);
         }
 
         $this->verifyOrderStateExistence($state, $definitions[$state]['status']);
@@ -99,7 +107,7 @@ class PGMagentoPaymentServicesStrategiesOrderStateMagentoStrategy extends PGShop
     /**
      * @param array $localState
      * @return bool
-     * @throws PGSystemExceptionsConfiguration
+     * @throws ConfigurationException
      */
     public function isRecognizedLocalState(array $localState)
     {
@@ -109,11 +117,11 @@ class PGMagentoPaymentServicesStrategiesOrderStateMagentoStrategy extends PGShop
     /**
      * @param $state
      * @param $status
-     * @throws PGSystemExceptionsConfiguration
+     * @throws ConfigurationException
      */
     protected function verifyOrderStateExistence($state, $status)
     {
-        /** @var PGShopInterfacesEntitiesOrderState $orderState */
+        /** @var OrderStateEntityInterface $orderState */
         $orderState = $this->orderStateManager->getByPrimary($status);
 
         if ($orderState === null) {
