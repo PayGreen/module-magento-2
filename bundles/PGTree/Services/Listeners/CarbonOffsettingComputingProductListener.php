@@ -15,7 +15,7 @@
  * @author    PayGreen <contact@paygreen.fr>
  * @copyright 2014 - 2021 Watt Is It
  * @license   https://opensource.org/licenses/mit-license.php MIT License X11
- * @version   2.2.0
+ * @version   2.3.0
  *
  */
 
@@ -26,6 +26,7 @@ use PGI\Module\PGModule\Services\Logger;
 use PGI\Module\PGShop\Interfaces\ShopableInterface;
 use PGI\Module\PGTree\Components\Events\CarbonOffsettingComputing as CarbonOffsettingComputingEventComponent;
 use Exception;
+use PGI\Module\PGTree\Services\Filters\ProductReferenceFilter;
 
 /**
  * Class CarbonOffsettingComputingProductListener
@@ -36,14 +37,19 @@ class CarbonOffsettingComputingProductListener
     /** @var ApiFacade */
     private $treeAPIFacade;
 
+    /** @var ProductReferenceFilter */
+    private $productReferenceFilter;
+
     /** @var Logger */
     private $logger;
 
     public function __construct(
         ApiFacade $treeAPIFacade,
+        ProductReferenceFilter $productReferenceFilter,
         Logger $logger
     ) {
         $this->treeAPIFacade = $treeAPIFacade;
+        $this->productReferenceFilter = $productReferenceFilter;
         $this->logger = $logger;
     }
 
@@ -70,7 +76,7 @@ class CarbonOffsettingComputingProductListener
 
         foreach ($shopable->getItems() as $item) {
             $item_quantity = $item->getQuantity();
-            $item_reference = $item->getProduct()->getReference();
+            $item_reference = $this->productReferenceFilter->filter($item->getProduct()->getReference());
 
             try {
                 $this->treeAPIFacade->addProductCarbonEmission(

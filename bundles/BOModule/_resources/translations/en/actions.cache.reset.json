@@ -1,0 +1,12 @@
+{
+  "actions": {
+    "cache": {
+      "reset": {
+        "result": {
+          "success": "The cache has been successfully emptied."
+        },
+        "button": "Clear cache"
+      }
+    }
+  }
+}

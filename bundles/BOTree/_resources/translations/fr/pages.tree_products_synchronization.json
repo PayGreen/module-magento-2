@@ -1,0 +1,8 @@
+{
+  "pages": {
+    "tree_products_synchronization": {
+      "name": "Synchronisation produits",
+      "title": "Exportez votre catalogue produits vers l'api ClimateKit"
+    }
+  }
+}

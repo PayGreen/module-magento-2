@@ -1,0 +1,10 @@
+{
+  "blocks": {
+    "cache": {
+      "reset": {
+        "title": "Gestion du cache",
+        "description": "En vidant votre cache vous effacerez les données qui sont sauvegardées dans le cache du module. Le module téléchargera ensuite toutes les données à jour."
+      }
+    }
+  }
+}

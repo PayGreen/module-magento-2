@@ -15,7 +15,7 @@
  * @author    PayGreen <contact@paygreen.fr>
  * @copyright 2014 - 2021 Watt Is It
  * @license   https://opensource.org/licenses/mit-license.php MIT License X11
- * @version   2.2.0
+ * @version   2.3.0
  *
  */
 
@@ -24,11 +24,12 @@ namespace PGI\Module\PGShop\Services\Managers;
 use PGI\Module\PGDatabase\Foundations\AbstractManager;
 use PGI\Module\PGModule\Services\Broadcaster;
 use PGI\Module\PGShop\Components\Events\OrderState as OrderStateEventComponent;
+use PGI\Module\PGShop\Components\Events\OrderStateTransition as OrderStateTransitionEventComponent;
+use PGI\Module\PGShop\Components\OrderStateTransition as OrderStateTransitionComponent;
 use PGI\Module\PGShop\Exceptions\UnauthorizedOrderTransition as UnauthorizedOrderTransitionException;
 use PGI\Module\PGShop\Exceptions\UnnecessaryOrderTransition as UnnecessaryOrderTransitionException;
 use PGI\Module\PGShop\Interfaces\Entities\OrderEntityInterface;
 use PGI\Module\PGShop\Interfaces\Repositories\OrderRepositoryInterface;
-use PGI\Module\PGShop\Services\Managers\OrderStateManager;
 use PGI\Module\PGShop\Services\Mappers\OrderStateMapper;
 use Exception;
 
@@ -84,7 +85,10 @@ class OrderManager extends AbstractManager
         /** @var OrderStateManager $orderStateManager */
         $orderStateManager = $this->getService('manager.order_state');
 
+        $orderStateTransition = $this->buildOrderStateTransition($order, $targetState);
+
         $currentState = $order->getState();
+        $targetState = $orderStateTransition->getTargetState();
 
         if ($orderStateManager->isAllowedTransition($mode, $currentState, $targetState)) {
             $this->getService('logger')->debug(
@@ -123,6 +127,26 @@ class OrderManager extends AbstractManager
         $orderEvent = new OrderStateEventComponent($order);
 
         $broadcaster->fire($orderEvent);
+    }
+
+    /**
+     * @param OrderEntityInterface $order
+     * @param string $targetState
+     * @return OrderStateTransitionComponent
+     * @throws Exception
+     */
+    private function buildOrderStateTransition(OrderEntityInterface $order, $targetState)
+    {
+        /** @var Broadcaster $broadcaster */
+        $broadcaster = $this->getService('broadcaster');
+
+        $orderStateTransition = new OrderStateTransitionComponent($order->getState(), $targetState);
+
+        $orderEvent = new OrderStateTransitionEventComponent($orderStateTransition);
+
+        $broadcaster->fire($orderEvent);
+
+        return $orderStateTransition;
     }
 
     /**

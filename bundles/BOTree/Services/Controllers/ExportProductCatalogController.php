@@ -15,7 +15,7 @@
  * @author    PayGreen <contact@paygreen.fr>
  * @copyright 2014 - 2021 Watt Is It
  * @license   https://opensource.org/licenses/mit-license.php MIT License X11
- * @version   2.2.0
+ * @version   2.3.0
  *
  */
 
@@ -24,13 +24,15 @@ namespace PGI\Module\BOTree\Services\Controllers;
 use PGI\Module\BOModule\Foundations\Controllers\AbstractBackofficeController;
 use PGI\Module\PGFramework\Services\Generators\CSVGenerator;
 use PGI\Module\PGPayment\Exceptions\InvalidProductCatalog as InvalidProductCatalogException;
+use PGI\Module\PGServer\Components\Resources\Data as DataResourceComponent;
 use PGI\Module\PGServer\Components\Responses\HTTP as HTTPResponseComponent;
 use PGI\Module\PGServer\Components\Responses\Template as TemplateResponseComponent;
-use PGI\Module\PGShop\Interfaces\Entities\ProductEntityInterface;
-use PGI\Module\PGShop\Interfaces\Repositories\ProductRepositoryInterface;
-use PGI\Module\PGTree\Services\Handlers\TreeAuthenticationHandler;
 use DateTime;
 use Exception;
+use PGI\Module\PGServer\Components\Resources\ScriptFile as ScriptFileResourceComponent;
+use PGI\Module\PGTree\Services\Handlers\TreeCatalogHandler;
+use PGI\Module\PGServer\Components\Responses\PaygreenModule as PaygreenModuleResponseComponent;
+
 
 /**
  * Class ExportProductCatalogController
@@ -40,25 +42,41 @@ class ExportProductCatalogController extends AbstractBackofficeController
 {
     const EXPORT_PRODUCT_CATALOG_FILENAME = 'export_product_catalog';
 
-    private static $EXPORT_PRODUCT_CATALOG_COLUMNS_NAME = array('nom', 'code article', 'poids');
+    private static $EXPORT_PRODUCT_CATALOG_COLUMNS_NAME = array('nom', 'ID-tech', 'code article', 'poids');
 
     /** @var CSVGenerator */
     private $csvGenerator;
 
-    /** @var ProductRepositoryInterface */
-    private $productRepository;
-
-    /** @var TreeAuthenticationHandler */
-    private $treeAuthenticationHandler;
+    /** @var TreeCatalogHandler $treeCatalogHandler */
+    private $treeCatalogHandler;
 
     public function __construct(
         CSVGenerator $csvGenerator,
-        ProductRepositoryInterface $productRepository,
-        TreeAuthenticationHandler $treeAuthenticationHandler
+        TreeCatalogHandler $treeCatalogHandler
     ) {
         $this->csvGenerator = $csvGenerator;
-        $this->productRepository = $productRepository;
-        $this->treeAuthenticationHandler = $treeAuthenticationHandler;
+        $this->treeCatalogHandler = $treeCatalogHandler;
+    }
+
+    /**
+     * @return TemplateResponseComponent
+     * @throws Exception
+     */
+    public function displayTreeGenerateProductCatalogButtonAction()
+    {
+        list($notices, $error) = $this->treeCatalogHandler->resume();
+        $emptyCache = !$this->treeCatalogHandler->hasData();
+
+        return $this->buildTemplateResponse('tree/block-tree-generate-product-catalog')
+            ->addResource(new ScriptFileResourceComponent('/js/page-tree-export-csv.js'))
+            ->addResource(new DataResourceComponent(array(
+                'paygreen_generate_product_catalog_url' => $this->getLinkHandler()->buildBackOfficeUrl(
+                    'backoffice.tree_config.generate_product_catalog'
+                ))))
+            ->addData('notices', $notices)
+            ->addData('error', $error)
+            ->addData('empty_cache', $emptyCache)
+            ;
     }
 
     /**
@@ -67,7 +85,11 @@ class ExportProductCatalogController extends AbstractBackofficeController
      */
     public function displayTreeExportProductCatalogButtonAction()
     {
-        return $this->buildTemplateResponse('tree/block-tree-export-product-catalog');
+        $emptyCache = !$this->treeCatalogHandler->hasData();
+
+        return $this->buildTemplateResponse('tree/block-tree-export-product-catalog')
+            ->addData('empty_cache', $emptyCache)
+            ;
     }
 
     /**
@@ -77,6 +99,10 @@ class ExportProductCatalogController extends AbstractBackofficeController
     public function downloadProductCatalogAction()
     {
         try {
+            if (!$this->treeCatalogHandler->hasData()) {
+                $this->treeCatalogHandler->build();
+            }
+
             $productsCSV = $this->getProductCatalogCSV();
 
             $datetime = new DateTime();
@@ -89,8 +115,31 @@ class ExportProductCatalogController extends AbstractBackofficeController
             ));
         } catch (InvalidProductCatalogException $exception) {
             $this->failure('actions.tree_export_product_catalog.invalid_product_catalog');
-            return $this->redirect($this->getLinkHandler()->buildBackOfficeUrl('backoffice.tree_config.display'));
+            return $this->redirect($this->getLinkHandler()->buildBackOfficeUrl('backoffice.tree_products_synchronization.display'));
         }
+    }
+
+    /**
+     * @return PaygreenModuleResponseComponent
+     * @throws Exception
+     */
+    public function generateProductCatalogAction()
+    {
+        $this->treeCatalogHandler->build();
+        $response = new PaygreenModuleResponseComponent($this->getRequest());
+
+        list($notices, $error) = $this->treeCatalogHandler->resume();
+
+        $response
+            ->addData('notices', $notices)
+            ->addData('error', $error)
+            ;
+
+        if ($error === null) {
+            $response->validate();
+        }
+
+        return $response;
     }
 
     /**
@@ -99,7 +148,7 @@ class ExportProductCatalogController extends AbstractBackofficeController
      */
     protected function getProductCatalogCSV()
     {
-        $productCatalog = $this->prepareProductCatalog($this->productRepository->findAll());
+        $productCatalog = $this->treeCatalogHandler->getCleanedData();
 
         return $this->csvGenerator->generateCSV(
             $productCatalog,
@@ -124,33 +173,5 @@ class ExportProductCatalogController extends AbstractBackofficeController
         $response->setContent($content);
 
         return $response;
-    }
-
-    /**
-     * @param array $products
-     * @return array
-     * @throws InvalidProductCatalogException
-     */
-    protected function prepareProductCatalog($products)
-    {
-        $productCatalog = array();
-
-        /** @var ProductEntityInterface $product */
-        foreach ($products as $product) {
-            $name = $product->getName();
-            $reference = $product->getReference();
-
-            if (empty($name) || (empty($reference))) {
-                throw new InvalidProductCatalogException('Invalid product catalog');
-            }
-
-            $productCatalog[] = array(
-                'name' => $name,
-                'reference' => $reference,
-                'weight' => $product->getWeight()
-            );
-        }
-
-        return $productCatalog;
     }
 }

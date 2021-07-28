@@ -15,7 +15,7 @@
  * @author    PayGreen <contact@paygreen.fr>
  * @copyright 2014 - 2021 Watt Is It
  * @license   https://opensource.org/licenses/mit-license.php MIT License X11
- * @version   2.2.0
+ * @version   2.3.0
  *
  */
 
@@ -27,6 +27,7 @@ require_once(PAYGREEN_VENDOR_DIR . DS . 'PGSystem' . DS . 'Components' . DS . 'B
 require_once(PAYGREEN_VENDOR_DIR . DS . 'PGSystem' . DS . 'Components' . DS . 'Builders' . DS . 'Container.php');
 require_once(PAYGREEN_VENDOR_DIR . DS . 'PGSystem' . DS . 'Components' . DS . 'Builders' . DS . 'AutoloaderBundles.php');
 require_once(PAYGREEN_VENDOR_DIR . DS . 'PGSystem' . DS . 'Components' . DS . 'Builders' . DS . 'AutoloaderCompiled.php');
+require_once(PAYGREEN_VENDOR_DIR . DS . 'PGSystem' . DS . 'Components' . DS . 'Builders' . DS . 'AutoloaderNamespaces.php');
 require_once(PAYGREEN_VENDOR_DIR . DS . 'PGSystem' . DS . 'Components' . DS . 'Bundle.php');
 require_once(PAYGREEN_VENDOR_DIR . DS . 'PGSystem' . DS . 'Components' . DS . 'Kernel.php');
 require_once(PAYGREEN_VENDOR_DIR . DS . 'PGSystem' . DS . 'Services' . DS . 'Pathfinder.php');
@@ -36,3 +37,4 @@ require_once(PAYGREEN_VENDOR_DIR . DS . 'PGSystem' . DS . 'Components' . DS . 'S
 require_once(PAYGREEN_VENDOR_DIR . DS . 'PGSystem' . DS . 'Components' . DS . 'Storages' . DS . 'BlackHole.php');
 require_once(PAYGREEN_VENDOR_DIR . DS . 'PGSystem' . DS . 'Services' . DS . 'Autoloaders' . DS . 'CamelifiedAutoloader.php');
 require_once(PAYGREEN_VENDOR_DIR . DS . 'PGSystem' . DS . 'Services' . DS . 'Autoloaders' . DS . 'CompiledAutoloader.php');
+require_once(PAYGREEN_VENDOR_DIR . DS . 'PGSystem' . DS . 'Services' . DS . 'Autoloaders' . DS . 'NamespacedAutoloader.php');

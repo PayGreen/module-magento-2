@@ -1,0 +1,7 @@
+{
+  "actions": {
+    "tree_generate_product_catalog": {
+      "success_catalog_generation": "Fichier d’export généré avec succès."
+    }
+  }
+}

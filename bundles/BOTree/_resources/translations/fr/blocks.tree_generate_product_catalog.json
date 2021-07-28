@@ -1,0 +1,35 @@
+{
+  "blocks": {
+    "tree_generate_product_catalog": {
+      "title": "Génération du fichier CSV",
+      "description": [
+        "Afin de pouvoir calculer l'impacte carbone de chacun de vos produits, il est nécessaire de fournir à notre API certaines données de votre catalogue.",
+        "Utilisez le lien ci-dessous afin de générer le fichier CSV que vous pourrez ensuite télécharger dans le backoffice de votre compte ClimateKit."
+      ],
+      "buttons": {
+        "file_generate": {
+          "label": "Générer le fichier CSV"
+        },
+        "file_regenerate": {
+          "label": "Regénérer le fichier CSV"
+        }
+      },
+      "single_notice": {
+        "name": "%{nb_no_name} produit n'a pas de nom.",
+        "id": "%{nb_no_id} produit n'a pas d'id.",
+        "reference": "%{nb_no_reference} produit n'a pas de référence.",
+        "weight": "%{nb_no_weight} produit n'a pas de poids."
+      },
+      "several_notice": {
+        "name": "%{nb_no_name} produits n'ont pas de nom.",
+        "id": "%{nb_no_id} produits n'ont pas d'id.",
+        "reference": "%{nb_no_reference} produits n'ont pas de référence.",
+        "weight": "%{nb_no_weight} produits n'ont pas de poids."
+      },
+      "error": {
+        "no_product": "Aucun produit n'est valide.",
+        "no_cache" : "Données d'export non générées."
+      }
+    }
+  }
+}

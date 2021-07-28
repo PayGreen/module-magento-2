@@ -15,7 +15,7 @@
  * @author    PayGreen <contact@paygreen.fr>
  * @copyright 2014 - 2021 Watt Is It
  * @license   https://opensource.org/licenses/mit-license.php MIT License X11
- * @version   2.2.0
+ * @version   2.3.0
  *
  */
 
@@ -47,6 +47,7 @@ return array (
 'PGI\\Module\\BOModule\\Services\\Actions\\StandardizedDisplayPageAction' => 'BOModule/Services/Actions/StandardizedDisplayPageAction.php',
 'PGI\\Module\\BOModule\\Services\\Actions\\StandardizedFormSettingsBlockAction' => 'BOModule/Services/Actions/StandardizedFormSettingsBlockAction.php',
 'PGI\\Module\\BOModule\\Services\\Actions\\StandardizedSaveSettingsAction' => 'BOModule/Services/Actions/StandardizedSaveSettingsAction.php',
+'PGI\\Module\\BOModule\\Services\\Controllers\\CacheController' => 'BOModule/Services/Controllers/CacheController.php',
 'PGI\\Module\\BOModule\\Services\\Controllers\\DiagnosticController' => 'BOModule/Services/Controllers/DiagnosticController.php',
 'PGI\\Module\\BOModule\\Services\\Controllers\\ErrorController' => 'BOModule/Services/Controllers/ErrorController.php',
 'PGI\\Module\\BOModule\\Services\\Controllers\\LogsController' => 'BOModule/Services/Controllers/LogsController.php',
@@ -225,6 +226,7 @@ return array (
 'PGI\\Module\\PGFramework\\Services\\Superglobals\\PostSuperglobal' => 'PGFramework/Services/Superglobals/PostSuperglobal.php',
 'PGI\\Module\\PGFramework\\Services\\Superglobals\\SessionSuperglobal' => 'PGFramework/Services/Superglobals/SessionSuperglobal.php',
 'PGI\\Module\\PGFramework\\Services\\Upgrades\\MediaDeleteUpgrade' => 'PGFramework/Services/Upgrades/MediaDeleteUpgrade.php',
+'PGI\\Module\\PGFramework\\Tools\\Character' => 'PGFramework/Tools/Character.php',
 'PGI\\Module\\PGFramework\\Tools\\ForbiddenFunctionsCaller' => 'PGFramework/Tools/ForbiddenFunctionsCaller.php',
 'PGI\\Module\\PGFramework\\Tools\\Query' => 'PGFramework/Tools/Query.php',
 'PGI\\Module\\PGFramework\\Tools\\SystemFile' => 'PGFramework/Tools/SystemFile.php',
@@ -334,6 +336,7 @@ return array (
 'PGI\\Module\\PGModule\\Services\\Settings' => 'PGModule/Services/Settings.php',
 'PGI\\Module\\PGModule\\Services\\Upgrader' => 'PGModule/Services/Upgrader.php',
 'PGI\\Module\\PGModule\\Services\\Upgrades\\RenameSettingsUpgrade' => 'PGModule/Services/Upgrades/RenameSettingsUpgrade.php',
+'PGI\\Module\\PGModule\\Services\\Upgrades\\RetrieveSettingGlobalValueUpgrade' => 'PGModule/Services/Upgrades/RetrieveSettingGlobalValueUpgrade.php',
 'PGI\\Module\\PGModule\\Services\\Upgrades\\UpdateSettingsValuesUpgrade' => 'PGModule/Services/Upgrades/UpdateSettingsValuesUpgrade.php',
 'PGI\\Module\\PGPaymentDev\\Services\\ChainLinks\\SavePaymentDataChainLink' => 'PGPaymentDev/Services/ChainLinks/SavePaymentDataChainLink.php',
 'PGI\\Module\\PGPaymentDev\\Services\\Listeners\\InstallCredentialsListener' => 'PGPaymentDev/Services/Listeners/InstallCredentialsListener.php',
@@ -489,6 +492,8 @@ return array (
 'PGI\\Module\\PGShop\\Components\\Events\\LocalOrder' => 'PGShop/Components/Events/LocalOrder.php',
 'PGI\\Module\\PGShop\\Components\\Events\\Order' => 'PGShop/Components/Events/Order.php',
 'PGI\\Module\\PGShop\\Components\\Events\\OrderState' => 'PGShop/Components/Events/OrderState.php',
+'PGI\\Module\\PGShop\\Components\\Events\\OrderStateTransition' => 'PGShop/Components/Events/OrderStateTransition.php',
+'PGI\\Module\\PGShop\\Components\\OrderStateTransition' => 'PGShop/Components/OrderStateTransition.php',
 'PGI\\Module\\PGShop\\Exceptions\\UnauthorizedOrderTransition' => 'PGShop/Exceptions/UnauthorizedOrderTransition.php',
 'PGI\\Module\\PGShop\\Exceptions\\UnnecessaryOrderTransition' => 'PGShop/Exceptions/UnnecessaryOrderTransition.php',
 'PGI\\Module\\PGShop\\Foundations\\AbstractOrderStateMapperStrategy' => 'PGShop/Foundations/AbstractOrderStateMapperStrategy.php',
@@ -543,6 +548,7 @@ return array (
 'PGI\\Module\\PGSystem\\Components\\Bootstrap' => 'PGSystem/Components/Bootstrap.php',
 'PGI\\Module\\PGSystem\\Components\\Builders\\AutoloaderBundles' => 'PGSystem/Components/Builders/AutoloaderBundles.php',
 'PGI\\Module\\PGSystem\\Components\\Builders\\AutoloaderCompiled' => 'PGSystem/Components/Builders/AutoloaderCompiled.php',
+'PGI\\Module\\PGSystem\\Components\\Builders\\AutoloaderNamespaces' => 'PGSystem/Components/Builders/AutoloaderNamespaces.php',
 'PGI\\Module\\PGSystem\\Components\\Builders\\Container' => 'PGSystem/Components/Builders/Container.php',
 'PGI\\Module\\PGSystem\\Components\\Builders\\Kernel' => 'PGSystem/Components/Builders/Kernel.php',
 'PGI\\Module\\PGSystem\\Components\\Bundle' => 'PGSystem/Components/Bundle.php',
@@ -568,6 +574,7 @@ return array (
 'PGI\\Module\\PGSystem\\Interfaces\\StorageInterface' => 'PGSystem/Interfaces/StorageInterface.php',
 'PGI\\Module\\PGSystem\\Services\\Autoloaders\\CamelifiedAutoloader' => 'PGSystem/Services/Autoloaders/CamelifiedAutoloader.php',
 'PGI\\Module\\PGSystem\\Services\\Autoloaders\\CompiledAutoloader' => 'PGSystem/Services/Autoloaders/CompiledAutoloader.php',
+'PGI\\Module\\PGSystem\\Services\\Autoloaders\\NamespacedAutoloader' => 'PGSystem/Services/Autoloaders/NamespacedAutoloader.php',
 'PGI\\Module\\PGSystem\\Services\\Container' => 'PGSystem/Services/Container.php',
 'PGI\\Module\\PGSystem\\Services\\Pathfinder' => 'PGSystem/Services/Pathfinder.php',
 'PGI\\Module\\PGSystem\\Tools\\Collection' => 'PGSystem/Tools/Collection.php',
@@ -581,9 +588,12 @@ return array (
 'PGI\\Module\\PGTree\\Interfaces\\Entities\\CarbonDataEntityInterface' => 'PGTree/Interfaces/Entities/CarbonDataEntityInterface.php',
 'PGI\\Module\\PGTree\\Interfaces\\Repositories\\CarbonDataRepositoryInterface' => 'PGTree/Interfaces/Repositories/CarbonDataRepositoryInterface.php',
 'PGI\\Module\\PGTree\\Services\\Behaviors\\TreeActivationBehavior' => 'PGTree/Services/Behaviors/TreeActivationBehavior.php',
+'PGI\\Module\\PGTree\\Services\\Filters\\ProductNameFilter' => 'PGTree/Services/Filters/ProductNameFilter.php',
+'PGI\\Module\\PGTree\\Services\\Filters\\ProductReferenceFilter' => 'PGTree/Services/Filters/ProductReferenceFilter.php',
 'PGI\\Module\\PGTree\\Services\\Handlers\\PageCounterHandler' => 'PGTree/Services/Handlers/PageCounterHandler.php',
 'PGI\\Module\\PGTree\\Services\\Handlers\\TreeAuthenticationHandler' => 'PGTree/Services/Handlers/TreeAuthenticationHandler.php',
 'PGI\\Module\\PGTree\\Services\\Handlers\\TreeCarbonOffsettingHandler' => 'PGTree/Services/Handlers/TreeCarbonOffsettingHandler.php',
+'PGI\\Module\\PGTree\\Services\\Handlers\\TreeCatalogHandler' => 'PGTree/Services/Handlers/TreeCatalogHandler.php',
 'PGI\\Module\\PGTree\\Services\\Handlers\\TreeFootprintIdHandler' => 'PGTree/Services/Handlers/TreeFootprintIdHandler.php',
 'PGI\\Module\\PGTree\\Services\\Listeners\\CarbonOffsettingComputingProductListener' => 'PGTree/Services/Listeners/CarbonOffsettingComputingProductListener.php',
 'PGI\\Module\\PGTree\\Services\\Listeners\\CarbonOffsettingComputingTransportationListener' => 'PGTree/Services/Listeners/CarbonOffsettingComputingTransportationListener.php',

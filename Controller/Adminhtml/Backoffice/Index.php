@@ -15,7 +15,7 @@
  * @author    PayGreen <contact@paygreen.fr>
  * @copyright 2014 - 2021 Watt Is It
  * @license   https://opensource.org/licenses/mit-license.php MIT License X11
- * @version   2.2.0
+ * @version   2.3.0
  *
  */
 
@@ -67,7 +67,9 @@ class Index extends LocalAction
 
         $logger->debug("Request incoming in back office endpoint.");
 
-        $this->cleanModule();
+        /** @var SetupHandler $setupHandler */
+        $setupHandler = $this->getService('handler.setup');
+        $setupHandler->run($setupHandler::UPGRADE);
     }
 
     /**
@@ -96,27 +98,6 @@ class Index extends LocalAction
     protected function _isAllowed()
     {
         return true;
-    }
-
-    /**
-     * @throws Exception
-     */
-    private function cleanModule()
-    {
-        /** @var Logger $logger */
-        $logger = $this->getService('logger');
-
-        /** @var CacheHandler $cacheHandler */
-        $cacheHandler = $this->getService('handler.cache');
-
-        /** @var SetupHandler $setupHandler */
-        $setupHandler = $this->getService('handler.setup');
-
-        $logger->debug("Cleaning module.");
-
-        $setupHandler->run($setupHandler::UPGRADE);
-
-        $cacheHandler->clearCache();
     }
 
     /**

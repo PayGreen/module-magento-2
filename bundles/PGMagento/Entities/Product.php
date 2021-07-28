@@ -15,7 +15,7 @@
  * @author    PayGreen <contact@paygreen.fr>
  * @copyright 2014 - 2021 Watt Is It
  * @license   https://opensource.org/licenses/mit-license.php MIT License X11
- * @version   2.2.0
+ * @version   2.3.0
  *
  */
 
@@ -36,6 +36,14 @@ class Product extends AbstractProductEntity implements ProductEntityInterface
     protected function hydrateFromLocalEntity($localEntity)
     {
         // Do nothing.
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function id()
+    {
+        return $this->getLocalEntity()->getId();
     }
 
     /**

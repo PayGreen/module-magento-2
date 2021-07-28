@@ -15,7 +15,7 @@
  * @author    PayGreen <contact@paygreen.fr>
  * @copyright 2014 - 2021 Watt Is It
  * @license   https://opensource.org/licenses/mit-license.php MIT License X11
- * @version   2.2.0
+ * @version   2.3.0
  *
  */
 
@@ -148,6 +148,23 @@ class CacheHandler
             if ($this->hasEntry($name, $path)) {
                 unlink($path);
             }
+        }
+    }
+
+    public function clearCacheEntry($name)
+    {
+        if (!isset($this->entries[$name])) {
+            throw new Exception("Undefined entry cache : '$name'.");
+        }
+
+        if (array_key_exists($name, $this->cached_entries)) {
+            $this->logger->debug("Clearing cached entry '$name' from cache handler.");
+            unset($this->cached_entries[$name]);
+        }
+
+        $path = $this->getPath($name);
+        if ($this->hasEntry($name, $path)) {
+            unlink($path);
         }
     }
 

@@ -1,0 +1,10 @@
+{
+  "blocks": {
+    "cache": {
+      "reset": {
+        "title": "Cache management",
+        "description": "By clearing your cache you will erase the data that is saved in the module's cache. The module will then download all updated data."
+      }
+    }
+  }
+}

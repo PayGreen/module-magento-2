@@ -15,7 +15,7 @@
  * @author    PayGreen <contact@paygreen.fr>
  * @copyright 2014 - 2021 Watt Is It
  * @license   https://opensource.org/licenses/mit-license.php MIT License X11
- * @version   2.2.0
+ * @version   2.3.0
  *
  */
 
@@ -55,40 +55,6 @@ array (
 'parser' =>
 array (
 'fixed' => true,
-),
-'superglobal.get' =>
-array (
-'abstract' => false,
-'class' => 'PGI\\Module\\PGFramework\\Services\\Superglobals\\GetSuperglobal',
-'extends' => 'superglobal.abstract',
-),
-'superglobal.post' =>
-array (
-'abstract' => false,
-'class' => 'PGI\\Module\\PGFramework\\Services\\Superglobals\\PostSuperglobal',
-'extends' => 'superglobal.abstract',
-),
-'superglobal.cookie' =>
-array (
-'abstract' => false,
-'class' => 'PGI\\Module\\PGFramework\\Services\\Superglobals\\CookieSuperglobal',
-'extends' => 'superglobal.abstract',
-),
-'superglobal.session' =>
-array (
-'class' => 'PGI\\Module\\PGFramework\\Services\\Superglobals\\SessionSuperglobal',
-'arguments' =>
-array (
-0 => '@logger',
-),
-),
-'behavior.detailed_logs' =>
-array (
-'class' => 'PGI\\Module\\PGFramework\\Services\\Behaviors\\DetailedLogsBehavior',
-'arguments' =>
-array (
-0 => '@settings',
-),
 ),
 'aggregator.requirement' =>
 array (
@@ -156,35 +122,6 @@ array (
 array (
 0 => '@pathfinder',
 ),
-),
-'dumper' =>
-array (
-'class' => 'PGI\\Module\\PGFramework\\Services\\Dumper',
-),
-'notifier' =>
-array (
-'class' => 'PGI\\Module\\PGFramework\\Services\\Notifier',
-'arguments' =>
-array (
-0 => '@handler.session',
-),
-),
-'upgrader' =>
-array (
-'class' => 'PGI\\Module\\PGModule\\Services\\Upgrader',
-'arguments' =>
-array (
-0 => '@aggregator.upgrade',
-1 => '@logger',
-2 => '%upgrades',
-3 => '@aggregator.upgrade',
-4 => '@logger',
-5 => '%upgrades',
-),
-),
-'generator.csv' =>
-array (
-'class' => 'PGI\\Module\\PGFramework\\Services\\Generators\\CSVGenerator',
 ),
 'officer.setup' =>
 array (
@@ -289,6 +226,57 @@ array (
 array (
 'class' => 'PGI\\Module\\PGFramework\\Services\\Handlers\\HTTPHandler',
 ),
+'superglobal.get' =>
+array (
+'abstract' => false,
+'class' => 'PGI\\Module\\PGFramework\\Services\\Superglobals\\GetSuperglobal',
+'extends' => 'superglobal.abstract',
+),
+'superglobal.post' =>
+array (
+'abstract' => false,
+'class' => 'PGI\\Module\\PGFramework\\Services\\Superglobals\\PostSuperglobal',
+'extends' => 'superglobal.abstract',
+),
+'superglobal.cookie' =>
+array (
+'abstract' => false,
+'class' => 'PGI\\Module\\PGFramework\\Services\\Superglobals\\CookieSuperglobal',
+'extends' => 'superglobal.abstract',
+),
+'superglobal.session' =>
+array (
+'class' => 'PGI\\Module\\PGFramework\\Services\\Superglobals\\SessionSuperglobal',
+'arguments' =>
+array (
+0 => '@logger',
+),
+),
+'dumper' =>
+array (
+'class' => 'PGI\\Module\\PGFramework\\Services\\Dumper',
+),
+'notifier' =>
+array (
+'class' => 'PGI\\Module\\PGFramework\\Services\\Notifier',
+'arguments' =>
+array (
+0 => '@handler.session',
+),
+),
+'upgrader' =>
+array (
+'class' => 'PGI\\Module\\PGModule\\Services\\Upgrader',
+'arguments' =>
+array (
+0 => '@aggregator.upgrade',
+1 => '@logger',
+2 => '%upgrades',
+3 => '@aggregator.upgrade',
+4 => '@logger',
+5 => '%upgrades',
+),
+),
 'listener.setup.static_files' =>
 array (
 'class' => 'PGI\\Module\\PGFramework\\Services\\Listeners\\InstallStaticFilesListener',
@@ -296,6 +284,18 @@ array (
 array (
 0 => '@handler.static_file',
 1 => '@logger',
+),
+),
+'generator.csv' =>
+array (
+'class' => 'PGI\\Module\\PGFramework\\Services\\Generators\\CSVGenerator',
+),
+'behavior.detailed_logs' =>
+array (
+'class' => 'PGI\\Module\\PGFramework\\Services\\Behaviors\\DetailedLogsBehavior',
+'arguments' =>
+array (
+0 => '@settings',
 ),
 ),
 'aggregator.upgrade' =>
@@ -330,124 +330,12 @@ array (
 ),
 'catch' => 'builder.output',
 ),
-'repository.setting' =>
-array (
-'abstract' => false,
-'arguments' =>
-array (
-0 => '@handler.database',
-1 => '%database.entities.setting',
-),
-'extends' => 'repository.abstract',
-'class' => 'PGI\\Module\\PGModule\\Services\\Repositories\\SettingRepository',
-),
 'manager.setting' =>
 array (
 'class' => 'PGI\\Module\\PGModule\\Services\\Managers\\SettingManager',
 'arguments' =>
 array (
 0 => '@repository.setting',
-),
-),
-'logger' =>
-array (
-'class' => 'PGI\\Module\\PGModule\\Services\\Logger',
-'arguments' =>
-array (
-0 => '@dumper',
-1 => '@pathfinder',
-2 => '%{log.file}',
-3 => '%{log.format}',
-),
-'calls' =>
-array (
-0 =>
-array (
-'method' => 'setBehaviorHandler',
-'arguments' =>
-array (
-0 => '@handler.behavior',
-),
-),
-),
-),
-'settings' =>
-array (
-'class' => 'PGI\\Module\\PGModule\\Services\\Settings',
-'arguments' =>
-array (
-0 => '@container',
-1 => '%settings',
-),
-),
-'broadcaster' =>
-array (
-'class' => 'PGI\\Module\\PGModule\\Services\\Broadcaster',
-'arguments' =>
-array (
-0 => '@container',
-1 => '@logger',
-2 => '%listeners',
-),
-'catch' =>
-array (
-'tag' => 'listener',
-'method' => 'addListener',
-'built' => false,
-),
-),
-'provider.output' =>
-array (
-'class' => 'PGI\\Module\\PGModule\\Services\\Providers\\OutputProvider',
-'arguments' =>
-array (
-0 => '@aggregator.builder.output',
-1 => '@handler.requirement',
-2 => '%outputs',
-3 => '@logger',
-),
-),
-'facade.application' =>
-array (
-'class' => 'PGI\\Module\\PGMagento\\Services\\Facades\\ApplicationFacade',
-),
-'facade.module' =>
-array (
-'class' => 'PGI\\Module\\PGMagento\\Services\\Facades\\ModuleFacade',
-),
-'upgrade.update_settings_values' =>
-array (
-'abstract' => false,
-'tags' =>
-array (
-0 =>
-array (
-'name' => 'upgrade',
-),
-),
-'class' => 'PGI\\Module\\PGModule\\Services\\Upgrades\\UpdateSettingsValuesUpgrade',
-'extends' => 'upgrade.abstract',
-'arguments' =>
-array (
-0 => '@settings',
-),
-),
-'upgrade.rename_settings' =>
-array (
-'abstract' => false,
-'tags' =>
-array (
-0 =>
-array (
-'name' => 'upgrade',
-),
-),
-'class' => 'PGI\\Module\\PGModule\\Services\\Upgrades\\RenameSettingsUpgrade',
-'extends' => 'upgrade.abstract',
-'arguments' =>
-array (
-0 => '@manager.setting',
-1 => '@manager.shop',
 ),
 ),
 'officer.settings.database.basic' =>
@@ -540,6 +428,72 @@ array (
 ),
 ),
 ),
+'logger' =>
+array (
+'class' => 'PGI\\Module\\PGModule\\Services\\Logger',
+'arguments' =>
+array (
+0 => '@dumper',
+1 => '@pathfinder',
+2 => '%{log.file}',
+3 => '%{log.format}',
+),
+'calls' =>
+array (
+0 =>
+array (
+'method' => 'setBehaviorHandler',
+'arguments' =>
+array (
+0 => '@handler.behavior',
+),
+),
+),
+),
+'settings' =>
+array (
+'class' => 'PGI\\Module\\PGModule\\Services\\Settings',
+'arguments' =>
+array (
+0 => '@container',
+1 => '%settings',
+),
+),
+'broadcaster' =>
+array (
+'class' => 'PGI\\Module\\PGModule\\Services\\Broadcaster',
+'arguments' =>
+array (
+0 => '@container',
+1 => '@logger',
+2 => '%listeners',
+),
+'catch' =>
+array (
+'tag' => 'listener',
+'method' => 'addListener',
+'built' => false,
+),
+),
+'provider.output' =>
+array (
+'class' => 'PGI\\Module\\PGModule\\Services\\Providers\\OutputProvider',
+'arguments' =>
+array (
+0 => '@aggregator.builder.output',
+1 => '@handler.requirement',
+2 => '%outputs',
+3 => '@logger',
+),
+),
+'facade.application' =>
+array (
+'class' => 'PGI\\Module\\PGMagento\\Services\\Facades\\ApplicationFacade',
+),
+'facade.module' =>
+array (
+'class' => 'PGI\\Module\\PGMagento\\Services\\Facades\\ModuleFacade',
+),
 'listener.settings.install_default' =>
 array (
 'class' => 'PGI\\Module\\PGModule\\Services\\Listeners\\InstallDefaultSettingsListener',
@@ -582,6 +536,81 @@ array (
 ),
 'extends' => 'listener.database.runner',
 ),
+'upgrade.update_settings_values' =>
+array (
+'abstract' => false,
+'tags' =>
+array (
+0 =>
+array (
+'name' => 'upgrade',
+),
+),
+'class' => 'PGI\\Module\\PGModule\\Services\\Upgrades\\UpdateSettingsValuesUpgrade',
+'extends' => 'upgrade.abstract',
+'arguments' =>
+array (
+0 => '@settings',
+),
+),
+'upgrade.rename_settings' =>
+array (
+'abstract' => false,
+'tags' =>
+array (
+0 =>
+array (
+'name' => 'upgrade',
+),
+),
+'class' => 'PGI\\Module\\PGModule\\Services\\Upgrades\\RenameSettingsUpgrade',
+'extends' => 'upgrade.abstract',
+'arguments' =>
+array (
+0 => '@manager.setting',
+1 => '@manager.shop',
+),
+),
+'upgrade.retrieve_setting_global_value' =>
+array (
+'abstract' => false,
+'tags' =>
+array (
+0 =>
+array (
+'name' => 'upgrade',
+),
+),
+'class' => 'PGI\\Module\\PGModule\\Services\\Upgrades\\RetrieveSettingGlobalValueUpgrade',
+'extends' => 'upgrade.abstract',
+'arguments' =>
+array (
+0 => '@manager.setting',
+1 => '@manager.shop',
+),
+),
+'repository.setting' =>
+array (
+'abstract' => false,
+'arguments' =>
+array (
+0 => '@handler.database',
+1 => '%database.entities.setting',
+),
+'extends' => 'repository.abstract',
+'class' => 'PGI\\Module\\PGModule\\Services\\Repositories\\SettingRepository',
+),
+'handler.database' =>
+array (
+'class' => 'PGI\\Module\\PGDatabase\\Services\\Handlers\\DatabaseHandler',
+'arguments' =>
+array (
+0 => '@officer.database',
+1 => '@parser',
+2 => '@pathfinder',
+3 => '@logger',
+),
+),
 'upgrade.database' =>
 array (
 'abstract' => false,
@@ -599,15 +628,109 @@ array (
 0 => '@handler.database',
 ),
 ),
-'handler.database' =>
+'aggregator.deflector' =>
 array (
-'class' => 'PGI\\Module\\PGDatabase\\Services\\Handlers\\DatabaseHandler',
+'abstract' => false,
+'class' => 'PGI\\Module\\PGFramework\\Components\\Aggregator',
 'arguments' =>
 array (
-0 => '@officer.database',
-1 => '@parser',
-2 => '@pathfinder',
-3 => '@logger',
+0 => '@container',
+),
+'extends' => 'aggregator.abstract',
+'config' =>
+array (
+'type' => 'deflector',
+'interface' => 'PGI\\Module\\PGServer\\Interfaces\\DeflectorInterface',
+),
+'catch' => 'deflector',
+),
+'aggregator.linker' =>
+array (
+'abstract' => false,
+'class' => 'PGI\\Module\\PGFramework\\Components\\Aggregator',
+'arguments' =>
+array (
+0 => '@container',
+),
+'extends' => 'aggregator.abstract',
+'config' =>
+array (
+'type' => 'linker',
+'interface' => 'PGI\\Module\\PGServer\\Interfaces\\LinkerInterface',
+),
+'catch' => 'linker',
+),
+'cleaner.basic_http.not_found' =>
+array (
+'class' => 'PGI\\Module\\PGServer\\Services\\Cleaners\\BasicHTTPCleaner',
+'arguments' =>
+array (
+0 => 404,
+),
+),
+'cleaner.basic_http.unauthorized_access' =>
+array (
+'class' => 'PGI\\Module\\PGServer\\Services\\Cleaners\\BasicHTTPCleaner',
+'arguments' =>
+array (
+0 => 401,
+),
+),
+'cleaner.basic_http.server_error' =>
+array (
+'class' => 'PGI\\Module\\PGServer\\Services\\Cleaners\\BasicHTTPCleaner',
+'arguments' =>
+array (
+0 => 500,
+),
+),
+'cleaner.basic_http.bad_request' =>
+array (
+'class' => 'PGI\\Module\\PGServer\\Services\\Cleaners\\BasicHTTPCleaner',
+'arguments' =>
+array (
+0 => 400,
+),
+),
+'cleaner.basic_throw' =>
+array (
+'class' => 'PGI\\Module\\PGServer\\Services\\Cleaners\\BasicThrowCleaner',
+),
+'handler.route' =>
+array (
+'class' => 'PGI\\Module\\PGServer\\Services\\Handlers\\RouteHandler',
+'arguments' =>
+array (
+0 => '%routing.routes',
+),
+'calls' =>
+array (
+0 =>
+array (
+'method' => 'setRequirementHandler',
+'arguments' =>
+array (
+0 => '@handler.requirement',
+),
+),
+),
+),
+'handler.area' =>
+array (
+'class' => 'PGI\\Module\\PGServer\\Services\\Handlers\\AreaHandler',
+'arguments' =>
+array (
+0 => '%routing.areas',
+),
+),
+'handler.link' =>
+array (
+'class' => 'PGI\\Module\\PGServer\\Services\\Handlers\\LinkHandler',
+'arguments' =>
+array (
+0 => '@aggregator.linker',
+1 => '@logger',
+2 => '@facade.module',
 ),
 ),
 'renderer.transformer.paygreen_module_2_array' =>
@@ -654,134 +777,6 @@ array (
 array (
 0 => '@handler.view',
 1 => '@handler.output',
-),
-),
-'cleaner.basic_http.not_found' =>
-array (
-'class' => 'PGI\\Module\\PGServer\\Services\\Cleaners\\BasicHTTPCleaner',
-'arguments' =>
-array (
-0 => 404,
-),
-),
-'cleaner.basic_http.unauthorized_access' =>
-array (
-'class' => 'PGI\\Module\\PGServer\\Services\\Cleaners\\BasicHTTPCleaner',
-'arguments' =>
-array (
-0 => 401,
-),
-),
-'cleaner.basic_http.server_error' =>
-array (
-'class' => 'PGI\\Module\\PGServer\\Services\\Cleaners\\BasicHTTPCleaner',
-'arguments' =>
-array (
-0 => 500,
-),
-),
-'cleaner.basic_http.bad_request' =>
-array (
-'class' => 'PGI\\Module\\PGServer\\Services\\Cleaners\\BasicHTTPCleaner',
-'arguments' =>
-array (
-0 => 400,
-),
-),
-'cleaner.basic_throw' =>
-array (
-'class' => 'PGI\\Module\\PGServer\\Services\\Cleaners\\BasicThrowCleaner',
-),
-'aggregator.deflector' =>
-array (
-'abstract' => false,
-'class' => 'PGI\\Module\\PGFramework\\Components\\Aggregator',
-'arguments' =>
-array (
-0 => '@container',
-),
-'extends' => 'aggregator.abstract',
-'config' =>
-array (
-'type' => 'deflector',
-'interface' => 'PGI\\Module\\PGServer\\Interfaces\\DeflectorInterface',
-),
-'catch' => 'deflector',
-),
-'aggregator.linker' =>
-array (
-'abstract' => false,
-'class' => 'PGI\\Module\\PGFramework\\Components\\Aggregator',
-'arguments' =>
-array (
-0 => '@container',
-),
-'extends' => 'aggregator.abstract',
-'config' =>
-array (
-'type' => 'linker',
-'interface' => 'PGI\\Module\\PGServer\\Interfaces\\LinkerInterface',
-),
-'catch' => 'linker',
-),
-'acceptor.class' =>
-array (
-'class' => 'PGI\\Module\\PGServer\\Services\\Acceptors\\ModelAcceptor',
-'tags' =>
-array (
-0 =>
-array (
-'name' => 'acceptor',
-'options' =>
-array (
-0 => 'class',
-),
-),
-),
-),
-'acceptor.instance' =>
-array (
-'class' => 'PGI\\Module\\PGServer\\Services\\Acceptors\\InstanceAcceptor',
-'tags' =>
-array (
-0 =>
-array (
-'name' => 'acceptor',
-'options' =>
-array (
-0 => 'instance',
-),
-),
-),
-),
-'acceptor.tag' =>
-array (
-'class' => 'PGI\\Module\\PGServer\\Services\\Acceptors\\TagAcceptor',
-'tags' =>
-array (
-0 =>
-array (
-'name' => 'acceptor',
-'options' =>
-array (
-0 => 'tag',
-),
-),
-),
-),
-'acceptor.action' =>
-array (
-'class' => 'PGI\\Module\\PGServer\\Services\\Acceptors\\ActionAcceptor',
-'tags' =>
-array (
-0 =>
-array (
-'name' => 'acceptor',
-'options' =>
-array (
-0 => 'action',
-),
-),
 ),
 ),
 'dispatcher' =>
@@ -851,54 +846,65 @@ array (
 1 => '@logger',
 ),
 ),
-'handler.route' =>
+'acceptor.class' =>
 array (
-'class' => 'PGI\\Module\\PGServer\\Services\\Handlers\\RouteHandler',
-'arguments' =>
-array (
-0 => '%routing.routes',
-),
-'calls' =>
+'class' => 'PGI\\Module\\PGServer\\Services\\Acceptors\\ModelAcceptor',
+'tags' =>
 array (
 0 =>
 array (
-'method' => 'setRequirementHandler',
-'arguments' =>
+'name' => 'acceptor',
+'options' =>
 array (
-0 => '@handler.requirement',
+0 => 'class',
 ),
 ),
 ),
 ),
-'handler.area' =>
+'acceptor.instance' =>
 array (
-'class' => 'PGI\\Module\\PGServer\\Services\\Handlers\\AreaHandler',
-'arguments' =>
+'class' => 'PGI\\Module\\PGServer\\Services\\Acceptors\\InstanceAcceptor',
+'tags' =>
 array (
-0 => '%routing.areas',
+0 =>
+array (
+'name' => 'acceptor',
+'options' =>
+array (
+0 => 'instance',
 ),
 ),
-'handler.link' =>
-array (
-'class' => 'PGI\\Module\\PGServer\\Services\\Handlers\\LinkHandler',
-'arguments' =>
-array (
-0 => '@aggregator.linker',
-1 => '@logger',
-2 => '@facade.module',
 ),
 ),
-'repository.translation' =>
+'acceptor.tag' =>
 array (
-'abstract' => false,
-'arguments' =>
+'class' => 'PGI\\Module\\PGServer\\Services\\Acceptors\\TagAcceptor',
+'tags' =>
 array (
-0 => '@handler.database',
-1 => '%database.entities.translation',
-2 => '@handler.shop',
+0 =>
+array (
+'name' => 'acceptor',
+'options' =>
+array (
+0 => 'tag',
 ),
-'extends' => 'repository.abstract',
-'class' => 'PGI\\Module\\PGIntl\\Services\\Repositories\\TranslationRepository',
+),
+),
+),
+'acceptor.action' =>
+array (
+'class' => 'PGI\\Module\\PGServer\\Services\\Acceptors\\ActionAcceptor',
+'tags' =>
+array (
+0 =>
+array (
+'name' => 'acceptor',
+'options' =>
+array (
+0 => 'action',
+),
+),
+),
 ),
 'manager.translation' =>
 array (
@@ -906,6 +912,72 @@ array (
 'arguments' =>
 array (
 0 => '@repository.translation',
+),
+),
+'officer.locale' =>
+array (
+'class' => 'PGI\\Module\\PGMagento\\Services\\Officers\\LocaleOfficer',
+'arguments' =>
+array (
+0 => '@magento',
+),
+),
+'handler.translation' =>
+array (
+'class' => 'PGI\\Module\\PGIntl\\Services\\Handlers\\TranslationHandler',
+'arguments' =>
+array (
+0 => '@manager.translation',
+1 => '@handler.locale',
+2 => '@logger',
+3 => '%translations',
+),
+),
+'handler.locale' =>
+array (
+'class' => 'PGI\\Module\\PGIntl\\Services\\Handlers\\LocaleHandler',
+'arguments' =>
+array (
+0 => '@officer.locale',
+),
+),
+'handler.cache.translation' =>
+array (
+'class' => 'PGI\\Module\\PGIntl\\Services\\Handlers\\CacheTranslationHandler',
+'arguments' =>
+array (
+0 => '@pathfinder',
+1 => '@settings',
+2 => '@logger',
+),
+),
+'plugin.smarty.translator' =>
+array (
+'class' => 'PGI\\Module\\PGIntl\\Services\\Plugins\\SmartyTranslatorPlugin',
+'arguments' =>
+array (
+0 => '@translator',
+),
+'tags' =>
+array (
+0 =>
+array (
+'name' => 'plugin.smarty',
+'options' =>
+array (
+0 => 'pgtrans',
+1 => 'translateExpression',
+),
+),
+1 =>
+array (
+'name' => 'plugin.smarty',
+'options' =>
+array (
+0 => 'pgtranslines',
+1 => 'translateParagraph',
+),
+),
 ),
 ),
 'translator' =>
@@ -918,6 +990,39 @@ array (
 2 => '@handler.locale',
 3 => '@logger',
 4 => '%translator',
+),
+),
+'listener.setup.install_default_translations' =>
+array (
+'class' => 'PGI\\Module\\PGIntl\\Services\\Listeners\\InsertDefaultTranslationsListener',
+'arguments' =>
+array (
+0 => '@handler.translation',
+1 => '@manager.shop',
+),
+),
+'listener.setup.create_translation_table' =>
+array (
+'abstract' => false,
+'class' => 'PGI\\Module\\PGDatabase\\Services\\Listeners\\GenericDatabaseRunnerListener',
+'arguments' =>
+array (
+0 => '@handler.database',
+1 =>
+array (
+0 => 'PGIntl:translation/clean.sql',
+1 => 'PGIntl:translation/install.sql',
+),
+),
+'extends' => 'listener.database.runner',
+),
+'listener.setup.reset_translation_cache' =>
+array (
+'class' => 'PGI\\Module\\PGIntl\\Services\\Listeners\\ResetTranslationCacheListener',
+'arguments' =>
+array (
+0 => '@handler.cache.translation',
+1 => '@logger',
 ),
 ),
 'upgrade.translations.install_default_values' =>
@@ -977,42 +1082,17 @@ array (
 2 => '@handler.database',
 ),
 ),
-'officer.locale' =>
+'repository.translation' =>
 array (
-'class' => 'PGI\\Module\\PGMagento\\Services\\Officers\\LocaleOfficer',
+'abstract' => false,
 'arguments' =>
 array (
-0 => '@magento',
+0 => '@handler.database',
+1 => '%database.entities.translation',
+2 => '@handler.shop',
 ),
-),
-'plugin.smarty.translator' =>
-array (
-'class' => 'PGI\\Module\\PGIntl\\Services\\Plugins\\SmartyTranslatorPlugin',
-'arguments' =>
-array (
-0 => '@translator',
-),
-'tags' =>
-array (
-0 =>
-array (
-'name' => 'plugin.smarty',
-'options' =>
-array (
-0 => 'pgtrans',
-1 => 'translateExpression',
-),
-),
-1 =>
-array (
-'name' => 'plugin.smarty',
-'options' =>
-array (
-0 => 'pgtranslines',
-1 => 'translateParagraph',
-),
-),
-),
+'extends' => 'repository.abstract',
+'class' => 'PGI\\Module\\PGIntl\\Services\\Repositories\\TranslationRepository',
 ),
 'selector.language' =>
 array (
@@ -1072,68 +1152,6 @@ array (
 'extends' => 'selector.abstract',
 'class' => 'PGI\\Module\\PGIntl\\Services\\Selectors\\CountrySelector',
 ),
-'handler.translation' =>
-array (
-'class' => 'PGI\\Module\\PGIntl\\Services\\Handlers\\TranslationHandler',
-'arguments' =>
-array (
-0 => '@manager.translation',
-1 => '@handler.locale',
-2 => '@logger',
-3 => '%translations',
-),
-),
-'handler.locale' =>
-array (
-'class' => 'PGI\\Module\\PGIntl\\Services\\Handlers\\LocaleHandler',
-'arguments' =>
-array (
-0 => '@officer.locale',
-),
-),
-'handler.cache.translation' =>
-array (
-'class' => 'PGI\\Module\\PGIntl\\Services\\Handlers\\CacheTranslationHandler',
-'arguments' =>
-array (
-0 => '@pathfinder',
-1 => '@settings',
-2 => '@logger',
-),
-),
-'listener.setup.install_default_translations' =>
-array (
-'class' => 'PGI\\Module\\PGIntl\\Services\\Listeners\\InsertDefaultTranslationsListener',
-'arguments' =>
-array (
-0 => '@handler.translation',
-1 => '@manager.shop',
-),
-),
-'listener.setup.create_translation_table' =>
-array (
-'abstract' => false,
-'class' => 'PGI\\Module\\PGDatabase\\Services\\Listeners\\GenericDatabaseRunnerListener',
-'arguments' =>
-array (
-0 => '@handler.database',
-1 =>
-array (
-0 => 'PGIntl:translation/clean.sql',
-1 => 'PGIntl:translation/install.sql',
-),
-),
-'extends' => 'listener.database.runner',
-),
-'listener.setup.reset_translation_cache' =>
-array (
-'class' => 'PGI\\Module\\PGIntl\\Services\\Listeners\\ResetTranslationCacheListener',
-'arguments' =>
-array (
-0 => '@handler.cache.translation',
-1 => '@logger',
-),
-),
 'aggregator.view' =>
 array (
 'abstract' => false,
@@ -1149,98 +1167,6 @@ array (
 'interface' => 'PGI\\Module\\PGView\\Interfaces\\ViewInterface',
 ),
 'catch' => 'view',
-),
-'handler.view' =>
-array (
-'class' => 'PGI\\Module\\PGView\\Services\\Handlers\\ViewHandler',
-'arguments' =>
-array (
-0 => '@aggregator.view',
-1 => '@handler.smarty',
-2 => '@pathfinder',
-),
-),
-'view.basic' =>
-array (
-'class' => 'PGI\\Module\\PGView\\Services\\View',
-'shared' => false,
-'calls' =>
-array (
-0 =>
-array (
-'method' => 'setViewHandler',
-'arguments' =>
-array (
-0 => '@handler.view',
-),
-),
-),
-'tags' =>
-array (
-0 =>
-array (
-'name' => 'view',
-),
-),
-),
-'handler.smarty' =>
-array (
-'class' => 'PGI\\Module\\PGView\\Services\\Handlers\\SmartyHandler',
-'arguments' =>
-array (
-0 => '@%{smarty.builder.service}',
-1 => '@pathfinder',
-2 => '@logger.view',
-3 => '%smarty',
-),
-'catch' =>
-array (
-'tag' => 'plugin.smarty',
-'method' => 'installPlugin',
-'built' => true,
-),
-),
-'handler.block' =>
-array (
-'class' => 'PGI\\Module\\PGView\\Services\\Handlers\\BlockHandler',
-'arguments' =>
-array (
-0 => '@handler.view',
-1 => '@handler.requirement',
-2 => '@dispatcher',
-3 => '%blocks',
-),
-),
-'builder.smarty' =>
-array (
-'class' => 'PGI\\Module\\PGView\\Services\\Builders\\SmartyBuilder',
-'arguments' =>
-array (
-0 => '@pathfinder',
-1 => '%smarty.builder',
-),
-),
-'logger.view' =>
-array (
-'class' => 'PGI\\Module\\PGModule\\Services\\Logger',
-'arguments' =>
-array (
-0 => '@dumper',
-1 => '@pathfinder',
-2 => '%{log.view.file}',
-3 => '%{log.view.format}',
-),
-'calls' =>
-array (
-0 =>
-array (
-'method' => 'setBehaviorHandler',
-'arguments' =>
-array (
-0 => '@handler.behavior',
-),
-),
-),
 ),
 'plugin.smarty.view_injecter' =>
 array (
@@ -1338,6 +1264,98 @@ array (
 ),
 ),
 ),
+'handler.view' =>
+array (
+'class' => 'PGI\\Module\\PGView\\Services\\Handlers\\ViewHandler',
+'arguments' =>
+array (
+0 => '@aggregator.view',
+1 => '@handler.smarty',
+2 => '@pathfinder',
+),
+),
+'view.basic' =>
+array (
+'class' => 'PGI\\Module\\PGView\\Services\\View',
+'shared' => false,
+'calls' =>
+array (
+0 =>
+array (
+'method' => 'setViewHandler',
+'arguments' =>
+array (
+0 => '@handler.view',
+),
+),
+),
+'tags' =>
+array (
+0 =>
+array (
+'name' => 'view',
+),
+),
+),
+'handler.smarty' =>
+array (
+'class' => 'PGI\\Module\\PGView\\Services\\Handlers\\SmartyHandler',
+'arguments' =>
+array (
+0 => '@%{smarty.builder.service}',
+1 => '@pathfinder',
+2 => '@logger.view',
+3 => '%smarty',
+),
+'catch' =>
+array (
+'tag' => 'plugin.smarty',
+'method' => 'installPlugin',
+'built' => true,
+),
+),
+'handler.block' =>
+array (
+'class' => 'PGI\\Module\\PGView\\Services\\Handlers\\BlockHandler',
+'arguments' =>
+array (
+0 => '@handler.view',
+1 => '@handler.requirement',
+2 => '@dispatcher',
+3 => '%blocks',
+),
+),
+'builder.smarty' =>
+array (
+'class' => 'PGI\\Module\\PGView\\Services\\Builders\\SmartyBuilder',
+'arguments' =>
+array (
+0 => '@pathfinder',
+1 => '%smarty.builder',
+),
+),
+'logger.view' =>
+array (
+'class' => 'PGI\\Module\\PGModule\\Services\\Logger',
+'arguments' =>
+array (
+0 => '@dumper',
+1 => '@pathfinder',
+2 => '%{log.view.file}',
+3 => '%{log.view.format}',
+),
+'calls' =>
+array (
+0 =>
+array (
+'method' => 'setBehaviorHandler',
+'arguments' =>
+array (
+0 => '@handler.behavior',
+),
+),
+),
+),
 'listener.upgrade.clear_smarty_cache' =>
 array (
 'class' => 'PGI\\Module\\PGView\\Services\\Listeners\\ClearSmartyCacheListener',
@@ -1346,6 +1364,22 @@ array (
 0 => '@handler.smarty',
 1 => '@logger',
 ),
+),
+'aggregator.formatter' =>
+array (
+'abstract' => false,
+'class' => 'PGI\\Module\\PGFramework\\Components\\Aggregator',
+'arguments' =>
+array (
+0 => '@container',
+),
+'extends' => 'aggregator.abstract',
+'config' =>
+array (
+'type' => 'formatter',
+'interface' => 'PGI\\Module\\PGForm\\Interfaces\\FormatterInterface',
+),
+'catch' => 'formatter',
 ),
 'builder.form' =>
 array (
@@ -1396,22 +1430,6 @@ array (
 'method' => 'addValidatorServiceName',
 'built' => false,
 ),
-),
-'aggregator.formatter' =>
-array (
-'abstract' => false,
-'class' => 'PGI\\Module\\PGFramework\\Components\\Aggregator',
-'arguments' =>
-array (
-0 => '@container',
-),
-'extends' => 'aggregator.abstract',
-'config' =>
-array (
-'type' => 'formatter',
-'interface' => 'PGI\\Module\\PGForm\\Interfaces\\FormatterInterface',
-),
-'catch' => 'formatter',
 ),
 'view.form' =>
 array (
@@ -1708,94 +1726,6 @@ array (
 'abstract' => false,
 'extends' => 'view.basic',
 ),
-'validator.length.min' =>
-array (
-'abstract' => false,
-'shared' => false,
-'tags' =>
-array (
-0 =>
-array (
-'name' => 'validator',
-),
-),
-'extends' => 'validator.abstract',
-'class' => 'PGI\\Module\\PGForm\\Services\\Validators\\LengthMinValidator',
-),
-'validator.length.max' =>
-array (
-'abstract' => false,
-'shared' => false,
-'tags' =>
-array (
-0 =>
-array (
-'name' => 'validator',
-),
-),
-'extends' => 'validator.abstract',
-'class' => 'PGI\\Module\\PGForm\\Services\\Validators\\LengthMaxValidator',
-),
-'validator.regexp' =>
-array (
-'abstract' => false,
-'shared' => false,
-'tags' =>
-array (
-0 =>
-array (
-'name' => 'validator',
-),
-),
-'extends' => 'validator.abstract',
-'class' => 'PGI\\Module\\PGForm\\Services\\Validators\\RegexpValidator',
-),
-'validator.array.in' =>
-array (
-'abstract' => false,
-'shared' => false,
-'tags' =>
-array (
-0 =>
-array (
-'name' => 'validator',
-),
-),
-'extends' => 'validator.abstract',
-'class' => 'PGI\\Module\\PGForm\\Services\\Validators\\ArrayInValidator',
-'arguments' =>
-array (
-0 => '@handler.select',
-),
-),
-'validator.not_empty' =>
-array (
-'abstract' => false,
-'shared' => false,
-'tags' =>
-array (
-0 =>
-array (
-'name' => 'validator',
-),
-),
-'extends' => 'validator.abstract',
-'class' => 'PGI\\Module\\PGForm\\Services\\Validators\\NotEmptyValidator',
-),
-'validator.range' =>
-array (
-'abstract' => false,
-'shared' => false,
-'tags' =>
-array (
-0 =>
-array (
-'name' => 'validator',
-),
-),
-'extends' => 'validator.abstract',
-'class' => 'PGI\\Module\\PGForm\\Services\\Validators\\RangeValidator',
-),
 'formatter.abstract' =>
 array (
 'shared' => false,
@@ -1891,44 +1821,93 @@ array (
 'extends' => 'formatter.abstract',
 'class' => 'PGI\\Module\\PGForm\\Services\\Formatters\\BooleanFormatter',
 ),
-'repository.shop' =>
+'validator.length.min' =>
 array (
-'class' => 'PGI\\Module\\PGMagento\\Services\\Repositories\\ShopRepository',
+'abstract' => false,
+'shared' => false,
+'tags' =>
+array (
+0 =>
+array (
+'name' => 'validator',
 ),
-'repository.cart' =>
-array (
-'class' => 'PGI\\Module\\PGMagento\\Services\\Repositories\\CartRepository',
 ),
-'repository.order' =>
-array (
-'class' => 'PGI\\Module\\PGMagento\\Services\\Repositories\\OrderRepository',
+'extends' => 'validator.abstract',
+'class' => 'PGI\\Module\\PGForm\\Services\\Validators\\LengthMinValidator',
 ),
-'repository.customer' =>
+'validator.length.max' =>
 array (
-'class' => 'PGI\\Module\\PGMagento\\Services\\Repositories\\CustomerRepository',
+'abstract' => false,
+'shared' => false,
+'tags' =>
+array (
+0 =>
+array (
+'name' => 'validator',
 ),
-'repository.address' =>
-array (
-'class' => 'PGI\\Module\\PGMagento\\Services\\Repositories\\AddressRepository',
 ),
-'repository.product' =>
-array (
-'class' => 'PGI\\Module\\PGMagento\\Services\\Repositories\\ProductRepository',
+'extends' => 'validator.abstract',
+'class' => 'PGI\\Module\\PGForm\\Services\\Validators\\LengthMaxValidator',
 ),
-'repository.cart_item' =>
+'validator.regexp' =>
 array (
+'abstract' => false,
+'shared' => false,
+'tags' =>
+array (
+0 =>
+array (
+'name' => 'validator',
 ),
-'repository.category' =>
-array (
-'class' => 'PGI\\Module\\PGMagento\\Services\\Repositories\\CategoryRepository',
 ),
-'repository.order_state' =>
+'extends' => 'validator.abstract',
+'class' => 'PGI\\Module\\PGForm\\Services\\Validators\\RegexpValidator',
+),
+'validator.array.in' =>
 array (
-'class' => 'PGI\\Module\\PGMagento\\Services\\Repositories\\OrderStateRepository',
+'abstract' => false,
+'shared' => false,
+'tags' =>
+array (
+0 =>
+array (
+'name' => 'validator',
+),
+),
+'extends' => 'validator.abstract',
+'class' => 'PGI\\Module\\PGForm\\Services\\Validators\\ArrayInValidator',
 'arguments' =>
 array (
-0 => '%order.states',
+0 => '@handler.select',
 ),
+),
+'validator.not_empty' =>
+array (
+'abstract' => false,
+'shared' => false,
+'tags' =>
+array (
+0 =>
+array (
+'name' => 'validator',
+),
+),
+'extends' => 'validator.abstract',
+'class' => 'PGI\\Module\\PGForm\\Services\\Validators\\NotEmptyValidator',
+),
+'validator.range' =>
+array (
+'abstract' => false,
+'shared' => false,
+'tags' =>
+array (
+0 =>
+array (
+'name' => 'validator',
+),
+),
+'extends' => 'validator.abstract',
+'class' => 'PGI\\Module\\PGForm\\Services\\Validators\\RangeValidator',
 ),
 'manager.shop' =>
 array (
@@ -2008,6 +1987,45 @@ array (
 2 => '@mapper.order_state',
 ),
 ),
+'officer.post_payment' =>
+array (
+'class' => 'PGI\\Module\\PGMagentoPayment\\Services\\Officers\\PostPaymentOfficer',
+),
+'handler.shop' =>
+array (
+'class' => 'PGI\\Module\\PGShop\\Services\\Handlers\\ShopHandler',
+'arguments' =>
+array (
+0 => '@logger',
+),
+'calls' =>
+array (
+0 =>
+array (
+'method' => 'setShopManager',
+'arguments' =>
+array (
+0 => '@manager.shop',
+),
+),
+1 =>
+array (
+'method' => 'setSessionHandler',
+'arguments' =>
+array (
+0 => '@handler.session',
+),
+),
+2 =>
+array (
+'method' => 'setShopOfficer',
+'arguments' =>
+array (
+0 => '@officer.shop',
+),
+),
+),
+),
 'factory.order_state_machine' =>
 array (
 'class' => 'PGI\\Module\\PGShop\\Services\\Factories\\OrderStateMachineFactory',
@@ -2060,9 +2078,44 @@ array (
 ),
 ),
 ),
-'officer.post_payment' =>
+'repository.shop' =>
 array (
-'class' => 'PGI\\Module\\PGMagentoPayment\\Services\\Officers\\PostPaymentOfficer',
+'class' => 'PGI\\Module\\PGMagento\\Services\\Repositories\\ShopRepository',
+),
+'repository.cart' =>
+array (
+'class' => 'PGI\\Module\\PGMagento\\Services\\Repositories\\CartRepository',
+),
+'repository.order' =>
+array (
+'class' => 'PGI\\Module\\PGMagento\\Services\\Repositories\\OrderRepository',
+),
+'repository.customer' =>
+array (
+'class' => 'PGI\\Module\\PGMagento\\Services\\Repositories\\CustomerRepository',
+),
+'repository.address' =>
+array (
+'class' => 'PGI\\Module\\PGMagento\\Services\\Repositories\\AddressRepository',
+),
+'repository.product' =>
+array (
+'class' => 'PGI\\Module\\PGMagento\\Services\\Repositories\\ProductRepository',
+),
+'repository.cart_item' =>
+array (
+),
+'repository.category' =>
+array (
+'class' => 'PGI\\Module\\PGMagento\\Services\\Repositories\\CategoryRepository',
+),
+'repository.order_state' =>
+array (
+'class' => 'PGI\\Module\\PGMagento\\Services\\Repositories\\OrderStateRepository',
+'arguments' =>
+array (
+0 => '%order.states',
+),
 ),
 'selector.category.hierarchized' =>
 array (
@@ -2108,55 +2161,13 @@ array (
 'extends' => 'selector.abstract',
 'class' => 'PGI\\Module\\PGShop\\Services\\Selectors\\HierarchizedCategorySelector',
 ),
-'handler.shop' =>
-array (
-'class' => 'PGI\\Module\\PGShop\\Services\\Handlers\\ShopHandler',
-'arguments' =>
-array (
-0 => '@logger',
-),
-'calls' =>
-array (
-0 =>
-array (
-'method' => 'setShopManager',
-'arguments' =>
-array (
-0 => '@manager.shop',
-),
-),
-1 =>
-array (
-'method' => 'setSessionHandler',
-'arguments' =>
-array (
-0 => '@handler.session',
-),
-),
-2 =>
-array (
-'method' => 'setShopOfficer',
-'arguments' =>
-array (
-0 => '@officer.shop',
-),
-),
-),
-),
-'deflector.filter.shop_context' =>
+'action.support_configuration.save' =>
 array (
 'abstract' => false,
+'shared' => false,
 'calls' =>
 array (
 0 =>
-array (
-'method' => 'setNotifier',
-'arguments' =>
-array (
-0 => '@notifier',
-),
-),
-1 =>
 array (
 'method' => 'setLogger',
 'arguments' =>
@@ -2164,258 +2175,15 @@ array (
 0 => '@logger',
 ),
 ),
-2 =>
+1 =>
 array (
-'method' => 'setLinkHandler',
-'arguments' =>
-array (
-0 => '@handler.link',
-),
-),
-),
-'tags' =>
-array (
-0 =>
-array (
-'name' => 'deflector',
-),
-),
-'extends' => 'deflector.abstract',
-'class' => 'PGI\\Module\\BOModule\\Services\\Deflectors\\ShopContext',
-'arguments' =>
-array (
-0 => '@handler.route',
-),
-),
-'builder.request.backoffice' =>
-array (
-'class' => 'PGI\\Module\\PGServer\\Services\\Builders\\RequestBuilder',
-'arguments' =>
-array (
-0 => '@superglobal.get',
-1 => '@superglobal.post',
-2 => '%request_builder.backoffice',
-),
-),
-'server.backoffice' =>
-array (
-'abstract' => false,
-'class' => 'PGI\\Module\\PGServer\\Services\\Server',
-'arguments' =>
-array (
-0 => '@router',
-1 => '@derouter',
-2 => '@dispatcher',
-3 => '@logger',
-4 => '@factory.stage',
-5 => '%servers.backoffice',
-),
-'extends' => 'server.abstract',
-),
-'cleaner.forward.message_page' =>
-array (
-'class' => 'PGI\\Module\\PGServer\\Services\\Cleaners\\ForwardCleaner',
-'arguments' =>
-array (
-0 => 'displayException@backoffice.error',
-),
-),
-'builder.translation_form' =>
-array (
-'class' => 'PGI\\Module\\PGIntl\\Services\\Builders\\TranslationFormBuilder',
-'arguments' =>
-array (
-0 => '@builder.form',
-1 => '@builder.field',
-2 => '%translations',
-),
-),
-'view.menu' =>
-array (
-'class' => 'PGI\\Module\\BOModule\\Services\\Views\\MenuView',
-'shared' => false,
-'calls' =>
-array (
-0 =>
-array (
-'method' => 'setViewHandler',
-'arguments' =>
-array (
-0 => '@handler.view',
-),
-),
-),
-'tags' =>
-array (
-0 =>
-array (
-'name' => 'view',
-),
-),
-'abstract' => false,
-'extends' => 'view.basic',
-'arguments' =>
-array (
-0 => '@handler.menu',
-1 => '@manager.shop',
-2 => '@handler.shop',
-),
-),
-'view.notifications' =>
-array (
-'class' => 'PGI\\Module\\BOModule\\Services\\Views\\NotificationsView',
-'shared' => false,
-'calls' =>
-array (
-0 =>
-array (
-'method' => 'setViewHandler',
-'arguments' =>
-array (
-0 => '@handler.view',
-),
-),
-),
-'tags' =>
-array (
-0 =>
-array (
-'name' => 'view',
-),
-),
-'abstract' => false,
-'extends' => 'view.basic',
+'method' => 'setNotifier',
 'arguments' =>
 array (
 0 => '@notifier',
 ),
 ),
-'view.system.paths' =>
-array (
-'class' => 'PGI\\Module\\BOModule\\Services\\Views\\SystemPathsView',
-'shared' => false,
-'calls' =>
-array (
-0 =>
-array (
-'method' => 'setViewHandler',
-'arguments' =>
-array (
-0 => '@handler.view',
-),
-),
-),
-'tags' =>
-array (
-0 =>
-array (
-'name' => 'view',
-),
-),
-'abstract' => false,
-'extends' => 'view.basic',
-'arguments' =>
-array (
-0 => '@pathfinder',
-),
-),
-'view.block.diagnostics' =>
-array (
-'class' => 'PGI\\Module\\BOModule\\Services\\Views\\Blocks\\DiagnosticBlockView',
-'shared' => false,
-'calls' =>
-array (
-0 =>
-array (
-'method' => 'setViewHandler',
-'arguments' =>
-array (
-0 => '@handler.view',
-),
-),
-),
-'tags' =>
-array (
-0 =>
-array (
-'name' => 'view',
-),
-),
-'abstract' => false,
-'extends' => 'view.basic',
-'arguments' =>
-array (
-0 => '@handler.diagnostic',
-),
-),
-'view.block.logs' =>
-array (
-'class' => 'PGI\\Module\\BOModule\\Services\\Views\\Blocks\\LogBlockView',
-'shared' => false,
-'calls' =>
-array (
-0 =>
-array (
-'method' => 'setViewHandler',
-'arguments' =>
-array (
-0 => '@handler.view',
-),
-),
-),
-'tags' =>
-array (
-0 =>
-array (
-'name' => 'view',
-),
-),
-'abstract' => false,
-'extends' => 'view.basic',
-'arguments' =>
-array (
-0 => '@pathfinder',
-),
-),
-'view.block.standardized.config_form' =>
-array (
-'class' => 'PGI\\Module\\BOModule\\Services\\Views\\Blocks\\StandardizedConfigurationFormBlockView',
-'shared' => false,
-'calls' =>
-array (
-0 =>
-array (
-'method' => 'setViewHandler',
-'arguments' =>
-array (
-0 => '@handler.view',
-),
-),
-1 =>
-array (
-'method' => 'setFormBuilder',
-'arguments' =>
-array (
-0 => '@builder.form',
-),
-),
 2 =>
-array (
-'method' => 'setSettings',
-'arguments' =>
-array (
-0 => '@settings',
-),
-),
-3 =>
-array (
-'method' => 'setParameters',
-'arguments' =>
-array (
-0 => '@parameters',
-),
-),
-4 =>
 array (
 'method' => 'setLinkHandler',
 'arguments' =>
@@ -2424,15 +2192,228 @@ array (
 ),
 ),
 ),
-'tags' =>
+'extends' => 'action.standardized_save_settings.abstract',
+'class' => 'PGI\\Module\\BOModule\\Services\\Actions\\StandardizedSaveSettingsAction',
+'arguments' =>
+array (
+0 => '@builder.form',
+1 => '@settings',
+),
+'config' =>
+array (
+'form_name' => 'settings_support',
+'redirection' => 'backoffice.support.display',
+),
+),
+'action.home.display' =>
+array (
+'abstract' => false,
+'shared' => false,
+'calls' =>
 array (
 0 =>
 array (
-'name' => 'view',
+'method' => 'setLogger',
+'arguments' =>
+array (
+0 => '@logger',
 ),
 ),
+1 =>
+array (
+'method' => 'setNotifier',
+'arguments' =>
+array (
+0 => '@notifier',
+),
+),
+2 =>
+array (
+'method' => 'setLinkHandler',
+'arguments' =>
+array (
+0 => '@handler.link',
+),
+),
+),
+'extends' => 'action.standardized_display_page.abstract',
+'class' => 'PGI\\Module\\BOModule\\Services\\Actions\\DisplayHomePageAction',
+'arguments' =>
+array (
+0 => '@handler.block',
+),
+'config' =>
+array (
+'page_name' => 'home',
+),
+),
+'action.support.display' =>
+array (
 'abstract' => false,
-'extends' => 'view.basic',
+'shared' => false,
+'calls' =>
+array (
+0 =>
+array (
+'method' => 'setLogger',
+'arguments' =>
+array (
+0 => '@logger',
+),
+),
+1 =>
+array (
+'method' => 'setNotifier',
+'arguments' =>
+array (
+0 => '@notifier',
+),
+),
+2 =>
+array (
+'method' => 'setLinkHandler',
+'arguments' =>
+array (
+0 => '@handler.link',
+),
+),
+),
+'extends' => 'action.standardized_display_page.abstract',
+'class' => 'PGI\\Module\\BOModule\\Services\\Actions\\DisplaySupportPageAction',
+'arguments' =>
+array (
+0 => '@handler.block',
+),
+'config' =>
+array (
+'page_name' => 'support',
+),
+),
+'action.release_note.display' =>
+array (
+'abstract' => false,
+'shared' => false,
+'calls' =>
+array (
+0 =>
+array (
+'method' => 'setLogger',
+'arguments' =>
+array (
+0 => '@logger',
+),
+),
+1 =>
+array (
+'method' => 'setNotifier',
+'arguments' =>
+array (
+0 => '@notifier',
+),
+),
+2 =>
+array (
+'method' => 'setLinkHandler',
+'arguments' =>
+array (
+0 => '@handler.link',
+),
+),
+),
+'extends' => 'action.standardized_display_page.abstract',
+'class' => 'PGI\\Module\\BOModule\\Services\\Actions\\StandardizedDisplayPageAction',
+'arguments' =>
+array (
+0 => '@handler.block',
+),
+'config' =>
+array (
+'page_name' => 'release_note',
+),
+),
+'action.system.display' =>
+array (
+'abstract' => false,
+'shared' => false,
+'calls' =>
+array (
+0 =>
+array (
+'method' => 'setLogger',
+'arguments' =>
+array (
+0 => '@logger',
+),
+),
+1 =>
+array (
+'method' => 'setNotifier',
+'arguments' =>
+array (
+0 => '@notifier',
+),
+),
+2 =>
+array (
+'method' => 'setLinkHandler',
+'arguments' =>
+array (
+0 => '@handler.link',
+),
+),
+),
+'extends' => 'action.standardized_display_page.abstract',
+'class' => 'PGI\\Module\\BOModule\\Services\\Actions\\StandardizedDisplayPageAction',
+'arguments' =>
+array (
+0 => '@handler.block',
+),
+'config' =>
+array (
+'page_name' => 'system',
+),
+),
+'action.products.display' =>
+array (
+'abstract' => false,
+'shared' => false,
+'calls' =>
+array (
+0 =>
+array (
+'method' => 'setLogger',
+'arguments' =>
+array (
+0 => '@logger',
+),
+),
+1 =>
+array (
+'method' => 'setNotifier',
+'arguments' =>
+array (
+0 => '@notifier',
+),
+),
+2 =>
+array (
+'method' => 'setLinkHandler',
+'arguments' =>
+array (
+0 => '@handler.link',
+),
+),
+),
+'extends' => 'action.standardized_display_page.abstract',
+'class' => 'PGI\\Module\\BOModule\\Services\\Actions\\DisplayProductsPageAction',
+'arguments' =>
+array (
+0 => '@handler.block',
+),
+'config' =>
+array (
+'page_name' => 'products',
+),
 ),
 'builder.output.back_office_paygreen' =>
 array (
@@ -2462,43 +2443,6 @@ array (
 0 => '@server.backoffice',
 1 => '@handler.output',
 2 => '@handler.menu',
-),
-),
-'requirement.shop_context' =>
-array (
-'abstract' => false,
-'tags' =>
-array (
-0 =>
-array (
-'name' => 'requirement',
-),
-),
-'class' => 'PGI\\Module\\BOModule\\Services\\Requirements\\ShopContextRequirement',
-'extends' => 'requirement.abstract',
-'arguments' =>
-array (
-0 => '@handler.shop',
-),
-),
-'plugin.smarty.bool' =>
-array (
-'class' => 'PGI\\Module\\BOModule\\Services\\Plugins\\SmartyBoolPlugin',
-'arguments' =>
-array (
-0 => '@translator',
-),
-'tags' =>
-array (
-0 =>
-array (
-'name' => 'plugin.smarty',
-'options' =>
-array (
-0 => 'pgbool',
-1 => 'writeBoolean',
-),
-),
 ),
 ),
 'controller.backoffice.shop' =>
@@ -2919,7 +2863,7 @@ array (
 1 => '@logger',
 ),
 ),
-'action.support_configuration.save' =>
+'controller.backoffice.cache' =>
 array (
 'abstract' => false,
 'shared' => false,
@@ -2949,228 +2893,43 @@ array (
 0 => '@handler.link',
 ),
 ),
+3 =>
+array (
+'method' => 'setSettings',
+'arguments' =>
+array (
+0 => '@settings',
 ),
-'extends' => 'action.standardized_save_settings.abstract',
-'class' => 'PGI\\Module\\BOModule\\Services\\Actions\\StandardizedSaveSettingsAction',
+),
+4 =>
+array (
+'method' => 'setParameters',
+'arguments' =>
+array (
+0 => '@parameters',
+),
+),
+5 =>
+array (
+'method' => 'setFormBuilder',
 'arguments' =>
 array (
 0 => '@builder.form',
-1 => '@settings',
-),
-'config' =>
-array (
-'form_name' => 'settings_support',
-'redirection' => 'backoffice.support.display',
 ),
 ),
-'action.home.display' =>
-array (
-'abstract' => false,
-'shared' => false,
-'calls' =>
+),
+'tags' =>
 array (
 0 =>
 array (
-'method' => 'setLogger',
+'name' => 'controller',
+),
+),
+'extends' => 'controller.abstract',
+'class' => 'PGI\\Module\\BOModule\\Services\\Controllers\\CacheController',
 'arguments' =>
 array (
-0 => '@logger',
-),
-),
-1 =>
-array (
-'method' => 'setNotifier',
-'arguments' =>
-array (
-0 => '@notifier',
-),
-),
-2 =>
-array (
-'method' => 'setLinkHandler',
-'arguments' =>
-array (
-0 => '@handler.link',
-),
-),
-),
-'extends' => 'action.standardized_display_page.abstract',
-'class' => 'PGI\\Module\\BOModule\\Services\\Actions\\DisplayHomePageAction',
-'arguments' =>
-array (
-0 => '@handler.block',
-),
-'config' =>
-array (
-'page_name' => 'home',
-),
-),
-'action.support.display' =>
-array (
-'abstract' => false,
-'shared' => false,
-'calls' =>
-array (
-0 =>
-array (
-'method' => 'setLogger',
-'arguments' =>
-array (
-0 => '@logger',
-),
-),
-1 =>
-array (
-'method' => 'setNotifier',
-'arguments' =>
-array (
-0 => '@notifier',
-),
-),
-2 =>
-array (
-'method' => 'setLinkHandler',
-'arguments' =>
-array (
-0 => '@handler.link',
-),
-),
-),
-'extends' => 'action.standardized_display_page.abstract',
-'class' => 'PGI\\Module\\BOModule\\Services\\Actions\\DisplaySupportPageAction',
-'arguments' =>
-array (
-0 => '@handler.block',
-),
-'config' =>
-array (
-'page_name' => 'support',
-),
-),
-'action.release_note.display' =>
-array (
-'abstract' => false,
-'shared' => false,
-'calls' =>
-array (
-0 =>
-array (
-'method' => 'setLogger',
-'arguments' =>
-array (
-0 => '@logger',
-),
-),
-1 =>
-array (
-'method' => 'setNotifier',
-'arguments' =>
-array (
-0 => '@notifier',
-),
-),
-2 =>
-array (
-'method' => 'setLinkHandler',
-'arguments' =>
-array (
-0 => '@handler.link',
-),
-),
-),
-'extends' => 'action.standardized_display_page.abstract',
-'class' => 'PGI\\Module\\BOModule\\Services\\Actions\\StandardizedDisplayPageAction',
-'arguments' =>
-array (
-0 => '@handler.block',
-),
-'config' =>
-array (
-'page_name' => 'release_note',
-),
-),
-'action.system.display' =>
-array (
-'abstract' => false,
-'shared' => false,
-'calls' =>
-array (
-0 =>
-array (
-'method' => 'setLogger',
-'arguments' =>
-array (
-0 => '@logger',
-),
-),
-1 =>
-array (
-'method' => 'setNotifier',
-'arguments' =>
-array (
-0 => '@notifier',
-),
-),
-2 =>
-array (
-'method' => 'setLinkHandler',
-'arguments' =>
-array (
-0 => '@handler.link',
-),
-),
-),
-'extends' => 'action.standardized_display_page.abstract',
-'class' => 'PGI\\Module\\BOModule\\Services\\Actions\\StandardizedDisplayPageAction',
-'arguments' =>
-array (
-0 => '@handler.block',
-),
-'config' =>
-array (
-'page_name' => 'system',
-),
-),
-'action.products.display' =>
-array (
-'abstract' => false,
-'shared' => false,
-'calls' =>
-array (
-0 =>
-array (
-'method' => 'setLogger',
-'arguments' =>
-array (
-0 => '@logger',
-),
-),
-1 =>
-array (
-'method' => 'setNotifier',
-'arguments' =>
-array (
-0 => '@notifier',
-),
-),
-2 =>
-array (
-'method' => 'setLinkHandler',
-'arguments' =>
-array (
-0 => '@handler.link',
-),
-),
-),
-'extends' => 'action.standardized_display_page.abstract',
-'class' => 'PGI\\Module\\BOModule\\Services\\Actions\\DisplayProductsPageAction',
-'arguments' =>
-array (
-0 => '@handler.block',
-),
-'config' =>
-array (
-'page_name' => 'products',
+0 => '@handler.cache',
 ),
 ),
 'handler.menu' =>
@@ -3181,6 +2940,130 @@ array (
 0 => '@handler.route',
 1 => '@handler.link',
 2 => '%menu',
+),
+),
+'plugin.smarty.bool' =>
+array (
+'class' => 'PGI\\Module\\BOModule\\Services\\Plugins\\SmartyBoolPlugin',
+'arguments' =>
+array (
+0 => '@translator',
+),
+'tags' =>
+array (
+0 =>
+array (
+'name' => 'plugin.smarty',
+'options' =>
+array (
+0 => 'pgbool',
+1 => 'writeBoolean',
+),
+),
+),
+),
+'deflector.filter.shop_context' =>
+array (
+'abstract' => false,
+'calls' =>
+array (
+0 =>
+array (
+'method' => 'setNotifier',
+'arguments' =>
+array (
+0 => '@notifier',
+),
+),
+1 =>
+array (
+'method' => 'setLogger',
+'arguments' =>
+array (
+0 => '@logger',
+),
+),
+2 =>
+array (
+'method' => 'setLinkHandler',
+'arguments' =>
+array (
+0 => '@handler.link',
+),
+),
+),
+'tags' =>
+array (
+0 =>
+array (
+'name' => 'deflector',
+),
+),
+'extends' => 'deflector.abstract',
+'class' => 'PGI\\Module\\BOModule\\Services\\Deflectors\\ShopContext',
+'arguments' =>
+array (
+0 => '@handler.route',
+),
+),
+'requirement.shop_context' =>
+array (
+'abstract' => false,
+'tags' =>
+array (
+0 =>
+array (
+'name' => 'requirement',
+),
+),
+'class' => 'PGI\\Module\\BOModule\\Services\\Requirements\\ShopContextRequirement',
+'extends' => 'requirement.abstract',
+'arguments' =>
+array (
+0 => '@handler.shop',
+),
+),
+'builder.request.backoffice' =>
+array (
+'class' => 'PGI\\Module\\PGServer\\Services\\Builders\\RequestBuilder',
+'arguments' =>
+array (
+0 => '@superglobal.get',
+1 => '@superglobal.post',
+2 => '%request_builder.backoffice',
+),
+),
+'server.backoffice' =>
+array (
+'abstract' => false,
+'class' => 'PGI\\Module\\PGServer\\Services\\Server',
+'arguments' =>
+array (
+0 => '@router',
+1 => '@derouter',
+2 => '@dispatcher',
+3 => '@logger',
+4 => '@factory.stage',
+5 => '%servers.backoffice',
+),
+'extends' => 'server.abstract',
+),
+'cleaner.forward.message_page' =>
+array (
+'class' => 'PGI\\Module\\PGServer\\Services\\Cleaners\\ForwardCleaner',
+'arguments' =>
+array (
+0 => 'displayException@backoffice.error',
+),
+),
+'builder.translation_form' =>
+array (
+'class' => 'PGI\\Module\\PGIntl\\Services\\Builders\\TranslationFormBuilder',
+'arguments' =>
+array (
+0 => '@builder.form',
+1 => '@builder.field',
+2 => '%translations',
 ),
 ),
 'listener.action.shop_context_backoffice' =>
@@ -3201,30 +3084,209 @@ array (
 1 => '@handler.shop',
 ),
 ),
-'builder.request.frontoffice' =>
+'view.menu' =>
 array (
-'class' => 'PGI\\Module\\FOPayment\\Services\\Builders\\IncomingRequestBuilder',
+'class' => 'PGI\\Module\\BOModule\\Services\\Views\\MenuView',
+'shared' => false,
+'calls' =>
+array (
+0 =>
+array (
+'method' => 'setViewHandler',
 'arguments' =>
 array (
-0 => '@superglobal.get',
-1 => '@superglobal.post',
-2 => '%request_builder.frontoffice',
+0 => '@handler.view',
 ),
 ),
-'server.front' =>
+),
+'tags' =>
 array (
+0 =>
+array (
+'name' => 'view',
+),
+),
 'abstract' => false,
-'class' => 'PGI\\Module\\PGServer\\Services\\Server',
+'extends' => 'view.basic',
 'arguments' =>
 array (
-0 => '@router',
-1 => '@derouter',
-2 => '@dispatcher',
-3 => '@logger',
-4 => '@factory.stage',
-5 => '%servers.front',
+0 => '@handler.menu',
+1 => '@manager.shop',
+2 => '@handler.shop',
 ),
-'extends' => 'server.abstract',
+),
+'view.notifications' =>
+array (
+'class' => 'PGI\\Module\\BOModule\\Services\\Views\\NotificationsView',
+'shared' => false,
+'calls' =>
+array (
+0 =>
+array (
+'method' => 'setViewHandler',
+'arguments' =>
+array (
+0 => '@handler.view',
+),
+),
+),
+'tags' =>
+array (
+0 =>
+array (
+'name' => 'view',
+),
+),
+'abstract' => false,
+'extends' => 'view.basic',
+'arguments' =>
+array (
+0 => '@notifier',
+),
+),
+'view.system.paths' =>
+array (
+'class' => 'PGI\\Module\\BOModule\\Services\\Views\\SystemPathsView',
+'shared' => false,
+'calls' =>
+array (
+0 =>
+array (
+'method' => 'setViewHandler',
+'arguments' =>
+array (
+0 => '@handler.view',
+),
+),
+),
+'tags' =>
+array (
+0 =>
+array (
+'name' => 'view',
+),
+),
+'abstract' => false,
+'extends' => 'view.basic',
+'arguments' =>
+array (
+0 => '@pathfinder',
+),
+),
+'view.block.diagnostics' =>
+array (
+'class' => 'PGI\\Module\\BOModule\\Services\\Views\\Blocks\\DiagnosticBlockView',
+'shared' => false,
+'calls' =>
+array (
+0 =>
+array (
+'method' => 'setViewHandler',
+'arguments' =>
+array (
+0 => '@handler.view',
+),
+),
+),
+'tags' =>
+array (
+0 =>
+array (
+'name' => 'view',
+),
+),
+'abstract' => false,
+'extends' => 'view.basic',
+'arguments' =>
+array (
+0 => '@handler.diagnostic',
+),
+),
+'view.block.logs' =>
+array (
+'class' => 'PGI\\Module\\BOModule\\Services\\Views\\Blocks\\LogBlockView',
+'shared' => false,
+'calls' =>
+array (
+0 =>
+array (
+'method' => 'setViewHandler',
+'arguments' =>
+array (
+0 => '@handler.view',
+),
+),
+),
+'tags' =>
+array (
+0 =>
+array (
+'name' => 'view',
+),
+),
+'abstract' => false,
+'extends' => 'view.basic',
+'arguments' =>
+array (
+0 => '@pathfinder',
+),
+),
+'view.block.standardized.config_form' =>
+array (
+'class' => 'PGI\\Module\\BOModule\\Services\\Views\\Blocks\\StandardizedConfigurationFormBlockView',
+'shared' => false,
+'calls' =>
+array (
+0 =>
+array (
+'method' => 'setViewHandler',
+'arguments' =>
+array (
+0 => '@handler.view',
+),
+),
+1 =>
+array (
+'method' => 'setFormBuilder',
+'arguments' =>
+array (
+0 => '@builder.form',
+),
+),
+2 =>
+array (
+'method' => 'setSettings',
+'arguments' =>
+array (
+0 => '@settings',
+),
+),
+3 =>
+array (
+'method' => 'setParameters',
+'arguments' =>
+array (
+0 => '@parameters',
+),
+),
+4 =>
+array (
+'method' => 'setLinkHandler',
+'arguments' =>
+array (
+0 => '@handler.link',
+),
+),
+),
+'tags' =>
+array (
+0 =>
+array (
+'name' => 'view',
+),
+),
+'abstract' => false,
+'extends' => 'view.basic',
 ),
 'builder.output.front_office_paygreen' =>
 array (
@@ -3320,77 +3382,30 @@ array (
 'extends' => 'controller.abstract',
 'class' => 'PGI\\Module\\FOModule\\Services\\Controllers\\NotificationController',
 ),
-'repository.button' =>
+'builder.request.frontoffice' =>
 array (
-'abstract' => false,
+'class' => 'PGI\\Module\\FOPayment\\Services\\Builders\\IncomingRequestBuilder',
 'arguments' =>
 array (
-0 => '@handler.database',
-1 => '@handler.shop',
-2 => '%database.entities.button',
+0 => '@superglobal.get',
+1 => '@superglobal.post',
+2 => '%request_builder.frontoffice',
 ),
-'extends' => 'repository.abstract',
-'class' => 'PGI\\Module\\PGPayment\\Services\\Repositories\\ButtonRepository',
 ),
-'repository.payment_type' =>
-array (
-'class' => 'PGI\\Module\\PGPayment\\Services\\Repositories\\PaymentTypeRepository',
-),
-'repository.lock' =>
+'server.front' =>
 array (
 'abstract' => false,
+'class' => 'PGI\\Module\\PGServer\\Services\\Server',
 'arguments' =>
 array (
-0 => '@handler.database',
-1 => '%database.entities.lock',
+0 => '@router',
+1 => '@derouter',
+2 => '@dispatcher',
+3 => '@logger',
+4 => '@factory.stage',
+5 => '%servers.front',
 ),
-'extends' => 'repository.abstract',
-'class' => 'PGI\\Module\\PGPayment\\Services\\Repositories\\LockRepository',
-),
-'repository.category_has_payment_type' =>
-array (
-'abstract' => false,
-'arguments' =>
-array (
-0 => '@handler.database',
-1 => '@handler.shop',
-2 => '%database.entities.category_has_payment',
-),
-'extends' => 'repository.abstract',
-'class' => 'PGI\\Module\\PGPayment\\Services\\Repositories\\CategoryHasPaymentTypeRepository',
-),
-'repository.transaction' =>
-array (
-'abstract' => false,
-'arguments' =>
-array (
-0 => '@handler.database',
-1 => '%database.entities.transaction',
-),
-'extends' => 'repository.abstract',
-'class' => 'PGI\\Module\\PGPayment\\Services\\Repositories\\TransactionRepository',
-),
-'repository.recurring_transaction' =>
-array (
-'abstract' => false,
-'arguments' =>
-array (
-0 => '@handler.database',
-1 => '%database.entities.recurring_transaction',
-),
-'extends' => 'repository.abstract',
-'class' => 'PGI\\Module\\PGPayment\\Services\\Repositories\\RecurringTransactionRepository',
-),
-'repository.processing' =>
-array (
-'abstract' => false,
-'arguments' =>
-array (
-0 => '@handler.database',
-1 => '%database.entities.processing',
-),
-'extends' => 'repository.abstract',
-'class' => 'PGI\\Module\\PGPayment\\Services\\Repositories\\ProcessingRepository',
+'extends' => 'server.abstract',
 ),
 'manager.button' =>
 array (
@@ -3448,59 +3463,173 @@ array (
 0 => '@repository.processing',
 ),
 ),
-'paygreen.facade' =>
+'handler.payment_creation' =>
 array (
-'class' => 'PGI\\Module\\PGPayment\\Services\\Facades\\PaygreenFacade',
+'class' => 'PGI\\Module\\PGPayment\\Services\\Handlers\\PaymentCreationHandler',
 'arguments' =>
 array (
-0 => '@api.factory',
-1 => '@handler.http',
+0 => '%payment',
 ),
 ),
-'responsability_chain.payment_creation' =>
+'handler.payment_testing' =>
 array (
-'class' => 'PGI\\Module\\PGPayment\\Services\\ResponsabilityChains\\PaymentCreationResponsabilityChain',
-'catch' =>
+'class' => 'PGI\\Module\\PGPayment\\Services\\Handlers\\TestingPaymentHandler',
+'arguments' =>
 array (
-'tag' => 'payment_creation_chain_link',
-'method' => 'addChainLink',
-'built' => true,
+0 => '@logger',
+1 => '@logger.api',
+2 => '@pathfinder',
 ),
 ),
-'upgrade.media_delete' =>
+'handler.payment_button' =>
 array (
-'abstract' => false,
+'class' => 'PGI\\Module\\PGPayment\\Services\\Handlers\\PaymentButtonHandler',
+'arguments' =>
+array (
+0 => '@logger',
+1 => '@handler.picture',
+2 => '@handler.static_file',
+3 => '%payment.pictures',
+),
+),
+'handler.refund' =>
+array (
+'class' => 'PGI\\Module\\PGPayment\\Services\\Handlers\\RefundHandler',
+'arguments' =>
+array (
+0 => '@paygreen.facade',
+1 => '@logger',
+),
+'calls' =>
+array (
+0 =>
+array (
+'method' => 'setOrderManager',
+'arguments' =>
+array (
+0 => '@manager.order',
+),
+),
+1 =>
+array (
+'method' => 'setTransactionManager',
+'arguments' =>
+array (
+0 => '@manager.transaction',
+),
+),
+),
+),
+'handler.checkout' =>
+array (
+'class' => 'PGI\\Module\\PGPayment\\Services\\Handlers\\CheckoutHandler',
+'arguments' =>
+array (
+0 => '@handler.requirement',
+1 => '@logger',
+),
+'calls' =>
+array (
+0 =>
+array (
+'method' => 'setPaygreenFacade',
+'arguments' =>
+array (
+0 => '@paygreen.facade',
+),
+),
+1 =>
+array (
+'method' => 'setModuleFacade',
+'arguments' =>
+array (
+0 => '@facade.module',
+),
+),
+2 =>
+array (
+'method' => 'setButtonManager',
+'arguments' =>
+array (
+0 => '@manager.button',
+),
+),
+),
+),
+'handler.tokenize' =>
+array (
+'class' => 'PGI\\Module\\PGPayment\\Services\\Handlers\\TokenizeHandler',
+'arguments' =>
+array (
+0 => '@broadcaster',
+1 => '@logger',
+),
+'calls' =>
+array (
+0 =>
+array (
+'method' => 'setBehaviorHandler',
+'arguments' =>
+array (
+0 => '@handler.behavior',
+),
+),
+1 =>
+array (
+'method' => 'setPaygreenFacade',
+'arguments' =>
+array (
+0 => '@paygreen.facade',
+),
+),
+2 =>
+array (
+'method' => 'setTransactionManager',
+'arguments' =>
+array (
+0 => '@manager.transaction',
+),
+),
+),
+),
+'handler.processing' =>
+array (
+'class' => 'PGI\\Module\\PGPayment\\Services\\Handlers\\ProcessingHandler',
+'arguments' =>
+array (
+0 => '@manager.processing',
+1 => '@handler.shop',
+2 => '@logger',
+),
+),
+'plugin.smarty.designator' =>
+array (
+'class' => 'PGI\\Module\\PGPayment\\Services\\Plugins\\SmartyDesignatorPlugin',
+'arguments' =>
+array (
+0 => '@selector.payment_mode',
+1 => '@selector.payment_type',
+),
 'tags' =>
 array (
 0 =>
 array (
-'name' => 'upgrade',
-),
-),
-'class' => 'PGI\\Module\\PGFramework\\Services\\Upgrades\\MediaDeleteUpgrade',
-'extends' => 'upgrade.abstract',
-'arguments' =>
+'name' => 'plugin.smarty',
+'options' =>
 array (
-0 => '@handler.picture',
+0 => 'modename',
+1 => 'resolvePaymentModeName',
 ),
 ),
-'upgrade.insite_payment' =>
+1 =>
 array (
-'abstract' => false,
-'tags' =>
+'name' => 'plugin.smarty',
+'options' =>
 array (
-0 =>
-array (
-'name' => 'upgrade',
+0 => 'typename',
+1 => 'resolvePaymentTypeName',
 ),
 ),
-'class' => 'PGI\\Module\\PGPayment\\Services\\Upgrades\\InsitePaymentUpgrade',
-'extends' => 'upgrade.abstract',
-'arguments' =>
-array (
-0 => '@handler.database',
-1 => '@manager.shop',
-2 => '@manager.setting',
 ),
 ),
 'requirement.paygreen_connexion' =>
@@ -3572,6 +3701,54 @@ array (
 0 => '@settings',
 1 => '@facade.module',
 2 => '@paygreen.facade',
+),
+),
+'paygreen.facade' =>
+array (
+'class' => 'PGI\\Module\\PGPayment\\Services\\Facades\\PaygreenFacade',
+'arguments' =>
+array (
+0 => '@api.factory',
+1 => '@handler.http',
+),
+),
+'responsability_chain.payment_creation' =>
+array (
+'class' => 'PGI\\Module\\PGPayment\\Services\\ResponsabilityChains\\PaymentCreationResponsabilityChain',
+'catch' =>
+array (
+'tag' => 'payment_creation_chain_link',
+'method' => 'addChainLink',
+'built' => true,
+),
+),
+'listener.setup.install_default_button' =>
+array (
+'class' => 'PGI\\Module\\PGPayment\\Services\\Listeners\\InstallDefaultButtonListener',
+'arguments' =>
+array (
+0 => '@manager.button',
+1 => '@manager.translation',
+2 => '@logger',
+),
+),
+'listener.refund.update_transaction' =>
+array (
+'class' => 'PGI\\Module\\PGPayment\\Services\\Listeners\\RefundListener',
+'arguments' =>
+array (
+0 => '@handler.refund',
+1 => '@handler.behavior',
+2 => '@logger',
+),
+),
+'listener.setup.processing_database' =>
+array (
+'class' => 'PGI\\Module\\PGPayment\\Services\\Listeners\\SetupProcessingDatabaseListener',
+'arguments' =>
+array (
+0 => '@handler.database',
+1 => '@logger',
 ),
 ),
 'chain_links.payment_creation.add_customer_entrypoint' =>
@@ -3787,36 +3964,6 @@ array (
 'extends' => 'chain_links.payment_creation.abstract',
 'class' => 'PGI\\Module\\PGPayment\\Services\\ChainLinks\\AddRecurringDataChainLink',
 ),
-'plugin.smarty.designator' =>
-array (
-'class' => 'PGI\\Module\\PGPayment\\Services\\Plugins\\SmartyDesignatorPlugin',
-'arguments' =>
-array (
-0 => '@selector.payment_mode',
-1 => '@selector.payment_type',
-),
-'tags' =>
-array (
-0 =>
-array (
-'name' => 'plugin.smarty',
-'options' =>
-array (
-0 => 'modename',
-1 => 'resolvePaymentModeName',
-),
-),
-1 =>
-array (
-'name' => 'plugin.smarty',
-'options' =>
-array (
-0 => 'typename',
-1 => 'resolvePaymentTypeName',
-),
-),
-),
-),
 'processor.payment_validation' =>
 array (
 'abstract' => false,
@@ -3945,6 +4092,114 @@ array (
 ),
 'extends' => 'processor.transaction_management.abstract',
 'class' => 'PGI\\Module\\PGPayment\\Services\\Processors\\ManageXTimeTransactionProcessor',
+),
+'upgrade.media_delete' =>
+array (
+'abstract' => false,
+'tags' =>
+array (
+0 =>
+array (
+'name' => 'upgrade',
+),
+),
+'class' => 'PGI\\Module\\PGFramework\\Services\\Upgrades\\MediaDeleteUpgrade',
+'extends' => 'upgrade.abstract',
+'arguments' =>
+array (
+0 => '@handler.picture',
+),
+),
+'upgrade.insite_payment' =>
+array (
+'abstract' => false,
+'tags' =>
+array (
+0 =>
+array (
+'name' => 'upgrade',
+),
+),
+'class' => 'PGI\\Module\\PGPayment\\Services\\Upgrades\\InsitePaymentUpgrade',
+'extends' => 'upgrade.abstract',
+'arguments' =>
+array (
+0 => '@handler.database',
+1 => '@manager.shop',
+2 => '@manager.setting',
+),
+),
+'repository.button' =>
+array (
+'abstract' => false,
+'arguments' =>
+array (
+0 => '@handler.database',
+1 => '@handler.shop',
+2 => '%database.entities.button',
+),
+'extends' => 'repository.abstract',
+'class' => 'PGI\\Module\\PGPayment\\Services\\Repositories\\ButtonRepository',
+),
+'repository.payment_type' =>
+array (
+'class' => 'PGI\\Module\\PGPayment\\Services\\Repositories\\PaymentTypeRepository',
+),
+'repository.lock' =>
+array (
+'abstract' => false,
+'arguments' =>
+array (
+0 => '@handler.database',
+1 => '%database.entities.lock',
+),
+'extends' => 'repository.abstract',
+'class' => 'PGI\\Module\\PGPayment\\Services\\Repositories\\LockRepository',
+),
+'repository.category_has_payment_type' =>
+array (
+'abstract' => false,
+'arguments' =>
+array (
+0 => '@handler.database',
+1 => '@handler.shop',
+2 => '%database.entities.category_has_payment',
+),
+'extends' => 'repository.abstract',
+'class' => 'PGI\\Module\\PGPayment\\Services\\Repositories\\CategoryHasPaymentTypeRepository',
+),
+'repository.transaction' =>
+array (
+'abstract' => false,
+'arguments' =>
+array (
+0 => '@handler.database',
+1 => '%database.entities.transaction',
+),
+'extends' => 'repository.abstract',
+'class' => 'PGI\\Module\\PGPayment\\Services\\Repositories\\TransactionRepository',
+),
+'repository.recurring_transaction' =>
+array (
+'abstract' => false,
+'arguments' =>
+array (
+0 => '@handler.database',
+1 => '%database.entities.recurring_transaction',
+),
+'extends' => 'repository.abstract',
+'class' => 'PGI\\Module\\PGPayment\\Services\\Repositories\\RecurringTransactionRepository',
+),
+'repository.processing' =>
+array (
+'abstract' => false,
+'arguments' =>
+array (
+0 => '@handler.database',
+1 => '%database.entities.processing',
+),
+'extends' => 'repository.abstract',
+'class' => 'PGI\\Module\\PGPayment\\Services\\Repositories\\ProcessingRepository',
 ),
 'selector.payment_mode' =>
 array (
@@ -4105,172 +4360,16 @@ array (
 'extends' => 'selector.abstract',
 'class' => 'PGI\\Module\\PGFramework\\Services\\Selectors\\StaticArraySelector',
 ),
-'handler.payment_creation' =>
+'handler.oauth' =>
 array (
-'class' => 'PGI\\Module\\PGPayment\\Services\\Handlers\\PaymentCreationHandler',
+'class' => 'PGI\\Module\\APIPayment\\Services\\Handlers\\OAuthHandler',
 'arguments' =>
 array (
-0 => '%payment',
-),
-),
-'handler.payment_testing' =>
-array (
-'class' => 'PGI\\Module\\PGPayment\\Services\\Handlers\\TestingPaymentHandler',
-'arguments' =>
-array (
-0 => '@logger',
-1 => '@logger.api',
+0 => '@paygreen.facade',
+1 => '@settings',
 2 => '@pathfinder',
-),
-),
-'handler.payment_button' =>
-array (
-'class' => 'PGI\\Module\\PGPayment\\Services\\Handlers\\PaymentButtonHandler',
-'arguments' =>
-array (
-0 => '@logger',
-1 => '@handler.picture',
-2 => '@handler.static_file',
-3 => '%payment.pictures',
-),
-),
-'handler.refund' =>
-array (
-'class' => 'PGI\\Module\\PGPayment\\Services\\Handlers\\RefundHandler',
-'arguments' =>
-array (
-0 => '@paygreen.facade',
-1 => '@logger',
-),
-'calls' =>
-array (
-0 =>
-array (
-'method' => 'setOrderManager',
-'arguments' =>
-array (
-0 => '@manager.order',
-),
-),
-1 =>
-array (
-'method' => 'setTransactionManager',
-'arguments' =>
-array (
-0 => '@manager.transaction',
-),
-),
-),
-),
-'handler.checkout' =>
-array (
-'class' => 'PGI\\Module\\PGPayment\\Services\\Handlers\\CheckoutHandler',
-'arguments' =>
-array (
-0 => '@handler.requirement',
-1 => '@logger',
-),
-'calls' =>
-array (
-0 =>
-array (
-'method' => 'setPaygreenFacade',
-'arguments' =>
-array (
-0 => '@paygreen.facade',
-),
-),
-1 =>
-array (
-'method' => 'setModuleFacade',
-'arguments' =>
-array (
-0 => '@facade.module',
-),
-),
-2 =>
-array (
-'method' => 'setButtonManager',
-'arguments' =>
-array (
-0 => '@manager.button',
-),
-),
-),
-),
-'handler.tokenize' =>
-array (
-'class' => 'PGI\\Module\\PGPayment\\Services\\Handlers\\TokenizeHandler',
-'arguments' =>
-array (
-0 => '@broadcaster',
-1 => '@logger',
-),
-'calls' =>
-array (
-0 =>
-array (
-'method' => 'setBehaviorHandler',
-'arguments' =>
-array (
-0 => '@handler.behavior',
-),
-),
-1 =>
-array (
-'method' => 'setPaygreenFacade',
-'arguments' =>
-array (
-0 => '@paygreen.facade',
-),
-),
-2 =>
-array (
-'method' => 'setTransactionManager',
-'arguments' =>
-array (
-0 => '@manager.transaction',
-),
-),
-),
-),
-'handler.processing' =>
-array (
-'class' => 'PGI\\Module\\PGPayment\\Services\\Handlers\\ProcessingHandler',
-'arguments' =>
-array (
-0 => '@manager.processing',
-1 => '@handler.shop',
-2 => '@logger',
-),
-),
-'listener.setup.install_default_button' =>
-array (
-'class' => 'PGI\\Module\\PGPayment\\Services\\Listeners\\InstallDefaultButtonListener',
-'arguments' =>
-array (
-0 => '@manager.button',
-1 => '@manager.translation',
-2 => '@logger',
-),
-),
-'listener.refund.update_transaction' =>
-array (
-'class' => 'PGI\\Module\\PGPayment\\Services\\Listeners\\RefundListener',
-'arguments' =>
-array (
-0 => '@handler.refund',
-1 => '@handler.behavior',
-2 => '@logger',
-),
-),
-'listener.setup.processing_database' =>
-array (
-'class' => 'PGI\\Module\\PGPayment\\Services\\Listeners\\SetupProcessingDatabaseListener',
-'arguments' =>
-array (
-0 => '@handler.database',
-1 => '@logger',
+3 => '@handler.shop',
+4 => '@handler.link',
 ),
 ),
 'api.factory' =>
@@ -4306,526 +4405,12 @@ array (
 ),
 ),
 ),
-'handler.oauth' =>
-array (
-'class' => 'PGI\\Module\\APIPayment\\Services\\Handlers\\OAuthHandler',
-'arguments' =>
-array (
-0 => '@paygreen.facade',
-1 => '@settings',
-2 => '@pathfinder',
-3 => '@handler.shop',
-4 => '@handler.link',
-),
-),
 'listener.setup.payment_client_compatibility_checker' =>
 array (
 'class' => 'PGI\\Module\\APIPayment\\Services\\Listeners\\InstallCompatibilityCheckListener',
 'arguments' =>
 array (
 0 => '@paygreen.facade',
-),
-),
-'deflector.filter.paygreen_connexion' =>
-array (
-'abstract' => false,
-'calls' =>
-array (
-0 =>
-array (
-'method' => 'setNotifier',
-'arguments' =>
-array (
-0 => '@notifier',
-),
-),
-1 =>
-array (
-'method' => 'setLogger',
-'arguments' =>
-array (
-0 => '@logger',
-),
-),
-2 =>
-array (
-'method' => 'setLinkHandler',
-'arguments' =>
-array (
-0 => '@handler.link',
-),
-),
-),
-'tags' =>
-array (
-0 =>
-array (
-'name' => 'deflector',
-),
-),
-'extends' => 'deflector.abstract',
-'class' => 'PGI\\Module\\BOPayment\\Services\\Deflectors\\PaygreenConnexionDeflector',
-'arguments' =>
-array (
-0 => '@handler.route',
-),
-),
-'view.button.line' =>
-array (
-'class' => 'PGI\\Module\\BOPayment\\Services\\Views\\ButtonLineView',
-'shared' => false,
-'calls' =>
-array (
-0 =>
-array (
-'method' => 'setViewHandler',
-'arguments' =>
-array (
-0 => '@handler.view',
-),
-),
-),
-'tags' =>
-array (
-0 =>
-array (
-'name' => 'view',
-),
-),
-'abstract' => false,
-'extends' => 'view.basic',
-'arguments' =>
-array (
-0 => '@manager.button',
-1 => '@handler.payment_button',
-),
-),
-'controller.backoffice.account' =>
-array (
-'abstract' => false,
-'shared' => false,
-'calls' =>
-array (
-0 =>
-array (
-'method' => 'setLogger',
-'arguments' =>
-array (
-0 => '@logger',
-),
-),
-1 =>
-array (
-'method' => 'setNotifier',
-'arguments' =>
-array (
-0 => '@notifier',
-),
-),
-2 =>
-array (
-'method' => 'setLinkHandler',
-'arguments' =>
-array (
-0 => '@handler.link',
-),
-),
-3 =>
-array (
-'method' => 'setSettings',
-'arguments' =>
-array (
-0 => '@settings',
-),
-),
-4 =>
-array (
-'method' => 'setParameters',
-'arguments' =>
-array (
-0 => '@parameters',
-),
-),
-5 =>
-array (
-'method' => 'setFormBuilder',
-'arguments' =>
-array (
-0 => '@builder.form',
-),
-),
-),
-'tags' =>
-array (
-0 =>
-array (
-'name' => 'controller',
-),
-),
-'extends' => 'controller.abstract',
-'class' => 'PGI\\Module\\BOPayment\\Services\\Controllers\\AccountController',
-'arguments' =>
-array (
-0 => '@paygreen.facade',
-1 => '@handler.cache',
-),
-),
-'controller.backoffice.oauth' =>
-array (
-'abstract' => false,
-'shared' => false,
-'calls' =>
-array (
-0 =>
-array (
-'method' => 'setLogger',
-'arguments' =>
-array (
-0 => '@logger',
-),
-),
-1 =>
-array (
-'method' => 'setNotifier',
-'arguments' =>
-array (
-0 => '@notifier',
-),
-),
-2 =>
-array (
-'method' => 'setLinkHandler',
-'arguments' =>
-array (
-0 => '@handler.link',
-),
-),
-3 =>
-array (
-'method' => 'setSettings',
-'arguments' =>
-array (
-0 => '@settings',
-),
-),
-4 =>
-array (
-'method' => 'setParameters',
-'arguments' =>
-array (
-0 => '@parameters',
-),
-),
-5 =>
-array (
-'method' => 'setFormBuilder',
-'arguments' =>
-array (
-0 => '@builder.form',
-),
-),
-),
-'tags' =>
-array (
-0 =>
-array (
-'name' => 'controller',
-),
-),
-'extends' => 'controller.abstract',
-'class' => 'PGI\\Module\\BOPayment\\Services\\Controllers\\OAuthController',
-'arguments' =>
-array (
-0 => '@handler.oauth',
-1 => '@superglobal.get',
-),
-),
-'controller.backoffice.eligible_amounts' =>
-array (
-'abstract' => false,
-'shared' => false,
-'calls' =>
-array (
-0 =>
-array (
-'method' => 'setLogger',
-'arguments' =>
-array (
-0 => '@logger',
-),
-),
-1 =>
-array (
-'method' => 'setNotifier',
-'arguments' =>
-array (
-0 => '@notifier',
-),
-),
-2 =>
-array (
-'method' => 'setLinkHandler',
-'arguments' =>
-array (
-0 => '@handler.link',
-),
-),
-3 =>
-array (
-'method' => 'setSettings',
-'arguments' =>
-array (
-0 => '@settings',
-),
-),
-4 =>
-array (
-'method' => 'setParameters',
-'arguments' =>
-array (
-0 => '@parameters',
-),
-),
-5 =>
-array (
-'method' => 'setFormBuilder',
-'arguments' =>
-array (
-0 => '@builder.form',
-),
-),
-),
-'tags' =>
-array (
-0 =>
-array (
-'name' => 'controller',
-),
-),
-'extends' => 'controller.abstract',
-'class' => 'PGI\\Module\\BOPayment\\Services\\Controllers\\EligibleAmountsController',
-'arguments' =>
-array (
-0 => '@manager.category_has_payment_type',
-1 => '@manager.category',
-),
-),
-'controller.backoffice.buttons' =>
-array (
-'abstract' => false,
-'shared' => false,
-'calls' =>
-array (
-0 =>
-array (
-'method' => 'setLogger',
-'arguments' =>
-array (
-0 => '@logger',
-),
-),
-1 =>
-array (
-'method' => 'setNotifier',
-'arguments' =>
-array (
-0 => '@notifier',
-),
-),
-2 =>
-array (
-'method' => 'setLinkHandler',
-'arguments' =>
-array (
-0 => '@handler.link',
-),
-),
-3 =>
-array (
-'method' => 'setSettings',
-'arguments' =>
-array (
-0 => '@settings',
-),
-),
-4 =>
-array (
-'method' => 'setParameters',
-'arguments' =>
-array (
-0 => '@parameters',
-),
-),
-5 =>
-array (
-'method' => 'setFormBuilder',
-'arguments' =>
-array (
-0 => '@builder.form',
-),
-),
-),
-'tags' =>
-array (
-0 =>
-array (
-'name' => 'controller',
-),
-),
-'extends' => 'controller.abstract',
-'class' => 'PGI\\Module\\BOPayment\\Services\\Controllers\\ButtonsController',
-'arguments' =>
-array (
-0 => '@manager.button',
-1 => '@handler.payment_button',
-2 => '@handler.picture',
-3 => '@manager.translation',
-4 => '@handler.upload',
-5 => '@handler.static_file',
-6 => '@handler.link',
-7 => '@manager.payment_type',
-),
-),
-'controller.backoffice.payment' =>
-array (
-'abstract' => false,
-'shared' => false,
-'calls' =>
-array (
-0 =>
-array (
-'method' => 'setLogger',
-'arguments' =>
-array (
-0 => '@logger',
-),
-),
-1 =>
-array (
-'method' => 'setNotifier',
-'arguments' =>
-array (
-0 => '@notifier',
-),
-),
-2 =>
-array (
-'method' => 'setLinkHandler',
-'arguments' =>
-array (
-0 => '@handler.link',
-),
-),
-3 =>
-array (
-'method' => 'setSettings',
-'arguments' =>
-array (
-0 => '@settings',
-),
-),
-4 =>
-array (
-'method' => 'setParameters',
-'arguments' =>
-array (
-0 => '@parameters',
-),
-),
-5 =>
-array (
-'method' => 'setFormBuilder',
-'arguments' =>
-array (
-0 => '@builder.form',
-),
-),
-),
-'tags' =>
-array (
-0 =>
-array (
-'name' => 'controller',
-),
-),
-'extends' => 'controller.abstract',
-'class' => 'PGI\\Module\\BOPayment\\Services\\Controllers\\PluginController',
-'arguments' =>
-array (
-0 => '@paygreen.facade',
-1 => '@handler.cache',
-2 => '@manager.transaction',
-),
-),
-'controller.backoffice.payment_translations' =>
-array (
-'abstract' => false,
-'shared' => false,
-'calls' =>
-array (
-0 =>
-array (
-'method' => 'setLogger',
-'arguments' =>
-array (
-0 => '@logger',
-),
-),
-1 =>
-array (
-'method' => 'setNotifier',
-'arguments' =>
-array (
-0 => '@notifier',
-),
-),
-2 =>
-array (
-'method' => 'setLinkHandler',
-'arguments' =>
-array (
-0 => '@handler.link',
-),
-),
-3 =>
-array (
-'method' => 'setSettings',
-'arguments' =>
-array (
-0 => '@settings',
-),
-),
-4 =>
-array (
-'method' => 'setParameters',
-'arguments' =>
-array (
-0 => '@parameters',
-),
-),
-5 =>
-array (
-'method' => 'setFormBuilder',
-'arguments' =>
-array (
-0 => '@builder.form',
-),
-),
-),
-'tags' =>
-array (
-0 =>
-array (
-'name' => 'controller',
-),
-),
-'extends' => 'controller.abstract',
-'class' => 'PGI\\Module\\BOPayment\\Services\\Controllers\\Translations',
-'arguments' =>
-array (
-0 => '@builder.translation_form',
-1 => '@handler.translation',
-2 => '@manager.translation',
 ),
 ),
 'action.account_configuration.save' =>
@@ -5530,12 +5115,484 @@ array (
 'page_name' => 'payment_translations',
 ),
 ),
+'controller.backoffice.account' =>
+array (
+'abstract' => false,
+'shared' => false,
+'calls' =>
+array (
+0 =>
+array (
+'method' => 'setLogger',
+'arguments' =>
+array (
+0 => '@logger',
+),
+),
+1 =>
+array (
+'method' => 'setNotifier',
+'arguments' =>
+array (
+0 => '@notifier',
+),
+),
+2 =>
+array (
+'method' => 'setLinkHandler',
+'arguments' =>
+array (
+0 => '@handler.link',
+),
+),
+3 =>
+array (
+'method' => 'setSettings',
+'arguments' =>
+array (
+0 => '@settings',
+),
+),
+4 =>
+array (
+'method' => 'setParameters',
+'arguments' =>
+array (
+0 => '@parameters',
+),
+),
+5 =>
+array (
+'method' => 'setFormBuilder',
+'arguments' =>
+array (
+0 => '@builder.form',
+),
+),
+),
+'tags' =>
+array (
+0 =>
+array (
+'name' => 'controller',
+),
+),
+'extends' => 'controller.abstract',
+'class' => 'PGI\\Module\\BOPayment\\Services\\Controllers\\AccountController',
+'arguments' =>
+array (
+0 => '@paygreen.facade',
+1 => '@handler.cache',
+),
+),
+'controller.backoffice.oauth' =>
+array (
+'abstract' => false,
+'shared' => false,
+'calls' =>
+array (
+0 =>
+array (
+'method' => 'setLogger',
+'arguments' =>
+array (
+0 => '@logger',
+),
+),
+1 =>
+array (
+'method' => 'setNotifier',
+'arguments' =>
+array (
+0 => '@notifier',
+),
+),
+2 =>
+array (
+'method' => 'setLinkHandler',
+'arguments' =>
+array (
+0 => '@handler.link',
+),
+),
+3 =>
+array (
+'method' => 'setSettings',
+'arguments' =>
+array (
+0 => '@settings',
+),
+),
+4 =>
+array (
+'method' => 'setParameters',
+'arguments' =>
+array (
+0 => '@parameters',
+),
+),
+5 =>
+array (
+'method' => 'setFormBuilder',
+'arguments' =>
+array (
+0 => '@builder.form',
+),
+),
+),
+'tags' =>
+array (
+0 =>
+array (
+'name' => 'controller',
+),
+),
+'extends' => 'controller.abstract',
+'class' => 'PGI\\Module\\BOPayment\\Services\\Controllers\\OAuthController',
+'arguments' =>
+array (
+0 => '@handler.oauth',
+1 => '@superglobal.get',
+),
+),
+'controller.backoffice.eligible_amounts' =>
+array (
+'abstract' => false,
+'shared' => false,
+'calls' =>
+array (
+0 =>
+array (
+'method' => 'setLogger',
+'arguments' =>
+array (
+0 => '@logger',
+),
+),
+1 =>
+array (
+'method' => 'setNotifier',
+'arguments' =>
+array (
+0 => '@notifier',
+),
+),
+2 =>
+array (
+'method' => 'setLinkHandler',
+'arguments' =>
+array (
+0 => '@handler.link',
+),
+),
+3 =>
+array (
+'method' => 'setSettings',
+'arguments' =>
+array (
+0 => '@settings',
+),
+),
+4 =>
+array (
+'method' => 'setParameters',
+'arguments' =>
+array (
+0 => '@parameters',
+),
+),
+5 =>
+array (
+'method' => 'setFormBuilder',
+'arguments' =>
+array (
+0 => '@builder.form',
+),
+),
+),
+'tags' =>
+array (
+0 =>
+array (
+'name' => 'controller',
+),
+),
+'extends' => 'controller.abstract',
+'class' => 'PGI\\Module\\BOPayment\\Services\\Controllers\\EligibleAmountsController',
+'arguments' =>
+array (
+0 => '@manager.category_has_payment_type',
+1 => '@manager.category',
+),
+),
+'controller.backoffice.buttons' =>
+array (
+'abstract' => false,
+'shared' => false,
+'calls' =>
+array (
+0 =>
+array (
+'method' => 'setLogger',
+'arguments' =>
+array (
+0 => '@logger',
+),
+),
+1 =>
+array (
+'method' => 'setNotifier',
+'arguments' =>
+array (
+0 => '@notifier',
+),
+),
+2 =>
+array (
+'method' => 'setLinkHandler',
+'arguments' =>
+array (
+0 => '@handler.link',
+),
+),
+3 =>
+array (
+'method' => 'setSettings',
+'arguments' =>
+array (
+0 => '@settings',
+),
+),
+4 =>
+array (
+'method' => 'setParameters',
+'arguments' =>
+array (
+0 => '@parameters',
+),
+),
+5 =>
+array (
+'method' => 'setFormBuilder',
+'arguments' =>
+array (
+0 => '@builder.form',
+),
+),
+),
+'tags' =>
+array (
+0 =>
+array (
+'name' => 'controller',
+),
+),
+'extends' => 'controller.abstract',
+'class' => 'PGI\\Module\\BOPayment\\Services\\Controllers\\ButtonsController',
+'arguments' =>
+array (
+0 => '@manager.button',
+1 => '@handler.payment_button',
+2 => '@handler.picture',
+3 => '@manager.translation',
+4 => '@handler.upload',
+5 => '@handler.static_file',
+6 => '@handler.link',
+7 => '@manager.payment_type',
+),
+),
+'controller.backoffice.payment' =>
+array (
+'abstract' => false,
+'shared' => false,
+'calls' =>
+array (
+0 =>
+array (
+'method' => 'setLogger',
+'arguments' =>
+array (
+0 => '@logger',
+),
+),
+1 =>
+array (
+'method' => 'setNotifier',
+'arguments' =>
+array (
+0 => '@notifier',
+),
+),
+2 =>
+array (
+'method' => 'setLinkHandler',
+'arguments' =>
+array (
+0 => '@handler.link',
+),
+),
+3 =>
+array (
+'method' => 'setSettings',
+'arguments' =>
+array (
+0 => '@settings',
+),
+),
+4 =>
+array (
+'method' => 'setParameters',
+'arguments' =>
+array (
+0 => '@parameters',
+),
+),
+5 =>
+array (
+'method' => 'setFormBuilder',
+'arguments' =>
+array (
+0 => '@builder.form',
+),
+),
+),
+'tags' =>
+array (
+0 =>
+array (
+'name' => 'controller',
+),
+),
+'extends' => 'controller.abstract',
+'class' => 'PGI\\Module\\BOPayment\\Services\\Controllers\\PluginController',
+'arguments' =>
+array (
+0 => '@paygreen.facade',
+1 => '@handler.cache',
+2 => '@manager.transaction',
+),
+),
+'controller.backoffice.payment_translations' =>
+array (
+'abstract' => false,
+'shared' => false,
+'calls' =>
+array (
+0 =>
+array (
+'method' => 'setLogger',
+'arguments' =>
+array (
+0 => '@logger',
+),
+),
+1 =>
+array (
+'method' => 'setNotifier',
+'arguments' =>
+array (
+0 => '@notifier',
+),
+),
+2 =>
+array (
+'method' => 'setLinkHandler',
+'arguments' =>
+array (
+0 => '@handler.link',
+),
+),
+3 =>
+array (
+'method' => 'setSettings',
+'arguments' =>
+array (
+0 => '@settings',
+),
+),
+4 =>
+array (
+'method' => 'setParameters',
+'arguments' =>
+array (
+0 => '@parameters',
+),
+),
+5 =>
+array (
+'method' => 'setFormBuilder',
+'arguments' =>
+array (
+0 => '@builder.form',
+),
+),
+),
+'tags' =>
+array (
+0 =>
+array (
+'name' => 'controller',
+),
+),
+'extends' => 'controller.abstract',
+'class' => 'PGI\\Module\\BOPayment\\Services\\Controllers\\Translations',
+'arguments' =>
+array (
+0 => '@builder.translation_form',
+1 => '@handler.translation',
+2 => '@manager.translation',
+),
+),
 'handler.payment_statistics' =>
 array (
 'class' => 'PGI\\Module\\BOPayment\\Services\\Handlers\\PaymentStatisticsHandler',
 'arguments' =>
 array (
 0 => '@manager.transaction',
+),
+),
+'deflector.filter.paygreen_connexion' =>
+array (
+'abstract' => false,
+'calls' =>
+array (
+0 =>
+array (
+'method' => 'setNotifier',
+'arguments' =>
+array (
+0 => '@notifier',
+),
+),
+1 =>
+array (
+'method' => 'setLogger',
+'arguments' =>
+array (
+0 => '@logger',
+),
+),
+2 =>
+array (
+'method' => 'setLinkHandler',
+'arguments' =>
+array (
+0 => '@handler.link',
+),
+),
+),
+'tags' =>
+array (
+0 =>
+array (
+'name' => 'deflector',
+),
+),
+'extends' => 'deflector.abstract',
+'class' => 'PGI\\Module\\BOPayment\\Services\\Deflectors\\PaygreenConnexionDeflector',
+'arguments' =>
+array (
+0 => '@handler.route',
 ),
 ),
 'listener.action.display_backoffice' =>
@@ -5545,6 +5602,36 @@ array (
 array (
 0 => '@notifier',
 1 => '@paygreen.facade',
+),
+),
+'view.button.line' =>
+array (
+'class' => 'PGI\\Module\\BOPayment\\Services\\Views\\ButtonLineView',
+'shared' => false,
+'calls' =>
+array (
+0 =>
+array (
+'method' => 'setViewHandler',
+'arguments' =>
+array (
+0 => '@handler.view',
+),
+),
+),
+'tags' =>
+array (
+0 =>
+array (
+'name' => 'view',
+),
+),
+'abstract' => false,
+'extends' => 'view.basic',
+'arguments' =>
+array (
+0 => '@manager.button',
+1 => '@handler.payment_button',
 ),
 ),
 'linker.retry_payment_validation' =>
@@ -5768,17 +5855,6 @@ array (
 1 => '@processor.payment_validation',
 ),
 ),
-'repository.carbon_data' =>
-array (
-'abstract' => false,
-'arguments' =>
-array (
-0 => '@handler.database',
-1 => '%database.entities.carbon_data',
-),
-'extends' => 'repository.abstract',
-'class' => 'PGI\\Module\\PGTree\\Services\\Repositories\\CarbonDataRepository',
-),
 'manager.carbon_data' =>
 array (
 'class' => 'PGI\\Module\\PGTree\\Services\\Managers\\CarbonDataManager',
@@ -5786,6 +5862,78 @@ array (
 array (
 0 => '@repository.carbon_data',
 ),
+),
+'behavior.tree_activation' =>
+array (
+'class' => 'PGI\\Module\\PGTree\\Services\\Behaviors\\TreeActivationBehavior',
+'arguments' =>
+array (
+0 => '@handler.requirement',
+),
+),
+'handler.tree_authentication' =>
+array (
+'class' => 'PGI\\Module\\PGTree\\Services\\Handlers\\TreeAuthenticationHandler',
+'arguments' =>
+array (
+0 => '@facade.api.tree',
+1 => '@settings',
+2 => '@logger',
+),
+),
+'handler.tree_carbon_offsetting' =>
+array (
+'class' => 'PGI\\Module\\PGTree\\Services\\Handlers\\TreeCarbonOffsettingHandler',
+'arguments' =>
+array (
+0 => '@facade.api.tree',
+1 => '@handler.tree_footprint_id',
+2 => '@broadcaster',
+3 => '@handler.requirement',
+4 => '@handler.view',
+5 => '@manager.carbon_data',
+6 => '@logger',
+),
+),
+'handler.tree_footprint_id' =>
+array (
+'class' => 'PGI\\Module\\PGTree\\Services\\Handlers\\TreeFootprintIdHandler',
+'arguments' =>
+array (
+0 => '@handler.cookie',
+1 => '@handler.shop',
+2 => '@settings',
+3 => '@logger',
+4 => '@facade.api.tree',
+),
+),
+'handler.page_counter' =>
+array (
+'class' => 'PGI\\Module\\PGTree\\Services\\Handlers\\PageCounterHandler',
+'arguments' =>
+array (
+0 => '@handler.cookie',
+),
+),
+'handler.tree.catalog' =>
+array (
+'class' => 'PGI\\Module\\PGTree\\Services\\Handlers\\TreeCatalogHandler',
+'arguments' =>
+array (
+0 => '@manager.product',
+1 => '@handler.cache',
+2 => '@translator',
+3 => '@filter.product_reference',
+4 => '@filter.product_name',
+),
+),
+'filter.product_reference' =>
+array (
+'class' => 'PGI\\Module\\PGTree\\Services\\Filters\\ProductReferenceFilter',
+),
+'filter.product_name' =>
+array (
+'class' => 'PGI\\Module\\PGTree\\Services\\Filters\\ProductNameFilter',
 ),
 'requirement.tree_connexion' =>
 array (
@@ -5857,58 +6005,6 @@ array (
 0 => '@settings',
 ),
 ),
-'behavior.tree_activation' =>
-array (
-'class' => 'PGI\\Module\\PGTree\\Services\\Behaviors\\TreeActivationBehavior',
-'arguments' =>
-array (
-0 => '@handler.requirement',
-),
-),
-'handler.tree_authentication' =>
-array (
-'class' => 'PGI\\Module\\PGTree\\Services\\Handlers\\TreeAuthenticationHandler',
-'arguments' =>
-array (
-0 => '@facade.api.tree',
-1 => '@settings',
-2 => '@logger',
-),
-),
-'handler.tree_carbon_offsetting' =>
-array (
-'class' => 'PGI\\Module\\PGTree\\Services\\Handlers\\TreeCarbonOffsettingHandler',
-'arguments' =>
-array (
-0 => '@facade.api.tree',
-1 => '@handler.tree_footprint_id',
-2 => '@broadcaster',
-3 => '@handler.requirement',
-4 => '@handler.view',
-5 => '@manager.carbon_data',
-6 => '@logger',
-),
-),
-'handler.tree_footprint_id' =>
-array (
-'class' => 'PGI\\Module\\PGTree\\Services\\Handlers\\TreeFootprintIdHandler',
-'arguments' =>
-array (
-0 => '@handler.cookie',
-1 => '@handler.shop',
-2 => '@settings',
-3 => '@logger',
-4 => '@facade.api.tree',
-),
-),
-'handler.page_counter' =>
-array (
-'class' => 'PGI\\Module\\PGTree\\Services\\Handlers\\PageCounterHandler',
-'arguments' =>
-array (
-0 => '@handler.cookie',
-),
-),
 'listener.carbon_offsetting_computing.adding_web_data' =>
 array (
 'class' => 'PGI\\Module\\PGTree\\Services\\Listeners\\CarbonOffsettingComputingWebListener',
@@ -5937,7 +6033,8 @@ array (
 'arguments' =>
 array (
 0 => '@facade.api.tree',
-1 => '@logger',
+1 => '@filter.product_reference',
+2 => '@logger',
 ),
 ),
 'listener.tree.page_counting' =>
@@ -5957,6 +6054,17 @@ array (
 0 => '@handler.database',
 1 => '@logger',
 ),
+),
+'repository.carbon_data' =>
+array (
+'abstract' => false,
+'arguments' =>
+array (
+0 => '@handler.database',
+1 => '%database.entities.carbon_data',
+),
+'extends' => 'repository.abstract',
+'class' => 'PGI\\Module\\PGTree\\Services\\Repositories\\CarbonDataRepository',
 ),
 'facade.api.tree' =>
 array (
@@ -6000,302 +6108,6 @@ array (
 'arguments' =>
 array (
 0 => '@facade.api.tree',
-),
-),
-'controller.backoffice.tree' =>
-array (
-'abstract' => false,
-'shared' => false,
-'calls' =>
-array (
-0 =>
-array (
-'method' => 'setLogger',
-'arguments' =>
-array (
-0 => '@logger',
-),
-),
-1 =>
-array (
-'method' => 'setNotifier',
-'arguments' =>
-array (
-0 => '@notifier',
-),
-),
-2 =>
-array (
-'method' => 'setLinkHandler',
-'arguments' =>
-array (
-0 => '@handler.link',
-),
-),
-3 =>
-array (
-'method' => 'setSettings',
-'arguments' =>
-array (
-0 => '@settings',
-),
-),
-4 =>
-array (
-'method' => 'setParameters',
-'arguments' =>
-array (
-0 => '@parameters',
-),
-),
-5 =>
-array (
-'method' => 'setFormBuilder',
-'arguments' =>
-array (
-0 => '@builder.form',
-),
-),
-6 =>
-array (
-'method' => 'setTreeAuthenticationHandler',
-'arguments' =>
-array (
-0 => '@handler.tree_authentication',
-),
-),
-7 =>
-array (
-'method' => 'setCarbonDataManager',
-'arguments' =>
-array (
-0 => '@manager.carbon_data',
-),
-),
-),
-'tags' =>
-array (
-0 =>
-array (
-'name' => 'controller',
-),
-),
-'extends' => 'controller.abstract',
-'class' => 'PGI\\Module\\BOTree\\Services\\Controllers\\PluginController',
-),
-'controller.backoffice.tree_account' =>
-array (
-'abstract' => false,
-'shared' => false,
-'calls' =>
-array (
-0 =>
-array (
-'method' => 'setLogger',
-'arguments' =>
-array (
-0 => '@logger',
-),
-),
-1 =>
-array (
-'method' => 'setNotifier',
-'arguments' =>
-array (
-0 => '@notifier',
-),
-),
-2 =>
-array (
-'method' => 'setLinkHandler',
-'arguments' =>
-array (
-0 => '@handler.link',
-),
-),
-3 =>
-array (
-'method' => 'setSettings',
-'arguments' =>
-array (
-0 => '@settings',
-),
-),
-4 =>
-array (
-'method' => 'setParameters',
-'arguments' =>
-array (
-0 => '@parameters',
-),
-),
-5 =>
-array (
-'method' => 'setFormBuilder',
-'arguments' =>
-array (
-0 => '@builder.form',
-),
-),
-6 =>
-array (
-'method' => 'setTreeAuthenticationHandler',
-'arguments' =>
-array (
-0 => '@handler.tree_authentication',
-),
-),
-),
-'tags' =>
-array (
-0 =>
-array (
-'name' => 'controller',
-),
-),
-'extends' => 'controller.abstract',
-'class' => 'PGI\\Module\\BOTree\\Services\\Controllers\\AccountController',
-),
-'controller.backoffice.tree_translations' =>
-array (
-'abstract' => false,
-'shared' => false,
-'calls' =>
-array (
-0 =>
-array (
-'method' => 'setLogger',
-'arguments' =>
-array (
-0 => '@logger',
-),
-),
-1 =>
-array (
-'method' => 'setNotifier',
-'arguments' =>
-array (
-0 => '@notifier',
-),
-),
-2 =>
-array (
-'method' => 'setLinkHandler',
-'arguments' =>
-array (
-0 => '@handler.link',
-),
-),
-3 =>
-array (
-'method' => 'setSettings',
-'arguments' =>
-array (
-0 => '@settings',
-),
-),
-4 =>
-array (
-'method' => 'setParameters',
-'arguments' =>
-array (
-0 => '@parameters',
-),
-),
-5 =>
-array (
-'method' => 'setFormBuilder',
-'arguments' =>
-array (
-0 => '@builder.form',
-),
-),
-),
-'tags' =>
-array (
-0 =>
-array (
-'name' => 'controller',
-),
-),
-'extends' => 'controller.abstract',
-'class' => 'PGI\\Module\\BOTree\\Services\\Controllers\\TranslationsController',
-'arguments' =>
-array (
-0 => '@builder.translation_form',
-1 => '@handler.translation',
-2 => '@manager.translation',
-),
-),
-'controller.backoffice.tree_export_product_catalog' =>
-array (
-'abstract' => false,
-'shared' => false,
-'calls' =>
-array (
-0 =>
-array (
-'method' => 'setLogger',
-'arguments' =>
-array (
-0 => '@logger',
-),
-),
-1 =>
-array (
-'method' => 'setNotifier',
-'arguments' =>
-array (
-0 => '@notifier',
-),
-),
-2 =>
-array (
-'method' => 'setLinkHandler',
-'arguments' =>
-array (
-0 => '@handler.link',
-),
-),
-3 =>
-array (
-'method' => 'setSettings',
-'arguments' =>
-array (
-0 => '@settings',
-),
-),
-4 =>
-array (
-'method' => 'setParameters',
-'arguments' =>
-array (
-0 => '@parameters',
-),
-),
-5 =>
-array (
-'method' => 'setFormBuilder',
-'arguments' =>
-array (
-0 => '@builder.form',
-),
-),
-),
-'tags' =>
-array (
-0 =>
-array (
-'name' => 'controller',
-),
-),
-'extends' => 'controller.abstract',
-'class' => 'PGI\\Module\\BOTree\\Services\\Controllers\\ExportProductCatalogController',
-'arguments' =>
-array (
-0 => '@generator.csv',
-1 => '@repository.product',
-2 => '@handler.tree_authentication',
 ),
 ),
 'action.tree_shipping_address.save' =>
@@ -6933,6 +6745,343 @@ array (
 'redirection' => 'backoffice.tree_config.display',
 ),
 ),
+'action.tree_products_synchronization.display' =>
+array (
+'abstract' => false,
+'shared' => false,
+'calls' =>
+array (
+0 =>
+array (
+'method' => 'setLogger',
+'arguments' =>
+array (
+0 => '@logger',
+),
+),
+1 =>
+array (
+'method' => 'setNotifier',
+'arguments' =>
+array (
+0 => '@notifier',
+),
+),
+2 =>
+array (
+'method' => 'setLinkHandler',
+'arguments' =>
+array (
+0 => '@handler.link',
+),
+),
+),
+'extends' => 'action.standardized_display_page.abstract',
+'class' => 'PGI\\Module\\BOModule\\Services\\Actions\\StandardizedDisplayPageAction',
+'arguments' =>
+array (
+0 => '@handler.block',
+),
+'config' =>
+array (
+'page_name' => 'tree_products_synchronization',
+),
+),
+'controller.backoffice.tree' =>
+array (
+'abstract' => false,
+'shared' => false,
+'calls' =>
+array (
+0 =>
+array (
+'method' => 'setLogger',
+'arguments' =>
+array (
+0 => '@logger',
+),
+),
+1 =>
+array (
+'method' => 'setNotifier',
+'arguments' =>
+array (
+0 => '@notifier',
+),
+),
+2 =>
+array (
+'method' => 'setLinkHandler',
+'arguments' =>
+array (
+0 => '@handler.link',
+),
+),
+3 =>
+array (
+'method' => 'setSettings',
+'arguments' =>
+array (
+0 => '@settings',
+),
+),
+4 =>
+array (
+'method' => 'setParameters',
+'arguments' =>
+array (
+0 => '@parameters',
+),
+),
+5 =>
+array (
+'method' => 'setFormBuilder',
+'arguments' =>
+array (
+0 => '@builder.form',
+),
+),
+6 =>
+array (
+'method' => 'setTreeAuthenticationHandler',
+'arguments' =>
+array (
+0 => '@handler.tree_authentication',
+),
+),
+7 =>
+array (
+'method' => 'setCarbonDataManager',
+'arguments' =>
+array (
+0 => '@manager.carbon_data',
+),
+),
+),
+'tags' =>
+array (
+0 =>
+array (
+'name' => 'controller',
+),
+),
+'extends' => 'controller.abstract',
+'class' => 'PGI\\Module\\BOTree\\Services\\Controllers\\PluginController',
+),
+'controller.backoffice.tree_account' =>
+array (
+'abstract' => false,
+'shared' => false,
+'calls' =>
+array (
+0 =>
+array (
+'method' => 'setLogger',
+'arguments' =>
+array (
+0 => '@logger',
+),
+),
+1 =>
+array (
+'method' => 'setNotifier',
+'arguments' =>
+array (
+0 => '@notifier',
+),
+),
+2 =>
+array (
+'method' => 'setLinkHandler',
+'arguments' =>
+array (
+0 => '@handler.link',
+),
+),
+3 =>
+array (
+'method' => 'setSettings',
+'arguments' =>
+array (
+0 => '@settings',
+),
+),
+4 =>
+array (
+'method' => 'setParameters',
+'arguments' =>
+array (
+0 => '@parameters',
+),
+),
+5 =>
+array (
+'method' => 'setFormBuilder',
+'arguments' =>
+array (
+0 => '@builder.form',
+),
+),
+6 =>
+array (
+'method' => 'setTreeAuthenticationHandler',
+'arguments' =>
+array (
+0 => '@handler.tree_authentication',
+),
+),
+),
+'tags' =>
+array (
+0 =>
+array (
+'name' => 'controller',
+),
+),
+'extends' => 'controller.abstract',
+'class' => 'PGI\\Module\\BOTree\\Services\\Controllers\\AccountController',
+),
+'controller.backoffice.tree_translations' =>
+array (
+'abstract' => false,
+'shared' => false,
+'calls' =>
+array (
+0 =>
+array (
+'method' => 'setLogger',
+'arguments' =>
+array (
+0 => '@logger',
+),
+),
+1 =>
+array (
+'method' => 'setNotifier',
+'arguments' =>
+array (
+0 => '@notifier',
+),
+),
+2 =>
+array (
+'method' => 'setLinkHandler',
+'arguments' =>
+array (
+0 => '@handler.link',
+),
+),
+3 =>
+array (
+'method' => 'setSettings',
+'arguments' =>
+array (
+0 => '@settings',
+),
+),
+4 =>
+array (
+'method' => 'setParameters',
+'arguments' =>
+array (
+0 => '@parameters',
+),
+),
+5 =>
+array (
+'method' => 'setFormBuilder',
+'arguments' =>
+array (
+0 => '@builder.form',
+),
+),
+),
+'tags' =>
+array (
+0 =>
+array (
+'name' => 'controller',
+),
+),
+'extends' => 'controller.abstract',
+'class' => 'PGI\\Module\\BOTree\\Services\\Controllers\\TranslationsController',
+'arguments' =>
+array (
+0 => '@builder.translation_form',
+1 => '@handler.translation',
+2 => '@manager.translation',
+),
+),
+'controller.backoffice.tree_export_product_catalog' =>
+array (
+'abstract' => false,
+'shared' => false,
+'calls' =>
+array (
+0 =>
+array (
+'method' => 'setLogger',
+'arguments' =>
+array (
+0 => '@logger',
+),
+),
+1 =>
+array (
+'method' => 'setNotifier',
+'arguments' =>
+array (
+0 => '@notifier',
+),
+),
+2 =>
+array (
+'method' => 'setLinkHandler',
+'arguments' =>
+array (
+0 => '@handler.link',
+),
+),
+3 =>
+array (
+'method' => 'setSettings',
+'arguments' =>
+array (
+0 => '@settings',
+),
+),
+4 =>
+array (
+'method' => 'setParameters',
+'arguments' =>
+array (
+0 => '@parameters',
+),
+),
+5 =>
+array (
+'method' => 'setFormBuilder',
+'arguments' =>
+array (
+0 => '@builder.form',
+),
+),
+),
+'tags' =>
+array (
+0 =>
+array (
+'name' => 'controller',
+),
+),
+'extends' => 'controller.abstract',
+'class' => 'PGI\\Module\\BOTree\\Services\\Controllers\\ExportProductCatalogController',
+'arguments' =>
+array (
+0 => '@generator.csv',
+1 => '@handler.tree.catalog',
+),
+),
 'listener.tree_action.display_backoffice' =>
 array (
 'class' => 'PGI\\Module\\BOTree\\Services\\Listeners\\DisplayBackofficeListener',
@@ -7095,6 +7244,14 @@ array (
 3 => '@logger',
 ),
 ),
+'provisioner.pre_payment' =>
+array (
+'class' => 'PGI\\Module\\PGMagento\\Components\\Provisioners\\PrePayment',
+'arguments' =>
+array (
+0 => '@magento',
+),
+),
 'linker.backoffice' =>
 array (
 'abstract' => false,
@@ -7215,17 +7372,6 @@ array (
 ),
 'class' => 'PGI\\Module\\PGMagento\\Services\\Linkers\\FrontBasicLinker',
 ),
-'magento' =>
-array (
-),
-'compiler.resource.magento' =>
-array (
-'class' => 'PGI\\Module\\PGMagento\\Services\\Compilers\\StaticResourceCompiler',
-'arguments' =>
-array (
-0 => '@handler.static_file',
-),
-),
 'builder.output.frontoffice_override_css' =>
 array (
 'abstract' => false,
@@ -7257,35 +7403,6 @@ array (
 ),
 ),
 ),
-'upgrade.settings.restore' =>
-array (
-'abstract' => false,
-'tags' =>
-array (
-0 =>
-array (
-'name' => 'upgrade',
-),
-),
-'class' => 'PGI\\Module\\PGMagento\\Services\\Upgrades\\RestoreSettingsUpgrade',
-'extends' => 'upgrade.abstract',
-'arguments' =>
-array (
-0 => '@magento',
-1 => '@repository.setting',
-2 => '@handler.shop',
-3 => '@officer.settings.database.basic',
-4 => '@officer.settings.database.global',
-),
-),
-'provisioner.pre_payment' =>
-array (
-'class' => 'PGI\\Module\\PGMagento\\Components\\Provisioners\\PrePayment',
-'arguments' =>
-array (
-0 => '@magento',
-),
-),
 'officer.settings.configuration.global' =>
 array (
 'class' => 'PGI\\Module\\PGMagento\\Services\\Officers\\ConfigurationGlobalSettingsOfficer',
@@ -7314,6 +7431,17 @@ array (
 0 => '@logger',
 ),
 ),
+'magento' =>
+array (
+),
+'compiler.resource.magento' =>
+array (
+'class' => 'PGI\\Module\\PGMagento\\Services\\Compilers\\StaticResourceCompiler',
+'arguments' =>
+array (
+0 => '@handler.static_file',
+),
+),
 'listener.setup.database' =>
 array (
 'class' => 'PGI\\Module\\PGMagento\\Services\\Listeners\\SetupDatabaseListener',
@@ -7323,7 +7451,7 @@ array (
 1 => '@logger',
 ),
 ),
-'upgrade.database.multishop' =>
+'upgrade.settings.restore' =>
 array (
 'abstract' => false,
 'tags' =>
@@ -7333,12 +7461,41 @@ array (
 'name' => 'upgrade',
 ),
 ),
-'class' => 'PGI\\Module\\PGMagentoPayment\\Services\\Upgrades\\DatabaseMultiShopUpgrade',
+'class' => 'PGI\\Module\\PGMagento\\Services\\Upgrades\\RestoreSettingsUpgrade',
 'extends' => 'upgrade.abstract',
 'arguments' =>
 array (
-0 => '@handler.database',
-1 => '@handler.shop',
+0 => '@magento',
+1 => '@repository.setting',
+2 => '@handler.shop',
+3 => '@officer.settings.database.basic',
+4 => '@officer.settings.database.global',
+),
+),
+'strategy.order_state_mapper.magento' =>
+array (
+'class' => 'PGI\\Module\\PGMagentoPayment\\Services\\Strategies\\OrderStateMagentoStrategy',
+'tags' =>
+array (
+0 =>
+array (
+'name' => 'mapper.strategy.order_state',
+'options' =>
+array (
+0 => 'magento',
+),
+),
+),
+'calls' =>
+array (
+0 =>
+array (
+'method' => 'setOrderStateManager',
+'arguments' =>
+array (
+0 => '@manager.order_state',
+),
+),
 ),
 ),
 'controller.front.invalid_payments' =>
@@ -7412,32 +7569,6 @@ array (
 2 => '@handler.cart',
 ),
 ),
-'strategy.order_state_mapper.magento' =>
-array (
-'class' => 'PGI\\Module\\PGMagentoPayment\\Services\\Strategies\\OrderStateMagentoStrategy',
-'tags' =>
-array (
-0 =>
-array (
-'name' => 'mapper.strategy.order_state',
-'options' =>
-array (
-0 => 'magento',
-),
-),
-),
-'calls' =>
-array (
-0 =>
-array (
-'method' => 'setOrderStateManager',
-'arguments' =>
-array (
-0 => '@manager.order_state',
-),
-),
-),
-),
 'listener.setup.order_states_creation' =>
 array (
 'class' => 'PGI\\Module\\PGMagentoPayment\\Services\\Listeners\\InstallOrderStateCreationListener',
@@ -7464,6 +7595,24 @@ array (
 array (
 0 => '@handler.database',
 1 => '@logger',
+),
+),
+'upgrade.database.multishop' =>
+array (
+'abstract' => false,
+'tags' =>
+array (
+0 =>
+array (
+'name' => 'upgrade',
+),
+),
+'class' => 'PGI\\Module\\PGMagentoPayment\\Services\\Upgrades\\DatabaseMultiShopUpgrade',
+'extends' => 'upgrade.abstract',
+'arguments' =>
+array (
+0 => '@handler.database',
+1 => '@handler.shop',
 ),
 ),
 'builder.output.carbon_bot_css' =>
