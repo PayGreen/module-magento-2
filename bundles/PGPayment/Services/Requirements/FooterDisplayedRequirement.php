@@ -15,12 +15,13 @@
  * @author    PayGreen <contact@paygreen.fr>
  * @copyright 2014 - 2021 Watt Is It
  * @license   https://opensource.org/licenses/mit-license.php MIT License X11
- * @version   2.3.0
+ * @version   2.4.0
  *
  */
 
 namespace PGI\Module\PGPayment\Services\Requirements;
 
+use Exception;
 use PGI\Module\PGFramework\Interfaces\RequirementInterface;
 use PGI\Module\PGModule\Interfaces\ModuleFacadeInterface;
 use PGI\Module\PGModule\Services\Settings;
@@ -53,14 +54,16 @@ class FooterDisplayedRequirement implements RequirementInterface
 
     /**
      * @inheritDoc
+     * @throws Exception
      */
-    public function isFulfilled($arguments = null)
+    public function isValid()
     {
-        $isRequired = ($arguments === null) ? true : (bool) $arguments;
-
-        return ($isRequired === $this->isFooterDisplayed());
+        return $this->isFooterDisplayed();
     }
 
+    /**
+     * @throws Exception
+     */
     protected function isFooterDisplayed()
     {
         $isFooterDisplayed = (bool) $this->settings->get('footer_display');

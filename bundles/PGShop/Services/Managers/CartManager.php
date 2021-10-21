@@ -15,14 +15,18 @@
  * @author    PayGreen <contact@paygreen.fr>
  * @copyright 2014 - 2021 Watt Is It
  * @license   https://opensource.org/licenses/mit-license.php MIT License X11
- * @version   2.3.0
+ * @version   2.4.0
  *
  */
 
 namespace PGI\Module\PGShop\Services\Managers;
 
 use PGI\Module\PGDatabase\Foundations\AbstractManager;
+use Exception;
 use PGI\Module\PGShop\Interfaces\Entities\CartEntityInterface;
+use PGI\Module\PGShop\Interfaces\Entities\ProductEntityInterface;
+use PGI\Module\PGShop\Interfaces\Entities\ShopableItemEntityInterface;
+use PGI\Module\PGShop\Interfaces\Officers\CartOfficerInterface;
 use PGI\Module\PGShop\Interfaces\Repositories\CartRepositoryInterface;
 
 /**
@@ -33,6 +37,17 @@ use PGI\Module\PGShop\Interfaces\Repositories\CartRepositoryInterface;
  */
 class CartManager extends AbstractManager
 {
+    /** @var CartOfficerInterface */
+    private $cartOfficer;
+
+    /**
+     * @param CartOfficerInterface $cartOfficer
+     */
+    public function setCartOfficer($cartOfficer)
+    {
+        $this->cartOfficer = $cartOfficer;
+    }
+
     /**
      * @param int $id
      * @return CartEntityInterface|null
@@ -48,5 +63,38 @@ class CartManager extends AbstractManager
     public function getCurrent()
     {
         return $this->getRepository()->findCurrentCart();
+    }
+
+    /**
+     * @param ProductEntityInterface $product
+     * @param float $cost
+     * @return ShopableItemEntityInterface
+     * @throws Exception
+     */
+    public function addItem(ProductEntityInterface $product, $cost)
+    {
+        $cart = $this->getCurrent();
+
+        if ($cart === null) {
+            throw new Exception('Cart not found.');
+        }
+
+        return $this->cartOfficer->addItem($cart, $product, $cost);
+    }
+
+    /**
+     * @param ProductEntityInterface $product
+     * @return bool
+     * @throws Exception
+     */
+    public function removeItem(ProductEntityInterface $product)
+    {
+        $cart = $this->getCurrent();
+
+        if ($cart === null) {
+            throw new Exception('Cart not found.');
+        }
+
+        return $this->cartOfficer->removeItem($cart, $product);
     }
 }

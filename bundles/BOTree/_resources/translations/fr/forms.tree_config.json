@@ -6,13 +6,9 @@
           "label": "URL vers la page 'En savoir plus'",
           "help": "La page 'En savoir plus' permettra à vos clients d'obtenir plus d'informations concernant le calcul de l'empreinte carbone et la compensation carbone."
         },
-        "tree_api_server": {
-          "label": "Serveur PayGreen ClimateKit",
-          "help": "Permet de définir quel serveur PayGreen ClimateKit vous souhaitez utiliser.",
-          "values": {
-            "PROD": "Production",
-            "SANDBOX": "Bac à sable"
-          }
+        "tree_test_mode": {
+          "label": "Activation du mode test",
+          "help": "Permet d'utiliser le mode test."
         }
       }
     }

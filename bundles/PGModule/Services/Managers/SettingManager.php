@@ -15,7 +15,7 @@
  * @author    PayGreen <contact@paygreen.fr>
  * @copyright 2014 - 2021 Watt Is It
  * @license   https://opensource.org/licenses/mit-license.php MIT License X11
- * @version   2.3.0
+ * @version   2.4.0
  *
  */
 
@@ -24,6 +24,7 @@ namespace PGI\Module\PGModule\Services\Managers;
 use PGI\Module\PGDatabase\Foundations\AbstractManager;
 use PGI\Module\PGModule\Interfaces\Entities\SettingEntityInterface;
 use PGI\Module\PGModule\Interfaces\Repositories\SettingRepositoryInterface;
+use PGI\Module\PGModule\Services\Officers\SettingsDatabaseOfficer;
 use PGI\Module\PGShop\Interfaces\Entities\ShopEntityInterface;
 
 /**
@@ -78,16 +79,42 @@ class SettingManager extends AbstractManager
 
         $this->getRepository()->insert($setting);
 
+        $this->clean();
+
         return $setting;
     }
 
     public function update(SettingEntityInterface $setting)
     {
-        return $this->getRepository()->update($setting);
+        $result = $this->getRepository()->update($setting);
+
+        if ($result) {
+            $this->clean();
+        }
+
+        return $result;
     }
 
     public function delete(SettingEntityInterface $setting)
     {
-        return $this->getRepository()->delete($setting);
+        $result = $this->getRepository()->delete($setting);
+
+        if ($result) {
+            $this->clean();
+        }
+
+        return $result;
+    }
+
+    private function clean()
+    {
+        /** @var SettingsDatabaseOfficer $settingDatabaseBasicOfficer */
+        $settingDatabaseBasicOfficer = $this->getService('officer.settings.database.basic');
+
+        /** @var SettingsDatabaseOfficer $settingDatabaseGlobalOfficer */
+        $settingDatabaseGlobalOfficer = $this->getService('officer.settings.database.global');
+
+        $settingDatabaseBasicOfficer->clean();
+        $settingDatabaseGlobalOfficer->clean();
     }
 }

@@ -15,7 +15,7 @@
  * @author    PayGreen <contact@paygreen.fr>
  * @copyright 2014 - 2021 Watt Is It
  * @license   https://opensource.org/licenses/mit-license.php MIT License X11
- * @version   2.3.0
+ * @version   2.4.0
  *
  */
 
@@ -24,7 +24,7 @@ namespace PGI\Module\PGPayment\Services\Repositories;
 use PGI\Module\PGDatabase\Foundations\AbstractRepositoryDatabase;
 use PGI\Module\PGDatabase\Services\Handlers\DatabaseHandler;
 use PGI\Module\PGPayment\Interfaces\Repositories\CategoryHasPaymentTypeRepositoryInterface;
-use PGI\Module\PGShop\Interfaces\Handlers\ShopHandlerInterface;
+use PGI\Module\PGShop\Services\Handlers\ShopHandler;
 use Exception;
 
 /**
@@ -33,12 +33,12 @@ use Exception;
  */
 class CategoryHasPaymentTypeRepository extends AbstractRepositoryDatabase implements CategoryHasPaymentTypeRepositoryInterface
 {
-    /** @var ShopHandlerInterface */
+    /** @var ShopHandler */
     private $shopHandler;
 
     public function __construct(
         DatabaseHandler $databaseHandler,
-        ShopHandlerInterface $shopHandler,
+        ShopHandler $shopHandler,
         array $config
     ) {
         parent::__construct($databaseHandler, $config);

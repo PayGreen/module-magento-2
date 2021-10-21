@@ -15,7 +15,7 @@
  * @author    PayGreen <contact@paygreen.fr>
  * @copyright 2014 - 2021 Watt Is It
  * @license   https://opensource.org/licenses/mit-license.php MIT License X11
- * @version   2.3.0
+ * @version   2.4.0
  *
  */
 
@@ -42,7 +42,7 @@ class ValidityRangeList
 
     public function isValid($code)
     {
-        foreach($this->ranges as $range) {
+        foreach ($this->ranges as $range) {
             list($min, $max) = $this->explodeRange($range);
 
             if (($min <= $code) && ($code <= $max)) {

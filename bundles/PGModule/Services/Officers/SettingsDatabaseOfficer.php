@@ -15,16 +15,17 @@
  * @author    PayGreen <contact@paygreen.fr>
  * @copyright 2014 - 2021 Watt Is It
  * @license   https://opensource.org/licenses/mit-license.php MIT License X11
- * @version   2.3.0
+ * @version   2.4.0
  *
  */
 
 namespace PGI\Module\PGModule\Services\Officers;
 
 use PGI\Module\PGModule\Entities\Setting;
+use PGI\Module\PGModule\Interfaces\Entities\SettingEntityInterface;
 use PGI\Module\PGModule\Interfaces\Officers\SettingsOfficerInterface;
 use PGI\Module\PGModule\Services\Managers\SettingManager;
-use PGI\Module\PGShop\Interfaces\Handlers\ShopHandlerInterface;
+use PGI\Module\PGShop\Services\Handlers\ShopHandler;
 
 /**
  * Class SettingsDatabaseOfficer
@@ -38,12 +39,12 @@ class SettingsDatabaseOfficer implements SettingsOfficerInterface
     /** @var SettingManager */
     private $settingManager;
 
-    /** @var ShopHandlerInterface */
+    /** @var ShopHandler */
     private $shopHandler;
 
     public function __construct(
         SettingManager $settingManager,
-        ShopHandlerInterface $shopHandler = null
+        ShopHandler $shopHandler = null
     ) {
         $this->settingManager = $settingManager;
         $this->shopHandler = $shopHandler;
@@ -84,7 +85,7 @@ class SettingsDatabaseOfficer implements SettingsOfficerInterface
 
             $result = $this->settingManager->update($this->settings[$key]);
         } else {
-            $this->settings[$key] = $this->settingManager->insert($key, $value, $this->getCurrentShop());
+            $this->settingManager->insert($key, $value, $this->getCurrentShop());
         }
 
         return $result;
@@ -98,10 +99,6 @@ class SettingsDatabaseOfficer implements SettingsOfficerInterface
 
         if (isset($this->settings[$key])) {
             $result = $this->settingManager->delete($this->settings[$key]);
-
-            if ($result) {
-                unset($this->settings[$key]);
-            }
         }
 
         return $result;

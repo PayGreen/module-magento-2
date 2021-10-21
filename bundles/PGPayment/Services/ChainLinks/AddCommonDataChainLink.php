@@ -15,7 +15,7 @@
  * @author    PayGreen <contact@paygreen.fr>
  * @copyright 2014 - 2021 Watt Is It
  * @license   https://opensource.org/licenses/mit-license.php MIT License X11
- * @version   2.3.0
+ * @version   2.4.0
  *
  */
 
@@ -77,7 +77,8 @@ class AddCommonDataChainLink extends AbstractPaymentCreationChainLink
      * @return bool
      * @throws Exception
      */
-    private function checkRequiredMetadata($metadata) {
+    private function checkRequiredMetadata($metadata)
+    {
         foreach ($metadata as $key => $value) {
             if (in_array($key, $this->required_metadata) && (!empty($value))) {
                 return true;

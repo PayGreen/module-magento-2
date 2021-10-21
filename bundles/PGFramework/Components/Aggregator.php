@@ -15,12 +15,14 @@
  * @author    PayGreen <contact@paygreen.fr>
  * @copyright 2014 - 2021 Watt Is It
  * @license   https://opensource.org/licenses/mit-license.php MIT License X11
- * @version   2.3.0
+ * @version   2.4.0
  *
  */
 
 namespace PGI\Module\PGFramework\Components;
 
+use ArrayAccess;
+use Iterator;
 use PGI\Module\PGSystem\Components\Bag as BagComponent;
 use PGI\Module\PGSystem\Interfaces\Services\ConfigurableServiceInterface;
 use PGI\Module\PGSystem\Services\Container;
@@ -31,7 +33,7 @@ use LogicException;
  * Class Aggregator
  * @package PGFramework\Components
  */
-class Aggregator implements ConfigurableServiceInterface
+class Aggregator implements ConfigurableServiceInterface, ArrayAccess, Iterator
 {
     /** @var Container */
     private $container;
@@ -91,11 +93,6 @@ class Aggregator implements ConfigurableServiceInterface
         $this->index[$name] = $serviceName;
     }
 
-    public function has($name)
-    {
-        return array_key_exists($name, $this->index);
-    }
-
     /**
      * @param string $name
      * @return object
@@ -125,10 +122,60 @@ class Aggregator implements ConfigurableServiceInterface
 
     public function getServiceName($name)
     {
-        if (!$this->has($name)) {
+        if (!$this->offsetExists($name)) {
             throw new LogicException("Unknown {$this->config['type']} name : '$name'.");
         }
 
         return $this->index[$name];
+    }
+
+    public function getNames()
+    {
+        return array_keys($this->index);
+    }
+
+    public function current()
+    {
+        return $this->getService($this->key());
+    }
+
+    public function next()
+    {
+        next($this->index);
+    }
+
+    public function key()
+    {
+        return key($this->index);
+    }
+
+    public function valid()
+    {
+        return key($this->index) !== null;
+    }
+
+    public function rewind()
+    {
+        reset($this->index);
+    }
+
+    public function offsetExists($offset)
+    {
+        return array_key_exists($offset, $this->index);
+    }
+
+    public function offsetGet($offset)
+    {
+        return $this->getService($offset);
+    }
+
+    public function offsetSet($offset, $value)
+    {
+        throw new LogicException("Trying to set aggregator $offset with value : '$value'.");
+    }
+
+    public function offsetUnset($offset)
+    {
+        throw new LogicException("Trying to unset aggregator $offset.");
     }
 }

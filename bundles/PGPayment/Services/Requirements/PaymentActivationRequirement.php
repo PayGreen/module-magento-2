@@ -15,14 +15,14 @@
  * @author    PayGreen <contact@paygreen.fr>
  * @copyright 2014 - 2021 Watt Is It
  * @license   https://opensource.org/licenses/mit-license.php MIT License X11
- * @version   2.3.0
+ * @version   2.4.0
  *
  */
 
 namespace PGI\Module\PGPayment\Services\Requirements;
 
+use Exception;
 use PGI\Module\PGFramework\Interfaces\RequirementInterface;
-use PGI\Module\PGFramework\Services\Handlers\RequirementHandler;
 use PGI\Module\PGModule\Services\Settings;
 
 /**
@@ -34,32 +34,18 @@ class PaymentActivationRequirement implements RequirementInterface
     /** @var Settings */
     private $settings;
 
-    /** @var RequirementHandler */
-    private $requirementHandler;
-
     public function __construct(
-        Settings $settings,
-        RequirementHandler $requirementHandler
+        Settings $settings
     ) {
         $this->settings = $settings;
-        $this->requirementHandler = $requirementHandler;
     }
 
     /**
      * @inheritDoc
+     * @throws Exception
      */
-    public function isFulfilled($arguments = null)
+    public function isValid()
     {
-        $isPaymentKitActive = $this->requirementHandler->isFulfilled('payment_kit_activation', true);
-
-        if ($isPaymentKitActive) {
-            $isPaymentActive = (bool) $this->settings->get('payment_activation');
-
-            $isPaymentActivationRequired = ($arguments === null) ? true : (bool) $arguments;
-
-            return ($isPaymentActive === $isPaymentActivationRequired);
-        } else {
-            return false;
-        }
+        return (bool) $this->settings->get('payment_activation');
     }
 }

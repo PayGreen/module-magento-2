@@ -5,7 +5,7 @@
       "shortcuts": "Raccourcis",
       "tree_activation": {
         "title": "Activation du calcul de l'empreinte carbone",
-        "help": "Si le calcul des l'empreinte carbone est activé, vous pourrez compenser le coût carbone d'une transaction."
+        "help": "Si le calcul de l'empreinte carbone est activé, vous pourrez compenser le coût carbone d'une transaction."
       }
     }
   }

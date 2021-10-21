@@ -1,0 +1,12 @@
+{
+  "actions": {
+    "charity_authentication": {
+      "reset": {
+        "result": {
+          "success": "Credentials reseted successfully.",
+          "failure": "An error occured during reseting credentials."
+        }
+      }
+    }
+  }
+}

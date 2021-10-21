@@ -1,0 +1,9 @@
+{
+  "blocks": {
+    "charity_account_logout": {
+      "title": "Logout",
+      "description": "Warning&nbsp;: if you logout, you will no longer be able to offer online rounding to your customers via the PayGreen CharityKit module.",
+      "action": "Logout"
+    }
+  }
+}

@@ -15,7 +15,7 @@
  * @author    PayGreen <contact@paygreen.fr>
  * @copyright 2014 - 2021 Watt Is It
  * @license   https://opensource.org/licenses/mit-license.php MIT License X11
- * @version   2.3.0
+ * @version   2.4.0
  *
  */
 
@@ -23,7 +23,7 @@ namespace PGI\Module\BOModule\Services\Listeners;
 
 use PGI\Module\PGFramework\Services\Notifier;
 use PGI\Module\PGServer\Components\Events\Action as ActionEventComponent;
-use PGI\Module\PGShop\Interfaces\Handlers\ShopHandlerInterface;
+use PGI\Module\PGShop\Services\Handlers\ShopHandler;
 
 /**
  * Class DisplaySupportPageBackofficeListener
@@ -34,14 +34,14 @@ class DisplaySupportPageBackofficeListener
     /** @var Notifier */
     private $notifier;
 
-    /** @var ShopHandlerInterface */
+    /** @var ShopHandler */
     private $shopHandler;
 
     private $bin;
 
     public function __construct(
         Notifier $notifier,
-        ShopHandlerInterface $shopHandler
+        ShopHandler $shopHandler
     ) {
         $this->notifier = $notifier;
         $this->shopHandler = $shopHandler;

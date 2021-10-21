@@ -15,7 +15,7 @@
  * @author    PayGreen <contact@paygreen.fr>
  * @copyright 2014 - 2021 Watt Is It
  * @license   https://opensource.org/licenses/mit-license.php MIT License X11
- * @version   2.3.0
+ * @version   2.4.0
  *
  */
 
@@ -31,7 +31,9 @@ use PGI\Module\PGFramework\Services\Handlers\CacheHandler;
 use PGI\Module\PGFramework\Services\Handlers\HTTPHandler;
 use PGI\Module\PGModule\Services\Logger;
 use PGI\Module\PGModule\Services\Settings;
+use PGI\Module\PGPayment\Entities\PaymentType;
 use PGI\Module\PGPayment\Exceptions\PaygreenAccount as PaygreenAccountException;
+use PGI\Module\PGPayment\Services\Managers\PaymentTypeManager;
 use PGI\Module\PGSystem\Foundations\AbstractObject;
 use PGI\Module\PGSystem\Services\Container;
 use Exception;
@@ -56,9 +58,6 @@ class PaygreenFacade extends AbstractObject
     const STATUS_REFUNDED = 'REFUNDED';
     const STATUS_FAILED = 'FAILED';
 
-    /** @var array */
-    private $availablePaymentTypes = array();
-
     /** @var HTTPHandler */
     private $httpHandler;
 
@@ -68,12 +67,17 @@ class PaygreenFacade extends AbstractObject
     /** @var ApiFacade|null */
     private $apiFacade = null;
 
+    /** @var PaymentTypeManager */
+    private $paymentTypeManager;
+
     public function __construct(
         ApiFactoryInterface $apiFactory,
-        HTTPHandler $httpHandler
+        HTTPHandler $httpHandler,
+        PaymentTypeManager $paymentTypeManager
     ) {
         $this->apiFactory = $apiFactory;
         $this->httpHandler = $httpHandler;
+        $this->paymentTypeManager = $paymentTypeManager;
     }
 
     /**
@@ -134,7 +138,7 @@ class PaygreenFacade extends AbstractObject
                     $data = $response->data;
 
                     $isArray = (isset($data->availableMode) && (is_array($data->availableMode)));
-                    
+
                     $isRecurringAvailable = ($isArray) ? in_array('RECURRING', $data->availableMode) : false;
                     $isXtimeAvailable = ($isArray) ? in_array('XTIME', $data->availableMode) : false;
 
@@ -325,21 +329,12 @@ class PaygreenFacade extends AbstractObject
     /**
      * @return array
      */
-    public function getAvailablePaymentTypes($force = false)
+    public function getAvailablePaymentTypes()
     {
+        $paymentTypes = array();
+
         try {
-            if (empty($this->availablePaymentTypes) && (!$force)) {
-                /** @var ResponseComponent $response */
-                $response = $this->getApiFacade()->paymentTypes();
-
-                if ($response->isSuccess()) {
-                    if (!is_array($response->data)) {
-                        throw new Exception("Payment types must be an array.");
-                    }
-
-                    $this->availablePaymentTypes = $response->data;
-                }
-            }
+            $paymentTypes = $this->paymentTypeManager->getAll();
         } catch (Exception $exception) {
             /** @var Logger $logger */
             $logger = $this->getService('logger');
@@ -347,6 +342,6 @@ class PaygreenFacade extends AbstractObject
             $logger->error("An error occurred during available payment types agregation: " . $exception->getMessage());
         }
 
-        return $this->availablePaymentTypes;
+        return $paymentTypes;
     }
 }

@@ -15,13 +15,14 @@
  * @author    PayGreen <contact@paygreen.fr>
  * @copyright 2014 - 2021 Watt Is It
  * @license   https://opensource.org/licenses/mit-license.php MIT License X11
- * @version   2.3.0
+ * @version   2.4.0
  *
  */
 
 namespace PGI\Module\PGModule\Services;
 
 use PGI\Module\PGModule\Interfaces\Officers\SettingsOfficerInterface;
+use PGI\Module\PGSystem\Components\Parameters;
 use PGI\Module\PGSystem\Foundations\AbstractObject;
 use PGI\Module\PGSystem\Services\Container;
 use Exception;
@@ -41,6 +42,9 @@ class Settings extends AbstractObject
     /** @var Container */
     private $container;
 
+    /** @var Parameters */
+    private $parameters;
+
     /** @var SettingsOfficerInterface */
     private $basicOfficer = null;
 
@@ -55,9 +59,10 @@ class Settings extends AbstractObject
      * @param Container $container
      * @param array $config
      */
-    public function __construct(Container $container, array $config)
+    public function __construct(Container $container, Parameters $parameters, array $config)
     {
         $this->container = $container;
+        $this->parameters = $parameters;
         $this->config = $config;
         $this->definitions = $config['entries'];
     }
@@ -393,6 +398,12 @@ class Settings extends AbstractObject
         }
 
         return $value;
+    }
+
+    public function reloadDefinition()
+    {
+        $this->config = $this->parameters['settings'];
+        $this->definitions = $this->config['entries'];
     }
 
     public function clean()

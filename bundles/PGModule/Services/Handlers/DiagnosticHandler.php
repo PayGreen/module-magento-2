@@ -15,13 +15,14 @@
  * @author    PayGreen <contact@paygreen.fr>
  * @copyright 2014 - 2021 Watt Is It
  * @license   https://opensource.org/licenses/mit-license.php MIT License X11
- * @version   2.3.0
+ * @version   2.4.0
  *
  */
 
 namespace PGI\Module\PGModule\Services\Handlers;
 
 use PGI\Module\PGFramework\Foundations\AbstractDiagnostic;
+use PGI\Module\PGFramework\Components\Aggregator as AggregatorComponent;
 use PGI\Module\PGModule\Components\Events\Module as ModuleEventComponent;
 use PGI\Module\PGModule\Services\Logger;
 use PGI\Module\PGSystem\Foundations\AbstractObject;
@@ -34,20 +35,18 @@ use Exception;
  */
 class DiagnosticHandler extends AbstractObject
 {
-    private $diagnosticNames = array();
-
     /** @var Logger */
     private $logger;
 
-    /** @var Container */
-    private $container;
+    /** @var AggregatorComponent */
+    private $diagnosticAggregator;
 
     private $bin;
 
-    public function __construct(Container $container, Logger $logger)
+    public function __construct(AggregatorComponent $diagnosticAggregator, Logger $logger)
     {
         $this->logger = $logger;
-        $this->container = $container;
+        $this->diagnosticAggregator = $diagnosticAggregator;
     }
 
 
@@ -61,17 +60,12 @@ class DiagnosticHandler extends AbstractObject
         $this->run();
     }
 
-    public function addDiagnosticName($serviceName)
-    {
-        $this->diagnosticNames[] = $serviceName;
-    }
-
     /**
      * @return array
      */
     public function getDiagnosticNames()
     {
-        return $this->diagnosticNames;
+        return $this->diagnosticAggregator->getNames();
     }
 
     /**
@@ -81,15 +75,8 @@ class DiagnosticHandler extends AbstractObject
     public function run($fix = true, $name = null)
     {
         try {
-            foreach ($this->diagnosticNames as $diagnosticName) {
+            foreach ($this->diagnosticAggregator as $diagnosticName => $diagnostic) {
                 if (($name === null) || ($diagnosticName === $name)) {
-                    /** @var AbstractDiagnostic $diagnostic */
-                    $diagnostic = $this->container->get($diagnosticName);
-
-                    if (!$diagnostic instanceof AbstractDiagnostic) {
-                        throw new Exception("'$diagnosticName' is not a valid Diagnostic.");
-                    }
-
                     $this->diagnose($diagnostic, $fix);
                 }
             }
@@ -109,7 +96,7 @@ class DiagnosticHandler extends AbstractObject
     public function getDiagnostic($name)
     {
         /** @var AbstractDiagnostic $diagnostic */
-        $diagnostic = $this->container->get($name);
+        $diagnostic = $this->diagnosticAggregator->getService($name);
 
         if (!$diagnostic instanceof AbstractDiagnostic) {
             throw new Exception("'$name' is not a valid Diagnostic.");

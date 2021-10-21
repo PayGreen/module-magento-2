@@ -6,13 +6,9 @@
           "label": "URL to the 'Learn More' page",
           "help": "The 'Learn More' page will allow your customers to get more information about carbon footprint calculation and carbon offsetting."
         },
-        "tree_api_server": {
-          "label": "PayGreen ClimateKit server",
-          "help": "Allows you to define which PayGreen ClimateKit server you want to use.",
-          "values": {
-            "PROD": "Production",
-            "SANDBOX": "Sandbox"
-          }
+        "tree_test_mode": {
+          "label": "Test mode activation",
+          "help": "Allows you to use the test mode."
         }
       }
     }

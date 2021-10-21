@@ -15,12 +15,13 @@
  * @author    PayGreen <contact@paygreen.fr>
  * @copyright 2014 - 2021 Watt Is It
  * @license   https://opensource.org/licenses/mit-license.php MIT License X11
- * @version   2.3.0
+ * @version   2.4.0
  *
  */
 
 namespace PGI\Module\PGPayment\Services\Requirements;
 
+use Exception;
 use PGI\Module\PGFramework\Interfaces\RequirementInterface;
 use PGI\Module\PGModule\Services\Settings;
 
@@ -40,13 +41,10 @@ class PaymentKitActivationRequirement implements RequirementInterface
 
     /**
      * @inheritDoc
+     * @throws Exception
      */
-    public function isFulfilled($arguments = null)
+    public function isValid()
     {
-        $isPaymentKitActive = $this->settings->get('payment_kit_activation');
-
-        $isPaymentKitActivationRequired = ($arguments === null) ? true : (bool) $arguments;
-
-        return ($isPaymentKitActive === $isPaymentKitActivationRequired);
+        return $this->settings->get('payment_kit_activation');
     }
 }

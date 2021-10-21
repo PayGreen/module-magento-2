@@ -1,0 +1,12 @@
+{
+  "blocks": {
+    "charity": {
+      "charity_products": {
+        "title": "CharityKit",
+        "description": "This product will allow you to propose to your customers the online rounding.",
+        "label": "CharityKit product activation",
+        "help": "Once this product is activated, you will have to connect to the API and then configure your module."
+      }
+    }
+  }
+}

@@ -15,7 +15,7 @@
  * @author    PayGreen <contact@paygreen.fr>
  * @copyright 2014 - 2021 Watt Is It
  * @license   https://opensource.org/licenses/mit-license.php MIT License X11
- * @version   2.3.0
+ * @version   2.4.0
  *
  */
 
@@ -25,7 +25,7 @@ use PGI\Module\PGForm\Interfaces\Fields\BasicFieldInterface;
 use PGI\Module\PGForm\Interfaces\Fields\CollectionFieldInterface;
 use PGI\Module\PGForm\Interfaces\Fields\CompositeFieldInterface;
 use PGI\Module\PGForm\Interfaces\FormatterInterface;
-use PGI\Module\PGForm\Services\Builders\Validator;
+use PGI\Module\PGForm\Services\Builders\ValidatorBuilder;
 use PGI\Module\PGFramework\Components\Aggregator as AggregatorComponent;
 use PGI\Module\PGModule\Services\Handlers\BehaviorHandler;
 use PGI\Module\PGModule\Services\Logger;
@@ -44,7 +44,7 @@ class FieldBuilder
     /** @var Container */
     private $container;
 
-    /** @var Validator */
+    /** @var ValidatorBuilder */
     private $builderValidator;
 
     /** @var AggregatorComponent */
@@ -62,13 +62,13 @@ class FieldBuilder
     private $config;
 
     public function __construct(
-        Container $container,
-        Validator $builderValidator,
+        Container           $container,
+        ValidatorBuilder    $builderValidator,
         AggregatorComponent $formatterAggregator,
-        BehaviorHandler $behaviorHandler,
+        BehaviorHandler     $behaviorHandler,
         AggregatorComponent $viewAggregator,
-        Logger $logger,
-        array $config
+        Logger              $logger,
+        array               $config
     ) {
         $this->container = $container;
         $this->builderValidator = $builderValidator;

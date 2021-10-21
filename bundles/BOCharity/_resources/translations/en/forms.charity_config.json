@@ -1,0 +1,12 @@
+{
+  "forms":{
+    "charity_config": {
+      "fields": {
+        "charity_test_mode": {
+          "label": "Test mode activation",
+          "help": "Allows you to use the test mode."
+        }
+      }
+    }
+  }
+}

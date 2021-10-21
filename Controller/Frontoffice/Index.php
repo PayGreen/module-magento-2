@@ -15,7 +15,7 @@
  * @author    PayGreen <contact@paygreen.fr>
  * @copyright 2014 - 2021 Watt Is It
  * @license   https://opensource.org/licenses/mit-license.php MIT License X11
- * @version   2.3.0
+ * @version   2.4.0
  *
  */
 
@@ -23,8 +23,11 @@ namespace Paygreen\Payment\Controller\Frontoffice;
 
 use Exception;
 use Magento\Framework\App\Action\Context as LocalContext;
+use Magento\Framework\App\RequestInterface;
 use Magento\Framework\App\Action\Action as LocalAction;
 use Magento\Framework\View\Result\PageFactory as LocalPageFactory;
+use PGI\Module\PGModule\Services\Logger;
+use PGI\Module\PGSystem\Services\Container;
 
 class Index extends LocalAction
 {
@@ -45,7 +48,21 @@ class Index extends LocalAction
 
         parent::__construct($context);
 
+        // CsrfAwareAction Magento2.3 compatibility
+        if (interface_exists("Magento\Framework\App\CsrfAwareActionInterface")) {
+            $request = $this->getRequest();
+            if ($request instanceof RequestInterface && $request->isPost() && empty($request->getParam('form_key'))) {
+                $formKey = $this->_objectManager->get(\Magento\Framework\Data\Form\FormKey::class);
+                $request->setParam('form_key', $formKey->getFormKey());
+            }
+        }
+
         $this->resultPageFactory = $resultPageFactory;
+
+        /** @var Logger $logger */
+        $logger = $this->getService('logger');
+
+        $logger->debug("Request incoming in front office endpoint.");
     }
 
     /**
@@ -54,6 +71,16 @@ class Index extends LocalAction
     protected function getResultPageFactory()
     {
         return $this->resultPageFactory;
+    }
+
+    /**
+     * @param string $name
+     * @return object
+     * @throws Exception
+     */
+    protected function getService(string $name)
+    {
+        return Container::getInstance()->get($name);
     }
 
     /**

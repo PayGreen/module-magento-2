@@ -1,0 +1,10 @@
+{
+  "misc": {
+    "tree": {
+      "test_mode": {
+        "active": "TEST mode activated",
+        "title": "Your ClimateKit is currently configured in TEST mode: no carbon file will be compatible with the contribution."
+      }
+    }
+  }
+}

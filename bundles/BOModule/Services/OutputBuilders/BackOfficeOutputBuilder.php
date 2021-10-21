@@ -15,7 +15,7 @@
  * @author    PayGreen <contact@paygreen.fr>
  * @copyright 2014 - 2021 Watt Is It
  * @license   https://opensource.org/licenses/mit-license.php MIT License X11
- * @version   2.3.0
+ * @version   2.4.0
  *
  */
 
@@ -59,7 +59,6 @@ class BackOfficeOutputBuilder extends AbstractOutputBuilder
      */
     public function build(array $data = array())
     {
-
         $this->server->getRequestBuilder()->setConfig('default_action', $this->menuHandler->getDefaultAction());
         $this->server->run();
 

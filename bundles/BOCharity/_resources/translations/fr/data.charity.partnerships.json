@@ -1,0 +1,17 @@
+{
+  "data":{
+    "charity_partnerships": {
+      "status": {
+        "ACCEPT": "Accepté",
+        "DELETE": "Révoqué",
+        "REFUSE": "Refusé",
+        "WAITING": "En attente"
+      },
+      "field_of_action": {
+        "HEALTH": "Santé",
+        "HUMANITARIAN": "Humanitaire",
+        "ENVIRONMENTAL": "Environnemental"
+      }
+    }
+  }
+}

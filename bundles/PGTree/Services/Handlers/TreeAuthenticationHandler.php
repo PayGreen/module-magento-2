@@ -15,15 +15,17 @@
  * @author    PayGreen <contact@paygreen.fr>
  * @copyright 2014 - 2021 Watt Is It
  * @license   https://opensource.org/licenses/mit-license.php MIT License X11
- * @version   2.3.0
+ * @version   2.4.0
  *
  */
 
 namespace PGI\Module\PGTree\Services\Handlers;
 
 use PGI\Module\APITree\Services\Facades\ApiFacade;
+use PGI\Module\APITree\Services\Factories\ApiFacadeFactory;
 use PGI\Module\PGClient\Components\Response as ResponseComponent;
 use PGI\Module\PGClient\Exceptions\Response as ResponseException;
+use PGI\Module\PGClient\Services\Factories\RequestFactory;
 use PGI\Module\PGModule\Services\Logger;
 use PGI\Module\PGModule\Services\Settings;
 use DateTime;
@@ -38,21 +40,26 @@ class TreeAuthenticationHandler
 {
     const REFRESH_TOKEN_VALIDITY = '1 month';
 
+    /** @var ApiFacade */
+    private $apiFacade;
+
+    /** @var ApiFacadeFactory */
+    private $apiFacadeFactory;
+
     /** @var Settings */
     private $settings;
-
-    /** @var ApiFacade */
-    private $treeAPIFacade;
 
     /** @var Logger */
     private $logger;
 
     public function __construct(
-        ApiFacade $treeAPIFacade,
+        ApiFacade $apiFacade,
+        ApiFacadeFactory $apiFacadeFactory,
         Settings $settings,
         Logger $logger
     ) {
-        $this->treeAPIFacade = $treeAPIFacade;
+        $this->apiFacade = $apiFacade;
+        $this->apiFacadeFactory = $apiFacadeFactory;
         $this->settings = $settings;
         $this->logger = $logger;
     }
@@ -89,11 +96,11 @@ class TreeAuthenticationHandler
     public function connect($client_id, $username, $password)
     {
         /** @var ResponseComponent $response */
-        $response = $this->treeAPIFacade->getOAuthAccess($username, $password, $client_id);
+        $response = $this->apiFacade->getOAuthAccess($username, $password, $client_id);
 
         if ($response->getHTTPCode() === 200) {
             $this->saveTokens($client_id, $response->data);
-            $this->settings->set('tree_client_username',$username);
+            $this->settings->set('tree_client_username', $username);
             return true;
         }
 
@@ -113,7 +120,7 @@ class TreeAuthenticationHandler
             $client_id = $this->getTreeClientIdFromSettings();
 
             /** @var ResponseComponent $response */
-            $response = $this->treeAPIFacade->refreshOAuthAccess(
+            $response = $this->apiFacade->refreshOAuthAccess(
                 $this->settings->get('tree_refresh_token'),
                 $client_id
             );
@@ -149,6 +156,11 @@ class TreeAuthenticationHandler
         $this->settings->set('tree_refresh_token', $data->refresh_token);
         $this->settings->set('tree_refresh_token_validity', $dt_refresh_token->format(DateTime::ISO8601));
         $this->settings->set('tree_client_id', $client_id);
+
+        /** @var RequestFactory $requestFactory */
+        $requestFactory = $this->apiFacadeFactory->getRequestFactory();
+
+        $this->apiFacade->setRequestFactory($requestFactory);
     }
 
     /**

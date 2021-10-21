@@ -15,7 +15,7 @@
  * @author    PayGreen <contact@paygreen.fr>
  * @copyright 2014 - 2021 Watt Is It
  * @license   https://opensource.org/licenses/mit-license.php MIT License X11
- * @version   2.3.0
+ * @version   2.4.0
  *
  */
 
@@ -61,7 +61,8 @@ class CarbonOffsettingComputingProductListener
     {
         try {
             $this->treeAPIFacade->deleteProductCarbonEmission(
-            $event->getCarbonOffsettingComputing()->getFingerPrintPrimary());
+                $event->getCarbonOffsettingComputing()->getFingerPrintPrimary()
+            );
         } catch (Exception $exception) {
             $this->logger->warning("Unable to delete product carbon emission : " . $exception->getMessage());
         }
@@ -81,7 +82,7 @@ class CarbonOffsettingComputingProductListener
             try {
                 $this->treeAPIFacade->addProductCarbonEmission(
                     $event->getCarbonOffsettingComputing()->getFingerPrintPrimary(),
-                    $item_reference,
+                    (!empty($item_reference)) ? $item_reference : $item->getProduct()->id(),
                     $item_quantity
                 );
 

@@ -14,20 +14,27 @@
  * @author    PayGreen <contact@paygreen.fr>
  * @copyright 2014 - 2021 Watt Is It
  * @license   https://opensource.org/licenses/mit-license.php MIT License X11
- * @version   2.3.0
+ * @version   2.4.0
  *
  *}
-<h2>
-    {'blocks.tree.title'|pgtrans}
-</h2>
+<div class="pgdiv_flex_row pg_justify_content_between pg_align_items-flex_start">
+    <h2 class="pg__mtop-0">
+        {'blocks.tree.title'|pgtrans}
+    </h2>
+    {if $treeKitInfos != null}
+        {if $treeKitInfos['is_test_mode_activated'] && !$treeKitInfos['is_test_mode_expired'] && $treeActivated}
+            {include file="tree/badge-test-mode.tpl"}
+        {/if}
+    {/if}
+</div>
+
 
 <div class="pgdiv_flex_row">
     {if $connected}
         {if $treeKitInfos != null}
             {include file="tree/block-tree-kit-infos.tpl" infos=[
                 'blocks.tree_kit_infos.form.client_id' => $credentials['client_id'],
-                'blocks.tree_kit_infos.form.username' => $credentials['username'],
-                'blocks.tree_kit_infos.form.server' => {{$credentials['server']}|pgtrans}
+                'blocks.tree_kit_infos.form.username' => $credentials['username']
             ] carbonDataOverview=$treeKitInfos['carbon_data_overview']}
         {/if}
     {else}
@@ -44,14 +51,23 @@
     {/if}
 
     <div class="pgdiv_flex_column">
-        <div class="pgblock pgblock__max__md">
-            {include
-            file="toggle.tpl"
-            title="blocks.tree.tree_activation.title"
-            description="blocks.tree.tree_activation.help"
-            action="backoffice.tree.activation"
-            active=$treeActivated}
-        </div>
+        {if $treeKitInfos != null}
+            <div class="pgblock pgblock__max__md">
+                {if
+                    $treeKitInfos['is_mandate_signed'] == false &&
+                    $treeKitInfos['is_test_mode_expired']
+                }
+                    {'misc.tree_account.notifications.mandate.unsigned'|pgtrans}
+                {else}
+                    {include
+                    file="toggle.tpl"
+                    title="blocks.tree.tree_activation.title"
+                    description="blocks.tree.tree_activation.help"
+                    action="backoffice.tree.activation"
+                    active=$treeActivated}
+                {/if}
+            </div>
+        {/if}
         <div class="pgblock pgblock__max__md">
             <p>{'blocks.tree.shortcuts'|pgtrans} :</p>
             <ul class="p-0 no-list-style">

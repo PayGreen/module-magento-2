@@ -15,7 +15,7 @@
  * @author    PayGreen <contact@paygreen.fr>
  * @copyright 2014 - 2021 Watt Is It
  * @license   https://opensource.org/licenses/mit-license.php MIT License X11
- * @version   2.3.0
+ * @version   2.4.0
  *
  */
 
@@ -23,6 +23,7 @@ namespace PGI\Module\PGShop\Services\Managers;
 
 use PGI\Module\PGDatabase\Foundations\AbstractManager;
 use PGI\Module\PGModule\Services\Broadcaster;
+use PGI\Module\PGModule\Services\Logger;
 use PGI\Module\PGShop\Components\Events\OrderState as OrderStateEventComponent;
 use PGI\Module\PGShop\Components\Events\OrderStateTransition as OrderStateTransitionEventComponent;
 use PGI\Module\PGShop\Components\OrderStateTransition as OrderStateTransitionComponent;
@@ -44,12 +45,34 @@ class OrderManager extends AbstractManager
     /** @var OrderStateMapper */
     protected $orderStateMapper;
 
+    /** @var Broadcaster */
+    protected $broadcaster;
+
+    /** @var Logger */
+    protected $logger;
+
     /**
      * @param OrderStateMapper $orderStateMapper
      */
     public function setOrderStateMapper(OrderStateMapper $orderStateMapper)
     {
         $this->orderStateMapper = $orderStateMapper;
+    }
+
+    /**
+     * @param Broadcaster $broadcaster
+     */
+    public function setBroadcaster(Broadcaster $broadcaster)
+    {
+        $this->broadcaster = $broadcaster;
+    }
+
+    /**
+     * @param Logger $logger
+     */
+    public function setLogger(Logger $logger)
+    {
+        $this->logger = $logger;
     }
 
     /**
@@ -91,7 +114,7 @@ class OrderManager extends AbstractManager
         $targetState = $orderStateTransition->getTargetState();
 
         if ($orderStateManager->isAllowedTransition($mode, $currentState, $targetState)) {
-            $this->getService('logger')->debug(
+            $this->logger->debug(
                 'updateOrderStatus : '. $currentState . ' -> ' . $targetState
             );
 
@@ -121,12 +144,9 @@ class OrderManager extends AbstractManager
      */
     private function fireOrderStateEvent(OrderEntityInterface $order)
     {
-        /** @var Broadcaster $broadcaster */
-        $broadcaster = $this->getService('broadcaster');
-
         $orderEvent = new OrderStateEventComponent($order);
 
-        $broadcaster->fire($orderEvent);
+        $this->broadcaster->fire($orderEvent);
     }
 
     /**
@@ -137,14 +157,11 @@ class OrderManager extends AbstractManager
      */
     private function buildOrderStateTransition(OrderEntityInterface $order, $targetState)
     {
-        /** @var Broadcaster $broadcaster */
-        $broadcaster = $this->getService('broadcaster');
-
         $orderStateTransition = new OrderStateTransitionComponent($order->getState(), $targetState);
 
         $orderEvent = new OrderStateTransitionEventComponent($orderStateTransition);
 
-        $broadcaster->fire($orderEvent);
+        $this->broadcaster->fire($orderEvent);
 
         return $orderStateTransition;
     }

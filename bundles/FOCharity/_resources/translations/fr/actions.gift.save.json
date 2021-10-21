@@ -1,0 +1,20 @@
+{
+  "actions": {
+    "gift": {
+      "save": {
+        "result": {
+          "failure": {
+            "title": "Erreur de don",
+            "message": "Une erreur s'est produite lors du traitement de votre don.",
+            "link" : "Retour sur la page de paiement"
+          },
+          "error": {
+            "title": "Erreur de don",
+            "message": "Une erreur s'est produite lors du traitement de votre don.",
+            "link" : "Retour sur la page de paiement"
+          }
+        }
+      }
+    }
+  }
+}

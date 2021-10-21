@@ -14,7 +14,7 @@
  * @author    PayGreen <contact@paygreen.fr>
  * @copyright 2014 - 2021 Watt Is It
  * @license   https://opensource.org/licenses/mit-license.php MIT License X11
- * @version   2.3.0
+ * @version   2.4.0
  *
  *}
 <fieldset
@@ -24,6 +24,10 @@
 >
     {if isset($label)}
         {include file="fields/partials/label.tpl" label=$label attr=$attr}
+    {/if}
+
+    {if isset($warning)}
+        {include file="fields/partials/warning.tpl" warning=$warning}
     {/if}
 
     {$children.reset}

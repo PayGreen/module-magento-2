@@ -15,7 +15,7 @@
  * @author    PayGreen <contact@paygreen.fr>
  * @copyright 2014 - 2021 Watt Is It
  * @license   https://opensource.org/licenses/mit-license.php MIT License X11
- * @version   2.3.0
+ * @version   2.4.0
  *
  */
 
@@ -25,7 +25,7 @@ use PGI\Module\BOModule\Foundations\Controllers\AbstractBackofficeController;
 use PGI\Module\BOModule\Services\Handlers\MenuHandler;
 use PGI\Module\PGServer\Foundations\AbstractResponse;
 use PGI\Module\PGShop\Interfaces\Entities\ShopEntityInterface;
-use PGI\Module\PGShop\Interfaces\Handlers\ShopHandlerInterface;
+use PGI\Module\PGShop\Services\Handlers\ShopHandler;
 use PGI\Module\PGShop\Services\Managers\ShopManager;
 use Exception;
 
@@ -35,7 +35,7 @@ use Exception;
  */
 class ShopController extends AbstractBackofficeController
 {
-    /** @var ShopHandlerInterface */
+    /** @var ShopHandler */
     private $shopHandler;
 
     /** @var ShopManager */
@@ -45,7 +45,7 @@ class ShopController extends AbstractBackofficeController
     private $menuHandler;
 
     public function __construct(
-        ShopHandlerInterface $shopHandler,
+        ShopHandler $shopHandler,
         ShopManager $shopManager,
         MenuHandler $menuHandler
     ) {

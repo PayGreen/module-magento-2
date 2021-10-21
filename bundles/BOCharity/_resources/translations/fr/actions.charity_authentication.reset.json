@@ -1,0 +1,12 @@
+{
+  "actions": {
+    "charity_authentication": {
+      "reset": {
+        "result": {
+          "success": "Vos identifiants de connexion ont été réinitialisés avec succès.",
+          "failure": "Une erreur s'est produite lors de la réinitialisation de vos identifiants de connexion."
+        }
+      }
+    }
+  }
+}

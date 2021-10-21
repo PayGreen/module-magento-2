@@ -15,7 +15,7 @@
  * @author    PayGreen <contact@paygreen.fr>
  * @copyright 2014 - 2021 Watt Is It
  * @license   https://opensource.org/licenses/mit-license.php MIT License X11
- * @version   2.3.0
+ * @version   2.4.0
  *
  */
 
@@ -39,9 +39,6 @@ class CarbonFootprintFinalizationListener
     /** @var TreeCarbonOffsettingHandler */
     private $treeCarbonOffsettingHandler;
 
-    /** @var RequirementHandler */
-    private $requirementHandler;
-
     /** @var CarbonDataRepository */
     private $carbonDataRepository;
 
@@ -50,12 +47,10 @@ class CarbonFootprintFinalizationListener
 
     public function __construct(
         TreeCarbonOffsettingHandler $treeCarbonOffsettingHandler,
-        RequirementHandler $requirementHandler,
         CarbonDataRepository $carbonDataRepository,
         Logger $logger
     ) {
         $this->treeCarbonOffsettingHandler = $treeCarbonOffsettingHandler;
-        $this->requirementHandler = $requirementHandler;
         $this->carbonDataRepository = $carbonDataRepository;
         $this->logger = $logger;
     }
@@ -67,36 +62,34 @@ class CarbonFootprintFinalizationListener
     public function listen(LocalOrderEventComponent $event)
     {
         try {
-            if ($this->requirementHandler->isFulfilled('tree_activation', true)) {
-                /** @var OrderEntityInterface $order */
-                $order = $event->getOrder();
+            /** @var OrderEntityInterface $order */
+            $order = $event->getOrder();
 
-                if ($order === null) {
-                    throw new Exception("Order is required to finalize carbon footprint.");
-                } elseif (!$order instanceof OrderEntityInterface) {
-                    throw new Exception("Order must be an instance of OrderEntityInterface.");
-                }
+            if ($order === null) {
+                throw new Exception("Order is required to finalize carbon footprint.");
+            } elseif (!$order instanceof OrderEntityInterface) {
+                throw new Exception("Order must be an instance of OrderEntityInterface.");
+            }
 
-                $orderId = $order->id();
+            $orderId = $order->id();
 
-                if ($this->carbonDataRepository->findByOrderPrimary($orderId) === null) {
-                    $this->treeCarbonOffsettingHandler->computeCarbonOffsetting(
-                        $order,
-                        $order->getCustomer(),
-                        $order->getCarrier()
-                    );
+            if ($this->carbonDataRepository->findByOrderPrimary($orderId) === null) {
+                $this->treeCarbonOffsettingHandler->computeCarbonOffsetting(
+                    $order,
+                    $order->getCustomer(),
+                    $order->getCarrier()
+                );
 
-                    /** @var CarbonFootprintReplyComponent $carbonFootprintResponse */
-                    $carbonFootprintResponse = $this->treeCarbonOffsettingHandler->getCarbonOffsetting();
+                /** @var CarbonFootprintReplyComponent $carbonFootprintResponse */
+                $carbonFootprintResponse = $this->treeCarbonOffsettingHandler->getCarbonOffsetting();
 
-                    $this->treeCarbonOffsettingHandler->closeCarbonOffsetting();
+                $this->treeCarbonOffsettingHandler->closeCarbonOffsetting();
 
-                    $this->treeCarbonOffsettingHandler->saveCarbonData($order, $carbonFootprintResponse);
+                $this->treeCarbonOffsettingHandler->saveCarbonData($order, $carbonFootprintResponse);
 
-                    $this->logger->debug('Carbon footprint successfully finalized.');
-                } else {
-                    $this->logger->debug("Carbon data already exist for order #$orderId.");
-                }
+                $this->logger->debug('Carbon footprint successfully finalized.');
+            } else {
+                $this->logger->debug("Carbon data already exist for order #$orderId.");
             }
         } catch (Exception $exception) {
             $text = "An error occured during carbon footprint finalization : " .$exception->getMessage();

@@ -15,7 +15,7 @@
  * @author    PayGreen <contact@paygreen.fr>
  * @copyright 2014 - 2021 Watt Is It
  * @license   https://opensource.org/licenses/mit-license.php MIT License X11
- * @version   2.3.0
+ * @version   2.4.0
  *
  */
 
@@ -54,6 +54,7 @@ class DisplayCarbonBotConfigurationFormAction extends AbstractAction
             'carbonEmittedFromDigital' => 54,
             'carbonEmittedFromTransportation' => 646,
             'carbonEmittedFromProduct' => 0.422,
+            'isTreeTestModeActivated' => $this->getSettings()->get('tree_test_mode'),
         ))->addData('form', $this->buildSettingsFormView());
 
         $response->addResource(new StyleFileResourceComponent('/css/tree-bot-main.css'));

@@ -1,0 +1,20 @@
+{
+  "actions": {
+    "gift": {
+      "cancel": {
+        "result": {
+          "failure": {
+            "title": "Donation error",
+            "message": "An error occurred while cancelling your donation.",
+            "link" : "Back to the checkout page"
+          },
+          "error": {
+            "title": "Donation error",
+            "message": "An error occurred while cancelling your donation.",
+            "link" : "Back to the checkout page"
+          }
+        }
+      }
+    }
+  }
+}

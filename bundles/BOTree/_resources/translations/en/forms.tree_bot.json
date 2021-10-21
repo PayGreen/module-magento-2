@@ -8,7 +8,7 @@
         },
         "tree_bot_side": {
           "label": "CarbonBot position",
-          "help": "Allows you to set the position at which the CarbonBot will be displayed.",
+          "help": "Allows you to define the position of the CarbonBot.",
           "choices": {
             "LEFT": "On the left",
             "RIGHT": "On the right"

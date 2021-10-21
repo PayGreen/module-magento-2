@@ -15,7 +15,7 @@
  * @author    PayGreen <contact@paygreen.fr>
  * @copyright 2014 - 2021 Watt Is It
  * @license   https://opensource.org/licenses/mit-license.php MIT License X11
- * @version   2.3.0
+ * @version   2.4.0
  *
  */
 
@@ -122,7 +122,11 @@ class SettingsOrderStateMappingStrategy extends AbstractOrderStateMapperStrategy
         $id_finded_state = (int) $this->settings->get($parameter);
 
         /** @var OrderStateEntityInterface $orderState */
-        $orderState = $this->orderStateManager->getByPrimary($id_finded_state);
+        $orderState = null;
+
+        if ($id_finded_state !== 0) {
+            $orderState = $this->orderStateManager->getByPrimary($id_finded_state);
+        }
 
         if ($orderState === null) {
             $orderState = $this->orderStateManager->create($state);

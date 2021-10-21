@@ -1,0 +1,20 @@
+{
+  "actions": {
+    "gift": {
+      "cancel": {
+        "result": {
+          "failure": {
+            "title": "Erreur de don",
+            "message": "Une erreur s'est produite lors de l'annulation de votre don.",
+            "link" : "Retour sur la page de paiement"
+          },
+          "error": {
+            "title": "Erreur de don",
+            "message": "Une erreur s'est produite lors de l'annulation de votre don.",
+            "link" : "Retour sur la page de paiement"
+          }
+        }
+      }
+    }
+  }
+}

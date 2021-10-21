@@ -15,7 +15,7 @@
  * @author    PayGreen <contact@paygreen.fr>
  * @copyright 2014 - 2021 Watt Is It
  * @license   https://opensource.org/licenses/mit-license.php MIT License X11
- * @version   2.3.0
+ * @version   2.4.0
  *
  */
 
@@ -41,16 +41,8 @@ class PaygreenConnexionRequirement implements RequirementInterface
     /**
      * @inheritDoc
      */
-    public function isFulfilled($arguments = null)
+    public function isValid()
     {
-        $isPaygreenConnexionRequired = ($arguments === null) ? true : (bool) $arguments;
-
-        if (!$isPaygreenConnexionRequired && !$this->paygreenFacade->isConnected()) {
-            return true;
-        } elseif ($isPaygreenConnexionRequired && $this->paygreenFacade->isConnected()) {
-            return true;
-        } else {
-            return false;
-        }
+        return $this->paygreenFacade->isConnected();
     }
 }

@@ -15,7 +15,7 @@
  * @author    PayGreen <contact@paygreen.fr>
  * @copyright 2014 - 2021 Watt Is It
  * @license   https://opensource.org/licenses/mit-license.php MIT License X11
- * @version   2.3.0
+ * @version   2.4.0
  *
  */
 
@@ -27,7 +27,7 @@ use PGI\Module\PGServer\Components\Events\Action as ActionEventComponent;
 use PGI\Module\PGServer\Foundations\AbstractController;
 use PGI\Module\PGServer\Foundations\AbstractRequest;
 use PGI\Module\PGServer\Foundations\AbstractResponse;
-use PGI\Module\PGSystem\Foundations\AbstractObject;
+use PGI\Module\PGFramework\Components\Aggregator as AggregatorComponent;
 use Exception;
 use LogicException;
 
@@ -35,11 +35,9 @@ use LogicException;
  * Class Dispatcher
  * @package PGServer\Services
  */
-class Dispatcher extends AbstractObject
+class Dispatcher
 {
     const DEFAULT_ACTION = 'process';
-
-    private $controllerNames = array();
 
     /** @var Logger */
     private $logger;
@@ -47,27 +45,22 @@ class Dispatcher extends AbstractObject
     /** @var Broadcaster */
     private $broadcaster;
 
+    /** @var AggregatorComponent */
+    private $controllerAggregator;
+
+    /** @var AggregatorComponent */
+    private $actionAggregator;
+
     public function __construct(
         Logger $logger,
-        Broadcaster $broadcaster
+        Broadcaster $broadcaster,
+        AggregatorComponent $controllerAggregator,
+        AggregatorComponent $actionAggregator
     ) {
         $this->logger = $logger;
         $this->broadcaster = $broadcaster;
-    }
-
-    public function addControllerName($serviceName, $controllerName = null)
-    {
-        if ($controllerName === null) {
-            if (preg_match('/^controller\.(?P<name>.+)/', $serviceName, $result)) {
-                $controllerName = $result['name'];
-            } else {
-                throw new Exception(
-                    "Unable to automatically determine the controller name with the service name : '$serviceName'."
-                );
-            }
-        }
-
-        $this->controllerNames[$controllerName] = $serviceName;
+        $this->controllerAggregator = $controllerAggregator;
+        $this->actionAggregator = $actionAggregator;
     }
 
     /**
@@ -81,13 +74,13 @@ class Dispatcher extends AbstractObject
         if (!strpos($localization, '@')) {
             $action = $actionName = self::DEFAULT_ACTION;
             $controllerName = 'action.' . $localization;
-            $controller = $this->getService($controllerName);
+            $controller = $this->actionAggregator->getService($localization);
         } else {
             list($actionName, $controllerName) = explode('@', $localization, 2);
 
             /** @var AbstractController $controller */
-            $controller = $this->getController($controllerName);
-    
+            $controller = $this->controllerAggregator->getService($controllerName);
+
             if (!empty($actionName)) {
                 $action = $actionName . 'Action';
             } else {
@@ -114,21 +107,5 @@ class Dispatcher extends AbstractObject
         $this->logger->debug("Response successfully built.");
 
         return $response;
-    }
-
-    /**
-     * @param string $name
-     * @return AbstractController
-     */
-    protected function getController($name)
-    {
-        if (!array_key_exists($name, $this->controllerNames)) {
-            throw new LogicException("Unknown controller name : '$name'.");
-        }
-
-        /** @var AbstractController $controller */
-        $controller = $this->getService($this->controllerNames[$name]);
-
-        return $controller;
     }
 }

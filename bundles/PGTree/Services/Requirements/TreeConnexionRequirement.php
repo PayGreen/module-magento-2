@@ -15,14 +15,14 @@
  * @author    PayGreen <contact@paygreen.fr>
  * @copyright 2014 - 2021 Watt Is It
  * @license   https://opensource.org/licenses/mit-license.php MIT License X11
- * @version   2.3.0
+ * @version   2.4.0
  *
  */
 
 namespace PGI\Module\PGTree\Services\Requirements;
 
+use Exception;
 use PGI\Module\PGFramework\Interfaces\RequirementInterface;
-use PGI\Module\PGFramework\Services\Handlers\RequirementHandler;
 use PGI\Module\PGTree\Services\Handlers\TreeAuthenticationHandler;
 
 /**
@@ -31,39 +31,21 @@ use PGI\Module\PGTree\Services\Handlers\TreeAuthenticationHandler;
  */
 class TreeConnexionRequirement implements RequirementInterface
 {
-    /** @var RequirementHandler */
-    private $requirementHandler;
-
     /** @var TreeAuthenticationHandler */
     private $treeAuthenticationHandler;
 
     public function __construct(
-        RequirementHandler $requirementHandler,
         TreeAuthenticationHandler $treeAuthenticationHandler
     ) {
-        $this->requirementHandler = $requirementHandler;
         $this->treeAuthenticationHandler = $treeAuthenticationHandler;
     }
 
     /**
      * @inheritDoc
+     * @throws Exception
      */
-    public function isFulfilled($arguments = null)
+    public function isValid()
     {
-        $isTreeActivated = $this->requirementHandler->isFulfilled('tree_kit_activation', true);
-
-        if ($isTreeActivated) {
-            $isTreeConnexionRequired = ($arguments === null) ? true : (bool) $arguments;
-
-            if (!$isTreeConnexionRequired && !$this->treeAuthenticationHandler->isConnected()) {
-                return true;
-            } elseif ($isTreeConnexionRequired && $this->treeAuthenticationHandler->isConnected()) {
-                return true;
-            } else {
-                return false;
-            }
-        }
-
-        return false;
+        return $this->treeAuthenticationHandler->isConnected();
     }
 }

@@ -14,7 +14,7 @@
  * @author    PayGreen <contact@paygreen.fr>
  * @copyright 2014 - 2021 Watt Is It
  * @license   https://opensource.org/licenses/mit-license.php MIT License X11
- * @version   2.3.0
+ * @version   2.4.0
  *
  *}
 <div class="pgnavbar">
@@ -24,7 +24,7 @@
         title="{'misc.backoffice.menu.logo'|pgtrans}"
         class="pgnavbar__logo"
     >
-        <img src="{'PGModule:paygreen-logo.svg'|picture}" alt="PayGreen" />
+        <img src="{$logo|picture}" alt="PayGreen" />
     </a>
 
     <ul class="pgnavbar__menu">

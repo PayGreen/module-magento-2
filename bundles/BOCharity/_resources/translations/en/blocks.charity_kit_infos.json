@@ -1,0 +1,12 @@
+{
+  "blocks": {
+    "charity_kit_infos": {
+      "title": "Informations",
+      "form": {
+        "client_id": "Account",
+        "username": "Username",
+        "server": "Server name"
+      }
+    }
+  }
+}

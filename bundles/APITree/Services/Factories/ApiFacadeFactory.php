@@ -15,7 +15,7 @@
  * @author    PayGreen <contact@paygreen.fr>
  * @copyright 2014 - 2021 Watt Is It
  * @license   https://opensource.org/licenses/mit-license.php MIT License X11
- * @version   2.3.0
+ * @version   2.4.0
  *
  */
 
@@ -27,6 +27,7 @@ use PGI\Module\PGClient\Services\Factories\ResponseFactory;
 use PGI\Module\PGClient\Services\Requesters\CurlRequester;
 use PGI\Module\PGClient\Services\Requesters\FopenRequester;
 use PGI\Module\PGClient\Services\Sender;
+use PGI\Module\PGFramework\Services\Handlers\RequirementHandler;
 use PGI\Module\PGModule\Services\Logger;
 use PGI\Module\PGModule\Services\Settings;
 use PGI\Module\PGSystem\Components\Parameters as ParametersComponent;
@@ -47,14 +48,19 @@ class ApiFacadeFactory
     /** @var ParametersComponent */
     private $parameters;
 
+    /** @var RequirementHandler */
+    private $requirementHandler;
+
     public function __construct(
         Logger $logger,
         Settings $settings,
-        ParametersComponent $parameters
+        ParametersComponent $parameters,
+        RequirementHandler $requirementHandler
     ) {
         $this->logger = $logger;
         $this->settings = $settings;
         $this->parameters = $parameters;
+        $this->requirementHandler = $requirementHandler;
     }
 
     /**
@@ -63,63 +69,14 @@ class ApiFacadeFactory
      */
     public function build()
     {
-        return new ApiFacade($this->getRequestSender(), $this->getRequestFactory());
-    }
-
-    protected function getRequestSender()
-    {
-        /** @var Sender $requestSender */
-        $requestSender = new Sender($this->logger);
-
-        $requestSender
-            ->addRequesters(new CurlRequester(
-                $this->settings,
-                $this->logger,
-                $this->parameters['api.tree.clients.curl']
-            ))
-            ->addRequesters(new FopenRequester(
-                $this->settings,
-                $this->logger,
-                $this->parameters['api.tree.clients.fopen']
-            ))
-            ->setResponseFactory(new ResponseFactory(
-                $this->logger,
-                $this->parameters['api.tree.requests'],
-                $this->parameters['api.tree.responses']
-            ))
-        ;
-
-        return $requestSender;
-    }
-
-    /**
-     * @return string
-     * @throws Exception
-     */
-    protected function computeApiServer()
-    {
-        $server = $this->settings->get('tree_api_server');
-        $url = $this->parameters["urls.climatekit.$server"];
-
-        if (!$url) {
-            $this->logger->error("Invalid url for climatekit api server. Use default value.");
-
-            $server = $this->settings->getDefault('tree_api_server');
-            $url = $this->parameters["urls.climatekit.$server"];
-        }
-
-        if (!$url) {
-            throw new Exception("Invalid url for climatekit api server.");
-        }
-
-        return $url;
+        return new ApiFacade($this->getRequestSender(), $this->getRequestFactory(), $this->settings, $this->requirementHandler);
     }
 
     /**
      * @return RequestFactory
      * @throws Exception
      */
-    protected function getRequestFactory()
+    public function getRequestFactory()
     {
         $access_token = $this->settings->get('tree_access_token');
         $refresh_token = $this->settings->get('tree_refresh_token');
@@ -148,5 +105,55 @@ class ApiFacadeFactory
             $sharedHeaders,
             $sharedParameters
         );
+    }
+
+    protected function getRequestSender()
+    {
+        /** @var Sender $requestSender */
+        $requestSender = new Sender($this->logger);
+
+        $requestSender
+            ->addRequesters(new CurlRequester(
+                $this->settings,
+                $this->logger,
+                $this->parameters['api.tree.clients.curl']
+            ))
+            ->addRequesters(new FopenRequester(
+                $this->settings,
+                $this->logger,
+                $this->parameters['api.tree.clients.fopen']
+            ))
+            ->setResponseFactory(new ResponseFactory(
+                $this->logger,
+                $this->parameters['api.tree.requests'],
+                $this->parameters['api.tree.responses'],
+                $this->parameters['http_codes']
+            ))
+        ;
+
+        return $requestSender;
+    }
+
+    /**
+     * @return string
+     * @throws Exception
+     */
+    protected function computeApiServer()
+    {
+        $server = $this->settings->get('tree_api_server');
+        $url = $this->parameters["urls.climatekit.$server"];
+
+        if (!$url) {
+            $this->logger->error("Invalid url for climatekit api server. Use default value.");
+
+            $server = $this->settings->getDefault('tree_api_server');
+            $url = $this->parameters["urls.climatekit.$server"];
+        }
+
+        if (!$url) {
+            throw new Exception("Invalid url for climatekit api server.");
+        }
+
+        return $url;
     }
 }

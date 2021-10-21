@@ -15,7 +15,7 @@
  * @author    PayGreen <contact@paygreen.fr>
  * @copyright 2014 - 2021 Watt Is It
  * @license   https://opensource.org/licenses/mit-license.php MIT License X11
- * @version   2.3.0
+ * @version   2.4.0
  *
  */
 
@@ -27,7 +27,7 @@ use PGI\Module\PGIntl\Interfaces\Entities\TranslationEntityInterface;
 use PGI\Module\PGIntl\Interfaces\Repositories\TranslationRepositoryInterface;
 use PGI\Module\PGPayment\Interfaces\Entities\TransactionEntityInterface;
 use PGI\Module\PGShop\Interfaces\Entities\ShopEntityInterface;
-use PGI\Module\PGShop\Interfaces\Handlers\ShopHandlerInterface;
+use PGI\Module\PGShop\Services\Handlers\ShopHandler;
 use Exception;
 
 /**
@@ -36,13 +36,13 @@ use Exception;
  */
 class TranslationRepository extends AbstractRepositoryDatabase implements TranslationRepositoryInterface
 {
-    /** @var ShopHandlerInterface */
+    /** @var ShopHandler */
     private $shopHandler;
 
     public function __construct(
         DatabaseHandler $databaseHandler,
         array $config,
-        ShopHandlerInterface $shopHandler
+        ShopHandler $shopHandler
     ) {
         parent::__construct($databaseHandler, $config);
 

@@ -15,7 +15,7 @@
  * @author    PayGreen <contact@paygreen.fr>
  * @copyright 2014 - 2021 Watt Is It
  * @license   https://opensource.org/licenses/mit-license.php MIT License X11
- * @version   2.3.0
+ * @version   2.4.0
  *
  */
 
@@ -23,6 +23,8 @@ namespace PGI\Module\BOModule\Services\Actions;
 
 use PGI\Module\PGServer\Foundations\AbstractAction;
 use PGI\Module\PGView\Services\Handlers\BlockHandler;
+use PGI\Module\PGServer\Components\Resources\ScriptFile as ScriptFileResourceComponent;
+use PGI\Module\PGServer\Components\Resources\StyleFile as StyleFileResourceComponent;
 use Exception;
 
 class StandardizedDisplayPageAction extends AbstractAction
@@ -60,6 +62,22 @@ class StandardizedDisplayPageAction extends AbstractAction
         $response = $this->buildTemplateResponse($this->computeTemplateToUse(), $data);
 
         $response->getResources()->merge($aggregatedBlocks->getResources());
+
+        if ($this->hasConfig('static')) {
+            $data['static'] = $this->getConfig('static');
+
+            if (array_key_exists('js', $data['static'])) {
+                foreach ($data['static']['js'] as $jsFile) {
+                    $response->getResources()->add(new ScriptFileResourceComponent($jsFile));
+                }
+            }
+
+            if (array_key_exists('css', $data['static'])) {
+                foreach ($data['static']['css'] as $cssFile) {
+                    $response->getResources()->add(new StyleFileResourceComponent($cssFile));
+                }
+            }
+        }
 
         return $response;
     }

@@ -1,0 +1,19 @@
+{
+  "misc": {
+    "charity": {
+      "popin": {
+        "validate": "Confirm",
+        "close": "Back"
+      },
+      "gift": {
+        "cancel": "Cancel",
+        "cancel_title": "Cancel my gift",
+        "explanation": {
+          "title": "Make a donation with the rounding",
+          "message": "The donation will be entirely given to the association chosen by the customer.",
+          "details": "With the rounding, you have the possibility to conclude your purchase by making a symbolic gesture of solidarity up to your means. The amount of the donation is automatically added to your cart."
+        }
+      }
+    }
+  }
+}

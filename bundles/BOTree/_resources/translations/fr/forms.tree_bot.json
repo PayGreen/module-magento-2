@@ -4,11 +4,11 @@
       "fields": {
         "tree_bot_color": {
           "label": "Couleur du CarbonBot",
-          "help": "Permet de définir la couleur du bouton d'ouverture et des informations carbones affichées à l'intérieure du CarbonBot."
+          "help": "Permet de définir la couleur du bouton d'ouverture et des informations carbones affichées à l'intérieur du CarbonBot."
         },
         "tree_bot_side": {
           "label": "Position du CarbonBot",
-          "help": "Permet de définir la position à laquelle sera affiché le CarbonBot.",
+          "help": "Permet de définir la position du CarbonBot.",
           "choices": {
             "LEFT": "Sur la gauche",
             "RIGHT": "Sur la droite"

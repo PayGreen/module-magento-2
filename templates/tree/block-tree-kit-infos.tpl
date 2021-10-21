@@ -14,33 +14,15 @@
  * @author    PayGreen <contact@paygreen.fr>
  * @copyright 2014 - 2021 Watt Is It
  * @license   https://opensource.org/licenses/mit-license.php MIT License X11
- * @version   2.3.0
+ * @version   2.4.0
  *
  *}
 <div class="pgblock  pgblock__max__md">
     <h2>
         {'blocks.tree_kit_infos.title'|pgtrans}
     </h2>
-    
-    {foreach from=$infos key=key item=item}
-        {if !empty($item)}
-            {assign var="inputValue" value="{$item|escape:'html':'UTF-8'}"}
-        {else}
-            {assign var="inputValue" value=null}
-        {/if}
 
-        {include
-            file="fields/input-bloc.tpl"
-            attr=[
-                'type' => 'text',
-                'disabled' => 'disabled',
-                'value' => $inputValue,
-                'placeholder' => "{'misc.forms.default.input.empty'|pgtrans}"
-            ]
-            label=$key
-            class="pgform__field--disabled"
-        }
-    {/foreach}
+    {include file="table-infos.tpl"}
 
     {include file="tree/block-carbon-data-overview.tpl" entries=$carbonDataOverview}
     <p>*{'blocks.tree_statistics.disclaimer'|pgtrans}</p>

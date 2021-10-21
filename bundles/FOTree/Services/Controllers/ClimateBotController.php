@@ -15,7 +15,7 @@
  * @author    PayGreen <contact@paygreen.fr>
  * @copyright 2014 - 2021 Watt Is It
  * @license   https://opensource.org/licenses/mit-license.php MIT License X11
- * @version   2.3.0
+ * @version   2.4.0
  *
  */
 
@@ -23,14 +23,13 @@ namespace PGI\Module\FOTree\Services\Controllers;
 
 use PGI\Module\APITree\Components\Replies\CarbonFootprint as CarbonFootprintReplyComponent;
 use PGI\Module\BOModule\Foundations\Controllers\AbstractBackofficeController;
-use PGI\Module\PGIntl\Services\Handlers\LocaleHandler;
+use PGI\Module\FOTree\Services\Handlers\CarbonRounderHandler;
 use PGI\Module\PGServer\Components\Responses\HTTP as HTTPResponseComponent;
 use PGI\Module\PGShop\Services\Managers\CartManager;
 use PGI\Module\PGShop\Services\Managers\CustomerManager;
 use PGI\Module\PGTree\Services\Handlers\TreeCarbonOffsettingHandler;
 use PGI\Module\PGView\Services\Handlers\ViewHandler;
 use Exception;
-use NumberFormatter;
 
 /**
  * Class ClimateBotController
@@ -50,21 +49,21 @@ class ClimateBotController extends AbstractBackofficeController
     /** @var TreeCarbonOffsettingHandler */
     private $carbonOffsettingHandler;
 
-    /** @var LocaleHandler */
-    private $localeHandler;
+    /** @var CarbonRounderHandler */
+    private $carbonRounderHandler;
 
     public function __construct(
         CustomerManager $customerManager,
         CartManager $cartManager,
         ViewHandler $viewHandler,
         TreeCarbonOffsettingHandler $carbonOffsettingHandler,
-        LocaleHandler $localeHandler
+        CarbonRounderHandler $carbonRounderHandler
     ) {
         $this->customerManager = $customerManager;
         $this->cartManager = $cartManager;
         $this->viewHandler = $viewHandler;
         $this->carbonOffsettingHandler = $carbonOffsettingHandler;
-        $this->localeHandler = $localeHandler;
+        $this->carbonRounderHandler = $carbonRounderHandler;
     }
 
     /**
@@ -81,49 +80,30 @@ class ClimateBotController extends AbstractBackofficeController
         /** @var CarbonFootprintReplyComponent $carbonFootprint */
         $carbonFootprint = $this->carbonOffsettingHandler->getCarbonOffsetting();
 
-        $formatter = new NumberFormatter( $this->localeHandler->getLanguage(), NumberFormatter::DECIMAL );
-
         $templateContent = $this->viewHandler->renderTemplate('tree-bot', array(
             'color' => $this->getSettings()->get("tree_bot_color"),
             'position' => $this->getSettings()->get("tree_bot_side"),
             'corner' => $this->getSettings()->get("tree_bot_corner"),
             'isDetailsActivated' => $this->getSettings()->get('tree_bot_details_activated'),
             'detailsUrl' => $this->getSettings()->get('tree_details_url'),
-            'carbonEmittedTotal' => $formatter->format(
-                $this->convertTonToKiloGram(
-                    $carbonFootprint->getEstimatedCarbon()
-                )
+            'carbonEmittedTotal' => $this->carbonRounderHandler->roundNumber(
+                $carbonFootprint->getEstimatedCarbon()
             ),
-            'carbonEmittedFromDigital' => $formatter->format(
-                $this->convertTonToGram(
-                    $carbonFootprint->getCarbonEmittedFromDigital()
-                )
+            'carbonEmittedFromDigital' => $this->carbonRounderHandler->roundNumber(
+                $carbonFootprint->getCarbonEmittedFromDigital()
             ),
-            'carbonEmittedFromTransportation' => $formatter->format(
-                $this->convertTonToGram(
-                    $carbonFootprint->getCarbonEmittedFromTransportation()
-                )
+            'carbonEmittedFromTransportation' => $this->carbonRounderHandler->roundNumber(
+                $carbonFootprint->getCarbonEmittedFromTransportation()
             ),
-            'carbonEmittedFromProduct' => $formatter->format(
-                $this->convertTonToKiloGram(
-                    $carbonFootprint->getCarbonEmittedFromProduct()
-                )
-            )
+            'carbonEmittedFromProduct' => $this->carbonRounderHandler->roundNumber(
+                $carbonFootprint->getCarbonEmittedFromProduct()
+            ),
+            'isTreeTestModeActivated' => $this->getSettings()->get('tree_test_mode')
         ));
 
         $response = new HTTPResponseComponent($this->getRequest());
         $response->setContent($templateContent);
 
         return  $response;
-    }
-
-    private function convertTonToGram($carbonEmission)
-    {
-        return ($carbonEmission * 1000000);
-    }
-
-    private function convertTonToKiloGram($carbonEmission)
-    {
-        return ($carbonEmission * 1000);
     }
 }

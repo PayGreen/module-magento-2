@@ -2,7 +2,13 @@
   "misc": {
     "tree_account": {
       "notifications": {
-        "needLogin": "Pour profiter des services de compensation carbone, veuillez vous connecter à votre compte PayGreen ClimateKit."
+        "needLogin": "Pour profiter des services de compensation carbone, veuillez vous connecter à votre compte PayGreen ClimateKit.",
+        "test_mode": {
+          "expired": "Votre période de test est expirée. Pour continuer à utiliser le ClimateKit veuillez contacter le support PayGreen."
+        },
+        "mandate": {
+          "unsigned": "Le ClimateKit est indisponible tant qu'aucun mandat SEPA n'a été signé."
+        }
       }
     }
   }

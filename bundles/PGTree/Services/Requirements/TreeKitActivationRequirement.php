@@ -15,12 +15,13 @@
  * @author    PayGreen <contact@paygreen.fr>
  * @copyright 2014 - 2021 Watt Is It
  * @license   https://opensource.org/licenses/mit-license.php MIT License X11
- * @version   2.3.0
+ * @version   2.4.0
  *
  */
 
 namespace PGI\Module\PGTree\Services\Requirements;
 
+use Exception;
 use PGI\Module\PGFramework\Interfaces\RequirementInterface;
 use PGI\Module\PGModule\Services\Settings;
 
@@ -40,19 +41,10 @@ class TreeKitActivationRequirement implements RequirementInterface
 
     /**
      * @inheritDoc
+     * @throws Exception
      */
-    public function isFulfilled($arguments = null)
+    public function isValid()
     {
-        $isTreeActive = (bool) $this->settings->get('tree_kit_activation');
-
-        $isTreeActivationRequired = ($arguments === null) ? true : (bool) $arguments;
-
-        if (!$isTreeActivationRequired && !$isTreeActive) {
-            return true;
-        } elseif ($isTreeActivationRequired && $isTreeActive) {
-            return true;
-        } else {
-            return false;
-        }
+        return (bool) $this->settings->get('tree_kit_activation');
     }
 }

@@ -15,7 +15,7 @@
  * @author    PayGreen <contact@paygreen.fr>
  * @copyright 2014 - 2021 Watt Is It
  * @license   https://opensource.org/licenses/mit-license.php MIT License X11
- * @version   2.3.0
+ * @version   2.4.0
  *
  */
 
@@ -25,7 +25,7 @@ use PGI\Module\PGModule\Services\Logger;
 use PGI\Module\PGServer\Components\Trigger as TriggerComponent;
 use PGI\Module\PGServer\Foundations\AbstractAcceptor;
 use PGI\Module\PGSystem\Foundations\AbstractObject;
-use PGI\Module\PGSystem\Services\Container;
+use PGI\Module\PGFramework\Components\Aggregator as AggregatorComponent;
 use Exception;
 
 /**
@@ -37,28 +37,21 @@ class TriggerFactory extends AbstractObject
     /** @var AbstractAcceptor[] */
     private $acceptors = array();
 
-    /** @var string[] */
-    private $acceptorServiceNames = array();
-
-    /** @var Container */
-    private $container;
+    /** @var AggregatorComponent */
+    private $acceptorAggregator;
 
     /** @var Logger */
     private $logger;
 
-    public function __construct(Container $container, Logger $logger)
+    public function __construct(AggregatorComponent $acceptorAggregator, Logger $logger)
     {
-        $this->container = $container;
+        $this->acceptorAggregator = $acceptorAggregator;
         $this->logger = $logger;
-    }
-
-    public function addAcceptorServiceName($serviceName, $code)
-    {
-        $this->acceptorServiceNames[$code] = $serviceName;
     }
 
     /**
      * @param array $config
+     * @return TriggerComponent
      * @throws Exception
      */
     public function buildTrigger(array $config)
@@ -86,15 +79,6 @@ class TriggerFactory extends AbstractObject
 
     /**
      * @param string $code
-     * @return bool
-     */
-    protected function acceptorExists($code)
-    {
-        return array_key_exists($code, $this->acceptorServiceNames);
-    }
-
-    /**
-     * @param string $code
      * @return AbstractAcceptor
      * @throws Exception
      */
@@ -105,12 +89,10 @@ class TriggerFactory extends AbstractObject
 
         if (array_key_exists($code, $this->acceptors)) {
             $acceptor = $this->acceptors[$code];
-        } elseif ($this->acceptorExists($code)) {
-            $acceptor = $this->container->get($this->acceptorServiceNames[$code]);
+        } else {
+            $acceptor = $this->acceptorAggregator->getService($code);
 
             $this->acceptors[$code] = $acceptor;
-        } else {
-            throw new Exception("Unknown acceptor type : $code.");
         }
 
         return $acceptor;

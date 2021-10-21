@@ -15,7 +15,7 @@
  * @author    PayGreen <contact@paygreen.fr>
  * @copyright 2014 - 2021 Watt Is It
  * @license   https://opensource.org/licenses/mit-license.php MIT License X11
- * @version   2.3.0
+ * @version   2.4.0
  *
  */
 
@@ -32,7 +32,6 @@ use Exception;
 use PGI\Module\PGServer\Components\Resources\ScriptFile as ScriptFileResourceComponent;
 use PGI\Module\PGTree\Services\Handlers\TreeCatalogHandler;
 use PGI\Module\PGServer\Components\Responses\PaygreenModule as PaygreenModuleResponseComponent;
-
 
 /**
  * Class ExportProductCatalogController

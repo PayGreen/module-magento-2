@@ -15,7 +15,7 @@
  * @author    PayGreen <contact@paygreen.fr>
  * @copyright 2014 - 2021 Watt Is It
  * @license   https://opensource.org/licenses/mit-license.php MIT License X11
- * @version   2.3.0
+ * @version   2.4.0
  *
  */
 
@@ -595,7 +595,7 @@ class ButtonsController extends AbstractBackofficeController
     {
         $i = 1;
         foreach ($this->getRequest()->getAll() as $buttonPosition => $buttonId) {
-            if($buttonPosition === $i) {
+            if ($buttonPosition === $i) {
                 $button = $this->buttonManager->getByPrimary($buttonId);
                 $button->setPosition($buttonPosition);
                 $this->buttonManager->save($button);
@@ -606,5 +606,6 @@ class ButtonsController extends AbstractBackofficeController
 
         $response = new PaygreenModuleResponseComponent($this->getRequest());
 
-        return $response->validate();}
+        return $response->validate();
+    }
 }

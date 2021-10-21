@@ -15,7 +15,7 @@
  * @author    PayGreen <contact@paygreen.fr>
  * @copyright 2014 - 2021 Watt Is It
  * @license   https://opensource.org/licenses/mit-license.php MIT License X11
- * @version   2.3.0
+ * @version   2.4.0
  *
  */
 
@@ -24,7 +24,6 @@ namespace PGI\Module\BOPayment\Services\Actions;
 use PGI\Module\BOModule\Services\Actions\StandardizedDisplayPageAction;
 use PGI\Module\BOPayment\Services\Handlers\PaymentStatisticsHandler;
 use PGI\Module\PGServer\Components\Resources\Data as DataResourceComponent;
-use PGI\Module\PGServer\Components\Resources\ScriptFile as ScriptFileResourceComponent;
 use PGI\Module\PGServer\Components\Responses\Template as TemplateResponseComponent;
 use PGI\Module\PGView\Services\Handlers\BlockHandler;
 use Exception;
@@ -56,12 +55,10 @@ class DisplayPaymentStatisticsPageAction extends StandardizedDisplayPageAction
         /** @var TemplateResponseComponent $response */
         $response = parent::process();
 
-        $scriptResource = new ScriptFileResourceComponent('/js/page-statistics.js');
         $dataResource = new DataResourceComponent(
             $this->paymentStatisticsHandler->getStatisticsData()
         );
 
-        $response->addResource($scriptResource);
         $response->addResource($dataResource);
 
         return $response;

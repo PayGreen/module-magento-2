@@ -15,7 +15,7 @@
  * @author    PayGreen <contact@paygreen.fr>
  * @copyright 2014 - 2021 Watt Is It
  * @license   https://opensource.org/licenses/mit-license.php MIT License X11
- * @version   2.3.0
+ * @version   2.4.0
  *
  */
 
@@ -34,7 +34,6 @@ use PGI\Module\PGShop\Interfaces\Entities\OrderEntityInterface;
 use PGI\Module\PGShop\Interfaces\ShopableInterface;
 use PGI\Module\PGTree\Components\CarbonOffsettingComputing as CarbonOffsettingComputingComponent;
 use PGI\Module\PGTree\Components\Events\CarbonOffsettingComputing as CarbonOffsettingComputingEventComponent;
-use PGI\Module\PGTree\Services\Handlers\TreeFootprintIdHandler;
 use PGI\Module\PGTree\Services\Managers\CarbonDataManager;
 use PGI\Module\PGView\Services\Handlers\ViewHandler;
 use Exception;
@@ -57,9 +56,6 @@ class TreeCarbonOffsettingHandler
     /** @var RequirementHandler */
     private $requirementHandler;
 
-    /** @var ViewHandler */
-    private $viewHandler;
-
     /** @var CarbonDataManager */
     private $carbonDataManager;
 
@@ -71,7 +67,6 @@ class TreeCarbonOffsettingHandler
         TreeFootprintIdHandler $footprintIdHandler,
         Broadcaster $broadcaster,
         RequirementHandler $requirementHandler,
-        ViewHandler $viewHandler,
         CarbonDataManager $carbonDataManager,
         Logger $logger
     ) {
@@ -79,7 +74,6 @@ class TreeCarbonOffsettingHandler
         $this->footprintIdHandler = $footprintIdHandler;
         $this->broadcaster = $broadcaster;
         $this->requirementHandler = $requirementHandler;
-        $this->viewHandler = $viewHandler;
         $this->carbonDataManager = $carbonDataManager;
         $this->logger = $logger;
     }
@@ -121,7 +115,8 @@ class TreeCarbonOffsettingHandler
      * @throws ResponseException
      * @throws Exception
      */
-    public function closeCarbonOffsetting() {
+    public function closeCarbonOffsetting()
+    {
         if (!$this->requirementHandler->isFulfilled('tree_activation')) {
             throw new Exception("Compute carbon offsetting require 'tree_activation'.");
         }
@@ -143,7 +138,8 @@ class TreeCarbonOffsettingHandler
      * @throws ResponseException
      * @throws Exception
      */
-    public function getCarbonOffsetting() {
+    public function getCarbonOffsetting()
+    {
         if (!$this->requirementHandler->isFulfilled('tree_activation')) {
             throw new Exception("Compute carbon offsetting require 'tree_activation'.");
         }

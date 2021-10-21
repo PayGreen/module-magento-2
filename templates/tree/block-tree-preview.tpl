@@ -14,7 +14,7 @@
  * @author    PayGreen <contact@paygreen.fr>
  * @copyright 2014 - 2021 Watt Is It
  * @license   https://opensource.org/licenses/mit-license.php MIT License X11
- * @version   2.3.0
+ * @version   2.4.0
  *
  *}
 <div class="pgdiv_flex_row">
@@ -33,7 +33,8 @@
             'carbonEmittedTotal' => $carbonEmittedTotal,
             'carbonEmittedFromDigital' => $carbonEmittedFromDigital,
             'carbonEmittedFromTransportation' => $carbonEmittedFromTransportation,
-            'carbonEmittedFromProduct' => $carbonEmittedFromProduct]
+            'carbonEmittedFromProduct' => $carbonEmittedFromProduct,
+            'isTreeTestModeActivated' => $isTreeTestModeActivated]
         }
 
         <div class='pgclimatebot__button pgclimatebot__button--{$position} pgclimatebot__button--{$position}--{$corner}'>

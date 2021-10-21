@@ -14,7 +14,7 @@
  * @author    PayGreen <contact@paygreen.fr>
  * @copyright 2014 - 2021 Watt Is It
  * @license   https://opensource.org/licenses/mit-license.php MIT License X11
- * @version   2.3.0
+ * @version   2.4.0
  *
  *}
 <div class="pgblock  pgblock__max__md">
@@ -22,25 +22,7 @@
         {'blocks.payment_kit_infos.title'|pgtrans}
     </h2>
 
-    {foreach from=$infos key=key item=item}
-        {if !empty($item)}
-            {assign var="inputValue" value="{$item|escape:'html':'UTF-8'}"}
-        {else}
-            {assign var="inputValue" value=null}
-        {/if}
-
-        {include
-            file="fields/input-bloc.tpl"
-            attr=[
-                'type' => 'text',
-                'disabled' => 'disabled',
-                'value' => $inputValue,
-                'placeholder' => "{'misc.forms.default.input.empty'|pgtrans}"
-            ]
-            label=$key
-            class="pgform__field--disabled"
-        }
-    {/foreach}
+    {include file="table-infos.tpl"}
 
     {if $growth > 0}
         <p class="growth">{'blocks.payment_kit_infos.increase'|pgtrans} <span class="pgincrease">+{$growth}%</span>.</p>

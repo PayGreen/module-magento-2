@@ -5,7 +5,7 @@
       "columns": {
         "period": "Période",
         "footprint": "Empreinte carbone",
-        "carbon_offset": "Estimation du cout carbone"
+        "carbon_offset": "Estimation du coût carbone"
       },
       "period": {
         "day": "Aujourd'hui",

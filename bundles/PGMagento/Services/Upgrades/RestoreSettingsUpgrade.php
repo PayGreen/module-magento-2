@@ -15,7 +15,7 @@
  * @author    PayGreen <contact@paygreen.fr>
  * @copyright 2014 - 2021 Watt Is It
  * @license   https://opensource.org/licenses/mit-license.php MIT License X11
- * @version   2.3.0
+ * @version   2.4.0
  *
  */
 
@@ -29,7 +29,7 @@ use PGI\Module\PGModule\Interfaces\Repositories\SettingRepositoryInterface;
 use PGI\Module\PGModule\Interfaces\UpgradeInterface;
 use PGI\Module\PGModule\Services\Officers\SettingsDatabaseOfficer;
 use PGI\Module\PGShop\Interfaces\Entities\ShopEntityInterface;
-use PGI\Module\PGShop\Interfaces\Handlers\ShopHandlerInterface;
+use PGI\Module\PGShop\Services\Handlers\ShopHandler;
 use Exception;
 
 class RestoreSettingsUpgrade implements UpgradeInterface
@@ -43,7 +43,7 @@ class RestoreSettingsUpgrade implements UpgradeInterface
     /** @var SettingRepositoryInterface */
     private $settingRepository;
 
-    /** @var ShopHandlerInterface */
+    /** @var ShopHandler */
     private $shopHandler;
 
     /** @var SettingsDatabaseOfficer */
@@ -55,7 +55,7 @@ class RestoreSettingsUpgrade implements UpgradeInterface
     public function __construct(
         LocalObjectManager $objectManager,
         SettingRepositoryInterface $settingRepository,
-        ShopHandlerInterface $shopHandler,
+        ShopHandler $shopHandler,
         SettingsDatabaseOfficer $basicOfficer,
         SettingsDatabaseOfficer $globalOfficer
     ) {

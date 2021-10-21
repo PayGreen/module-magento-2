@@ -1,0 +1,17 @@
+{
+  "forms":{
+    "charity_authentication": {
+      "fields": {
+        "login": {
+          "label": "Username"
+        },
+        "password": {
+          "label": "Password"
+        },
+        "client_id": {
+          "label": "Account"
+        }
+      }
+    }
+  }
+}

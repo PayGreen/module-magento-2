@@ -1,0 +1,14 @@
+{
+  "pages": {
+    "charity_partnerships": {
+      "name": "Partnership management",
+      "title": "Manage your partnerships",
+      "list": {
+        "logo": "Logo",
+        "name": "Name of the association",
+        "field_of_action": "Field of action",
+        "status": "Status"
+      }
+    }
+  }
+}

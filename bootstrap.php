@@ -15,7 +15,7 @@
  * @author    PayGreen <contact@paygreen.fr>
  * @copyright 2014 - 2021 Watt Is It
  * @license   https://opensource.org/licenses/mit-license.php MIT License X11
- * @version   2.3.0
+ * @version   2.4.0
  *
  */
 
@@ -24,7 +24,7 @@ use Magento\Framework\Filesystem\DirectoryList as LocalDirectoryList;
 use PGI\Module\PGModule\Services\Handlers\SetupHandler;
 use PGI\Module\PGModule\Services\Logger;
 use PGI\Module\PGShop\Interfaces\Entities\ShopEntityInterface;
-use PGI\Module\PGShop\Interfaces\Handlers\ShopHandlerInterface;
+use PGI\Module\PGShop\Services\Handlers\ShopHandler;
 use PGI\Module\PGSystem\Components\Bootstrap as BootstrapComponent;
 
 // #############################################################################################
@@ -35,8 +35,6 @@ try {
     if (!defined('DS')) {
         define('DS', DIRECTORY_SEPARATOR);
     }
-
-    define('PAYGREEN_MODULE_VERSION', '2.3.0');
 
     $objectManager = LocalObjectManager::getInstance();
 
@@ -49,6 +47,8 @@ try {
     define('PAYGREEN_MEDIA_DIR', $directory->getPath('media') . DS . PAYGREEN_MODULE_NAME);
     define('PAYGREEN_DATA_DIR', PAYGREEN_MODULE_DIR . DS . 'data');
 
+    define('PAYGREEN_MODULE_VERSION', require(PAYGREEN_DATA_DIR . DS . 'module_version.php'));
+
     require_once(PAYGREEN_MODULE_DIR . DS . 'includer.php');
 
 // #############################################################################################
@@ -60,7 +60,7 @@ try {
     $bootstrap
         ->buildKernel(PAYGREEN_DATA_DIR)
         ->buildPathfinder(array(
-            'static' => PAYGREEN_MODULE_DIR . '/static',
+            'static' => PAYGREEN_MODULE_DIR . '/view/base/web/static',
             'module' => PAYGREEN_MODULE_DIR,
             'data' => PAYGREEN_MODULE_DIR . '/data',
             'var' => PAYGREEN_VAR_DIR,
@@ -72,12 +72,8 @@ try {
         ->createVarFolder()
     ;
 
-    if (PAYGREEN_AUTOLOADING || (PAYGREEN_ENV === 'DEV')) {
-        if (PAYGREEN_ENV === 'DEV') {
-            $bootstrap->registerAutoloader('PGI\Module\PGSystem\Components\Builders\AutoloaderCompiled');
-        } else {
-            $bootstrap->registerAutoloader();
-        }
+    if (PAYGREEN_AUTOLOADING) {
+        $bootstrap->registerAutoloader('PGI\Module\PGSystem\Components\Builders\AutoloaderCompiled');
     }
 
     $bootstrap
@@ -87,7 +83,7 @@ try {
         ))
     ;
 
-    /** @var ShopHandlerInterface $shopHandler */
+    /** @var ShopHandler $shopHandler */
     $shopHandler = $bootstrap->getContainer()->get('handler.shop');
 
     /** @var ShopEntityInterface $shop */

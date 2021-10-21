@@ -1,0 +1,20 @@
+{
+  "actions": {
+    "gift": {
+      "save": {
+        "result": {
+          "failure": {
+            "title": "Donation error",
+            "message": "An error occurred while processing your donation.",
+            "link" : "Back to the checkout page"
+          },
+          "error": {
+            "title": "Donation error",
+            "message": "An error occurred while processing your donation.",
+            "link" : "Back to the checkout page"
+          }
+        }
+      }
+    }
+  }
+}

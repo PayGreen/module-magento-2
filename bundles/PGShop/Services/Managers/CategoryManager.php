@@ -15,7 +15,7 @@
  * @author    PayGreen <contact@paygreen.fr>
  * @copyright 2014 - 2021 Watt Is It
  * @license   https://opensource.org/licenses/mit-license.php MIT License X11
- * @version   2.3.0
+ * @version   2.4.0
  *
  */
 
@@ -44,12 +44,11 @@ class CategoryManager extends AbstractManager
 
     private $categories = array();
 
-    public function __construct(
-        RepositoryInterface $repository,
-        ShopHandler $shopHandler
-    ) {
-        parent::__construct($repository);
-
+    /**
+     * @param ShopHandler $shopHandler
+     */
+    public function setShopHandler($shopHandler)
+    {
         $this->shopHandler = $shopHandler;
     }
 

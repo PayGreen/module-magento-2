@@ -15,7 +15,7 @@
  * @author    PayGreen <contact@paygreen.fr>
  * @copyright 2014 - 2021 Watt Is It
  * @license   https://opensource.org/licenses/mit-license.php MIT License X11
- * @version   2.3.0
+ * @version   2.4.0
  *
  */
 
@@ -53,17 +53,25 @@ class ResponseFactory
     /** @var BagComponent */
     private $config;
 
+    private $httpCodes = array();
+
     /**
      * RequestSender constructor.
      * @param Logger $logger
      */
-    public function __construct(Logger $logger, array $requestDefinitions, array $config)
-    {
+    public function __construct(
+        Logger $logger,
+        array $requestDefinitions,
+        array $config,
+        $httpCodes = array()
+    ) {
         $this->logger = $logger;
         $this->requestDefinitions = new BagComponent($requestDefinitions);
 
         $this->config = new BagComponent(self::$DEFAULT_CONFIG);
         $this->config->merge($config);
+
+        $this->httpCodes = $httpCodes;
     }
 
     /**
@@ -91,21 +99,21 @@ class ResponseFactory
 
             $this->log('info', 'Building api response.', $response->toArray());
         } catch (ResponseMalformedException $exception) {
-            $text = "Malformed response. (HTTP : {$feedback->getCode()})";
+            $text = "Malformed response. (HTTP : {$this->httpCodes[$feedback->getCode()]})";
             $this->log('critical', $text, $feedback->getContent(), $feedback->getDetails());
 
             throw $exception;
         }
 
         if (!$this->isValidResponse($response)) {
-            $text = "Invalid response. (HTTP : {$feedback->getCode()})";
+            $text = "Invalid response. (HTTP : {$this->httpCodes[$feedback->getCode()]})";
             $this->log('error', $text, $feedback->getContent(), $feedback->getDetails());
 
             throw new ResponseHTTPErrorException($text, $feedback->getCode());
         }
 
         if (!$this->isSuccessResponse($response)) {
-            $text = "Unsuccessfull response. (HTTP : {$feedback->getCode()})";
+            $text = "Unsuccessfull response. (HTTP : {$this->httpCodes[$feedback->getCode()]})";
             $this->log('error', $text, $feedback->getContent(), $feedback->getDetails());
 
             throw new ResponseFailedException($text);

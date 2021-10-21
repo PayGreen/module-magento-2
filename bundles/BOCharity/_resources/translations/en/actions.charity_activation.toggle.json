@@ -1,0 +1,14 @@
+{
+  "actions": {
+    "charity_activation": {
+      "toggle": {
+        "result": {
+          "success": {
+            "enabled": "Online rounding with CharityKit has been successfully activated.",
+            "disabled": "Online rounding with CharityKit has been successfully disabled."
+          }
+        }
+      }
+    }
+  }
+}

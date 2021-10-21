@@ -1,0 +1,12 @@
+{
+  "blocks": {
+    "charity": {
+      "charity_products": {
+        "title": "CharityKit",
+        "description": "Ce produit vous permettra de proposer à vos clients l'arrondi en ligne.",
+        "label": "Activation du produit CharityKit",
+        "help": "Une fois ce produit activé, il vous restera à vous connecter à l'API puis à configurer votre module."
+      }
+    }
+  }
+}

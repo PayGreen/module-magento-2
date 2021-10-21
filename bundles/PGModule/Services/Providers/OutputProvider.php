@@ -15,7 +15,7 @@
  * @author    PayGreen <contact@paygreen.fr>
  * @copyright 2014 - 2021 Watt Is It
  * @license   https://opensource.org/licenses/mit-license.php MIT License X11
- * @version   2.3.0
+ * @version   2.4.0
  *
  */
 
@@ -62,8 +62,7 @@ class OutputProvider
         RequirementHandler $requirementHandler,
         array $sources,
         Logger $logger
-    )
-    {
+    ) {
         $this->outputBuilderAggregator = $outputBuilderAggregator;
         $this->requirementHandler = $requirementHandler;
         $this->sources = $sources;
@@ -123,7 +122,7 @@ class OutputProvider
 
         $zoneOutput = new OutputComponent();
 
-        foreach($this->sources as $source) {
+        foreach ($this->sources as $source) {
             $config = new BagComponent($source);
 
             if ($this->isValidSource($config, $name)) {

@@ -15,7 +15,7 @@
  * @author    PayGreen <contact@paygreen.fr>
  * @copyright 2014 - 2021 Watt Is It
  * @license   https://opensource.org/licenses/mit-license.php MIT License X11
- * @version   2.3.0
+ * @version   2.4.0
  *
  */
 
@@ -26,6 +26,7 @@ use PGI\Module\PGIntl\Services\Handlers\CacheTranslationHandler;
 use PGI\Module\PGIntl\Services\Handlers\LocaleHandler;
 use PGI\Module\PGIntl\Services\Handlers\TranslationHandler;
 use PGI\Module\PGModule\Services\Logger;
+use PGI\Module\PGSystem\Components\Bag;
 use PGI\Module\PGSystem\Components\Parser as ParserComponent;
 use PGI\Module\PGSystem\Exceptions\Configuration as ConfigurationException;
 use PGI\Module\PGSystem\Exceptions\ParserParameter as ParserParameterException;
@@ -40,7 +41,11 @@ use Exception;
  */
 class Translator extends AbstractObject
 {
-    private $sources;
+    /** @var Bag */
+    private $config;
+
+    /** @var ParserComponent */
+    private $parser;
 
     /** @var CacheTranslationHandler */
     private $cacheHandler;
@@ -55,8 +60,6 @@ class Translator extends AbstractObject
     private $logger;
 
     private $translations = array();
-
-    private $bin;
 
     const DEFAULT_TRANSLATION_LANGUAGE = 'en';
 
@@ -78,24 +81,21 @@ class Translator extends AbstractObject
         Logger $logger,
         array $config
     ) {
-        if (!array_key_exists('sources', $config)) {
-            $message = "Translator configuration should contains 'sources' parameter.";
-            throw new ConfigurationException($message);
-        } elseif (!is_array($config['sources'])) {
-            $message = "Translator configuration 'sources' parameter should be an array.";
-            throw new ConfigurationException($message);
-        }
-
         $this->cacheHandler = $cacheHandler;
         $this->pathfinder = $pathfinder;
         $this->localeHandler = $localeHandler;
         $this->logger = $logger;
 
-        $this->sources = $config['sources'];
+        $this->config = new Bag($config);
+        $this->parser = new ParserComponent(array());
     }
 
     protected function getTranslation($key, $language, $isStrict = false)
     {
+        if (!in_array($language, $this->config["native_languages"])) {
+            return null;
+        }
+
         $translatedText = null;
 
         if (!array_key_exists($language, $this->translations)) {
@@ -177,9 +177,6 @@ class Translator extends AbstractObject
      */
     public function get($translation, $language = null)
     {
-        // Thrashing unused arguments
-        $this->bin = $language;
-
         try {
             if (!is_object($translation)) {
                 $translation = new TranslationComponent($translation);
@@ -193,7 +190,7 @@ class Translator extends AbstractObject
                 return $this->getCustomTranslation(substr($translation->getKey(), 1));
             }
 
-            $translatedText = $this->translate($translation);
+            $translatedText = $this->translate($translation, $language);
         } catch (Exception $exception) {
             $this->logger->error(
                 "Error during translation for key '{$translation->getKey()}' : " . $exception->getMessage(),
@@ -208,16 +205,24 @@ class Translator extends AbstractObject
 
     /**
      * @param TranslationComponent $translation
+     * @param string|null $language
      * @return string
      */
-    protected function translate(TranslationComponent $translation)
+    protected function translate(TranslationComponent $translation, $language = null)
     {
         if (preg_match(self::REGEX_TRANSLATION_KEY, $translation->getKey())) {
-            $languages = array_unique(array(
-                $this->localeHandler->getLanguage(),
-                $this->localeHandler->getDefaultLanguage(),
-                self::DEFAULT_TRANSLATION_LANGUAGE
-            ));
+            if ($language === null) {
+                $languages = array_unique(array(
+                    $this->localeHandler->getLanguage(),
+                    $this->localeHandler->getDefaultLanguage(),
+                    self::DEFAULT_TRANSLATION_LANGUAGE
+                ));
+            } else {
+                $languages = array_unique(array(
+                    $language,
+                    self::DEFAULT_TRANSLATION_LANGUAGE
+                ));
+            }
 
             $translatedText = null;
 
@@ -232,8 +237,7 @@ class Translator extends AbstractObject
                 $translatedText = "Missing translation";
             } elseif ($translation->hasData()) {
                 try {
-                    $parser = new ParserComponent($translation->getData());
-                    $translatedText = $parser->parseStringParameters($translatedText);
+                    $translatedText = $this->parser->parseStringParameters($translatedText, $translation->getData());
                 } catch (ParserParameterException $exception) {
                     $this->logger->warning("Missing data for translation '{$translation->getKey()}'.", $exception);
                     $translatedText = "Invalid translation";

@@ -1,0 +1,11 @@
+{
+  "data":{
+    "charity_api_server": {
+      "values": {
+        "PROD": "Production",
+        "SANDBOX": "Sandbox",
+        "RECETTE": "Recette"
+      }
+    }
+  }
+}

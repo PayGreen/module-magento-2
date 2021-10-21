@@ -1,0 +1,19 @@
+{
+  "misc": {
+    "charity": {
+      "popin": {
+        "validate": "Valider",
+        "close": "Retour"
+      },
+      "gift": {
+        "cancel": "Annuler",
+        "cancel_title": "Annuler mon don",
+        "explanation": {
+          "title": "Faire un don avec l'arrondi",
+          "message": "Le don sera entièrement reversé à l'association choisi par le client.",
+          "details": "Avec l’arrondi, vous avez la possibilité de conclure votre achat en réalisant un geste solidaire symbolique à hauteur de vos moyens. Le montant du don est automatiquement surchargé à votre panier."
+        }
+      }
+    }
+  }
+}

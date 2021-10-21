@@ -3,7 +3,7 @@
     "tree_generate_product_catalog": {
       "title": "Génération du fichier CSV",
       "description": [
-        "Afin de pouvoir calculer l'impacte carbone de chacun de vos produits, il est nécessaire de fournir à notre API certaines données de votre catalogue.",
+        "Afin de pouvoir calculer l'impact carbone de chacun de vos produits, il est nécessaire de fournir à notre API certaines données de votre catalogue.",
         "Utilisez le lien ci-dessous afin de générer le fichier CSV que vous pourrez ensuite télécharger dans le backoffice de votre compte ClimateKit."
       ],
       "buttons": {

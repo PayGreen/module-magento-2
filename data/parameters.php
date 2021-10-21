@@ -15,11 +15,143 @@
  * @author    PayGreen <contact@paygreen.fr>
  * @copyright 2014 - 2021 Watt Is It
  * @license   https://opensource.org/licenses/mit-license.php MIT License X11
- * @version   2.3.0
+ * @version   2.4.0
  *
  */
 
 return array (
+'media' =>
+array (
+'baseurl' => '/pub/media/paygreen',
+),
+'behaviors' =>
+array (
+'detailed_logs' =>
+array (
+'type' => 'service',
+'service' => 'behavior.detailed_logs',
+'method' => 'isDetailedLogActivated',
+),
+'cancel_order_on_refused_payment' =>
+array (
+'type' => 'user',
+'key' => 'cancel_order_on_refused_payment',
+),
+'cancel_order_on_canceled_payment' =>
+array (
+'type' => 'fixed',
+'value' => false,
+),
+'transmission_on_delivery_confirmation' =>
+array (
+'type' => 'user',
+'key' => 'behavior_delivery_confirmation',
+),
+'behavior_payment_insite' =>
+array (
+'type' => 'user',
+'key' => 'behavior_payment_insite',
+),
+'use_transaction_lock' =>
+array (
+'type' => 'fixed',
+'value' => true,
+),
+'tree_bot_activation' =>
+array (
+'type' => 'requirement',
+'requirements' =>
+array (
+'tree_bot_activation' => true,
+),
+),
+'tree_prod_available' =>
+array (
+'type' => 'requirement',
+'requirements' =>
+array (
+'tree_prod_available' => true,
+),
+),
+'charity_prod_available' =>
+array (
+'type' => 'requirement',
+'requirements' =>
+array (
+'charity_prod_available' => true,
+),
+),
+'transmission_on_refund' =>
+array (
+'type' => 'user',
+'key' => 'behavior_payment_refund',
+),
+),
+'cache' =>
+array (
+'entries' =>
+array (
+'translations-fr' =>
+array (
+'ttl' => 604800,
+'format' => 'array',
+),
+'translations-en' =>
+array (
+'ttl' => 604800,
+'format' => 'array',
+),
+'account-infos' =>
+array (
+'ttl' => 3600,
+'format' => 'object',
+),
+'status-shop' =>
+array (
+'ttl' => 3600,
+'format' => 'object',
+),
+'payment-types' =>
+array (
+'ttl' => 86400,
+'format' => 'object',
+),
+'carbon_footprint_catalog' =>
+array (
+'ttl' => 259200,
+),
+'tree_account_data' =>
+array (
+'ttl' => 21600,
+'format' => 'object',
+),
+'tree_user_data' =>
+array (
+'ttl' => 21600,
+'format' => 'object',
+),
+'charity_associations' =>
+array (
+'ttl' => 259200,
+'format' => 'array',
+),
+'charity_partnerships' =>
+array (
+'ttl' => 21600,
+'format' => 'object',
+),
+'charity_account_data' =>
+array (
+'ttl' => 21600,
+'format' => 'object',
+),
+'charity_user_data' =>
+array (
+'ttl' => 21600,
+'format' => 'object',
+),
+),
+),
 'settings' =>
 array (
 'entries' =>
@@ -146,7 +278,7 @@ array (
 'tree_activation' =>
 array (
 'type' => 'bool',
-'default' => true,
+'default' => false,
 ),
 'tree_kit_activation' =>
 array (
@@ -228,6 +360,11 @@ array (
 'type' => 'bool',
 'default' => true,
 ),
+'tree_test_mode' =>
+array (
+'type' => 'bool',
+'default' => true,
+),
 'tree_access_token' =>
 array (
 'type' => 'string',
@@ -257,6 +394,67 @@ array (
 'global' => true,
 'default' => true,
 ),
+'charity_activation' =>
+array (
+'type' => 'bool',
+'default' => false,
+),
+'charity_kit_activation' =>
+array (
+'type' => 'bool',
+'default' => true,
+),
+'charity_client_id' =>
+array (
+'type' => 'string',
+'private' => true,
+),
+'charity_client_username' =>
+array (
+'type' => 'string',
+'private' => true,
+),
+'charity_partnerships_positions' =>
+array (
+'type' => 'array',
+'default' =>
+array (
+),
+),
+'charity_test_mode' =>
+array (
+'type' => 'bool',
+'default' => true,
+),
+'charity_access_token' =>
+array (
+'type' => 'string',
+'private' => true,
+),
+'charity_access_token_validity' =>
+array (
+'type' => 'string',
+),
+'charity_refresh_token' =>
+array (
+'type' => 'string',
+'private' => true,
+),
+'charity_refresh_token_validity' =>
+array (
+'type' => 'string',
+),
+'charity_api_server' =>
+array (
+'type' => 'string',
+'default' => 'PROD',
+),
+'charity_use_https' =>
+array (
+'type' => 'bool',
+'global' => true,
+'default' => true,
+),
 'regenerate_cart_on_cancelled_payment' =>
 array (
 'type' => 'bool',
@@ -267,104 +465,17 @@ array (
 'type' => 'bool',
 'default' => true,
 ),
+'charity_gift_id' =>
+array (
+'type' => 'int',
+'global' => true,
+),
 ),
 'officers' =>
 array (
 'basic' => 'officer.settings.database.basic',
 'global' => 'officer.settings.database.global',
 'system' => 'officer.settings.configuration.global',
-),
-),
-'behaviors' =>
-array (
-'detailed_logs' =>
-array (
-'type' => 'service',
-'service' => 'behavior.detailed_logs',
-'method' => 'isDetailedLogActivated',
-),
-'cancel_order_on_refused_payment' =>
-array (
-'type' => 'user',
-'key' => 'cancel_order_on_refused_payment',
-),
-'cancel_order_on_canceled_payment' =>
-array (
-'type' => 'fixed',
-'value' => false,
-),
-'transmission_on_delivery_confirmation' =>
-array (
-'type' => 'user',
-'key' => 'behavior_delivery_confirmation',
-),
-'behavior_payment_insite' =>
-array (
-'type' => 'user',
-'key' => 'behavior_payment_insite',
-),
-'use_transaction_lock' =>
-array (
-'type' => 'fixed',
-'value' => true,
-),
-'tree_activation' =>
-array (
-'type' => 'service',
-'service' => 'behavior.tree_activation',
-'method' => 'isActivated',
-),
-'tree_bot_activation' =>
-array (
-'type' => 'requirement',
-'requirements' =>
-array (
-'tree_bot_activation' => true,
-),
-),
-'transmission_on_refund' =>
-array (
-'type' => 'user',
-'key' => 'behavior_payment_refund',
-),
-),
-'media' =>
-array (
-'baseurl' => '/pub/media/paygreen',
-),
-'cache' =>
-array (
-'entries' =>
-array (
-'translations-fr' =>
-array (
-'ttl' => 86400,
-'format' => 'array',
-),
-'translations-en' =>
-array (
-'ttl' => 86400,
-'format' => 'array',
-),
-'account-infos' =>
-array (
-'ttl' => 300,
-'format' => 'object',
-),
-'status-shop' =>
-array (
-'ttl' => 300,
-'format' => 'object',
-),
-'payment-types' =>
-array (
-'ttl' => 3600,
-'format' => 'object',
-),
-'carbon_footprint_catalog' =>
-array (
-'ttl' => 259200,
-),
 ),
 ),
 'listeners' =>
@@ -500,21 +611,37 @@ array (
 array (
 'event' => 'carbon_offsetting_computing',
 'service' => 'listener.carbon_offsetting_computing.adding_web_data',
+'requirements' =>
+array (
+'tree_access_available' => true,
+),
 ),
 'setting_transport_carbon_offsetting' =>
 array (
 'event' => 'carbon_offsetting_computing',
 'service' => 'listener.carbon_offsetting_computing.setting_transport_data',
+'requirements' =>
+array (
+'tree_access_available' => true,
+),
 ),
 'setting_product_carbon_offsetting' =>
 array (
 'event' => 'carbon_offsetting_computing',
 'service' => 'listener.carbon_offsetting_computing.setting_product_data',
+'requirements' =>
+array (
+'tree_access_available' => true,
+),
 ),
 'tree.page_counting' =>
 array (
 'event' => 'display.frontoffice',
 'service' => 'listener.tree.page_counting',
+'requirements' =>
+array (
+'tree_access_available' => true,
+),
 ),
 'install_tree_carbon_data_database' =>
 array (
@@ -555,10 +682,98 @@ array (
 ),
 'service' => 'listener.tree_action.shipping_address',
 ),
+'display_tree_test_mode_expiration_notification' =>
+array (
+'event' =>
+array (
+0 => 'action.backoffice.home.display',
+1 => 'action.backoffice.tree_account.display',
+2 => 'action.backoffice.tree_config.display',
+3 => 'action.backoffice.tree_translations.display',
+4 => 'action.backoffice.tree_products_synchronization.display',
+5 => 'action.backoffice.carbon_bot_config.display',
+),
+'service' => 'listener.tree_action.display_tree_test_mode_expiration_notification',
+'requirements' =>
+array (
+'tree_connexion' => true,
+),
+),
 'carbon_footprint_finalization' =>
 array (
 'event' => 'LOCAL.ORDER.VALIDATION',
 'service' => 'listener.carbon_footprint.finalization',
+'requirements' =>
+array (
+'tree_access_available' => true,
+),
+),
+'install_gift_database' =>
+array (
+'event' => 'module.install',
+'service' => 'listener.setup.gift_database',
+'method' => 'install',
+'priority' => 50,
+),
+'uninstall_gift_database' =>
+array (
+'event' => 'module.uninstall',
+'service' => 'listener.setup.gift_database',
+'method' => 'uninstall',
+'priority' => 950,
+),
+'install_charity_gift_product' =>
+array (
+'event' => 'module.install',
+'service' => 'listener.setup.charity_gift_product',
+'method' => 'installGiftProduct',
+),
+'uninstall_charity_gift_product' =>
+array (
+'event' => 'module.uninstall',
+'service' => 'listener.setup.charity_gift_product',
+'method' => 'uninstallGiftProduct',
+),
+'charity_check_client_compatibility' =>
+array (
+'event' => 'module.install',
+'service' => 'listener.setup.charity_client_compatibility_checker',
+'method' => 'checkCompatibility',
+'priority' => 100,
+),
+'display_charity_connexion_requirement' =>
+array (
+'event' =>
+array (
+0 => 'action.backoffice.charity_account.display',
+1 => 'action.backoffice.charity_config.display',
+),
+'service' => 'listener.charity_action.display_backoffice',
+),
+'display_charity_test_mode_expiration_notification' =>
+array (
+'event' =>
+array (
+0 => 'action.backoffice.home.display',
+1 => 'action.backoffice.charity_account.display',
+2 => 'action.backoffice.charity_config.display',
+3 => 'action.backoffice.charity_partnerships.display',
+4 => 'action.backoffice.charity_translations.display',
+),
+'service' => 'listener.charity_action.display_charity_test_mode_expiration_notification',
+'requirements' =>
+array (
+'charity_connexion' => true,
+),
+),
+'charity_gift.finalization' =>
+array (
+'event' => 'LOCAL.ORDER.VALIDATION',
+'service' => 'listener.charity_gift.finalization',
+'requirements' =>
+array (
+'charity_activation' => true,
+),
 ),
 'create_database' =>
 array (
@@ -608,35 +823,7 @@ array (
 'priority' => 250,
 ),
 ),
-'translator' =>
-array (
-'sources' =>
-array (
-0 => 'bundles-resources',
-1 => 'module-resources',
-),
-),
-'setup' =>
-array (
-'older' => null,
-),
-'static' =>
-array (
-'public' => null,
-'path' => 'static',
-'install' =>
-array (
-'target' => null,
-'envs' =>
-array (
-),
-),
-'swap' =>
-array (
-),
-'module' => 'Paygreen_Payment',
-'folder' => 'static',
-),
+'logo' => 'PGModule:paygreen-logo.svg',
 'database' =>
 array (
 'entities' =>
@@ -1019,6 +1206,39 @@ array (
 ),
 ),
 ),
+'gift' =>
+array (
+'class' => 'PGI\\Module\\PGCharity\\Entities\\Gift',
+'table' => 'paygreen_gifts',
+'primary' => 'id',
+'fields' =>
+array (
+'id' =>
+array (
+'type' => 'int',
+),
+'reference' =>
+array (
+'type' => 'string',
+),
+'amount' =>
+array (
+'type' => 'int',
+),
+'id_order' =>
+array (
+'type' => 'int',
+),
+'id_partnership' =>
+array (
+'type' => 'int',
+),
+'created_at' =>
+array (
+'type' => 'datetime',
+),
+),
+),
 ),
 ),
 'outputs' =>
@@ -1033,6 +1253,12 @@ array (
 array (
 'target' => 'FRONT.PAYGREEN',
 'builder' => 'front_office_paygreen',
+'clean' => false,
+),
+'global_front_office_paygreen' =>
+array (
+'target' => 'FRONT.HEAD',
+'builder' => 'global_front_office_paygreen',
 'clean' => false,
 ),
 'success_payment_message' =>
@@ -1063,8 +1289,7 @@ array (
 'clean' => true,
 'requirements' =>
 array (
-'tree_activation' => true,
-'tree_connexion' => true,
+'tree_access_available' => true,
 ),
 ),
 'carbon_bot' =>
@@ -1074,8 +1299,18 @@ array (
 'clean' => true,
 'requirements' =>
 array (
-'tree_activation' => true,
+'tree_access_available' => true,
 'tree_bot_activation' => true,
+),
+),
+'charity_block' =>
+array (
+'target' => 'FRONT.FUNNEL.CHECKOUT',
+'builder' => 'charity_block',
+'clean' => true,
+'requirements' =>
+array (
+'charity_access_available' => true,
 ),
 ),
 'frontoffice_override_css' =>
@@ -1210,16 +1445,137 @@ array (
 'en' => 'Find out more about our commitments',
 ),
 ),
+'charity_block_title' =>
+array (
+'label' => 'translations.charity_block_title.field.label',
+'help' => 'translations.charity_block_title.field.help',
+'tags' =>
+array (
+0 => 'charity',
+),
+'default' =>
+array (
+'fr' => 'Et si vous aviez un impact positif ?',
+'en' => 'What if you had a positive impact?',
+),
+),
+'charity_block_message' =>
+array (
+'label' => 'translations.charity_block_message.field.label',
+'help' => 'translations.charity_block_message.field.help',
+'tags' =>
+array (
+0 => 'charity',
+),
+'default' =>
+array (
+'fr' => 'Arrondir le montant de mon panier au profit d\'une association avec un don de',
+'en' => 'Round up the amount of my basket to benefit an association with a donation of',
+),
+),
+'charity_popin_title' =>
+array (
+'label' => 'translations.charity_popin_title.field.label',
+'help' => 'translations.charity_popin_title.field.help',
+'tags' =>
+array (
+0 => 'charity',
+),
+'default' =>
+array (
+'fr' => 'Et si vous aviez un impact positif ?',
+'en' => 'What if you had a positive impact?',
+),
+),
+'charity_popin_subtitle' =>
+array (
+'label' => 'translations.charity_popin_subtitle.field.label',
+'help' => 'translations.charity_popin_subtitle.field.help',
+'tags' =>
+array (
+0 => 'charity',
+),
+'default' =>
+array (
+'fr' => 'Veuillez cliquer pour choisir une association :',
+'en' => 'Please click to select an association:',
+),
+),
+'charity_popin_message' =>
+array (
+'label' => 'translations.charity_popin_message.field.label',
+'help' => 'translations.charity_popin_message.field.help',
+'tags' =>
+array (
+0 => 'charity',
+),
+'default' =>
+array (
+'fr' => 'Arrondir le montant de mon panier au profit d\'une association avec un don de',
+'en' => 'Round up the amount of my basket to benefit an association with a donation of',
+),
+),
+),
+'log' =>
+array (
+'format' => '<datetime> | *<type>* | <text>',
+'file' => 'log:/module.log',
+'view' =>
+array (
+'format' => '<datetime> | *<type>* | <text>',
+'file' => 'log:/view.log',
+),
+'api' =>
+array (
+'format' => '<datetime> | *<type>* | <text>',
+'file' => 'log:/api.log',
+),
+'api_tree' =>
+array (
+'format' => '<datetime> | *<type>* | <text>',
+'file' => 'log:/api.log',
+),
+'api_charity' =>
+array (
+'format' => '<datetime> | *<type>* | <text>',
+'file' => 'log:/api.log',
+),
 ),
 'upgrades' =>
 array (
+'2_2_0_insite_payment_upgrade' =>
+array (
+'version' => '2.2.0',
+'type' => 'insite_payment',
+'priority' => 200,
+),
+'2_2_0_remove_integration' =>
+array (
+'version' => '2.2.0',
+'type' => 'database',
+'priority' => 250,
+'config' =>
+array (
+'script' => 'PGPayment:button/005-remove-integration.sql',
+),
+),
+'1_0_0_database_multishop' =>
+array (
+'version' => '1.0.0',
+'type' => 'database.multishop',
+'priority' => 100,
+),
 '1_0_0_upgrade_tables' =>
 array (
 'version' => '1.0.0',
 'type' => 'database',
 'config' =>
 array (
-'script' => 'PGMagento:upgrades/1.0.0-upgrade-tables.sql',
+'script' =>
+array (
+0 => 'PGMagento:upgrades/1.0.0-upgrade-tables.sql',
+1 => 'PGMagentoPayment:upgrades/1.0.0-upgrade-payment-tables.sql',
+),
 ),
 ),
 '1_0_0_restore_settings' =>
@@ -1233,6 +1589,12 @@ array (
 array (
 'active' => 'active',
 'title' => 'title',
+'visibility' => 'admin_only_visibility',
+'payment_confirmation_button' => 'payment_confirmation_button',
+'payment_success_text' => 'notice_payment_accepted',
+'payment_error_text' => 'notice_payment_refused',
+'behavior_transmit_refund' => 'behavior_payment_refund',
+'behavior_transmit_delivering' => 'behavior_delivery_confirmation',
 ),
 ),
 ),
@@ -1244,51 +1606,6 @@ array (
 'config' =>
 array (
 'script' => 'PGIntl:translation/updates/001-creation-table.sql',
-),
-),
-'2_1_0_rename_active_setting' =>
-array (
-'version' => '2.1.0',
-'type' => 'rename_settings',
-'config' =>
-array (
-'mapping' =>
-array (
-'active' => 'payment_activation',
-),
-),
-),
-'1_0_0_database_multishop' =>
-array (
-'version' => '1.0.0',
-'type' => 'database.multishop',
-'priority' => 100,
-),
-'1_0_0_upgrade_payment_tables' =>
-array (
-'version' => '1.0.0',
-'type' => 'database',
-'config' =>
-array (
-'script' => 'PGMagentoPayment:upgrades/1.0.0-upgrade-payment-tables.sql',
-),
-),
-'1_0_0_restore_payment_settings' =>
-array (
-'version' => '1.0.0',
-'type' => 'settings.restore',
-'priority' => 750,
-'config' =>
-array (
-'keys' =>
-array (
-'visibility' => 'admin_only_visibility',
-'payment_confirmation_button' => 'payment_confirmation_button',
-'payment_success_text' => 'notice_payment_accepted',
-'payment_error_text' => 'notice_payment_refused',
-'behavior_transmit_refund' => 'behavior_payment_refund',
-'behavior_transmit_delivering' => 'behavior_delivery_confirmation',
-),
 ),
 ),
 '1_1_0_restore_button_labels' =>
@@ -1339,25 +1656,16 @@ array (
 'script' => 'PGPayment:button/001-remove-label.sql',
 ),
 ),
-'1_2_0_remove_button_default_picture' =>
+'2_1_0_rename_active_setting' =>
 array (
-'version' => '1.2.0',
-'type' => 'media_delete',
+'version' => '2.1.0',
+'type' => 'rename_settings',
 'config' =>
 array (
-'media' => 'default-payment-button.png',
-),
-),
-'2_0_0_add_filters_fields_in_button_table' =>
+'mapping' =>
 array (
-'version' => '2.0.0',
-'type' => 'database',
-'config' =>
-array (
-'script' =>
-array (
-0 => 'PGPayment:button/002-add-filters-fields-in-button-table.sql',
-1 => 'PGPayment:button/004-update-filtered-category-primaries-remove-default-value.sql',
+'active' => 'payment_activation',
+'tree_active' => 'tree_kit_activation',
 ),
 ),
 ),
@@ -1370,70 +1678,10 @@ array (
 'script' =>
 array (
 0 => 'PGPayment:processing/upgrades/001-creation-table.sql',
-),
-),
-),
-'2_2_0_insite_payment_upgrade' =>
-array (
-'version' => '2.2.0',
-'type' => 'insite_payment',
-'priority' => 200,
-),
-'2_2_0_remove_integration' =>
-array (
-'version' => '2.2.0',
-'type' => 'database',
-'priority' => 250,
-'config' =>
-array (
-'script' => 'PGPayment:button/005-remove-integration.sql',
-),
-),
-'2_1_0_creation_carbon_data_table' =>
-array (
-'version' => '2.1.0',
-'type' => 'database',
-'config' =>
-array (
-'script' =>
-array (
-0 => 'PGTree:carbon_data/upgrades/001-creation-carbon-data-table.sql',
-),
-),
-),
-'2_1_0_rename_tree_active_setting' =>
-array (
-'version' => '2.1.0',
-'type' => 'rename_settings',
-'config' =>
-array (
-'mapping' =>
-array (
-'tree_active' => 'tree_kit_activation',
-),
-),
-),
-'2_1_0_fix_carbon_offsetting_translations' =>
-array (
-'version' => '2.1.0',
-'type' => 'database',
-'config' =>
-array (
-'script' =>
-array (
-0 => 'PGTree:upgrades/002-fix-carbon-offsetting-translations.sql',
-),
-),
-),
-'2_1_0_remove_fingerprint_table' =>
-array (
-'version' => '2.1.0',
-'type' => 'database',
-'config' =>
-array (
-'script' =>
-array (
-0 => 'PGTree:fingerprint/upgrades/002-remove-fingerprint-table.sql',
+1 => 'PGTree:carbon_data/upgrades/001-creation-carbon-data-table.sql',
+2 => 'PGTree:carbon_data/upgrades/002-add-unique-index-on-id-order-column.sql',
+3 => 'PGTree:upgrades/002-fix-carbon-offsetting-translations.sql',
+4 => 'PGTree:fingerprint/upgrades/002-remove-fingerprint-table.sql',
 ),
 ),
 ),
@@ -1450,17 +1698,27 @@ array (
 ),
 ),
 ),
-'2_1_0_add_unique_index_carbon_data' =>
+'2_4_0_creation_gift_table' =>
 array (
-'version' => '2.1.0',
+'version' => '2.4.0',
 'type' => 'database',
 'config' =>
 array (
 'script' =>
 array (
-0 => 'PGTree:carbon_data/upgrades/002-add-unique-index-on-id-order-column.sql',
+0 => 'PGCharity:gift/upgrades/001-creation-gift-table.sql',
 ),
 ),
+),
+'2_4_0_reset_tree_access_settings' =>
+array (
+'version' => '2.4.0',
+'type' => 'reset_tree_access_settings',
+),
+'2_4_0_reset_charity_access_settings' =>
+array (
+'version' => '2.4.0',
+'type' => 'reset_charity_access_settings',
 ),
 '2_3_0_fix_tree_api_server_global_setting' =>
 array (
@@ -1472,26 +1730,49 @@ array (
 'key_global_setting' => 'tree_api_server',
 ),
 ),
-),
-'log' =>
+'2_0_0_add_filters_fields_in_button_table' =>
 array (
-'format' => '<datetime> | *<type>* | <text>',
-'file' => 'log:/module.log',
-'view' =>
+'version' => '2.0.0',
+'type' => 'database',
+'config' =>
 array (
-'format' => '<datetime> | *<type>* | <text>',
-'file' => 'log:/view.log',
-),
-'api' =>
+'script' =>
 array (
-'format' => '<datetime> | *<type>* | <text>',
-'file' => 'log:/api.log',
+0 => 'PGPayment:button/002-add-filters-fields-in-button-table.sql',
+1 => 'PGPayment:button/004-update-filtered-category-primaries-remove-default-value.sql',
 ),
-'api_tree' =>
+),
+),
+'1_2_0_remove_button_default_picture' =>
 array (
-'format' => '<datetime> | *<type>* | <text>',
-'file' => 'log:/api.log',
+'version' => '1.2.0',
+'type' => 'media_delete',
+'config' =>
+array (
+'media' => 'default-payment-button.png',
 ),
+),
+),
+'setup' =>
+array (
+'older' => null,
+),
+'static' =>
+array (
+'public' => null,
+'path' => 'static',
+'install' =>
+array (
+'target' => null,
+'envs' =>
+array (
+),
+),
+'swap' =>
+array (
+),
+'module' => 'Paygreen_Payment',
+'folder' => 'static',
 ),
 'db' =>
 array (
@@ -1501,167 +1782,6 @@ array (
 'engine' => 'innodb',
 ),
 'split' => true,
-),
-'request_builder' =>
-array (
-'default' =>
-array (
-),
-'backoffice' =>
-array (
-'strict' => false,
-),
-'frontoffice' =>
-array (
-'strict' => false,
-),
-),
-'mime_types' =>
-array (
-'aac' => 'audio/aac',
-'abw' => 'application/x-abiword',
-'arc' => 'application/octet-stream',
-'avi' => 'video/x-msvideo',
-'azw' => 'application/vnd.amazon.ebook',
-'bin' => 'application/octet-stream',
-'bz' => 'application/x-bzip',
-'bz2' => 'application/x-bzip2',
-'csh' => 'application/x-csh',
-'css' => 'text/css',
-'csv' => 'text/csv',
-'doc' => 'application/msword',
-'docx' => 'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
-'eot' => 'application/vnd.ms-fontobject',
-'epub' => 'application/epub+zip',
-'gif' => 'image/gif',
-'htm' => 'text/html',
-'html' => 'text/html',
-'ico' => 'image/x-icon',
-'ics' => 'text/calendar',
-'jar' => 'application/java-archive',
-'jpeg' => 'image/jpeg',
-'jpg' => 'image/jpeg',
-'js' => 'application/javascript',
-'json' => 'application/json',
-'log' => 'text/plain',
-'mid' => 'audio/midi',
-'midi' => 'audio/midi',
-'mpeg' => 'video/mpeg',
-'mpkg' => 'application/vnd.apple.installer+xml',
-'odp' => 'application/vnd.oasis.opendocument.presentation',
-'ods' => 'application/vnd.oasis.opendocument.spreadsheet',
-'odt' => 'application/vnd.oasis.opendocument.text',
-'oga' => 'audio/ogg',
-'ogv' => 'video/ogg',
-'ogx' => 'application/ogg',
-'otf' => 'font/otf',
-'png' => 'image/png',
-'pdf' => 'application/pdf',
-'ppt' => 'application/vnd.ms-powerpoint',
-'pptx' => 'application/vnd.openxmlformats-officedocument.presentationml.presentation',
-'rar' => 'application/x-rar-compressed',
-'rtf' => 'application/rtf',
-'sh' => 'application/x-sh',
-'svg' => 'image/svg+xml',
-'swf' => 'application/x-shockwave-flash',
-'tar' => 'application/x-tar',
-'tif' => 'image/tiff',
-'tiff' => 'image/tiff',
-'ts' => 'application/typescript',
-'ttf' => 'font/ttf',
-'vsd' => 'application/vnd.visio',
-'wav' => 'audio/x-wav',
-'weba' => 'audio/webm',
-'webm' => 'video/webm',
-'webp' => 'image/webp',
-'woff' => 'font/woff',
-'woff2' => 'font/woff2',
-'xhtml' => 'application/xhtml+xml',
-'xls' => 'application/vnd.ms-excel',
-'xlsx' => 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
-'xml' => 'application/xml',
-'xul' => 'application/vnd.mozilla.xul+xml',
-'zip' => 'application/zip',
-'3gp' => 'video/3gpp',
-'3g2' => 'video/3gpp2',
-'7z' => 'application/x-7z-compressed',
-),
-'http_codes' =>
-array (
-100 => 'Continue',
-101 => 'Switching Protocols',
-102 => 'Processing',
-200 => 'OK',
-201 => 'Created',
-202 => 'Accepted',
-203 => 'Non-Authoritative Information',
-204 => 'No Content',
-205 => 'Reset Content',
-206 => 'Partial Content',
-207 => 'Multi-Status',
-208 => 'Already Reported',
-226 => 'IM Used',
-300 => 'Multiple Choices',
-301 => 'Moved Permanently',
-302 => 'Found',
-303 => 'See Other',
-304 => 'Not Modified',
-305 => 'Use Proxy',
-306 => 'Switch Proxy',
-307 => 'Temporary Redirect',
-308 => 'Permanent Redirect',
-400 => 'Bad Request',
-401 => 'Unauthorized',
-402 => 'Payment Required',
-403 => 'Forbidden',
-404 => 'Not Found',
-405 => 'Method Not Allowed',
-406 => 'Not Acceptable',
-407 => 'Proxy Authentication Required',
-408 => 'Request Timeout',
-409 => 'Conflict',
-410 => 'Gone',
-411 => 'Length Required',
-412 => 'Precondition Failed',
-413 => 'Request Entity Too Large',
-414 => 'Request-URI Too Long',
-415 => 'Unsupported Media Type',
-416 => 'Requested Range Not Satisfiable',
-417 => 'Expectation Failed',
-418 => 'I"m a teapot',
-419 => 'Authentication Timeout',
-420 => 'Enhance Your Calm (Twitter) / Method Failure (Spring Framework)',
-422 => 'Unprocessable Entity',
-423 => 'Locked',
-424 => 'Failed Dependency (WebDAV; RFC 4918) / Method Failure (WebDAV)',
-425 => 'Unordered Collection',
-426 => 'Upgrade Required',
-428 => 'Precondition Required',
-429 => 'Too Many Requests',
-431 => 'Request Header Fields Too Large',
-444 => 'No Response',
-449 => 'Retry With',
-450 => 'Blocked by Windows Parental Controls',
-451 => 'Redirect (Microsoft) / Unavailable For Legal Reasons (Internet draft)',
-494 => 'Request Header Too Large',
-495 => 'Cert Error',
-496 => 'No Cert',
-497 => 'HTTP to HTTPS',
-499 => 'Client Closed Request',
-500 => 'Internal Server Error',
-501 => 'Not Implemented',
-502 => 'Bad Gateway',
-503 => 'Service Unavailable',
-504 => 'Gateway Timeout',
-505 => 'HTTP Version Not Supported',
-506 => 'Variant Also Negotiates',
-507 => 'Insufficient Storage',
-508 => 'Loop Detected',
-509 => 'Bandwidth Limit Exceeded',
-510 => 'Not Extended',
-511 => 'Network Authentication Required',
-598 => 'Network read timeout error',
-599 => 'Network connect timeout error',
 ),
 'routing' =>
 array (
@@ -1962,7 +2082,7 @@ array (
 ),
 'backoffice.payment_translations.save' =>
 array (
-'target' => 'save@backoffice.payment_translations',
+'target' => 'payment_translations_form.save',
 'requirements' =>
 array (
 'shop_context' => true,
@@ -1997,14 +2117,6 @@ array (
 'front.payment.receive' =>
 array (
 'target' => 'receive@front.payment',
-'requirements' =>
-array (
-'payment_activation' => true,
-),
-),
-'front.payment.display.insite' =>
-array (
-'target' => 'displayIFramePayment@front.payment',
 'requirements' =>
 array (
 'payment_activation' => true,
@@ -2126,16 +2238,16 @@ array (
 ),
 'backoffice.tree_translations.save' =>
 array (
-'target' => 'save@backoffice.tree_translations',
+'target' => 'tree_translations_form.save',
 'requirements' =>
 array (
 'shop_context' => true,
 'tree_kit_activation' => true,
 ),
 ),
-'backoffice.tree_translations.save_tree_bot' =>
+'backoffice.tree_bot_translations.save' =>
 array (
-'target' => 'saveTreeBot@backoffice.tree_translations',
+'target' => 'tree_bot_translations_form.save',
 'requirements' =>
 array (
 'shop_context' => true,
@@ -2180,13 +2292,552 @@ array (
 ),
 'front.climatebot.display' =>
 array (
-'target' => 'display@tree.climatebot',
+'target' => 'display@front.tree.climatebot',
+'requirements' =>
+array (
+'tree_access_available' => true,
+),
+),
+'backoffice.charity.activation' =>
+array (
+'target' => 'charityActivation@backoffice.charity',
+'requirements' =>
+array (
+'shop_context' => true,
+),
+),
+'backoffice.charity_products.activation' =>
+array (
+'target' => 'charityProductsActivation@backoffice.charity',
+'requirements' =>
+array (
+'shop_context' => true,
+),
+),
+'backoffice.charity_account.display' =>
+array (
+'target' => 'charity_account.display',
+'requirements' =>
+array (
+'shop_context' => true,
+'charity_kit_activation' => true,
+),
+),
+'backoffice.charity_account.save' =>
+array (
+'target' => 'saveCharityAccountConfiguration@backoffice.charity_account',
+'requirements' =>
+array (
+'shop_context' => true,
+'charity_kit_activation' => true,
+),
+),
+'backoffice.charity_account.disconnect' =>
+array (
+'target' => 'disconnect@backoffice.charity_account',
+'requirements' =>
+array (
+'shop_context' => true,
+'charity_kit_activation' => true,
+),
+),
+'backoffice.charity_config.display' =>
+array (
+'target' => 'charity_config.display',
+'requirements' =>
+array (
+'shop_context' => true,
+'charity_prod_available' => true,
+),
+),
+'backoffice.charity_config.save' =>
+array (
+'target' => 'charity_config.save',
+'requirements' =>
+array (
+'shop_context' => true,
+'charity_kit_activation' => true,
+),
+),
+'backoffice.charity_partnerships.display' =>
+array (
+'target' => 'charity_partnerships.display',
+'requirements' =>
+array (
+'shop_context' => true,
+'charity_activation' => true,
+),
+),
+'backoffice.charity_partnerships.update_positions' =>
+array (
+'target' => 'updatePartnershipsPositions@backoffice.charity_partnerships',
+'requirements' =>
+array (
+'shop_context' => true,
+'charity_kit_activation' => true,
+),
+),
+'backoffice.charity_translations.display' =>
+array (
+'target' => 'charity_translations.display',
+'requirements' =>
+array (
+'shop_context' => true,
+'charity_kit_activation' => true,
+),
+),
+'backoffice.charity_translations.save' =>
+array (
+'target' => 'charity_translations_form.save',
+'requirements' =>
+array (
+'shop_context' => true,
+'charity_kit_activation' => true,
+),
+),
+'front.charity.display_popin' =>
+array (
+'target' => 'display@front.charity.popin',
+'requirements' =>
+array (
+'charity_access_available' => true,
+),
+),
+'front.charity.save_gift' =>
+array (
+'target' => 'saveGift@front.charity.gift',
+'requirements' =>
+array (
+'charity_access_available' => true,
+),
+),
+'front.charity.cancel_gift' =>
+array (
+'target' => 'cancelGift@front.charity.gift',
+'requirements' =>
+array (
+'charity_access_available' => true,
+),
+),
+'front.charity.gift_explanation' =>
+array (
+'target' => 'displayGiftExplanationPage@front.charity.gift',
 ),
 'front.payment.abort' =>
 array (
 'target' => 'abortPayment@front.invalid_payments',
 ),
 ),
+),
+'mime_types' =>
+array (
+'aac' => 'audio/aac',
+'abw' => 'application/x-abiword',
+'arc' => 'application/octet-stream',
+'avi' => 'video/x-msvideo',
+'azw' => 'application/vnd.amazon.ebook',
+'bin' => 'application/octet-stream',
+'bz' => 'application/x-bzip',
+'bz2' => 'application/x-bzip2',
+'csh' => 'application/x-csh',
+'css' => 'text/css',
+'csv' => 'text/csv',
+'doc' => 'application/msword',
+'docx' => 'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+'eot' => 'application/vnd.ms-fontobject',
+'epub' => 'application/epub+zip',
+'gif' => 'image/gif',
+'htm' => 'text/html',
+'html' => 'text/html',
+'ico' => 'image/x-icon',
+'ics' => 'text/calendar',
+'jar' => 'application/java-archive',
+'jpeg' => 'image/jpeg',
+'jpg' => 'image/jpeg',
+'js' => 'application/javascript',
+'json' => 'application/json',
+'log' => 'text/plain',
+'mid' => 'audio/midi',
+'midi' => 'audio/midi',
+'mpeg' => 'video/mpeg',
+'mpkg' => 'application/vnd.apple.installer+xml',
+'odp' => 'application/vnd.oasis.opendocument.presentation',
+'ods' => 'application/vnd.oasis.opendocument.spreadsheet',
+'odt' => 'application/vnd.oasis.opendocument.text',
+'oga' => 'audio/ogg',
+'ogv' => 'video/ogg',
+'ogx' => 'application/ogg',
+'otf' => 'font/otf',
+'png' => 'image/png',
+'pdf' => 'application/pdf',
+'ppt' => 'application/vnd.ms-powerpoint',
+'pptx' => 'application/vnd.openxmlformats-officedocument.presentationml.presentation',
+'rar' => 'application/x-rar-compressed',
+'rtf' => 'application/rtf',
+'sh' => 'application/x-sh',
+'svg' => 'image/svg+xml',
+'swf' => 'application/x-shockwave-flash',
+'tar' => 'application/x-tar',
+'tif' => 'image/tiff',
+'tiff' => 'image/tiff',
+'ts' => 'application/typescript',
+'ttf' => 'font/ttf',
+'vsd' => 'application/vnd.visio',
+'wav' => 'audio/x-wav',
+'weba' => 'audio/webm',
+'webm' => 'video/webm',
+'webp' => 'image/webp',
+'woff' => 'font/woff',
+'woff2' => 'font/woff2',
+'xhtml' => 'application/xhtml+xml',
+'xls' => 'application/vnd.ms-excel',
+'xlsx' => 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+'xml' => 'application/xml',
+'xul' => 'application/vnd.mozilla.xul+xml',
+'zip' => 'application/zip',
+'3gp' => 'video/3gpp',
+'3g2' => 'video/3gpp2',
+'7z' => 'application/x-7z-compressed',
+),
+'request_builder' =>
+array (
+'default' =>
+array (
+),
+'backoffice' =>
+array (
+'strict' => false,
+),
+'frontoffice' =>
+array (
+'strict' => false,
+),
+),
+'http_codes' =>
+array (
+100 => 'Continue',
+101 => 'Switching Protocols',
+102 => 'Processing',
+200 => 'OK',
+201 => 'Created',
+202 => 'Accepted',
+203 => 'Non-Authoritative Information',
+204 => 'No Content',
+205 => 'Reset Content',
+206 => 'Partial Content',
+207 => 'Multi-Status',
+208 => 'Already Reported',
+226 => 'IM Used',
+300 => 'Multiple Choices',
+301 => 'Moved Permanently',
+302 => 'Found',
+303 => 'See Other',
+304 => 'Not Modified',
+305 => 'Use Proxy',
+306 => 'Switch Proxy',
+307 => 'Temporary Redirect',
+308 => 'Permanent Redirect',
+400 => 'Bad Request',
+401 => 'Unauthorized',
+402 => 'Payment Required',
+403 => 'Forbidden',
+404 => 'Not Found',
+405 => 'Method Not Allowed',
+406 => 'Not Acceptable',
+407 => 'Proxy Authentication Required',
+408 => 'Request Timeout',
+409 => 'Conflict',
+410 => 'Gone',
+411 => 'Length Required',
+412 => 'Precondition Failed',
+413 => 'Request Entity Too Large',
+414 => 'Request-URI Too Long',
+415 => 'Unsupported Media Type',
+416 => 'Requested Range Not Satisfiable',
+417 => 'Expectation Failed',
+418 => 'I"m a teapot',
+419 => 'Authentication Timeout',
+420 => 'Enhance Your Calm (Twitter) / Method Failure (Spring Framework)',
+422 => 'Unprocessable Entity',
+423 => 'Locked',
+424 => 'Failed Dependency (WebDAV; RFC 4918) / Method Failure (WebDAV)',
+425 => 'Unordered Collection',
+426 => 'Upgrade Required',
+428 => 'Precondition Required',
+429 => 'Too Many Requests',
+431 => 'Request Header Fields Too Large',
+444 => 'No Response',
+449 => 'Retry With',
+450 => 'Blocked by Windows Parental Controls',
+451 => 'Redirect (Microsoft) / Unavailable For Legal Reasons (Internet draft)',
+494 => 'Request Header Too Large',
+495 => 'Cert Error',
+496 => 'No Cert',
+497 => 'HTTP to HTTPS',
+499 => 'Client Closed Request',
+500 => 'Internal Server Error',
+501 => 'Not Implemented',
+502 => 'Bad Gateway',
+503 => 'Service Unavailable',
+504 => 'Gateway Timeout',
+505 => 'HTTP Version Not Supported',
+506 => 'Variant Also Negotiates',
+507 => 'Insufficient Storage',
+508 => 'Loop Detected',
+509 => 'Bandwidth Limit Exceeded',
+510 => 'Not Extended',
+511 => 'Network Authentication Required',
+598 => 'Network read timeout error',
+599 => 'Network connect timeout error',
+),
+'countries' =>
+array (
+0 => 'af',
+1 => 'al',
+2 => 'ag',
+3 => 'an',
+4 => 'ao',
+5 => 'av',
+6 => 'ac',
+7 => 'ar',
+8 => 'am',
+9 => 'aa',
+10 => 'at',
+11 => 'as',
+12 => 'au',
+13 => 'aj',
+14 => 'bf',
+15 => 'ba',
+16 => 'bg',
+17 => 'bb',
+18 => 'bs',
+19 => 'bo',
+20 => 'be',
+21 => 'bh',
+22 => 'bn',
+23 => 'bd',
+24 => 'bt',
+25 => 'bl',
+26 => 'bk',
+27 => 'bc',
+28 => 'bv',
+29 => 'br',
+30 => 'io',
+31 => 'vi',
+32 => 'bx',
+33 => 'bu',
+34 => 'uv',
+35 => 'bm',
+36 => 'by',
+37 => 'cb',
+38 => 'cm',
+39 => 'ca',
+40 => 'cv',
+41 => 'cj',
+42 => 'ct',
+43 => 'cd',
+44 => 'ci',
+45 => 'ch',
+46 => 'kt',
+47 => 'ip',
+48 => 'ck',
+49 => 'co',
+50 => 'cn',
+51 => 'cf',
+52 => 'cg',
+53 => 'cw',
+54 => 'cr',
+55 => 'cs',
+56 => 'iv',
+57 => 'hr',
+58 => 'cu',
+59 => 'cy',
+60 => 'ez',
+61 => 'da',
+62 => 'dj',
+63 => 'do',
+64 => 'dr',
+65 => 'tt',
+66 => 'ec',
+67 => 'eg',
+68 => 'es',
+69 => 'ek',
+70 => 'er',
+71 => 'en',
+72 => 'et',
+73 => 'eu',
+74 => 'fk',
+75 => 'fo',
+76 => 'fj',
+77 => 'fi',
+78 => 'fr',
+79 => 'fg',
+80 => 'fp',
+81 => 'fs',
+82 => 'gb',
+83 => 'ga',
+84 => 'gz',
+85 => 'gg',
+86 => 'gm',
+87 => 'gh',
+88 => 'gi',
+89 => 'go',
+90 => 'gr',
+91 => 'gl',
+92 => 'gj',
+93 => 'gp',
+94 => 'gt',
+95 => 'gk',
+96 => 'gv',
+97 => 'pu',
+98 => 'gy',
+99 => 'ha',
+100 => 'hm',
+101 => 'ho',
+102 => 'hk',
+103 => 'hu',
+104 => 'ic',
+105 => 'in',
+106 => 'id',
+107 => 'ir',
+108 => 'iz',
+109 => 'ei',
+110 => 'im',
+111 => 'is',
+112 => 'it',
+113 => 'jm',
+114 => 'jn',
+115 => 'ja',
+116 => 'je',
+117 => 'jo',
+118 => 'ju',
+119 => 'kz',
+120 => 'ke',
+121 => 'kr',
+122 => 'ku',
+123 => 'kg',
+124 => 'la',
+125 => 'lg',
+126 => 'le',
+127 => 'lt',
+128 => 'li',
+129 => 'ly',
+130 => 'ls',
+131 => 'lh',
+132 => 'lu',
+133 => 'mc',
+134 => 'mk',
+135 => 'ma',
+136 => 'mi',
+137 => 'my',
+138 => 'mv',
+139 => 'ml',
+140 => 'mt',
+141 => 'rm',
+142 => 'mb',
+143 => 'mr',
+144 => 'mp',
+145 => 'mf',
+146 => 'mx',
+147 => 'fm',
+148 => 'md',
+149 => 'mn',
+150 => 'mg',
+151 => 'mh',
+152 => 'mo',
+153 => 'mz',
+154 => 'wa',
+155 => 'nr',
+156 => 'np',
+157 => 'nl',
+158 => 'nt',
+159 => 'nc',
+160 => 'nz',
+161 => 'nu',
+162 => 'ng',
+163 => 'ni',
+164 => 'ne',
+165 => 'nm',
+166 => 'nf',
+167 => 'kn',
+168 => 'no',
+169 => 'mu',
+170 => 'pk',
+171 => 'ps',
+172 => 'pm',
+173 => 'pp',
+174 => 'pa',
+175 => 'pe',
+176 => 'rp',
+177 => 'pc',
+178 => 'pl',
+179 => 'po',
+180 => 'qa',
+181 => 're',
+182 => 'ro',
+183 => 'rs',
+184 => 'rw',
+185 => 'sh',
+186 => 'sc',
+187 => 'st',
+188 => 'sb',
+189 => 'vc',
+190 => 'ws',
+191 => 'sm',
+192 => 'tp',
+193 => 'sa',
+194 => 'sg',
+195 => 'yi',
+196 => 'se',
+197 => 'sl',
+198 => 'sn',
+199 => 'lo',
+200 => 'si',
+201 => 'bp',
+202 => 'so',
+203 => 'sf',
+204 => 'sx',
+205 => 'ks',
+206 => 'sp',
+207 => 'pg',
+208 => 'ce',
+209 => 'su',
+210 => 'ns',
+211 => 'sv',
+212 => 'wz',
+213 => 'sw',
+214 => 'sz',
+215 => 'sy',
+216 => 'tw',
+217 => 'ti',
+218 => 'tz',
+219 => 'th',
+220 => 'to',
+221 => 'tl',
+222 => 'tn',
+223 => 'td',
+224 => 'te',
+225 => 'ts',
+226 => 'tu',
+227 => 'tx',
+228 => 'tk',
+229 => 'tv',
+230 => 'ug',
+231 => 'up',
+232 => 'ae',
+233 => 'uk',
+234 => 'uy',
+235 => 'uz',
+236 => 'nh',
+237 => 'vt',
+238 => 've',
+239 => 'vm',
+240 => 'wf',
+241 => 'we',
+242 => 'wi',
+243 => 'ym',
+244 => 'za',
+245 => 'zi',
 ),
 'fields' =>
 array (
@@ -2502,254 +3153,198 @@ array (
 'collection' => 'PGI\\Module\\PGForm\\Components\\Fields\\Collection',
 ),
 ),
-'countries' =>
+'languages' =>
 array (
-0 => 'af',
-1 => 'al',
-2 => 'ag',
-3 => 'an',
-4 => 'ao',
-5 => 'av',
-6 => 'ac',
-7 => 'ar',
-8 => 'am',
-9 => 'aa',
-10 => 'at',
+0 => 'ab',
+1 => 'aa',
+2 => 'af',
+3 => 'ak',
+4 => 'sq',
+5 => 'de',
+6 => 'am',
+7 => 'en',
+8 => 'ar',
+9 => 'an',
+10 => 'hy',
 11 => 'as',
-12 => 'au',
-13 => 'aj',
-14 => 'bf',
-15 => 'ba',
-16 => 'bg',
-17 => 'bb',
-18 => 'bs',
-19 => 'bo',
-20 => 'be',
-21 => 'bh',
-22 => 'bn',
-23 => 'bd',
-24 => 'bt',
-25 => 'bl',
-26 => 'bk',
-27 => 'bc',
-28 => 'bv',
-29 => 'br',
-30 => 'io',
-31 => 'vi',
-32 => 'bx',
-33 => 'bu',
-34 => 'uv',
-35 => 'bm',
-36 => 'by',
-37 => 'cb',
-38 => 'cm',
-39 => 'ca',
-40 => 'cv',
-41 => 'cj',
-42 => 'ct',
-43 => 'cd',
-44 => 'ci',
-45 => 'ch',
-46 => 'kt',
-47 => 'ip',
-48 => 'ck',
-49 => 'co',
-50 => 'cn',
-51 => 'cf',
-52 => 'cg',
-53 => 'cw',
-54 => 'cr',
-55 => 'cs',
-56 => 'iv',
-57 => 'hr',
-58 => 'cu',
-59 => 'cy',
-60 => 'ez',
-61 => 'da',
-62 => 'dj',
-63 => 'do',
-64 => 'dr',
-65 => 'tt',
-66 => 'ec',
-67 => 'eg',
-68 => 'es',
-69 => 'ek',
-70 => 'er',
-71 => 'en',
-72 => 'et',
-73 => 'eu',
-74 => 'fk',
-75 => 'fo',
-76 => 'fj',
-77 => 'fi',
-78 => 'fr',
-79 => 'fg',
-80 => 'fp',
-81 => 'fs',
-82 => 'gb',
-83 => 'ga',
-84 => 'gz',
-85 => 'gg',
-86 => 'gm',
-87 => 'gh',
-88 => 'gi',
-89 => 'go',
-90 => 'gr',
-91 => 'gl',
-92 => 'gj',
-93 => 'gp',
-94 => 'gt',
-95 => 'gk',
-96 => 'gv',
-97 => 'pu',
-98 => 'gy',
-99 => 'ha',
-100 => 'hm',
-101 => 'ho',
-102 => 'hk',
-103 => 'hu',
-104 => 'ic',
-105 => 'in',
-106 => 'id',
-107 => 'ir',
-108 => 'iz',
-109 => 'ei',
-110 => 'im',
-111 => 'is',
-112 => 'it',
-113 => 'jm',
-114 => 'jn',
-115 => 'ja',
-116 => 'je',
-117 => 'jo',
-118 => 'ju',
-119 => 'kz',
-120 => 'ke',
-121 => 'kr',
-122 => 'ku',
-123 => 'kg',
-124 => 'la',
-125 => 'lg',
-126 => 'le',
-127 => 'lt',
-128 => 'li',
-129 => 'ly',
-130 => 'ls',
-131 => 'lh',
-132 => 'lu',
-133 => 'mc',
-134 => 'mk',
-135 => 'ma',
-136 => 'mi',
-137 => 'my',
-138 => 'mv',
-139 => 'ml',
-140 => 'mt',
-141 => 'rm',
-142 => 'mb',
-143 => 'mr',
-144 => 'mp',
-145 => 'mf',
-146 => 'mx',
-147 => 'fm',
-148 => 'md',
-149 => 'mn',
-150 => 'mg',
-151 => 'mh',
-152 => 'mo',
-153 => 'mz',
-154 => 'wa',
-155 => 'nr',
-156 => 'np',
-157 => 'nl',
-158 => 'nt',
-159 => 'nc',
-160 => 'nz',
-161 => 'nu',
-162 => 'ng',
-163 => 'ni',
-164 => 'ne',
-165 => 'nm',
-166 => 'nf',
-167 => 'kn',
-168 => 'no',
-169 => 'mu',
-170 => 'pk',
-171 => 'ps',
-172 => 'pm',
-173 => 'pp',
-174 => 'pa',
-175 => 'pe',
-176 => 'rp',
-177 => 'pc',
-178 => 'pl',
-179 => 'po',
-180 => 'qa',
-181 => 're',
-182 => 'ro',
-183 => 'rs',
-184 => 'rw',
-185 => 'sh',
-186 => 'sc',
-187 => 'st',
-188 => 'sb',
-189 => 'vc',
-190 => 'ws',
-191 => 'sm',
-192 => 'tp',
-193 => 'sa',
-194 => 'sg',
-195 => 'yi',
-196 => 'se',
-197 => 'sl',
-198 => 'sn',
-199 => 'lo',
-200 => 'si',
-201 => 'bp',
-202 => 'so',
-203 => 'sf',
-204 => 'sx',
-205 => 'ks',
-206 => 'sp',
-207 => 'pg',
-208 => 'ce',
-209 => 'su',
-210 => 'ns',
-211 => 'sv',
-212 => 'wz',
-213 => 'sw',
-214 => 'sz',
-215 => 'sy',
-216 => 'tw',
-217 => 'ti',
-218 => 'tz',
-219 => 'th',
-220 => 'to',
-221 => 'tl',
-222 => 'tn',
-223 => 'td',
-224 => 'te',
-225 => 'ts',
-226 => 'tu',
-227 => 'tx',
-228 => 'tk',
-229 => 'tv',
-230 => 'ug',
-231 => 'up',
-232 => 'ae',
-233 => 'uk',
-234 => 'uy',
-235 => 'uz',
-236 => 'nh',
-237 => 'vt',
-238 => 've',
-239 => 'vm',
-240 => 'wf',
-241 => 'we',
-242 => 'wi',
-243 => 'ym',
-244 => 'za',
-245 => 'zi',
+12 => 'av',
+13 => 'ae',
+14 => 'ay',
+15 => 'az',
+16 => 'ba',
+17 => 'bm',
+18 => 'eu',
+19 => 'bn',
+20 => 'bi',
+21 => 'be',
+22 => 'my',
+23 => 'bs',
+24 => 'br',
+25 => 'bg',
+26 => 'ca',
+27 => 'ch',
+28 => 'ny',
+29 => 'zh',
+30 => 'ko',
+31 => 'kw',
+32 => 'co',
+33 => 'cr',
+34 => 'hr',
+35 => 'da',
+36 => 'dz',
+37 => 'es',
+38 => 'eo',
+39 => 'et',
+40 => 'ee',
+41 => 'fo',
+42 => 'fj',
+43 => 'fi',
+44 => 'nl',
+45 => 'fr',
+46 => 'fy',
+47 => 'gd',
+48 => 'gl',
+49 => 'om',
+50 => 'cy',
+51 => 'lg',
+52 => 'ka',
+53 => 'gu',
+54 => 'el',
+55 => 'kl',
+56 => 'gn',
+57 => 'ht',
+58 => 'ha',
+59 => 'he',
+60 => 'hz',
+61 => 'hi',
+62 => 'ho',
+63 => 'hu',
+64 => 'io',
+65 => 'ig',
+66 => 'id',
+67 => 'iu',
+68 => 'ik',
+69 => 'ga',
+70 => 'is',
+71 => 'it',
+72 => 'ja',
+73 => 'jv',
+74 => 'kn',
+75 => 'kr',
+76 => 'ks',
+77 => 'kk',
+78 => 'km',
+79 => 'ki',
+80 => 'ky',
+81 => 'kv',
+82 => 'kg',
+83 => 'ku',
+84 => 'kj',
+85 => 'bh',
+86 => 'lo',
+87 => 'la',
+88 => 'lv',
+89 => 'li',
+90 => 'ln',
+91 => 'lt',
+92 => 'lu',
+93 => 'lb',
+94 => 'mk',
+95 => 'ms',
+96 => 'ml',
+97 => 'dv',
+98 => 'mg',
+99 => 'mt',
+100 => 'gv',
+101 => 'mi',
+102 => 'mr',
+103 => 'mh',
+104 => 'ro',
+105 => 'mn',
+106 => 'na',
+107 => 'nv',
+108 => 'nd',
+109 => 'nr',
+110 => 'ng',
+111 => 'ne',
+112 => 'no',
+113 => 'nb',
+114 => 'nn',
+115 => 'oc',
+116 => 'oj',
+117 => 'or',
+118 => 'os',
+119 => 'ug',
+120 => 'ur',
+121 => 'uz',
+122 => 'ps',
+123 => 'pi',
+124 => 'pa',
+125 => 'fa',
+126 => 'ff',
+127 => 'pl',
+128 => 'pt',
+129 => 'qu',
+130 => 'rm',
+131 => 'rn',
+132 => 'ru',
+133 => 'rw',
+134 => 'se',
+135 => 'sm',
+136 => 'sg',
+137 => 'sa',
+138 => 'sc',
+139 => 'sr',
+140 => 'sn',
+141 => 'sd',
+142 => 'si',
+143 => 'sk',
+144 => 'sl',
+145 => 'so',
+146 => 'st',
+147 => 'su',
+148 => 'sv',
+149 => 'sw',
+150 => 'ss',
+151 => 'tg',
+152 => 'tl',
+153 => 'ty',
+154 => 'ta',
+155 => 'tt',
+156 => 'cs',
+157 => 'ce',
+158 => 'cv',
+159 => 'te',
+160 => 'th',
+161 => 'bo',
+162 => 'ti',
+163 => 'to',
+164 => 'ts',
+165 => 'tn',
+166 => 'tr',
+167 => 'tk',
+168 => 'tw',
+169 => 'uk',
+170 => 've',
+171 => 'vi',
+172 => 'cu',
+173 => 'vo',
+174 => 'wa',
+175 => 'wo',
+176 => 'xh',
+177 => 'ii',
+178 => 'yi',
+179 => 'yo',
+180 => 'za',
+181 => 'zu',
+),
+'intl' =>
+array (
+'native_languages' =>
+array (
+0 => 'en',
+1 => 'fr',
+),
 ),
 'form' =>
 array (
@@ -2795,317 +3390,6 @@ array (
 ),
 ),
 ),
-'account_activation' =>
-array (
-'model' => 'basic',
-'fields' =>
-array (
-'activation' =>
-array (
-'model' => 'bool.switch',
-'view' =>
-array (
-'data' =>
-array (
-'label' => 'forms.account_activation.fields.activation.label',
-'help' => 'forms.account_activation.fields.activation.help',
-),
-),
-),
-),
-'view' =>
-array (
-'data' =>
-array (
-'validate' => 'misc.forms.default.buttons.save',
-),
-),
-),
-'authentication' =>
-array (
-'model' => 'basic',
-'fields' =>
-array (
-'public_key' =>
-array (
-'model' => 'string',
-'required' => true,
-'validators' =>
-array (
-'regexp' =>
-array (
-'format' => '/^(PP|SB)?[a-f0-9]{32}$/',
-'error' => 'forms.authentication.errors.identifier_bad_format',
-),
-),
-'view' =>
-array (
-'data' =>
-array (
-'label' => 'forms.authentication.fields.shop_token.label',
-'attr' =>
-array (
-'maxlength' => 34,
-'size' => 34,
-),
-),
-),
-),
-'private_key' =>
-array (
-'model' => 'string',
-'required' => true,
-'validators' =>
-array (
-'regexp' =>
-array (
-'format' => '/^[a-f0-9]{4}\\-[a-f0-9]{4}\\-[a-f0-9]{4}\\-[a-f0-9]{12}$/',
-'error' => 'forms.authentication.errors.private_key_bad_format',
-),
-),
-'view' =>
-array (
-'data' =>
-array (
-'label' => 'forms.authentication.fields.private_key.label',
-'attr' =>
-array (
-'maxlength' => 27,
-'size' => 34,
-),
-),
-),
-),
-),
-'view' =>
-array (
-'data' =>
-array (
-'validate' => 'misc.forms.default.buttons.save',
-),
-),
-),
-'settings_customization' =>
-array (
-'model' => 'basic',
-'fields' =>
-array (
-'footer_display' =>
-array (
-'model' => 'bool.switch',
-'view' =>
-array (
-'data' =>
-array (
-'label' => 'forms.config.fields.behavior_display_footer.label',
-'help' => 'forms.config.fields.behavior_display_footer.help',
-),
-),
-'enabled' => false,
-),
-'footer_color' =>
-array (
-'model' => 'choice.contracted.single',
-'validators' =>
-array (
-'array.in' =>
-array (
-0 => 'white',
-1 => 'green',
-2 => 'black',
-),
-),
-'view' =>
-array (
-'data' =>
-array (
-'choices' =>
-array (
-'white' => 'forms.config.fields.display_footer_color.values.white',
-'green' => 'forms.config.fields.display_footer_color.values.green',
-'black' => 'forms.config.fields.display_footer_color.values.black',
-),
-'translate' => true,
-'label' => 'forms.config.fields.display_footer_color.label',
-),
-),
-'enabled' => false,
-),
-),
-'view' =>
-array (
-'data' =>
-array (
-'validate' => 'misc.forms.default.buttons.save',
-),
-),
-),
-'button_update' =>
-array (
-'extends' => 'button',
-'fields' =>
-array (
-'id' =>
-array (
-'model' => 'hidden',
-'format' => 'int',
-'required' => true,
-'validators' =>
-array (
-'not_empty' =>
-array (
-'error' => 'forms.button.errors.id_not_found',
-),
-),
-),
-),
-),
-'button_filters' =>
-array (
-'model' => 'multipart',
-'fields' =>
-array (
-'id' =>
-array (
-'model' => 'hidden',
-'format' => 'int',
-'required' => true,
-'validators' =>
-array (
-'not_empty' =>
-array (
-'error' => 'forms.button.errors.id_not_found',
-),
-),
-),
-'categories_filtering_mode' =>
-array (
-'model' => 'choice.contracted.single',
-'validators' =>
-array (
-'array.in' =>
-array (
-0 => 'NONE',
-1 => 'STRICT',
-2 => 'FLEXIBLE',
-),
-),
-'view' =>
-array (
-'data' =>
-array (
-'choices' =>
-array (
-'NONE' => 'forms.button_filters.fields.categories_filtering_mode.values.NONE',
-'STRICT' => 'forms.button_filters.fields.categories_filtering_mode.values.STRICT',
-'FLEXIBLE' => 'forms.button_filters.fields.categories_filtering_mode.values.FLEXIBLE',
-),
-'translate' => true,
-'label' => 'forms.button_filters.fields.categories_filtering_mode.label',
-'help' => 'forms.button_filters.fields.categories_filtering_mode.help',
-),
-),
-),
-'filtered_categories' =>
-array (
-'model' => 'choice.double.bool',
-'default' =>
-array (
-),
-'view' =>
-array (
-'data' =>
-array (
-'horizontal_choices' =>
-array (
-0 => 'forms.button_filters.fields.filtered_categories.column',
-),
-'vertical_choices' => 'category.hierarchized',
-'axis' => 'vertical',
-'filterPlaceholder' => 'forms.button_filters.fields.search.placeholder',
-'translate' =>
-array (
-'horizontal_choices' => true,
-),
-'label' => 'forms.button_filters.fields.filtered_categories.label',
-'help' => 'forms.button_filters.fields.filtered_categories.help',
-),
-),
-),
-'cart_amount_limits' =>
-array (
-'model' => 'object',
-'children' =>
-array (
-'min' =>
-array (
-'model' => 'int',
-'default' => 0,
-'view' =>
-array (
-'data' =>
-array (
-'attr' =>
-array (
-'min' => 0,
-),
-),
-'template' => 'fields/partials/input',
-),
-),
-'max' =>
-array (
-'model' => 'int',
-'default' => 0,
-'view' =>
-array (
-'data' =>
-array (
-'attr' =>
-array (
-'min' => 0,
-),
-),
-'template' => 'fields/partials/input',
-),
-),
-),
-'view' =>
-array (
-'name' => 'field.object',
-'data' =>
-array (
-'label' => 'forms.button_filters.fields.cart_amount.label',
-'class' => null,
-'help' => 'forms.button_filters.fields.cart_amount.helper',
-'warning' => 'errors.button.min_amount_greater_than_max_amount',
-),
-'template' => 'fields/bloc-range',
-),
-),
-),
-'view' =>
-array (
-'data' =>
-array (
-'validate' => 'misc.forms.default.buttons.save',
-'columns' =>
-array (
-'categories_filtering' =>
-array (
-0 => 'categories_filtering_mode',
-1 => 'filtered_categories',
-),
-'other_filtering' =>
-array (
-0 => 'cart_amount_limits',
-1 => 'form_key',
-),
-),
-),
-'template' => 'forms/button_filters',
-),
-),
 'products' =>
 array (
 'fields' =>
@@ -3138,25 +3422,20 @@ array (
 ),
 ),
 ),
-'eligible_amounts' =>
+'account_activation' =>
 array (
 'model' => 'basic',
 'fields' =>
 array (
-'eligible_amounts' =>
+'activation' =>
 array (
-'model' => 'choice.double.bool',
-'default' =>
-array (
-),
+'model' => 'bool.switch',
 'view' =>
 array (
 'data' =>
 array (
-'horizontal_choices' => 'payment_type',
-'vertical_choices' => 'category.hierarchized',
-'axis' => 'vertical',
-'filterPlaceholder' => 'forms.eligible_amounts.fields.search.placeholder',
+'label' => 'forms.account_activation.fields.activation.label',
+'help' => 'forms.account_activation.fields.activation.help',
 ),
 ),
 ),
@@ -3279,35 +3558,6 @@ array (
 array (
 'label' => 'forms.config.fields.regenerate_cart_on_refused_payment.label',
 'help' => 'forms.config.fields.regenerate_cart_on_refused_payment.help',
-),
-),
-),
-),
-'view' =>
-array (
-'data' =>
-array (
-'validate' => 'misc.forms.default.buttons.save',
-),
-),
-),
-'exclusion_shipping_cost' =>
-array (
-'model' => 'basic',
-'fields' =>
-array (
-'payment_types' =>
-array (
-'model' => 'choice.expanded.multiple',
-'default' =>
-array (
-),
-'view' =>
-array (
-'data' =>
-array (
-'choices' => 'payment_type',
-'label' => 'forms.exclusion_shipping_cost.fields.label.label',
 ),
 ),
 ),
@@ -3565,46 +3815,34 @@ array (
 'template' => 'forms/button',
 ),
 ),
-'tree_config' =>
+'button_filters' =>
 array (
-'model' => 'basic',
+'model' => 'multipart',
 'fields' =>
 array (
-'carbon_offsetting_payer' =>
+'id' =>
 array (
-'model' => 'choice.expanded.single',
-'format' => 'string',
-'default' => 'MERCHANT',
-'enabled' => false,
-'view' =>
+'model' => 'hidden',
+'format' => 'int',
+'required' => true,
+'validators' =>
 array (
-'data' =>
+'not_empty' =>
 array (
-'choices' =>
-array (
-'MERCHANT' => 'forms.tree_config.fields.carbon_offsetting_payer.values.MERCHANT',
-'CUSTOMER' => 'forms.tree_config.fields.carbon_offsetting_payer.values.CUSTOMER',
-),
-'attr' =>
-array (
-'disabled' => '',
-),
-'translate' => true,
-'label' => 'forms.tree_config.fields.carbon_offsetting_payer.label',
-'help' => 'forms.tree_config.fields.carbon_offsetting_payer.help',
-'warning' => 'forms.tree_config.fields.carbon_offsetting_payer.warning',
+'error' => 'forms.button.errors.id_not_found',
 ),
 ),
 ),
-'tree_api_server' =>
+'categories_filtering_mode' =>
 array (
 'model' => 'choice.contracted.single',
 'validators' =>
 array (
 'array.in' =>
 array (
-0 => 'PROD',
-1 => 'SANDBOX',
+0 => 'NONE',
+1 => 'STRICT',
+2 => 'FLEXIBLE',
 ),
 ),
 'view' =>
@@ -3613,24 +3851,135 @@ array (
 array (
 'choices' =>
 array (
-'PROD' => 'forms.tree_config.fields.tree_api_server.values.PROD',
-'SANDBOX' => 'forms.tree_config.fields.tree_api_server.values.SANDBOX',
+'NONE' => 'forms.button_filters.fields.categories_filtering_mode.values.NONE',
+'STRICT' => 'forms.button_filters.fields.categories_filtering_mode.values.STRICT',
+'FLEXIBLE' => 'forms.button_filters.fields.categories_filtering_mode.values.FLEXIBLE',
 ),
 'translate' => true,
-'label' => 'forms.tree_config.fields.tree_api_server.label',
-'help' => 'forms.tree_config.fields.tree_api_server.help',
+'label' => 'forms.button_filters.fields.categories_filtering_mode.label',
+'help' => 'forms.button_filters.fields.categories_filtering_mode.help',
 ),
 ),
 ),
-'tree_details_url' =>
+'filtered_categories' =>
 array (
-'model' => 'string',
+'model' => 'choice.double.bool',
+'default' =>
+array (
+),
 'view' =>
 array (
 'data' =>
 array (
-'label' => 'forms.tree_config.fields.tree_details_url.label',
-'help' => 'forms.tree_config.fields.tree_details_url.help',
+'horizontal_choices' =>
+array (
+0 => 'forms.button_filters.fields.filtered_categories.column',
+),
+'vertical_choices' => 'category.hierarchized',
+'axis' => 'vertical',
+'filterPlaceholder' => 'forms.button_filters.fields.search.placeholder',
+'translate' =>
+array (
+'horizontal_choices' => true,
+),
+'label' => 'forms.button_filters.fields.filtered_categories.label',
+'help' => 'forms.button_filters.fields.filtered_categories.help',
+),
+),
+),
+'cart_amount_limits' =>
+array (
+'model' => 'object',
+'children' =>
+array (
+'min' =>
+array (
+'model' => 'int',
+'default' => 0,
+'view' =>
+array (
+'data' =>
+array (
+'attr' =>
+array (
+'min' => 0,
+),
+),
+'template' => 'fields/partials/input',
+),
+),
+'max' =>
+array (
+'model' => 'int',
+'default' => 0,
+'view' =>
+array (
+'data' =>
+array (
+'attr' =>
+array (
+'min' => 0,
+),
+),
+'template' => 'fields/partials/input',
+),
+),
+),
+'view' =>
+array (
+'name' => 'field.object',
+'data' =>
+array (
+'label' => 'forms.button_filters.fields.cart_amount.label',
+'class' => null,
+'help' => 'forms.button_filters.fields.cart_amount.helper',
+'warning' => 'errors.button.min_amount_greater_than_max_amount',
+),
+'template' => 'fields/bloc-range',
+),
+),
+),
+'view' =>
+array (
+'data' =>
+array (
+'validate' => 'misc.forms.default.buttons.save',
+'columns' =>
+array (
+'categories_filtering' =>
+array (
+0 => 'categories_filtering_mode',
+1 => 'filtered_categories',
+),
+'other_filtering' =>
+array (
+0 => 'cart_amount_limits',
+1 => 'form_key',
+),
+),
+),
+'template' => 'forms/button_filters',
+),
+),
+'eligible_amounts' =>
+array (
+'model' => 'basic',
+'fields' =>
+array (
+'eligible_amounts' =>
+array (
+'model' => 'choice.double.bool',
+'default' =>
+array (
+),
+'view' =>
+array (
+'data' =>
+array (
+'horizontal_choices' => 'payment_type',
+'vertical_choices' => 'category.hierarchized',
+'axis' => 'vertical',
+'filterPlaceholder' => 'forms.eligible_amounts.fields.search.placeholder',
 ),
 ),
 ),
@@ -3643,33 +3992,23 @@ array (
 ),
 ),
 ),
-'carbon_bot_config_global' =>
+'exclusion_shipping_cost' =>
 array (
 'model' => 'basic',
 'fields' =>
 array (
-'tree_bot_activated' =>
+'payment_types' =>
 array (
-'model' => 'bool.switch',
+'model' => 'choice.expanded.multiple',
+'default' =>
+array (
+),
 'view' =>
 array (
 'data' =>
 array (
-'label' => 'forms.carbon_bot_config_global.fields.tree_bot_activated.label',
-'help' => 'forms.carbon_bot_config_global.fields.tree_bot_activated.help',
-),
-),
-),
-'tree_bot_mobile_activated' =>
-array (
-'model' => 'bool.switch',
-'behavior' => 'tree_bot_activation',
-'view' =>
-array (
-'data' =>
-array (
-'label' => 'forms.tree_bot.fields.tree_bot_mobile_activated.label',
-'help' => 'forms.tree_bot.fields.tree_bot_mobile_activated.help',
+'choices' => 'payment_type',
+'label' => 'forms.exclusion_shipping_cost.fields.label.label',
 ),
 ),
 ),
@@ -3682,76 +4021,115 @@ array (
 ),
 ),
 ),
-'tree_shipping_address' =>
+'authentication' =>
 array (
 'model' => 'basic',
 'fields' =>
 array (
-'shipping_address_line_1' =>
+'public_key' =>
 array (
 'model' => 'string',
 'required' => true,
+'validators' =>
+array (
+'regexp' =>
+array (
+'format' => '/^(PP|SB)?[a-f0-9]{32}$/',
+'error' => 'forms.authentication.errors.identifier_bad_format',
+),
+),
 'view' =>
 array (
 'data' =>
 array (
-'label' => 'forms.tree_shipping_address.fields.line_1.label',
-),
-),
-),
-'shipping_address_line_2' =>
+'label' => 'forms.authentication.fields.shop_token.label',
+'attr' =>
 array (
-'model' => 'string',
-'required' => false,
-'view' =>
-array (
-'data' =>
-array (
-'label' => 'forms.tree_shipping_address.fields.line_2.label',
+'maxlength' => 34,
+'size' => 34,
 ),
 ),
 ),
-'shipping_address_zipcode' =>
-array (
-'model' => 'string',
-'required' => true,
-'view' =>
-array (
-'data' =>
-array (
-'label' => 'forms.tree_shipping_address.fields.zipcode.label',
 ),
-),
-),
-'shipping_address_city' =>
+'private_key' =>
 array (
 'model' => 'string',
 'required' => true,
+'validators' =>
+array (
+'regexp' =>
+array (
+'format' => '/^[a-f0-9]{4}\\-[a-f0-9]{4}\\-[a-f0-9]{4}\\-[a-f0-9]{12}$/',
+'error' => 'forms.authentication.errors.private_key_bad_format',
+),
+),
 'view' =>
 array (
 'data' =>
 array (
-'label' => 'forms.tree_shipping_address.fields.city.label',
+'label' => 'forms.authentication.fields.private_key.label',
+'attr' =>
+array (
+'maxlength' => 27,
+'size' => 34,
 ),
 ),
 ),
-'shipping_address_country' =>
+),
+),
+'view' =>
+array (
+'data' =>
+array (
+'validate' => 'misc.forms.default.buttons.save',
+),
+),
+),
+'settings_customization' =>
+array (
+'model' => 'basic',
+'fields' =>
+array (
+'footer_display' =>
+array (
+'model' => 'bool.switch',
+'view' =>
+array (
+'data' =>
+array (
+'label' => 'forms.config.fields.behavior_display_footer.label',
+'help' => 'forms.config.fields.behavior_display_footer.help',
+),
+),
+'enabled' => false,
+),
+'footer_color' =>
 array (
 'model' => 'choice.contracted.single',
 'validators' =>
 array (
-'array.in' => 'countries',
+'array.in' =>
+array (
+0 => 'white',
+1 => 'green',
+2 => 'black',
 ),
-'required' => true,
+),
 'view' =>
 array (
 'data' =>
 array (
-'choices' => 'countries',
+'choices' =>
+array (
+'white' => 'forms.config.fields.display_footer_color.values.white',
+'green' => 'forms.config.fields.display_footer_color.values.green',
+'black' => 'forms.config.fields.display_footer_color.values.black',
+),
 'translate' => true,
-'label' => 'forms.tree_shipping_address.fields.country.label',
+'label' => 'forms.config.fields.display_footer_color.label',
 ),
 ),
+'enabled' => false,
 ),
 ),
 'view' =>
@@ -3762,53 +4140,23 @@ array (
 ),
 ),
 ),
-'tree_authentication' =>
+'button_update' =>
 array (
-'model' => 'basic',
+'extends' => 'button',
 'fields' =>
 array (
-'client_id' =>
+'id' =>
 array (
-'model' => 'string',
+'model' => 'hidden',
+'format' => 'int',
 'required' => true,
-'view' =>
+'validators' =>
 array (
-'data' =>
+'not_empty' =>
 array (
-'label' => 'forms.tree_authentication.fields.client_id.label',
+'error' => 'forms.button.errors.id_not_found',
 ),
 ),
-),
-'login' =>
-array (
-'model' => 'string',
-'required' => true,
-'view' =>
-array (
-'data' =>
-array (
-'label' => 'forms.tree_authentication.fields.login.label',
-),
-),
-),
-'password' =>
-array (
-'model' => 'string',
-'required' => true,
-'view' =>
-array (
-'data' =>
-array (
-'label' => 'forms.tree_authentication.fields.password.label',
-),
-),
-),
-),
-'view' =>
-array (
-'data' =>
-array (
-'validate' => 'misc.forms.default.buttons.save',
 ),
 ),
 ),
@@ -3903,6 +4251,317 @@ array (
 ),
 ),
 ),
+'carbon_bot_config_global' =>
+array (
+'model' => 'basic',
+'fields' =>
+array (
+'tree_bot_activated' =>
+array (
+'model' => 'bool.switch',
+'view' =>
+array (
+'data' =>
+array (
+'label' => 'forms.carbon_bot_config_global.fields.tree_bot_activated.label',
+'help' => 'forms.carbon_bot_config_global.fields.tree_bot_activated.help',
+),
+),
+),
+'tree_bot_mobile_activated' =>
+array (
+'model' => 'bool.switch',
+'behavior' => 'tree_bot_activation',
+'view' =>
+array (
+'data' =>
+array (
+'label' => 'forms.tree_bot.fields.tree_bot_mobile_activated.label',
+'help' => 'forms.tree_bot.fields.tree_bot_mobile_activated.help',
+),
+),
+),
+),
+'view' =>
+array (
+'data' =>
+array (
+'validate' => 'misc.forms.default.buttons.save',
+),
+),
+),
+'tree_config' =>
+array (
+'model' => 'basic',
+'fields' =>
+array (
+'carbon_offsetting_payer' =>
+array (
+'model' => 'choice.expanded.single',
+'format' => 'string',
+'default' => 'MERCHANT',
+'enabled' => false,
+'view' =>
+array (
+'data' =>
+array (
+'choices' =>
+array (
+'MERCHANT' => 'forms.tree_config.fields.carbon_offsetting_payer.values.MERCHANT',
+'CUSTOMER' => 'forms.tree_config.fields.carbon_offsetting_payer.values.CUSTOMER',
+),
+'attr' =>
+array (
+'disabled' => '',
+),
+'translate' => true,
+'label' => 'forms.tree_config.fields.carbon_offsetting_payer.label',
+'help' => 'forms.tree_config.fields.carbon_offsetting_payer.help',
+'warning' => 'forms.tree_config.fields.carbon_offsetting_payer.warning',
+),
+),
+),
+'tree_details_url' =>
+array (
+'model' => 'string',
+'view' =>
+array (
+'data' =>
+array (
+'label' => 'forms.tree_config.fields.tree_details_url.label',
+'help' => 'forms.tree_config.fields.tree_details_url.help',
+),
+),
+),
+'tree_test_mode' =>
+array (
+'model' => 'bool.switch',
+'behavior' => 'tree_prod_available',
+'view' =>
+array (
+'data' =>
+array (
+'label' => 'forms.tree_config.fields.tree_test_mode.label',
+'help' => 'forms.tree_config.fields.tree_test_mode.help',
+),
+),
+),
+),
+'view' =>
+array (
+'data' =>
+array (
+'validate' => 'misc.forms.default.buttons.save',
+),
+),
+),
+'tree_authentication' =>
+array (
+'model' => 'basic',
+'fields' =>
+array (
+'client_id' =>
+array (
+'model' => 'string',
+'required' => true,
+'view' =>
+array (
+'data' =>
+array (
+'label' => 'forms.tree_authentication.fields.client_id.label',
+),
+),
+),
+'login' =>
+array (
+'model' => 'string',
+'required' => true,
+'view' =>
+array (
+'data' =>
+array (
+'label' => 'forms.tree_authentication.fields.login.label',
+),
+),
+),
+'password' =>
+array (
+'model' => 'string',
+'required' => true,
+'view' =>
+array (
+'data' =>
+array (
+'label' => 'forms.tree_authentication.fields.password.label',
+),
+),
+),
+),
+'view' =>
+array (
+'data' =>
+array (
+'validate' => 'misc.forms.default.buttons.save',
+),
+),
+),
+'tree_shipping_address' =>
+array (
+'model' => 'basic',
+'fields' =>
+array (
+'shipping_address_line_1' =>
+array (
+'model' => 'string',
+'required' => true,
+'view' =>
+array (
+'data' =>
+array (
+'label' => 'forms.tree_shipping_address.fields.line_1.label',
+),
+),
+),
+'shipping_address_line_2' =>
+array (
+'model' => 'string',
+'required' => false,
+'view' =>
+array (
+'data' =>
+array (
+'label' => 'forms.tree_shipping_address.fields.line_2.label',
+),
+),
+),
+'shipping_address_zipcode' =>
+array (
+'model' => 'string',
+'required' => true,
+'view' =>
+array (
+'data' =>
+array (
+'label' => 'forms.tree_shipping_address.fields.zipcode.label',
+),
+),
+),
+'shipping_address_city' =>
+array (
+'model' => 'string',
+'required' => true,
+'view' =>
+array (
+'data' =>
+array (
+'label' => 'forms.tree_shipping_address.fields.city.label',
+),
+),
+),
+'shipping_address_country' =>
+array (
+'model' => 'choice.contracted.single',
+'validators' =>
+array (
+'array.in' => 'countries',
+),
+'required' => true,
+'view' =>
+array (
+'data' =>
+array (
+'choices' => 'countries',
+'translate' => true,
+'label' => 'forms.tree_shipping_address.fields.country.label',
+),
+),
+),
+),
+'view' =>
+array (
+'data' =>
+array (
+'validate' => 'misc.forms.default.buttons.save',
+),
+),
+),
+'charity_config' =>
+array (
+'model' => 'basic',
+'fields' =>
+array (
+'charity_test_mode' =>
+array (
+'model' => 'bool.switch',
+'behavior' => 'charity_prod_available',
+'view' =>
+array (
+'data' =>
+array (
+'label' => 'forms.charity_config.fields.charity_test_mode.label',
+'help' => 'forms.charity_config.fields.charity_test_mode.help',
+),
+),
+),
+),
+'view' =>
+array (
+'data' =>
+array (
+'validate' => 'misc.forms.default.buttons.save',
+),
+),
+),
+'charity_authentication' =>
+array (
+'model' => 'basic',
+'fields' =>
+array (
+'client_id' =>
+array (
+'model' => 'string',
+'required' => true,
+'view' =>
+array (
+'data' =>
+array (
+'label' => 'forms.charity_authentication.fields.client_id.label',
+),
+),
+),
+'login' =>
+array (
+'model' => 'string',
+'required' => true,
+'view' =>
+array (
+'data' =>
+array (
+'label' => 'forms.charity_authentication.fields.login.label',
+),
+),
+),
+'password' =>
+array (
+'model' => 'string',
+'required' => true,
+'view' =>
+array (
+'data' =>
+array (
+'label' => 'forms.charity_authentication.fields.password.label',
+),
+),
+),
+),
+'view' =>
+array (
+'data' =>
+array (
+'validate' => 'misc.forms.default.buttons.save',
+),
+),
+),
 ),
 'default' =>
 array (
@@ -3941,191 +4600,6 @@ array (
 ),
 ),
 ),
-),
-'languages' =>
-array (
-0 => 'ab',
-1 => 'aa',
-2 => 'af',
-3 => 'ak',
-4 => 'sq',
-5 => 'de',
-6 => 'am',
-7 => 'en',
-8 => 'ar',
-9 => 'an',
-10 => 'hy',
-11 => 'as',
-12 => 'av',
-13 => 'ae',
-14 => 'ay',
-15 => 'az',
-16 => 'ba',
-17 => 'bm',
-18 => 'eu',
-19 => 'bn',
-20 => 'bi',
-21 => 'be',
-22 => 'my',
-23 => 'bs',
-24 => 'br',
-25 => 'bg',
-26 => 'ca',
-27 => 'ch',
-28 => 'ny',
-29 => 'zh',
-30 => 'ko',
-31 => 'kw',
-32 => 'co',
-33 => 'cr',
-34 => 'hr',
-35 => 'da',
-36 => 'dz',
-37 => 'es',
-38 => 'eo',
-39 => 'et',
-40 => 'ee',
-41 => 'fo',
-42 => 'fj',
-43 => 'fi',
-44 => 'nl',
-45 => 'fr',
-46 => 'fy',
-47 => 'gd',
-48 => 'gl',
-49 => 'om',
-50 => 'cy',
-51 => 'lg',
-52 => 'ka',
-53 => 'gu',
-54 => 'el',
-55 => 'kl',
-56 => 'gn',
-57 => 'ht',
-58 => 'ha',
-59 => 'he',
-60 => 'hz',
-61 => 'hi',
-62 => 'ho',
-63 => 'hu',
-64 => 'io',
-65 => 'ig',
-66 => 'id',
-67 => 'iu',
-68 => 'ik',
-69 => 'ga',
-70 => 'is',
-71 => 'it',
-72 => 'ja',
-73 => 'jv',
-74 => 'kn',
-75 => 'kr',
-76 => 'ks',
-77 => 'kk',
-78 => 'km',
-79 => 'ki',
-80 => 'ky',
-81 => 'kv',
-82 => 'kg',
-83 => 'ku',
-84 => 'kj',
-85 => 'bh',
-86 => 'lo',
-87 => 'la',
-88 => 'lv',
-89 => 'li',
-90 => 'ln',
-91 => 'lt',
-92 => 'lu',
-93 => 'lb',
-94 => 'mk',
-95 => 'ms',
-96 => 'ml',
-97 => 'dv',
-98 => 'mg',
-99 => 'mt',
-100 => 'gv',
-101 => 'mi',
-102 => 'mr',
-103 => 'mh',
-104 => 'ro',
-105 => 'mn',
-106 => 'na',
-107 => 'nv',
-108 => 'nd',
-109 => 'nr',
-110 => 'ng',
-111 => 'ne',
-112 => 'no',
-113 => 'nb',
-114 => 'nn',
-115 => 'oc',
-116 => 'oj',
-117 => 'or',
-118 => 'os',
-119 => 'ug',
-120 => 'ur',
-121 => 'uz',
-122 => 'ps',
-123 => 'pi',
-124 => 'pa',
-125 => 'fa',
-126 => 'ff',
-127 => 'pl',
-128 => 'pt',
-129 => 'qu',
-130 => 'rm',
-131 => 'rn',
-132 => 'ru',
-133 => 'rw',
-134 => 'se',
-135 => 'sm',
-136 => 'sg',
-137 => 'sa',
-138 => 'sc',
-139 => 'sr',
-140 => 'sn',
-141 => 'sd',
-142 => 'si',
-143 => 'sk',
-144 => 'sl',
-145 => 'so',
-146 => 'st',
-147 => 'su',
-148 => 'sv',
-149 => 'sw',
-150 => 'ss',
-151 => 'tg',
-152 => 'tl',
-153 => 'ty',
-154 => 'ta',
-155 => 'tt',
-156 => 'cs',
-157 => 'ce',
-158 => 'cv',
-159 => 'te',
-160 => 'th',
-161 => 'bo',
-162 => 'ti',
-163 => 'to',
-164 => 'ts',
-165 => 'tn',
-166 => 'tr',
-167 => 'tk',
-168 => 'tw',
-169 => 'uk',
-170 => 've',
-171 => 'vi',
-172 => 'cu',
-173 => 'vo',
-174 => 'wa',
-175 => 'wo',
-176 => 'xh',
-177 => 'ii',
-178 => 'yi',
-179 => 'yo',
-180 => 'za',
-181 => 'zu',
 ),
 'blocks' =>
 array (
@@ -4170,6 +4644,11 @@ array (
 'title' => 'blocks.cache.reset.title',
 'description' => 'blocks.cache.reset.description',
 ),
+),
+'servers' =>
+array (
+'target' => 'support',
+'view' => 'block.server',
 ),
 'system_module_informations' =>
 array (
@@ -4389,7 +4868,7 @@ array (
 'form_payment_translations_management' =>
 array (
 'target' => 'payment_translations',
-'action' => 'displayPaymentTranslationsForm@backoffice.payment_translations',
+'action' => 'payment_translations_form.display',
 'data' =>
 array (
 'class' => 'pgblock pgblock__max__lg',
@@ -4496,7 +4975,7 @@ array (
 'form_tree_translations_management' =>
 array (
 'target' => 'tree_translations',
-'action' => 'displayTreeTranslationsForm@backoffice.tree_translations',
+'action' => 'tree_translations_form.display',
 'data' =>
 array (
 'class' => 'pgblock pgblock__max__lg',
@@ -4507,7 +4986,7 @@ array (
 'form_tree_bot_translations_management' =>
 array (
 'target' => 'carbon_bot_config',
-'action' => 'displayTreeBotTranslationsForm@backoffice.tree_translations',
+'action' => 'tree_bot_translations_form.display',
 'data' =>
 array (
 'class' => 'pgblock pgblock__lg',
@@ -4547,6 +5026,109 @@ array (
 array (
 'title' => 'blocks.tree_config_form_common.title',
 'class' => 'pgblock__md',
+),
+),
+'charity_kit_header' =>
+array (
+'position' => 3,
+'target' => 'home',
+'action' => 'display@backoffice.charity',
+'data' =>
+array (
+'class' => 'pgblock__min__xxl',
+),
+'requirements' =>
+array (
+'charity_kit_activation' => true,
+),
+),
+'charity_kit_products' =>
+array (
+'target' => 'products',
+'action' => 'displayProducts@backoffice.charity',
+'data' =>
+array (
+'class' => 'pgblock__max__md',
+),
+),
+'charity_account_infos' =>
+array (
+'target' => 'charity_account',
+'action' => 'displayAccountInfos@backoffice.charity_account',
+'data' =>
+array (
+'class' => 'pgblock__min__md',
+),
+'requirements' =>
+array (
+'charity_connexion' => true,
+),
+),
+'charity_account_logout' =>
+array (
+'target' => 'charity_account',
+'template' => 'charity_account/block-logout',
+'data' =>
+array (
+'class' => 'pgblock__max__md pg__danger',
+),
+'requirements' =>
+array (
+'charity_connexion' => true,
+),
+),
+'charity_account_login' =>
+array (
+'target' => 'charity_account',
+'action' => 'displayAccountLogin@backoffice.charity_account',
+'data' =>
+array (
+'class' => 'pgblock__max__md',
+),
+'requirements' =>
+array (
+'charity_connexion' => false,
+),
+),
+'charity_config_form_common' =>
+array (
+'target' => 'charity_config',
+'action' => 'charity_module_config.display',
+'data' =>
+array (
+'title' => 'blocks.charity_config_form_common.title',
+'class' => 'pgblock__md',
+),
+),
+'charity_partnerships_list' =>
+array (
+'target' => 'charity_partnerships',
+'action' => 'displayList@backoffice.charity_partnerships',
+'data' =>
+array (
+'title' => 'blocks.charity_partnerships_list.title',
+'class' => 'pgblock__min__xxl',
+),
+),
+'charity_partnerships_disclaimer' =>
+array (
+'target' => 'charity_partnerships',
+'template' => 'charity_partnerships/block-partnerships-disclaimer',
+'data' =>
+array (
+'subtitle' => 'blocks.charity_partnerships_disclaimer.title',
+'class' => 'pgblock__max__md pg__default',
+),
+),
+'form_charity_translations_management' =>
+array (
+'target' => 'charity_translations',
+'action' => 'charity_translations_form.display',
+'data' =>
+array (
+'class' => 'pgblock pgblock__max__lg',
+'title' => 'pages.translations.frontoffice.title',
+'description' => 'pages.translations.frontoffice.description',
 ),
 ),
 ),
@@ -4655,6 +5237,38 @@ array (
 'title' => 'pages.carbon_bot_config.title',
 ),
 ),
+),
+'charity' =>
+array (
+'children' =>
+array (
+'charity_account' =>
+array (
+'action' => 'backoffice.charity_account.display',
+'name' => 'pages.charity_account.name',
+'title' => 'pages.charity_account.title',
+),
+'charity_config' =>
+array (
+'action' => 'backoffice.charity_config.display',
+'name' => 'pages.charity_config.name',
+'title' => 'pages.charity_config.title',
+),
+'charity_partnerships' =>
+array (
+'action' => 'backoffice.charity_partnerships.display',
+'name' => 'pages.charity_partnerships.name',
+'title' => 'pages.charity_partnerships.title',
+),
+'charity_translations' =>
+array (
+'action' => 'backoffice.charity_translations.display',
+'name' => 'pages.translations.name',
+'title' => 'pages.translations.title',
+),
+),
+'name' => 'menu.charity.name',
+'title' => 'menu.charity.title',
 ),
 'config' =>
 array (
@@ -4856,8 +5470,225 @@ array (
 ),
 ),
 ),
+'requirements' =>
+array (
+'shop_context' =>
+array (
+),
+'paygreen_connexion' =>
+array (
+),
+'payment_activation' =>
+array (
+'requirements' =>
+array (
+0 => 'payment_kit_activation',
+),
+),
+'payment_kit_activation' =>
+array (
+),
+'footer_displayed' =>
+array (
+),
+'tree_kit_activation' =>
+array (
+),
+'tree_bot_activation' =>
+array (
+),
+'tree_connexion' =>
+array (
+'requirements' =>
+array (
+0 => 'tree_kit_activation',
+),
+),
+'tree_activation' =>
+array (
+'requirements' =>
+array (
+0 => 'tree_connexion',
+),
+),
+'tree_prod_available' =>
+array (
+'requirements' =>
+array (
+0 => 'tree_activation',
+),
+),
+'tree_access_available' =>
+array (
+'requirements' =>
+array (
+0 => 'tree_activation',
+),
+),
+'charity_kit_activation' =>
+array (
+),
+'charity_connexion' =>
+array (
+'requirements' =>
+array (
+0 => 'charity_kit_activation',
+),
+),
+'charity_activation' =>
+array (
+'requirements' =>
+array (
+0 => 'charity_connexion',
+),
+),
+'charity_prod_available' =>
+array (
+'requirements' =>
+array (
+0 => 'charity_activation',
+),
+),
+'charity_access_available' =>
+array (
+'requirements' =>
+array (
+0 => 'charity_activation',
+),
+),
+),
+'data' =>
+array (
+'payment_report' =>
+array (
+0 => 'forms.button.fields.payment_report.values.none',
+'1 week' => 'forms.button.fields.payment_report.values.1week',
+'2 weeks' => 'forms.button.fields.payment_report.values.2week',
+'1 month' => 'forms.button.fields.payment_report.values.1month',
+'2 months' => 'forms.button.fields.payment_report.values.2month',
+'3 months' => 'forms.button.fields.payment_report.values.3month',
+),
+'button_integration' =>
+array (
+'EXTERNAL' => 'forms.button.fields.integration.values.external',
+'INSITE' => 'forms.button.fields.integration.values.insite',
+),
+'display_type' =>
+array (
+'DEFAULT' => 'forms.button.fields.display_type.values.all',
+'IMAGE' => 'forms.button.fields.display_type.values.picture',
+'TEXT' => 'forms.button.fields.display_type.values.text',
+),
+'charity_gift' =>
+array (
+'reference' => 'paygreen-charity-gift',
+'image_path' => 'static:/pictures/FOCharity/logo-charity-kit.png',
+),
+),
 'order' =>
 array (
+'machines' =>
+array (
+'CASH' =>
+array (
+'start' =>
+array (
+),
+'transitions' =>
+array (
+'NEW' =>
+array (
+0 => 'ERROR',
+1 => 'VALIDATE',
+2 => 'TEST',
+3 => 'VERIFY',
+4 => 'CANCEL',
+),
+),
+),
+'RECURRING' =>
+array (
+'start' =>
+array (
+),
+'transitions' =>
+array (
+'WAIT' =>
+array (
+0 => 'ERROR',
+1 => 'VALIDATE',
+2 => 'TEST',
+),
+'ERROR' =>
+array (
+0 => 'VALIDATE',
+1 => 'TEST',
+),
+'VALIDATE' =>
+array (
+0 => 'ERROR',
+),
+'TEST' =>
+array (
+0 => 'ERROR',
+),
+'NEW' =>
+array (
+0 => 'ERROR',
+1 => 'WAIT',
+2 => 'CANCEL',
+),
+),
+),
+'XTIME' =>
+array (
+'start' =>
+array (
+),
+'transitions' =>
+array (
+'WAIT' =>
+array (
+0 => 'ERROR',
+1 => 'VALIDATE',
+2 => 'TEST',
+),
+'ERROR' =>
+array (
+0 => 'VALIDATE',
+1 => 'TEST',
+),
+'NEW' =>
+array (
+0 => 'ERROR',
+1 => 'WAIT',
+2 => 'CANCEL',
+),
+),
+),
+'TOKENIZE' =>
+array (
+'start' =>
+array (
+),
+'transitions' =>
+array (
+'AUTH' =>
+array (
+0 => 'ERROR',
+1 => 'VALIDATE',
+2 => 'TEST',
+3 => 'VERIFY',
+),
+'NEW' =>
+array (
+0 => 'ERROR',
+1 => 'CANCEL',
+2 => 'AUTH',
+),
+),
+),
+),
 'states' =>
 array (
 'VALIDATE' =>
@@ -4961,116 +5792,13 @@ array (
 ),
 ),
 ),
-'machines' =>
-array (
-'CASH' =>
-array (
-'start' =>
-array (
 ),
-'transitions' =>
+'paygreen' =>
 array (
-'NEW' =>
-array (
-0 => 'ERROR',
-1 => 'VALIDATE',
-2 => 'TEST',
-3 => 'VERIFY',
-4 => 'CANCEL',
-),
-),
-),
-'RECURRING' =>
-array (
-'start' =>
-array (
-),
-'transitions' =>
-array (
-'WAIT' =>
-array (
-0 => 'ERROR',
-1 => 'VALIDATE',
-2 => 'TEST',
-),
-'ERROR' =>
-array (
-0 => 'VALIDATE',
-1 => 'TEST',
-),
-'VALIDATE' =>
-array (
-0 => 'ERROR',
-),
-'TEST' =>
-array (
-0 => 'ERROR',
-),
-'NEW' =>
-array (
-0 => 'ERROR',
-1 => 'WAIT',
-2 => 'CANCEL',
-),
-),
-),
-'XTIME' =>
-array (
-'start' =>
-array (
-),
-'transitions' =>
-array (
-'WAIT' =>
-array (
-0 => 'ERROR',
-1 => 'VALIDATE',
-2 => 'TEST',
-),
-'ERROR' =>
-array (
-0 => 'VALIDATE',
-1 => 'TEST',
-),
-'NEW' =>
-array (
-0 => 'ERROR',
-1 => 'WAIT',
-2 => 'CANCEL',
-),
-),
-),
-'TOKENIZE' =>
-array (
-'start' =>
-array (
-),
-'transitions' =>
-array (
-'AUTH' =>
-array (
-0 => 'ERROR',
-1 => 'VALIDATE',
-2 => 'TEST',
-3 => 'VERIFY',
-),
-'NEW' =>
-array (
-0 => 'ERROR',
-1 => 'CANCEL',
-2 => 'AUTH',
-),
-),
-),
-),
+'backlink' => 'http://paygreen.io/paiement-securise/',
 ),
 'payment' =>
 array (
-'metadata' =>
-array (
-0 => 'order_id',
-1 => 'cart_id',
-),
 'pictures' =>
 array (
 'default' => 'logo-cb-visa-mastercard.png',
@@ -5082,6 +5810,11 @@ array (
 'restoflash' => 'logo-restoflash.png',
 'sepa' => 'logo-sepa.png',
 ),
+'metadata' =>
+array (
+0 => 'order_id',
+1 => 'cart_id',
+),
 'entrypoints' =>
 array (
 'customer' => 'front.payment.process_customer_return',
@@ -5090,7 +5823,6 @@ array (
 'targets' =>
 array (
 'external' => 'redirect@front.payment',
-'insite' => 'displayIFramePayment@front.payment',
 ),
 'insite' =>
 array (
@@ -5222,33 +5954,6 @@ array (
 ),
 ),
 ),
-'paygreen' =>
-array (
-'backlink' => 'http://paygreen.io/paiement-securise/',
-),
-'data' =>
-array (
-'payment_report' =>
-array (
-0 => 'forms.button.fields.payment_report.values.none',
-'1 week' => 'forms.button.fields.payment_report.values.1week',
-'2 weeks' => 'forms.button.fields.payment_report.values.2week',
-'1 month' => 'forms.button.fields.payment_report.values.1month',
-'2 months' => 'forms.button.fields.payment_report.values.2month',
-'3 months' => 'forms.button.fields.payment_report.values.3month',
-),
-'button_integration' =>
-array (
-'EXTERNAL' => 'forms.button.fields.integration.values.external',
-'INSITE' => 'forms.button.fields.integration.values.insite',
-),
-'display_type' =>
-array (
-'DEFAULT' => 'forms.button.fields.display_type.values.all',
-'IMAGE' => 'forms.button.fields.display_type.values.picture',
-'TEXT' => 'forms.button.fields.display_type.values.text',
-),
-),
 'oauth_exceptions_messages' =>
 array (
 1 => 'actions.authentication.save.errors.oauth_server_address_missmatch',
@@ -5258,17 +5963,6 @@ array (
 array (
 'payment' =>
 array (
-'clients' =>
-array (
-'curl' =>
-array (
-'allow_redirection' => true,
-'verify_peer' => true,
-'verify_host' => 2,
-'timeout' => 30,
-'http_version' => '1.1',
-),
-),
 'requests' =>
 array (
 'oauth_access' =>
@@ -5370,6 +6064,17 @@ array (
 'private' => true,
 ),
 ),
+'clients' =>
+array (
+'curl' =>
+array (
+'allow_redirection' => true,
+'verify_peer' => true,
+'verify_host' => 2,
+'timeout' => 30,
+'http_version' => '1.1',
+),
+),
 'responses' =>
 array (
 'class' => 'PGI\\Module\\APIPayment\\Components\\Response',
@@ -5390,7 +6095,7 @@ array (
 'method' => 'POST',
 'url' => '{host}/login',
 'private' => false,
-'validity' => '200,400',
+'validity' => '200,400,401',
 ),
 'oauth_refresh_access' =>
 array (
@@ -5403,6 +6108,12 @@ array (
 array (
 'method' => 'GET',
 'url' => '{host}/account/{account_id}',
+'private' => true,
+),
+'get_user_data' =>
+array (
+'method' => 'GET',
+'url' => '{host}/account/{account_id}/user/{username}',
 'private' => true,
 ),
 'get_all_users' =>
@@ -5541,12 +6252,235 @@ array (
 ),
 ),
 ),
+'charity' =>
+array (
+'responses' =>
+array (
+'class' => 'PGI\\Module\\PGClient\\Components\\ResponseJSON',
+'validity' => '200-299',
+),
+'clients' =>
+array (
+'curl' =>
+array (
+'allow_redirection' => true,
+'verify_peer' => true,
+'verify_host' => 2,
+'timeout' => 30,
+'http_version' => '1.1',
+),
+),
+'requests' =>
+array (
+'oauth_access' =>
+array (
+'method' => 'POST',
+'url' => '{host}/login',
+'private' => false,
+'validity' => '200,400,401',
+),
+'oauth_refresh_access' =>
+array (
+'method' => 'POST',
+'url' => '{host}/login',
+'private' => false,
+'validity' => '200,400',
+),
+'get_account_infos' =>
+array (
+'method' => 'GET',
+'url' => '{host}/account/{account_id}',
+'private' => true,
+),
+'get_user_data' =>
+array (
+'method' => 'GET',
+'url' => '{host}/account/{account_id}/user/{username}',
+'private' => true,
+),
+'list_available_associations' =>
+array (
+'method' => 'GET',
+'url' => '{host}/association',
+'private' => true,
+),
+'get_association' =>
+array (
+'method' => 'GET',
+'url' => '{host}/association/{association_id}',
+'private' => true,
+),
+'list_partnerships' =>
+array (
+'method' => 'GET',
+'url' => '{host}/partnership',
+'private' => true,
+),
+'get_partnership' =>
+array (
+'method' => 'GET',
+'url' => '{host}/partnership/{partnership_id}',
+'private' => true,
+),
+'request_partnership' =>
+array (
+'method' => 'POST',
+'url' => '{host}/partnership',
+'private' => true,
+),
+'cancel_partnership' =>
+array (
+'method' => 'DELETE',
+'url' => '{host}/partnership/{partnership_id}',
+'private' => true,
+),
+'update_partnership' =>
+array (
+'method' => 'PUT',
+'url' => '{host}/partnership/{partnership_id}',
+'private' => true,
+),
+'list_partnership_groups' =>
+array (
+'method' => 'GET',
+'url' => '{host}/partnership-group',
+'private' => true,
+),
+'get_partnership_group' =>
+array (
+'method' => 'GET',
+'url' => '{host}/partnership-group/{external_id}',
+'private' => true,
+),
+'create_partnership_group' =>
+array (
+'method' => 'POST',
+'url' => '{host}/partnership-group',
+'private' => true,
+),
+'cancel_partnership_group' =>
+array (
+'method' => 'DELETE',
+'url' => '{host}/partnership-group/{external_id}',
+'private' => true,
+),
+'update_partnership_group' =>
+array (
+'method' => 'PUT',
+'url' => '{host}/partnership-group/{external_id}',
+'private' => true,
+),
+'list_partnership_group_rules' =>
+array (
+'method' => 'GET',
+'url' => '{host}/partnership-group-rule',
+'private' => true,
+),
+'get_partnership_group_rule' =>
+array (
+'method' => 'GET',
+'url' => '{host}/partnership-group-rule/{partnership_group_rule_id}',
+'private' => true,
+),
+'create_partnership_group_rule' =>
+array (
+'method' => 'POST',
+'url' => '{host}/partnership-group-rule',
+'private' => true,
+),
+'deactivate_partnership_group_rule' =>
+array (
+'method' => 'DELETE',
+'url' => '{host}/partnership-group-rule/{partnership_group_rule_id}',
+'private' => true,
+),
+'get_current_partnership_group_rule' =>
+array (
+'method' => 'GET',
+'url' => '{host}/partnership-group-rule-current',
+'private' => true,
+),
+'list_donations' =>
+array (
+'method' => 'GET',
+'url' => '{host}/donation',
+'private' => true,
+),
+'get_donation' =>
+array (
+'method' => 'GET',
+'url' => '{host}/donation/{donation_id}',
+'private' => true,
+),
+'create_donation' =>
+array (
+'method' => 'POST',
+'url' => '{host}/donation',
+'private' => true,
+),
+'refund_donation' =>
+array (
+'method' => 'DELETE',
+'url' => '{host}/donation/{donation_id}',
+'private' => true,
+),
+'fulfill_pledged_donation' =>
+array (
+'method' => 'PATCH',
+'url' => '{host}/donation/{donation_id}',
+'private' => true,
+),
+'list_donations_history' =>
+array (
+'method' => 'GET',
+'url' => '{host}/history/user-donation',
+'private' => true,
+),
+'list_donation_displays' =>
+array (
+'method' => 'GET',
+'url' => '{host}/donation-display',
+'private' => true,
+),
+'record_donation_display' =>
+array (
+'method' => 'POST',
+'url' => '{host}/donation-display',
+'private' => true,
+),
+'get_donation_display' =>
+array (
+'method' => 'GET',
+'url' => '{host}/donation-display/{donation_display_id}',
+'private' => true,
+),
+'get_donation_report' =>
+array (
+'method' => 'GET',
+'url' => '{host}/donation/statistics/reports',
+'private' => true,
+),
+'round_up_number' =>
+array (
+'method' => 'POST',
+'url' => '{host}/calc/round-up',
+'private' => true,
+),
+),
+),
 ),
 'tree' =>
 array (
 'transport' =>
 array (
 'default' => 'standard-delivery-van',
+),
+),
+'catalog_export' =>
+array (
+'excluded_products' =>
+array (
+0 => 'paygreen-charity-gift',
 ),
 ),
 'urls' =>
@@ -5559,9 +6493,21 @@ array (
 ),
 'bo_climatekit' =>
 array (
-'PROD' => 'solidaire.paygreen.fr',
+'PROD' => 'climatekit.paygreen.fr',
 'SANDBOX' => 'sb-climatekit.paygreen.fr',
 'RECETTE' => 'rc-climatekit.paygreen.fr',
+),
+'charitykit' =>
+array (
+'PROD' => 'solidaire.paygreen.fr',
+'SANDBOX' => 'sb-api-climatekit.paygreen.fr',
+'RECETTE' => 'rc-api-climatekit.paygreen.fr',
+),
+'bo_charitykit' =>
+array (
+'PROD' => 'charitykit.paygreen.fr',
+'SANDBOX' => 'sb-charitykit.paygreen.fr',
+'RECETTE' => 'rc-charitykit.paygreen.fr',
 ),
 ),
 'client' =>

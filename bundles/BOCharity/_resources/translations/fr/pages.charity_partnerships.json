@@ -1,0 +1,14 @@
+{
+  "pages": {
+    "charity_partnerships": {
+      "name": "Gestion des partenariats",
+      "title": "Gestion de vos partenariats",
+      "list": {
+        "logo": "Logo",
+        "name": "Nom de l'association",
+        "field_of_action": "Domaine d'action",
+        "status": "Statut"
+      }
+    }
+  }
+}

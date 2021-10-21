@@ -1,0 +1,17 @@
+{
+  "blocks": {
+    "gifts_overview": {
+      "title": "Overview of donations",
+      "columns": {
+        "period": "Period",
+        "footprint": "Number of donations",
+        "carbon_offset": "Carbon cost estimate"
+      },
+      "period": {
+        "day": "Today",
+        "week": "This week",
+        "month": "This month"
+      }
+    }
+  }
+}

@@ -1,0 +1,10 @@
+{
+  "misc": {
+    "tree": {
+      "test_mode": {
+        "active": "Mode TEST activé",
+        "title": "Votre ClimateKit est actuellement configuré sur le mode TEST : aucun dossier carbone ne sera compatabilisé dans la contribution."
+      }
+    }
+  }
+}

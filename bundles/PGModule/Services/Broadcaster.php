@@ -15,12 +15,13 @@
  * @author    PayGreen <contact@paygreen.fr>
  * @copyright 2014 - 2021 Watt Is It
  * @license   https://opensource.org/licenses/mit-license.php MIT License X11
- * @version   2.3.0
+ * @version   2.4.0
  *
  */
 
 namespace PGI\Module\PGModule\Services;
 
+use PGI\Module\PGFramework\Services\Handlers\RequirementHandler;
 use PGI\Module\PGModule\Interfaces\EventInterface;
 use PGI\Module\PGModule\Services\Logger;
 use PGI\Module\PGSystem\Exceptions\Configuration as ConfigurationException;
@@ -36,6 +37,9 @@ class Broadcaster
     /** @var Container */
     private $container;
 
+    /** @var RequirementHandler */
+    private $requirementHandler;
+
     /** @var Logger */
     private $logger;
 
@@ -43,7 +47,8 @@ class Broadcaster
 
     private static $LISTENER_DEFAULT_CONFIGURATION = array(
         'method' => 'listen',
-        'priority' => 500
+        'priority' => 500,
+        'requirements' => array()
     );
 
     /**
@@ -55,10 +60,12 @@ class Broadcaster
      */
     public function __construct(
         Container $container,
+        RequirementHandler $requirementHandler,
         Logger $logger,
         array $listeners
     ) {
         $this->container = $container;
+        $this->requirementHandler = $requirementHandler;
         $this->logger = $logger;
 
         foreach ($listeners as $listener) {
@@ -89,10 +96,11 @@ class Broadcaster
         $this->listeners[] = array(
             'service' => $listenerConfiguration['service'],
             'method' => $listenerConfiguration['method'],
-            'events' => array_map(function($var) {
+            'events' => array_map(function ($var) {
                 return strtoupper($var);
             }, $listenerConfiguration['event']),
-            'priority' => $listenerConfiguration['priority']
+            'priority' => $listenerConfiguration['priority'],
+            'requirements' => $listenerConfiguration['requirements']
         );
     }
 
@@ -103,13 +111,19 @@ class Broadcaster
      * @param int $priority
      * @throws ConfigurationException
      */
-    public function addListener($serviceName, $event, $method = 'listen', $priority = 500)
-    {
+    public function addListener(
+        $serviceName,
+        $event,
+        $method = 'listen',
+        $priority = 500,
+        $requirements = array()
+    ) {
         $listenerConfiguration = array(
             'service' => $serviceName,
             'method' => $method,
             'event' => $event,
-            'priority' => $priority
+            'priority' => $priority,
+            'requirement' => $requirements
         );
 
         $this->logger->warning("Using tag to declare listeners is deprecated.", $listenerConfiguration);
@@ -158,7 +172,7 @@ class Broadcaster
 
     /**
      * @param EventInterface $event
-     * @param $listener
+     * @param array $listener
      * @throws Exception
      */
     protected function callListener(EventInterface $event, array $listener)
@@ -168,13 +182,17 @@ class Broadcaster
         $service = $this->container->get($serviceName);
 
         try {
-            $this->logger->debug("Fire event '{$event->getName()}' to method '$method' in service '$serviceName'.");
+            if ($this->requirementHandler->areFulfilled($listener['requirements'])) {
+                $this->logger->debug("Fire event '{$event->getName()}' to method '$method' in service '$serviceName'.");
 
-            if (!method_exists($service, $method)) {
-                throw new Exception("Unknown listener method '$method' in service '$serviceName'.");
+                if (!method_exists($service, $method)) {
+                    throw new Exception("Unknown listener method '$method' in service '$serviceName'.");
+                }
+
+                call_user_func(array($service, $method), $event);
+            } else {
+                $this->logger->notice("Event '{$event->getName()}' to method '$method' in service '$serviceName' not fired because requirements are not fulfilled.");
             }
-
-            call_user_func(array($service, $method), $event);
         } catch (Exception $exception) {
             $this->logger->critical(
                 "An error is occured during the execution of event '{$event->getName()}' : {$exception->getMessage()}",

@@ -15,7 +15,7 @@
  * @author    PayGreen <contact@paygreen.fr>
  * @copyright 2014 - 2021 Watt Is It
  * @license   https://opensource.org/licenses/mit-license.php MIT License X11
- * @version   2.3.0
+ * @version   2.4.0
  *
  */
 
@@ -26,6 +26,7 @@ use PGI\Module\PGModule\Services\Settings;
 use PGI\Module\PGServer\Components\Responses\Redirection as RedirectionResponseComponent;
 use PGI\Module\PGServer\Components\Responses\Template as TemplateResponseComponent;
 use PGI\Module\PGSystem\Components\Parameters as ParametersComponent;
+use PGI\Module\PGTree\Services\Handlers\TreeAccountHandler;
 use PGI\Module\PGTree\Services\Handlers\TreeAuthenticationHandler;
 use PGI\Module\PGTree\Services\Managers\CarbonDataManager;
 use Exception;
@@ -42,6 +43,9 @@ class PluginController extends AbstractBackofficeController
     /** @var CarbonDataManager */
     private $carbonDataManager;
 
+    /** @var TreeAccountHandler */
+    private $treeAccountHandler;
+
     public function setTreeAuthenticationHandler(TreeAuthenticationHandler $treeAuthenticationHandler)
     {
         $this->treeAuthenticationHandler = $treeAuthenticationHandler;
@@ -50,6 +54,11 @@ class PluginController extends AbstractBackofficeController
     public function setCarbonDataManager(CarbonDataManager $carbonDataManager)
     {
         $this->carbonDataManager = $carbonDataManager;
+    }
+
+    public function setTreeAccountHandler(TreeAccountHandler $treeAccountHandler)
+    {
+        $this->treeAccountHandler = $treeAccountHandler;
     }
     
     /**
@@ -79,10 +88,12 @@ class PluginController extends AbstractBackofficeController
 
                 $credentials['client_id'] = $settings->get('tree_client_id');
                 $credentials['username'] = $settings->get('tree_client_username');
-                $credentials['server'] = 'data.tree_api_server.values.'.$server;
 
                 $infos['carbon_data_overview'] = $this->getCarbonDataOverview();
                 $infos['link_backoffice'] = "https://".$url;
+                $infos['is_test_mode_activated'] = $settings->get('tree_test_mode');
+                $infos['is_test_mode_expired'] = $this->treeAccountHandler->isTestModeExpired();
+                $infos['is_mandate_signed'] = $this->treeAccountHandler->isMandateSigned();
             }
         }
 

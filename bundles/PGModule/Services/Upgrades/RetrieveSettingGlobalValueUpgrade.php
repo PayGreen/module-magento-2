@@ -15,7 +15,7 @@
  * @author    PayGreen <contact@paygreen.fr>
  * @copyright 2014 - 2021 Watt Is It
  * @license   https://opensource.org/licenses/mit-license.php MIT License X11
- * @version   2.3.0
+ * @version   2.4.0
  *
  */
 
@@ -25,6 +25,7 @@ use Exception;
 use PGI\Module\PGModule\Components\Upgrade as UpgradeComponent;
 use PGI\Module\PGModule\Interfaces\Entities\SettingEntityInterface;
 use PGI\Module\PGModule\Interfaces\UpgradeInterface;
+use PGI\Module\PGModule\Services\Logger;
 use PGI\Module\PGModule\Services\Managers\SettingManager;
 use PGI\Module\PGShop\Interfaces\Entities\ShopEntityInterface;
 use PGI\Module\PGShop\Services\Managers\ShopManager;
@@ -41,10 +42,17 @@ class RetrieveSettingGlobalValueUpgrade implements UpgradeInterface
     /** @var ShopManager */
     private $shopManager;
 
-    public function __construct(SettingManager $settingManager, ShopManager $shopManager)
-    {
+    /** @var Logger */
+    private $logger;
+
+    public function __construct(
+        SettingManager $settingManager,
+        ShopManager $shopManager,
+        Logger $logger
+    ) {
         $this->settingManager = $settingManager;
         $this->shopManager = $shopManager;
+        $this->logger = $logger;
     }
 
     /**
@@ -64,7 +72,7 @@ class RetrieveSettingGlobalValueUpgrade implements UpgradeInterface
                 $this->applyForShop($key_to_update, $global_setting, $shop);
             }
         } else {
-            throw new Exception("'$key_global_setting' is not a global setting.");
+            $this->logger->notice("'$key_global_setting' has never been defined. Non change needed");
         }
     }
 

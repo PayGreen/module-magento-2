@@ -15,7 +15,7 @@
  * @author    PayGreen <contact@paygreen.fr>
  * @copyright 2014 - 2021 Watt Is It
  * @license   https://opensource.org/licenses/mit-license.php MIT License X11
- * @version   2.3.0
+ * @version   2.4.0
  *
  */
 
@@ -70,20 +70,33 @@ class TreeFootprintIdHandler
     }
 
     /**
+     * @return string
+     * @throws Exception
+     */
+    public function createFootprintId()
+    {
+        $id = $this->generateUniqueFootprintId();
+
+        $this->logger->debug("Create '" . self::FOOTPRINT_ID_COOKIE_NAME . "' cookie.");
+        $this->cookieHandler->set(self::FOOTPRINT_ID_COOKIE_NAME, null);
+
+        try {
+            $this->treeAPIFacade->createEmptyFootprint($id);
+            $this->cookieHandler->set(self::FOOTPRINT_ID_COOKIE_NAME, $id);
+        } catch (Exception $exception) {
+            $this->logger->error("Unable to create empty footprint : " . $exception->getMessage(), $exception);
+        }
+
+        return $id;
+    }
+
+    /**
      * @throws Exception
      */
     public function resetFootprintId()
     {
-        $id = $this->generateUniqueFootprintId();
-
         $this->logger->debug("Reset '" . self::FOOTPRINT_ID_COOKIE_NAME . "' cookie.");
-        $this->cookieHandler->set(self::FOOTPRINT_ID_COOKIE_NAME, $id);
-
-        try {
-            $this->treeAPIFacade->createEmptyFootprint($id);
-        } catch (Exception $exception) {
-            $this->logger->error("Unable to create empty footprint : " . $exception->getMessage(), $exception);
-        }
+        $this->cookieHandler->set(self::FOOTPRINT_ID_COOKIE_NAME, null);
     }
 
     /**
@@ -94,21 +107,25 @@ class TreeFootprintIdHandler
     {
         if (!$this->cookieHandler->has(self::FOOTPRINT_ID_COOKIE_NAME)) {
             $this->logger->warning("Footprint cookie not found.");
-            $this->resetFootprintId();
+            $this->createFootprintId();
         } else {
             $id = $this->cookieHandler->get(self::FOOTPRINT_ID_COOKIE_NAME);
+
+            if (empty($id)) {
+                $id = $this->createFootprintId();
+            }
 
             try {
                 /** @var CarbonFootprintReplyComponent $carbonFootprint */
                 $carbonFootprint = $this->treeAPIFacade->getCarbonFootprintEstimation($id);
 
-                if(!in_array($carbonFootprint->getStatus(), self::$FOOTPRINT_VALID_STATUS)) {
+                if (!in_array($carbonFootprint->getStatus(), self::$FOOTPRINT_VALID_STATUS)) {
                     $this->logger->error("Footprint '{$id}' is not in valid status. Unrecognized status : '{$carbonFootprint->getStatus()}'.");
-                    $this->resetFootprintId();
+                    $this->createFootprintId();
                 }
             } catch (Exception $exception) {
                 $this->logger->error("Footprint '{$id}' not found.");
-                $this->resetFootprintId();
+                $this->createFootprintId();
             }
         }
 

@@ -15,21 +15,21 @@
  * @author    PayGreen <contact@paygreen.fr>
  * @copyright 2014 - 2021 Watt Is It
  * @license   https://opensource.org/licenses/mit-license.php MIT License X11
- * @version   2.3.0
+ * @version   2.4.0
  *
  */
 
 namespace PGI\Module\FOTree\Services\OutputBuilders;
 
-use PGI\Module\PGIntl\Services\Handlers\LocaleHandler;
+use PGI\Module\FOTree\Services\Handlers\CarbonRounderHandler;
 use PGI\Module\PGModule\Components\Output as OutputComponent;
 use PGI\Module\PGModule\Foundations\AbstractOutputBuilder;
 use PGI\Module\PGModule\Services\Logger;
 use PGI\Module\PGShop\Interfaces\Entities\OrderEntityInterface;
 use PGI\Module\PGTree\Interfaces\Entities\CarbonDataEntityInterface;
 use PGI\Module\PGTree\Services\Managers\CarbonDataManager;
+use PGI\Module\PGModule\Services\Settings;
 use Exception;
-use NumberFormatter;
 
 /**
  * Class CarbonFootprintOutputBuilder
@@ -40,22 +40,27 @@ class CarbonFootprintOutputBuilder extends AbstractOutputBuilder
     /** @var CarbonDataManager */
     private $carbonDataManager;
 
-    /** @var LocaleHandler */
-    private $localeHandler;
+    /** @var CarbonRounderHandler */
+    private $carbonRounderHandler;
 
     /** @var Logger */
     private $logger;
 
+    /** @var Settings */
+    private $settings;
+
     public function __construct(
         CarbonDataManager $carbonDataManager,
-        LocaleHandler $localeHandler,
-        Logger $logger
+        CarbonRounderHandler $carbonRounderHandler,
+        Logger $logger,
+        Settings $settings
     ) {
         parent::__construct();
 
         $this->carbonDataManager = $carbonDataManager;
-        $this->localeHandler = $localeHandler;
+        $this->carbonRounderHandler = $carbonRounderHandler;
         $this->logger = $logger;
+        $this->settings = $settings;
     }
 
     /**
@@ -77,13 +82,14 @@ class CarbonFootprintOutputBuilder extends AbstractOutputBuilder
         /** @var CarbonDataEntityInterface|null $carbonData */
         $carbonData = $this->carbonDataManager->getByOrderPrimary($order->id());
 
-        $formatter = new NumberFormatter($this->localeHandler->getLanguage(), NumberFormatter::DECIMAL);
+        $isTreeTestModeActivated = $this->settings->get('tree_test_mode');
 
         if ($carbonData !== null) {
             $content = $this->getViewHandler()->renderTemplate('carbon-offset-merchant', array(
-                "carbon_offset" => $formatter->format(
-                    $this->convertTonToKiloGram($carbonData->getFootprint())
-                )
+                "carbon_offset" => $this->carbonRounderHandler->roundNumber(
+                    $carbonData->getFootprint()
+                ),
+                'isTreeTestModeActivated' => $isTreeTestModeActivated
             ));
 
             $output->setContent($content);
@@ -92,10 +98,5 @@ class CarbonFootprintOutputBuilder extends AbstractOutputBuilder
         }
 
         return $output;
-    }
-
-    private function convertTonToKiloGram($carbonEmission)
-    {
-        return ($carbonEmission * 1000);
     }
 }

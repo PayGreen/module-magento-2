@@ -4,7 +4,7 @@
       "tree_products": {
         "title": "ClimateKit",
         "description": "This tool will allow you to calculate and display the carbon impact of your customers' purchasing journey. You will then be able to offset this impact thanks to the various PayGreen partnerships.",
-        "label": "Activation of the carbon impact calculation",
+        "label": "ClimateKit product activation",
         "help": "Once this product is activated, you will have to connect to the API and then configure your module."
       }
     }

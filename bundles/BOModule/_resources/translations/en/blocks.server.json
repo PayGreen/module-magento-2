@@ -1,0 +1,9 @@
+{
+  "blocks": {
+    "server": {
+      "product": "Product's name",
+      "name": "Server's name",
+      "list": "List of servers"
+    }
+  }
+}

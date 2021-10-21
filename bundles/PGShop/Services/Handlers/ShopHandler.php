@@ -15,7 +15,7 @@
  * @author    PayGreen <contact@paygreen.fr>
  * @copyright 2014 - 2021 Watt Is It
  * @license   https://opensource.org/licenses/mit-license.php MIT License X11
- * @version   2.3.0
+ * @version   2.4.0
  *
  */
 
@@ -24,7 +24,6 @@ namespace PGI\Module\PGShop\Services\Handlers;
 use PGI\Module\PGFramework\Interfaces\Handlers\SessionHandlerInterface;
 use PGI\Module\PGModule\Services\Logger;
 use PGI\Module\PGShop\Interfaces\Entities\ShopEntityInterface;
-use PGI\Module\PGShop\Interfaces\Handlers\ShopHandlerInterface;
 use PGI\Module\PGShop\Interfaces\Officers\ShopOfficerInterface;
 use PGI\Module\PGShop\Services\Managers\ShopManager;
 use PGI\Module\PGSystem\Foundations\AbstractObject;
@@ -33,7 +32,7 @@ use PGI\Module\PGSystem\Foundations\AbstractObject;
  * Class ShopHandler
  * @package PGShop\Services\Handlers
  */
-class ShopHandler extends AbstractObject implements ShopHandlerInterface
+class ShopHandler extends AbstractObject
 {
     const SESSION_SHOP_KEY = 'paygreen_selected_shop_primary';
 
@@ -53,7 +52,7 @@ class ShopHandler extends AbstractObject implements ShopHandlerInterface
     private $logger;
 
     /**
-     * ShopHandlerInterface constructor.
+     * ShopHandler constructor.
      * @param Logger $logger
      */
     public function __construct(Logger $logger)
@@ -169,6 +168,16 @@ class ShopHandler extends AbstractObject implements ShopHandlerInterface
         $this->shop = $shop;
 
         $this->sessionHandler->set(self::SESSION_SHOP_KEY, $shop->id());
+    }
+
+    /**
+     * @return void
+     */
+    public function clear()
+    {
+        $this->logger->debug('Clear ShopHandler cache');
+
+        $this->shop = null;
     }
 
     /**

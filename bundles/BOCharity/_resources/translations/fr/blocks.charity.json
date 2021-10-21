@@ -1,0 +1,12 @@
+{
+  "blocks": {
+    "charity": {
+      "title": "PayGreen CharityKit",
+      "shortcuts": "Raccourcis",
+      "charity_activation": {
+        "title": "Activation de l'arrondi en ligne",
+        "help": "Si l'arrondi en ligne est activé, vous pourrez proposer à vos clients d'arrondir leurs commandes au profit d'une association."
+      }
+    }
+  }
+}

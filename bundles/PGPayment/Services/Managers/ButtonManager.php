@@ -15,7 +15,7 @@
  * @author    PayGreen <contact@paygreen.fr>
  * @copyright 2014 - 2021 Watt Is It
  * @license   https://opensource.org/licenses/mit-license.php MIT License X11
- * @version   2.3.0
+ * @version   2.4.0
  *
  */
 
@@ -386,8 +386,8 @@ class ButtonManager extends AbstractManager
         $buttonPaymentType = $button->getPaymentType();
 
         foreach ($paygreenFacade->getAvailablePaymentTypes() as $paymentType) {
-            if ($buttonPaymentType === $paymentType->paymentType) {
-                if ($paymentType->currency === $currency) {
+            if ($buttonPaymentType === $paymentType->getCode()) {
+                if ($paymentType->getCurrency() === $currency) {
                     return true;
                 }
             }

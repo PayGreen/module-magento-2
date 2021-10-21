@@ -15,14 +15,14 @@
  * @author    PayGreen <contact@paygreen.fr>
  * @copyright 2014 - 2021 Watt Is It
  * @license   https://opensource.org/licenses/mit-license.php MIT License X11
- * @version   2.3.0
+ * @version   2.4.0
  *
  */
 
 namespace PGI\Module\PGModule\Services\Officers;
 
 use PGI\Module\PGModule\Interfaces\Officers\SettingsOfficerInterface;
-use PGI\Module\PGShop\Interfaces\Handlers\ShopHandlerInterface;
+use PGI\Module\PGShop\Services\Handlers\ShopHandler;
 use PGI\Module\PGSystem\Components\Storages\JSONFile as JSONFileStorageComponent;
 use PGI\Module\PGSystem\Interfaces\StorageInterface;
 use PGI\Module\PGSystem\Services\Pathfinder;
@@ -39,10 +39,10 @@ class SettingsStorageOfficer implements SettingsOfficerInterface
     /** @var Pathfinder */
     private $pathfinder;
 
-    /** @var ShopHandlerInterface */
+    /** @var ShopHandler */
     private $shopHandler;
 
-    public function __construct(Pathfinder $pathfinder, ShopHandlerInterface $shopHandler = null)
+    public function __construct(Pathfinder $pathfinder, ShopHandler $shopHandler = null)
     {
         $this->pathfinder = $pathfinder;
         $this->shopHandler = $shopHandler;

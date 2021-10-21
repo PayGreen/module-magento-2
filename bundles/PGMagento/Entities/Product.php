@@ -15,7 +15,7 @@
  * @author    PayGreen <contact@paygreen.fr>
  * @copyright 2014 - 2021 Watt Is It
  * @license   https://opensource.org/licenses/mit-license.php MIT License X11
- * @version   2.3.0
+ * @version   2.4.0
  *
  */
 
@@ -24,12 +24,13 @@ namespace PGI\Module\PGMagento\Entities;
 use PGI\Module\PGShop\Foundations\Entities\AbstractProductEntity;
 use PGI\Module\PGShop\Interfaces\Entities\ProductEntityInterface;
 use PGI\Module\PGShop\Services\Managers\CategoryManager;
+use Magento\Catalog\Model\Product as LocalProduct;
 
 /**
  * Class Product
  *
  * @package PGMagento\Entities
- * @method Magento\Catalog\Model\Product getLocalEntity()
+ * @method LocalProduct getLocalEntity()
  */
 class Product extends AbstractProductEntity implements ProductEntityInterface
 {
@@ -43,7 +44,7 @@ class Product extends AbstractProductEntity implements ProductEntityInterface
      */
     public function id()
     {
-        return $this->getLocalEntity()->getId();
+        return (int) $this->getLocalEntity()->getId();
     }
 
     /**
@@ -86,5 +87,10 @@ class Product extends AbstractProductEntity implements ProductEntityInterface
         }
 
         return $categories;
+    }
+
+    public function isVirtual()
+    {
+        return $this->getLocalEntity()->isVirtual();
     }
 }

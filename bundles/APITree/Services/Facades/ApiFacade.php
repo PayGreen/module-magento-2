@@ -15,7 +15,7 @@
  * @author    PayGreen <contact@paygreen.fr>
  * @copyright 2014 - 2021 Watt Is It
  * @license   https://opensource.org/licenses/mit-license.php MIT License X11
- * @version   2.3.0
+ * @version   2.4.0
  *
  */
 
@@ -24,9 +24,12 @@ namespace PGI\Module\APITree\Services\Facades;
 use PGI\Module\APITree\Components\Replies\CarbonFootprint as CarbonFootprintReplyComponent;
 use PGI\Module\PGClient\Components\Response as ResponseComponent;
 use PGI\Module\PGClient\Exceptions\Response as ResponseException;
+use PGI\Module\PGClient\Components\Request as RequestComponent;
 use PGI\Module\PGClient\Services\Factories\RequestFactory;
 use PGI\Module\PGClient\Services\Sender;
 use Exception;
+use PGI\Module\PGModule\Services\Settings;
+use PGI\Module\PGFramework\Services\Handlers\RequirementHandler;
 
 /**
  * Class ApiFacade
@@ -42,17 +45,29 @@ class ApiFacade
     /** @var RequestFactory */
     private $requestFactory;
 
+    /** @var Settings */
+    private $settings;
+
+    /** @var RequirementHandler */
+    private $requirementHandler;
+
     /**
      * PaymentFacade constructor.
      * @param Sender $requestSender
      * @param RequestFactory $requestFactory
+     * @param Settings $settings
+     * @param RequirementHandler $requirementHandler
      */
     public function __construct(
         Sender $requestSender,
-        RequestFactory $requestFactory
+        RequestFactory $requestFactory,
+        Settings $settings,
+        RequirementHandler $requirementHandler
     ) {
         $this->requestSender = $requestSender;
         $this->requestFactory = $requestFactory;
+        $this->settings = $settings;
+        $this->requirementHandler = $requirementHandler;
     }
 
     /**
@@ -61,6 +76,15 @@ class ApiFacade
     public function getRequestFactory()
     {
         return $this->requestFactory;
+    }
+
+    /**
+     * @param RequestFactory $requestFactory
+     * @return void
+     */
+    public function setRequestFactory(RequestFactory $requestFactory)
+    {
+        $this->requestFactory = $requestFactory;
     }
 
     /**
@@ -112,14 +136,47 @@ class ApiFacade
     }
 
     /**
+     * @param string $account_id
+     * @return ResponseComponent
+     * @throws ResponseException
+     */
+    public function getAccountInfos($account_id)
+    {
+        $request = $this->getRequestFactory()->buildRequest('get_account_infos', array(
+            'account_id' => $account_id
+        ));
+
+        return $this->getRequestSender()->sendRequest($request);
+    }
+
+    /**
+     * @param string $account_id
+     * @param string $username
+     * @return ResponseComponent
+     * @throws ResponseException
+     */
+    public function getUserData($account_id, $username)
+    {
+        $request = $this->getRequestFactory()->buildRequest('get_user_data', array(
+            'account_id' => $account_id,
+            'username' => $username
+        ));
+
+        return $this->getRequestSender()->sendRequest($request);
+    }
+
+    /**
      * CCarbon transports mode
      *
      * @return ResponseComponent
      * @throws ResponseException
+     * @throws Exception
      */
     public function getCcarbonTransportsMode()
     {
         $request = $this->getRequestFactory()->buildRequest('get_ccarbon_transports_mode');
+
+        $request = $this->checkTestMode($request);
 
         return $this->getRequestSender()->sendRequest($request);
     }
@@ -133,6 +190,7 @@ class ApiFacade
      * @param string $fingerprint
      * @return ResponseComponent
      * @throws ResponseException
+     * @throws Exception
      */
     public function createEmptyFootprint(
         $fingerprint
@@ -141,19 +199,20 @@ class ApiFacade
             'idFootprint' => $fingerprint
         ));
 
+        $request = $this->checkTestMode($request);
+
         return $this->getRequestSender()->sendRequest($request);
     }
 
     /**
-     * The first HTTP call will create a Carbon Footprint identified by its fingerprint and initialize it.
-     * Further calls will add new emissions to the Footprint.
-     * The response represents all carbon emissions in the Carbon Footprint.
+     * Add web carbon emissions to the Footprint.
      *
      * @param string $fingerprint Unique string that you provide to identify a Carbon Footprint
      * @param int $countPages
      * @param string $userAgent
      * @return ResponseComponent
      * @throws ResponseException
+     * @throws Exception
      */
     public function addWebCarbonEmission(
         $fingerprint,
@@ -166,13 +225,13 @@ class ApiFacade
             'userAgent' => $userAgent
         ));
 
+        $request = $this->checkTestMode($request);
+
         return $this->getRequestSender()->sendRequest($request);
     }
 
     /**
-     * The first HTTP call will create a Carbon Footprint identified by its fingerprint and initialize it.
-     * Further calls will add new emissions to the Footprint.
-     * The response represents all carbon emissions in the Carbon Footprint.
+     * Add transportation carbon emissions to the Footprint.
      *
      * @param string $fingerprint Unique string that you provide to identify a Carbon Footprint
      * @param int $weightPackages Accumulated weight of all packages transported (in kilogram)
@@ -183,6 +242,7 @@ class ApiFacade
      * Multiple Transport type can be added, one less than the number of addresses declared.
      * @return ResponseComponent
      * @throws ResponseException
+     * @throws Exception
      */
     public function addTransportationCarbonEmission(
         $fingerprint,
@@ -200,14 +260,21 @@ class ApiFacade
             'transports' => $transports
         ));
 
+        $request = $this->checkTestMode($request);
+
         return $this->getRequestSender()->sendRequest($request);
     }
 
+    /**
+     * @throws ResponseException
+     */
     public function removeTransportationCarbonEmission($fingerprint)
     {
         $request = $this->getRequestFactory()->buildRequest('remove_transportation_carbon_emission', array(
             'fingerprint' => $fingerprint
         ));
+
+        $request = $this->checkTestMode($request);
 
         return $this->getRequestSender()->sendRequest($request);
     }
@@ -220,6 +287,7 @@ class ApiFacade
      * @param string $status Status of the Carbon Footprints you want to display ('ONGOING', 'CLOSED', 'PURCHASED')
      * @return ResponseComponent
      * @throws ResponseException
+     * @throws Exception
      */
     public function getAllCarbonFootprints($pageNumber = 1, $pageLimite = 50, $status = '')
     {
@@ -228,6 +296,8 @@ class ApiFacade
             'limit' => $pageLimite,
             'status' => $status
         ));
+
+        $request = $this->checkTestMode($request);
 
         return $this->getRequestSender()->sendRequest($request);
     }
@@ -252,6 +322,9 @@ class ApiFacade
                 'detailed' => ($detailed) ? 1 : 0
             )
         );
+
+        $request = $this->checkTestMode($request);
+
         $response = $this->getRequestSender()->sendRequest($request);
 
         /** @var CarbonFootprintReplyComponent $carbonFootprint */
@@ -266,6 +339,7 @@ class ApiFacade
      * @param string $fingerprint Unique string that you provide to identify a Carbon Footprint
      * @return ResponseComponent
      * @throws ResponseException
+     * @throws Exception
      */
     public function closeCarbonFootprint($fingerprint)
     {
@@ -276,6 +350,8 @@ class ApiFacade
             'status' => 'CLOSED'
         ));
 
+        $request = $this->checkTestMode($request);
+
         return $this->getRequestSender()->sendRequest($request);
     }
 
@@ -285,6 +361,7 @@ class ApiFacade
      * @param string $fingerprint Unique string that you provide to identify a Carbon Footprint
      * @return ResponseComponent
      * @throws ResponseException
+     * @throws Exception
      */
     public function createCarbonFootprintPurchase($fingerprint)
     {
@@ -294,6 +371,8 @@ class ApiFacade
         )->setContent(array(
             'status' => 'PURCHASED'
         ));
+
+        $request = $this->checkTestMode($request);
 
         return $this->getRequestSender()->sendRequest($request);
     }
@@ -305,6 +384,7 @@ class ApiFacade
      * @param int $pageLimite Page limit is 50 by default
      * @return ResponseComponent
      * @throws ResponseException
+     * @throws Exception
      */
     public function getAllCarbonPurchases($pageNumber = 1, $pageLimit = 50)
     {
@@ -313,15 +393,18 @@ class ApiFacade
             'limit' => $pageLimit
         ));
 
+        $request = $this->checkTestMode($request);
+
         return $this->getRequestSender()->sendRequest($request);
     }
 
     /**
-     * Display the purchase of CO²eq emissions offset
+     * Get a specific carbon purchase
      *
      * @param string $fingerprint Unique string that you provide to identify a Carbon Footprint
      * @return ResponseComponent
      * @throws ResponseException
+     * @throws Exception
      */
     public function getCarbonPurchase($fingerprint)
     {
@@ -330,17 +413,20 @@ class ApiFacade
             array('fingerprint' => $fingerprint)
         );
 
+        $request = $this->checkTestMode($request);
+
         return $this->getRequestSender()->sendRequest($request);
     }
 
     /**
-     * Display the purchase of CO²eq emissions offset
+     * Get the statictics report for a given period
      *
      * @param string $beginDate
      * @param string $endDate
      * @param string $onlyNotRefundable
      * @return ResponseComponent
      * @throws ResponseException
+     * @throws Exception
      */
     public function getCarbonStatisticsReport($beginDate, $endDate, $onlyNotRefundable = 0)
     {
@@ -349,6 +435,8 @@ class ApiFacade
             'end' => $endDate,
             'onlyNotRefundable' => (int) $onlyNotRefundable
         ));
+
+        $request = $this->checkTestMode($request);
 
         return $this->getRequestSender()->sendRequest($request);
     }
@@ -363,6 +451,8 @@ class ApiFacade
         $request = $this->getRequestFactory()->buildRequest('export_product_catalog')->setContent(array(
             'inputCsv' => $csvFile,
         ));
+
+        $request = $this->checkTestMode($request);
 
         return $this->getRequestSender()->sendRequest($request);
     }
@@ -382,15 +472,18 @@ class ApiFacade
             'productWeight' => $productWeight
         ));
 
+        $request = $this->checkTestMode($request);
+
         return $this->getRequestSender()->sendRequest($request);
     }
 
     /**
      * @param string $fingerprint Unique string that you provide to identify a Carbon Footprint
-     * @param string $productReference,
+     * @param string $productReference ,
      * @param int $quantity
      * @return ResponseComponent
      * @throws ResponseException
+     * @throws Exception
      */
     public function addProductCarbonEmission(
         $fingerprint,
@@ -404,6 +497,8 @@ class ApiFacade
             'quantity' => $quantity
         ));
 
+        $request = $this->checkTestMode($request);
+
         return $this->getRequestSender()->sendRequest($request);
     }
 
@@ -411,6 +506,7 @@ class ApiFacade
      * @param string $fingerprint Unique string that you provide to identify a Carbon Footprint
      * @return ResponseComponent
      * @throws ResponseException
+     * @throws Exception
      */
     public function deleteProductCarbonEmission(
         $fingerprint
@@ -418,7 +514,47 @@ class ApiFacade
         $request = $this->getRequestFactory()->buildRequest('delete_product_carbon_emission', array(
             'idFootprint' => $fingerprint
         ));
+
+        $request = $this->checkTestMode($request);
         
         return $this->getRequestSender()->sendRequest($request);
+    }
+
+    /**
+     * @param RequestComponent $request
+     * @return RequestComponent
+     * @throws Exception
+     */
+    private function checkTestMode(RequestComponent $request)
+    {
+        if ($this->isTestModeActivated()) {
+            if (!$this->isAccessAvailable()) {
+                throw new Exception('You must have a signed SEPA mandate to be able to call the Climate API.');
+            }
+
+            $request->addHeaders(array(
+                "X-TEST-MODE: 1"
+            ));
+        }
+
+        return $request;
+    }
+
+    /**
+     * @return bool
+     * @throws Exception
+     */
+    private function isTestModeActivated()
+    {
+        return $this->settings->get('tree_test_mode');
+    }
+
+    /**
+     * @return bool
+     * @throws Exception
+     */
+    private function isAccessAvailable()
+    {
+        return $this->requirementHandler->isFulfilled('tree_access_available');
     }
 }

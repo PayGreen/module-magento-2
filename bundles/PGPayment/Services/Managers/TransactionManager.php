@@ -15,7 +15,7 @@
  * @author    PayGreen <contact@paygreen.fr>
  * @copyright 2014 - 2021 Watt Is It
  * @license   https://opensource.org/licenses/mit-license.php MIT License X11
- * @version   2.3.0
+ * @version   2.4.0
  *
  */
 
@@ -203,9 +203,9 @@ class TransactionManager extends AbstractManager
         $dayIntervalBegin = (int) $this->initializeDatetime()->format('j') - 1;
         $numberOfDaysLastMonth = $this->getNumberOfDaysLastMonth();
         $newvalue = $this->getRepository()->getAmountByDayInterval($dayIntervalBegin);
-        $previousvalue = $this->getRepository()->getAmountByDayInterval($dayIntervalBegin+$numberOfDaysLastMonth,-$numberOfDaysLastMonth);
+        $previousvalue = $this->getRepository()->getAmountByDayInterval($dayIntervalBegin+$numberOfDaysLastMonth, -$numberOfDaysLastMonth);
 
-        return $this->getGrowth($newvalue,$previousvalue);
+        return $this->getGrowth($newvalue, $previousvalue);
     }
 
     /**
@@ -228,7 +228,7 @@ class TransactionManager extends AbstractManager
     public function getCountsForTheLastMonth($currentMonthDay)
     {
         $numberOfDaysLastMonth = $this->getNumberOfDaysLastMonth();
-        $transactions = $this->getRepository()->findAllByDayInterval($currentMonthDay+$numberOfDaysLastMonth,-$currentMonthDay);
+        $transactions = $this->getRepository()->findAllByDayInterval($currentMonthDay+$numberOfDaysLastMonth, -$currentMonthDay);
 
         return $this->getCountsForTransactions($transactions);
     }
@@ -280,10 +280,9 @@ class TransactionManager extends AbstractManager
     public function getAmountsForTheLastMonth($currentMonthDay)
     {
         $numberOfDaysLastMonth = $this->getNumberOfDaysLastMonth();
-        $transactions = $this->getRepository()->findAllByDayInterval($currentMonthDay+$numberOfDaysLastMonth,-$currentMonthDay);
+        $transactions = $this->getRepository()->findAllByDayInterval($currentMonthDay+$numberOfDaysLastMonth, -$currentMonthDay);
 
         return $this->getAmountsForTransactions($transactions);
-
     }
 
     /**
@@ -293,7 +292,7 @@ class TransactionManager extends AbstractManager
      */
     protected function getAmountsForTransactions($transactions)
     {
-         $amounts = array();
+        $amounts = array();
 
         /** @var TransactionEntityInterface $transaction */
         foreach ($transactions as $transaction) {
@@ -357,13 +356,13 @@ class TransactionManager extends AbstractManager
      */
     public function getGrowth($newvalue, $previousvalue)
     {
-        if($previousvalue == 0 || $newvalue == 0) {
+        if ($previousvalue == 0 || $newvalue == 0) {
             return 0;
         }
         $increase = $newvalue - $previousvalue;
         $result = $increase / $previousvalue;
 
-        return round($result*100,2);
+        return round($result*100, 2);
     }
 
     /**
@@ -371,7 +370,6 @@ class TransactionManager extends AbstractManager
      */
     public function getNumberOfDaysLastMonth()
     {
-        return date("t", mktime(0,0,0, date("n") - 1));
+        return date("t", mktime(0, 0, 0, date("n") - 1));
     }
-
 }

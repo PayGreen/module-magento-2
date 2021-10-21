@@ -15,7 +15,7 @@
  * @author    PayGreen <contact@paygreen.fr>
  * @copyright 2014 - 2021 Watt Is It
  * @license   https://opensource.org/licenses/mit-license.php MIT License X11
- * @version   2.3.0
+ * @version   2.4.0
  *
  */
 
@@ -23,6 +23,7 @@ namespace PGI\Module\PGFramework\Services\Handlers;
 
 use PGI\Module\PGModule\Services\Logger;
 use PGI\Module\PGSystem\Services\Container;
+use PGI\Module\PGFramework\Components\Aggregator as AggregatorComponent;
 use Exception;
 
 /**
@@ -31,40 +32,18 @@ use Exception;
  */
 class HookHandler
 {
-    /** @var Container */
-    private $container;
+    /** @var AggregatorComponent */
+    private $hookAggregator;
 
     /** @var Logger */
     private $logger;
 
-    private $serviceNames = array();
-
     private $hooks = array();
 
-    public function __construct(Container $container, Logger $logger)
+    public function __construct(AggregatorComponent $hookAggregator, Logger $logger)
     {
-        $this->container = $container;
+        $this->hookAggregator = $hookAggregator;
         $this->logger = $logger;
-    }
-
-    /**
-     * @param string $serviceName
-     * @param string|null $hookName
-     * @throws Exception
-     */
-    public function addHookName($serviceName, $hookName = null)
-    {
-        if ($hookName === null) {
-            if (preg_match('/^hook\.(?P<name>.+)/', $serviceName, $result)) {
-                $hookName = $result['name'];
-            } else {
-                throw new Exception(
-                    "Unable to automatically determine the hook name with the service name : '$serviceName'."
-                );
-            }
-        }
-
-        $this->serviceNames[$hookName] = $serviceName;
     }
 
     /**
@@ -72,7 +51,7 @@ class HookHandler
      * @param string $methodName
      * @return callable
      */
-    public function buildHook($hookName, $methodName)
+    public function addHookName($hookName, $methodName)
     {
         $hookIdentifier = md5("$hookName-$methodName");
 
@@ -117,17 +96,7 @@ class HookHandler
     {
         $this->logger->debug("Running method '$methodName' on hook '$hookName'.");
 
-        if (!isset($this->serviceNames[$hookName])) {
-            throw new Exception("Hook not found : '$hookName'.");
-        }
-
-        $serviceName = $this->serviceNames[$hookName];
-
-        $service = $this->container->get($serviceName);
-
-        if (!method_exists($service, $methodName)) {
-            throw new Exception("Method '$methodName' not found in hook '$serviceName'.");
-        }
+        $service = $this->hookAggregator->getService($hookName);
 
         return call_user_func_array(array($service, $methodName), $arguments);
     }

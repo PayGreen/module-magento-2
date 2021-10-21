@@ -1,0 +1,17 @@
+{
+  "blocks": {
+    "gifts_overview": {
+      "title": "Aperçu des dons",
+      "columns": {
+        "period": "Période",
+        "count": "Nombre de dons",
+        "amount": "Montant total"
+      },
+      "period": {
+        "day": "Aujourd'hui",
+        "week": "Cette semaine",
+        "month": "Ce mois-ci"
+      }
+    }
+  }
+}

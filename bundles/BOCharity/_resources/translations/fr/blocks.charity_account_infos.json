@@ -1,0 +1,13 @@
+{
+  "blocks": {
+    "charity_account_infos": {
+      "title": "Mes informations",
+      "form": {
+        "access_token": "Token d'accès",
+        "client_id": "Compte",
+        "username": "Nom d'utilisateur"
+      },
+      "server": "Nom du serveur"
+    }
+  }
+}

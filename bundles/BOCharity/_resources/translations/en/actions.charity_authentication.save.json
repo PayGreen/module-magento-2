@@ -1,0 +1,13 @@
+{
+  "actions": {
+    "charity_authentication": {
+      "save": {
+        "result": {
+          "success": "Your login credentials have been saved successfully.",
+          "failure": "An error occurred while saving your login credentials.",
+          "invalid": "The format of your login credentials is invalid."
+        }
+      }
+    }
+  }
+}

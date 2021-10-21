@@ -15,7 +15,7 @@
  * @author    PayGreen <contact@paygreen.fr>
  * @copyright 2014 - 2021 Watt Is It
  * @license   https://opensource.org/licenses/mit-license.php MIT License X11
- * @version   2.3.0
+ * @version   2.4.0
  *
  */
 
@@ -75,10 +75,13 @@ class DisplayFrontofficeHeader extends LocalTemplate
         $request = $objectManager->get('\Magento\Framework\App\Request\Http');
         $checkModule = $request->getFullActionName();
 
-        if($checkModule === "pgfront_frontoffice_index"){
+        if ($checkModule === "checkout_index_index"){
+            $logger->debug("Checkout page detected. Loading associated ressources.");
+            $channels[] = 'FRONT.FUNNEL.CHECKOUT';
+        } elseif ($checkModule === "pgfront_frontoffice_index"){
             $logger->debug("PGFrontPage page detected. Loading associated ressources.");
             $channels[] = 'FRONT.PAYGREEN';
-        } else if($this->headerLogo->isHomePage()) {
+        } elseif ($this->headerLogo->isHomePage()) {
             $logger->debug("Frontoffice home page detected. Loading associated ressources.");
             $channels[] = 'FRONT.HOME.FOOTER';
         }

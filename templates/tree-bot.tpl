@@ -14,17 +14,25 @@
  * @author    PayGreen <contact@paygreen.fr>
  * @copyright 2014 - 2021 Watt Is It
  * @license   https://opensource.org/licenses/mit-license.php MIT License X11
- * @version   2.3.0
+ * @version   2.4.0
  *
  *}
 <div class="pgclimatebot__content pgclimatebot__content--{$position} pgclimatebot__content--{$position}--{$corner}">
+
     <div class="pgclimatebot__content__title">
         {'~message_carbon_footprint'|pgtrans}
     </div>
 
     <div class="pgclimatebot__carbondata">
-        <div class="pgclimatebot__carbondata__total" style="color:{$color}">{$carbonEmittedTotal} kg{'climatebot.total'|pgtrans}</div>
+        {if $isTreeTestModeActivated}
+            <div class="pgdiv__mbottom-sm">
+                {include file="tree/badge-test-mode.tpl"}
+            </div>
+        {/if}
+        <div class="pgclimatebot__carbondata__total" style="color:{$color}">{$carbonEmittedTotal}{'climatebot.total'|pgtrans}</div>
         <div class="pgclimatebot__carbondata__description">{'climatebot.description'|pgtrans}</div>
+
+
 
         <div class="pgclimatebot__carbondata__details">
             <div
@@ -40,7 +48,7 @@
                     {if $carbonEmittedFromDigital == 0}
                         --
                     {else}
-                        {$carbonEmittedFromDigital} g
+                        {$carbonEmittedFromDigital}
                     {/if}
                 </div>
             </div>
@@ -58,7 +66,7 @@
                     {if $carbonEmittedFromProduct == 0}
                         --
                     {else}
-                        {$carbonEmittedFromProduct} kg
+                        {$carbonEmittedFromProduct}
                     {/if}
                 </div>
             </div>
@@ -76,7 +84,7 @@
                     {if $carbonEmittedFromTransportation == 0}
                         --
                     {else}
-                        {$carbonEmittedFromTransportation} g
+                        {$carbonEmittedFromTransportation}
                     {/if}
                 </div>
             </div>

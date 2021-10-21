@@ -15,7 +15,7 @@
  * @author    PayGreen <contact@paygreen.fr>
  * @copyright 2014 - 2021 Watt Is It
  * @license   https://opensource.org/licenses/mit-license.php MIT License X11
- * @version   2.3.0
+ * @version   2.4.0
  *
  */
 
@@ -74,15 +74,22 @@ class ApiFacadeFactory implements ApiFactoryInterface
         $requestSender = new Sender($this->logger);
 
         $requestSender
-            ->addRequesters(
-                new CurlRequester($this->settings, $this->logger, $this->parameters['api.payment.clients.curl'])
-            )
-            ->addRequesters(
-                new FopenRequester($this->settings, $this->logger, $this->parameters['api.payment.clients.fopen'])
-            )
-            ->setResponseFactory(
-                new ResponseFactory($this->logger, $this->parameters['api.payment.requests'], $this->parameters['api.payment.responses'])
-            )
+            ->addRequesters(new CurlRequester(
+                $this->settings,
+                $this->logger,
+                $this->parameters['api.payment.clients.curl']
+            ))
+            ->addRequesters(new FopenRequester(
+                $this->settings,
+                $this->logger,
+                $this->parameters['api.payment.clients.fopen']
+            ))
+            ->setResponseFactory(new ResponseFactory(
+                $this->logger,
+                $this->parameters['api.payment.requests'],
+                $this->parameters['api.payment.responses'],
+                $this->parameters['http_codes']
+            ))
         ;
 
         return $requestSender;

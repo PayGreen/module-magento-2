@@ -1,0 +1,10 @@
+{
+  "misc": {
+    "charity": {
+      "test_mode": {
+        "active": "TEST mode activated",
+        "title": "Your CharityKit is currently configured in TEST mode: no donation will be donated to associations."
+      }
+    }
+  }
+}

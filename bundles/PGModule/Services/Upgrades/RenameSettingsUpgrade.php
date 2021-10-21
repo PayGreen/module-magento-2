@@ -15,7 +15,7 @@
  * @author    PayGreen <contact@paygreen.fr>
  * @copyright 2014 - 2021 Watt Is It
  * @license   https://opensource.org/licenses/mit-license.php MIT License X11
- * @version   2.3.0
+ * @version   2.4.0
  *
  */
 
@@ -42,7 +42,8 @@ class RenameSettingsUpgrade implements UpgradeInterface
 
     public function __construct(
         SettingManager $settingManager,
-        ShopManager $shopManager)
+        ShopManager $shopManager
+    )
     {
         $this->settingManager = $settingManager;
         $this->shopManager = $shopManager;
@@ -72,8 +73,8 @@ class RenameSettingsUpgrade implements UpgradeInterface
             /** @var SettingEntityInterface $setting */
             $setting = $this->settingManager->getByNameAndShop($oldKey, $shop);
 
-            if($setting !== null) {
-                $this->settingManager->insert($newKey,$setting->getValue(), $shop);
+            if ($setting !== null) {
+                $this->settingManager->insert($newKey, $setting->getValue(), $shop);
             }
         }
     }

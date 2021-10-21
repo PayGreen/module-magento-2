@@ -15,7 +15,7 @@
  * @author    PayGreen <contact@paygreen.fr>
  * @copyright 2014 - 2021 Watt Is It
  * @license   https://opensource.org/licenses/mit-license.php MIT License X11
- * @version   2.3.0
+ * @version   2.4.0
  *
  */
 
@@ -26,7 +26,6 @@ use Magento\Backend\App\Action as LocalAction;
 use Magento\Backend\App\Action\Context as LocalContext;
 use Magento\Framework\App\RequestInterface;
 use Magento\Framework\View\Result\PageFactory as LocalPageFactory;
-use PGI\Module\PGFramework\Services\Handlers\CacheHandler;
 use PGI\Module\PGModule\Services\Handlers\SetupHandler;
 use PGI\Module\PGModule\Services\Logger;
 use PGI\Module\PGSystem\Services\Container;

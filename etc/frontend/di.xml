@@ -7,4 +7,11 @@
             </argument>
         </arguments>
     </type>
+    <type name="Magento\Checkout\Model\CompositeConfigProvider">
+        <arguments>
+            <argument name="configProviders" xsi:type="array">
+                <item name="paygreen_payment_checkout_output_provider" xsi:type="object">Paygreen\Payment\Model\CheckoutOutputProvider</item>
+            </argument>
+        </arguments>
+    </type>
 </config>

@@ -1,0 +1,8 @@
+{
+  "pages": {
+    "charity_config": {
+      "name": "Configuration",
+      "title": "Your CharityKit module's configuration"
+    }
+  }
+}
