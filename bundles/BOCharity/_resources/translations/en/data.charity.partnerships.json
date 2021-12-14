@@ -10,7 +10,9 @@
       "field_of_action": {
         "HEALTH": "Health",
         "HUMANITARIAN": "Humanitarian",
-        "ENVIRONMENTAL": "Environmental"
+        "ENVIRONMENTAL": "Environmental",
+        "SOCIAL": "Social",
+        "OTHER": "Other"
       }
     }
   }

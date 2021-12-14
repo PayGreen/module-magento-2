@@ -15,14 +15,14 @@
  * @author    PayGreen <contact@paygreen.fr>
  * @copyright 2014 - 2021 Watt Is It
  * @license   https://opensource.org/licenses/mit-license.php MIT License X11
- * @version   2.4.0
+ * @version   2.5.0
  *
  */
 
 namespace PGI\Module\PGDatabase\Services\Upgrades;
 
 use PGI\Module\PGDatabase\Services\Handlers\DatabaseHandler;
-use PGI\Module\PGModule\Components\Upgrade as UpgradeComponent;
+use PGI\Module\PGModule\Components\UpgradeStage as UpgradeComponent;
 use PGI\Module\PGModule\Interfaces\UpgradeInterface;
 use Exception;
 

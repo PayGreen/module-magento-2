@@ -15,7 +15,7 @@
  * @author    PayGreen <contact@paygreen.fr>
  * @copyright 2014 - 2021 Watt Is It
  * @license   https://opensource.org/licenses/mit-license.php MIT License X11
- * @version   2.4.0
+ * @version   2.5.0
  *
  */
 
@@ -149,20 +149,20 @@ class PluginController extends AbstractBackofficeController
 
         $data[] = array(
             'period' => 'day',
-            'count' => $this->transactionManager->getCountOfTheDay(),
-            'amount' => $this->transactionManager->getAmountOfTheDay()
+            'count' => $this->transactionManager->getCountOfTheLastHours(),
+            'amount' => $this->transactionManager->getAmountOfTheLastHours()
         );
 
         $data[] = array(
             'period' => 'week',
-            'count' => $this->transactionManager->getCountOfTheWeek(),
-            'amount' => $this->transactionManager->getAmountOfTheWeek()
+            'count' => $this->transactionManager->getCountOfTheLastSevenDays(),
+            'amount' => $this->transactionManager->getAmountOfTheLastSevenDays()
         );
 
         $data[] = array(
             'period' => 'month',
-            'count' => $this->transactionManager->getCountOfTheMonth(),
-            'amount' => $this->transactionManager->getAmountOfTheMonth()
+            'count' => $this->transactionManager->getCountOfTheLastThirtyDays(),
+            'amount' => $this->transactionManager->getAmountOfTheLastThirtyDays()
         );
 
         foreach ($data as $index => $value) {

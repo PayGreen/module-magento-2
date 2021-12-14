@@ -15,12 +15,13 @@
  * @author    PayGreen <contact@paygreen.fr>
  * @copyright 2014 - 2021 Watt Is It
  * @license   https://opensource.org/licenses/mit-license.php MIT License X11
- * @version   2.4.0
+ * @version   2.5.0
  *
  */
 
 namespace PGI\Module\BOTree\Services\Controllers;
 
+use PGI\Module\APITree\Services\Facades\ApiFacade;
 use PGI\Module\BOModule\Foundations\Controllers\AbstractBackofficeController;
 use PGI\Module\PGFramework\Services\Generators\CSVGenerator;
 use PGI\Module\PGPayment\Exceptions\InvalidProductCatalog as InvalidProductCatalogException;
@@ -49,12 +50,17 @@ class ExportProductCatalogController extends AbstractBackofficeController
     /** @var TreeCatalogHandler $treeCatalogHandler */
     private $treeCatalogHandler;
 
+    /** @var ApiFacade */
+    private $treeAPIFacade;
+
     public function __construct(
         CSVGenerator $csvGenerator,
-        TreeCatalogHandler $treeCatalogHandler
+        TreeCatalogHandler $treeCatalogHandler,
+        ApiFacade $treeAPIFacade
     ) {
         $this->csvGenerator = $csvGenerator;
         $this->treeCatalogHandler = $treeCatalogHandler;
+        $this->treeAPIFacade = $treeAPIFacade;
     }
 
     /**
@@ -119,6 +125,33 @@ class ExportProductCatalogController extends AbstractBackofficeController
     }
 
     /**
+     * @return HTTPResponseComponent
+     * @throws Exception
+     */
+    public function exportProductCatalogAction()
+    {
+        try {
+            if (!$this->treeCatalogHandler->hasData()) {
+                $this->treeCatalogHandler->build();
+            }
+
+            $file = $this->getProductCatalogCSVFile();
+
+            $fileMetadata = stream_get_meta_data($file);
+            $filePath = $fileMetadata['uri'];
+
+            $this->treeAPIFacade->exportProductCatalog($filePath);
+
+            unlink($filePath);
+
+            $this->success('actions.tree_export_product_catalog.success_catalog_send');
+        } catch (InvalidProductCatalogException $exception) {
+            $this->failure('actions.tree_export_product_catalog.invalid_product_catalog');
+        }
+        return $this->redirect($this->getLinkHandler()->buildBackOfficeUrl('backoffice.tree_products_synchronization.display'));
+    }
+
+    /**
      * @return PaygreenModuleResponseComponent
      * @throws Exception
      */
@@ -142,14 +175,26 @@ class ExportProductCatalogController extends AbstractBackofficeController
     }
 
     /**
-     * @return string
-     * @throws InvalidProductCatalogException
+     * @throws InvalidProductCatalogException|Exception
      */
     protected function getProductCatalogCSV()
     {
         $productCatalog = $this->treeCatalogHandler->getCleanedData();
 
         return $this->csvGenerator->generateCSV(
+            $productCatalog,
+            self::$EXPORT_PRODUCT_CATALOG_COLUMNS_NAME
+        );
+    }
+
+    /**
+     * @throws InvalidProductCatalogException|Exception
+     */
+    protected function getProductCatalogCSVFile()
+    {
+        $productCatalog = $this->treeCatalogHandler->getCleanedData();
+
+        return $this->csvGenerator->generateCSVFile(
             $productCatalog,
             self::$EXPORT_PRODUCT_CATALOG_COLUMNS_NAME
         );

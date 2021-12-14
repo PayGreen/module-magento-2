@@ -15,7 +15,7 @@
  * @author    PayGreen <contact@paygreen.fr>
  * @copyright 2014 - 2021 Watt Is It
  * @license   https://opensource.org/licenses/mit-license.php MIT License X11
- * @version   2.4.0
+ * @version   2.5.0
  *
  */
 
@@ -40,7 +40,9 @@ class GiftRepository extends AbstractRepositoryDatabase implements GiftRepositor
      */
     public function findByOrderPrimary($id_order)
     {
-        return $this->findOneEntity("`id_order` = '$id_order'");
+        $id_order = (int) $id_order;
+
+        return $this->findOneEntity("`id_order` = $id_order");
     }
 
     /**
@@ -140,9 +142,6 @@ class GiftRepository extends AbstractRepositoryDatabase implements GiftRepositor
      */
     private function initializeDatetime()
     {
-        $datetime = new DateTime();
-        $datetime->setTime(0, 0);
-
-        return $datetime;
+        return new DateTime();
     }
 }

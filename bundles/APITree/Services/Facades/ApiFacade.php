@@ -15,7 +15,7 @@
  * @author    PayGreen <contact@paygreen.fr>
  * @copyright 2014 - 2021 Watt Is It
  * @license   https://opensource.org/licenses/mit-license.php MIT License X11
- * @version   2.4.0
+ * @version   2.5.0
  *
  */
 
@@ -448,13 +448,21 @@ class ApiFacade
      */
     public function exportProductCatalog($csvFile)
     {
+        $access_token = $this->settings->get('tree_access_token');
+
         $request = $this->getRequestFactory()->buildRequest('export_product_catalog')->setContent(array(
-            'inputCsv' => $csvFile,
+            'inputCsv' => $this->curlFileCreate($csvFile, 'text/csv', 'products.csv'),
+        ))->setHeaders(array(
+            "Accept: */*",
+            "Content-Type: multipart/form-data",
+            "Accept-Encoding: gzip, deflate, br",
+            "Cache-Control: no-cache",
+            "Authorization: Bearer $access_token"
         ));
 
         $request = $this->checkTestMode($request);
 
-        return $this->getRequestSender()->sendRequest($request);
+        return $this->getRequestSender()->sendRequest($request, false);
     }
 
     /**
@@ -555,6 +563,25 @@ class ApiFacade
      */
     private function isAccessAvailable()
     {
-        return $this->requirementHandler->isFulfilled('tree_access_available');
+        return $this->requirementHandler->isFulfilled('tree_access_available_without_activation');
+    }
+
+    /**
+     * @param $filename
+     * @param string $mimetype
+     * @param string $postname
+     * @return string
+     */
+    private function curlFileCreate($filename, $mimetype = '', $postname = '')
+    {
+        if (!function_exists('curl_file_create')) {
+            $curlFile = "@$filename;filename="
+                . ($postname ?: basename($filename))
+                . ($mimetype ? ";type=$mimetype" : '');
+        } else {
+            $curlFile = curl_file_create($filename, $mimetype, $postname);
+        }
+
+        return $curlFile;
     }
 }

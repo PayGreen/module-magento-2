@@ -14,33 +14,33 @@
  * @author    PayGreen <contact@paygreen.fr>
  * @copyright 2014 - 2021 Watt Is It
  * @license   https://opensource.org/licenses/mit-license.php MIT License X11
- * @version   2.4.0
+ * @version   2.5.0
  *
  *}
 <div class="pgform__field__switch">
     <input
         type="radio"
-        name="{$attr.name}"
-        id="{$attr.id}_off"
+        name="{$attr.name|escape:'html':'UTF-8'}"
+        id="{$attr.id|escape:'html':'UTF-8'}_off"
         value="0"
         class="pgform__field__switch__off"
         {if not $attr.value}checked="checked"{/if}
     />
 
-    <label for="{$attr.id}_off">
+    <label for="{$attr.id|escape:'html':'UTF-8'}_off">
         {'misc.forms.default.buttons.no'|pgtrans}
     </label>
 
     <input
         type="radio"
-        name="{$attr.name}"
-        id="{$attr.id}_on"
+        name="{$attr.name|escape:'html':'UTF-8'}"
+        id="{$attr.id|escape:'html':'UTF-8'}_on"
         value="1"
         class="pgform__field__switch__on"
         {if $attr.value}checked="checked"{/if}
     />
 
-    <label for="{$attr.id}_on">
+    <label for="{$attr.id|escape:'html':'UTF-8'}_on">
         {'misc.forms.default.buttons.yes'|pgtrans}
     </label>
 </div>

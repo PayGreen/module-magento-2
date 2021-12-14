@@ -15,7 +15,7 @@
  * @author    PayGreen <contact@paygreen.fr>
  * @copyright 2014 - 2021 Watt Is It
  * @license   https://opensource.org/licenses/mit-license.php MIT License X11
- * @version   2.4.0
+ * @version   2.5.0
  *
  */
 
@@ -23,6 +23,7 @@ namespace PGI\Module\FOCharity\Services\OutputBuilders;
 
 use Exception;
 use PGI\Module\PGCharity\Services\Handlers\CharityHandler;
+use PGI\Module\PGCharity\Services\Handlers\CharityPartnershipHandler;
 use PGI\Module\PGModule\Components\Output as OutputComponent;
 use PGI\Module\PGModule\Foundations\AbstractOutputBuilder;
 use PGI\Module\PGModule\Services\Settings;
@@ -46,16 +47,21 @@ class CharityBlockOutputBuilder extends AbstractOutputBuilder
     /** @var Settings */
     private $settings;
 
+    /** @var CharityPartnershipHandler */
+    private $charityPartnershipHandler;
+
     public function __construct(
         CharityHandler $charityHandler,
         LinkHandler $linkHandler,
-        Settings $settings
+        Settings $settings,
+        CharityPartnershipHandler $charityPartnershipHandler
     ) {
         parent::__construct();
 
         $this->charityHandler = $charityHandler;
         $this->linkHandler = $linkHandler;
         $this->settings = $settings;
+        $this->charityPartnershipHandler = $charityPartnershipHandler;
     }
 
     /**
@@ -69,18 +75,30 @@ class CharityBlockOutputBuilder extends AbstractOutputBuilder
         /** @var OutputComponent $output */
         $output = new OutputComponent();
 
-        $content = $this->getViewHandler()->renderTemplate('charity-container', array(
-            'hasGift' => $this->charityHandler->hasGift(),
-            'currentAmount' => number_format($this->charityHandler->getCurrentAmount(), 2),
-            'isCharityTestModeActivated' => $isCharityTestModeActivated
-        ));
+        $partnerships = $this->charityPartnershipHandler->getPartnerships();
 
-        $output->addResource(new StyleFileResourceComponent('/css/charity-frontoffice.css'));
-        $output->addResource(new ScriptFileResourceComponent('/js/charity.js'));
+        if (sizeof($partnerships) === 1) {
+            $content = $this->getViewHandler()->renderTemplate('charity-display-single-partnership', array(
+                'hasGift' => $this->charityHandler->hasGift(),
+                'currentAmount' => number_format($this->charityHandler->getCurrentAmount(), 2),
+                'isCharityTestModeActivated' => $isCharityTestModeActivated,
+                'partnership' => $partnerships[0]
+            ));
+            $output->addResource(new ScriptFileResourceComponent('/js/charity-single-partnership.js'));
+            $output->addResource(new StyleFileResourceComponent('/css/charity-frontoffice-single-partnership.css'));
+        } else {
+            $content = $this->getViewHandler()->renderTemplate('charity-container', array(
+                'hasGift' => $this->charityHandler->hasGift(),
+                'currentAmount' => number_format($this->charityHandler->getCurrentAmount(), 2),
+                'isCharityTestModeActivated' => $isCharityTestModeActivated
+            ));
+            $output->addResource(new ScriptFileResourceComponent('/js/charity.js'));
+            $output->addResource(new StyleFileResourceComponent('/css/charity-frontoffice.css'));
 
-        $output->addResource(new DataResourceComponent(array(
-            'paygreen_charity_popin_template_url' => $this->linkHandler->buildFrontOfficeUrl('front.charity.display_popin')
-        )));
+            $output->addResource(new DataResourceComponent(array(
+                'paygreen_charity_popin_template_url' => $this->linkHandler->buildFrontOfficeUrl('front.charity.display_popin'),
+            )));
+        }
 
         $output->setContent($content);
 

@@ -15,7 +15,7 @@
  * @author    PayGreen <contact@paygreen.fr>
  * @copyright 2014 - 2021 Watt Is It
  * @license   https://opensource.org/licenses/mit-license.php MIT License X11
- * @version   2.4.0
+ * @version   2.5.0
  *
  */
 
@@ -142,12 +142,30 @@ class TransactionManager extends AbstractManager
     }
 
     /**
+     * @return int
+     * @throws Exception
+     */
+    public function getCountOfTheLastHours()
+    {
+        return $this->getRepository()->getCountByDayInterval(1, 0);
+    }
+
+    /**
      * @return float
      * @throws Exception
      */
     public function getAmountOfTheDay()
     {
         return $this->getRepository()->getAmountByDayInterval();
+    }
+
+    /**
+     * @return float
+     * @throws Exception
+     */
+    public function getAmountOfTheLastHours()
+    {
+        return $this->getRepository()->getAmountByDayInterval(1, 0);
     }
 
     /**
@@ -162,6 +180,15 @@ class TransactionManager extends AbstractManager
     }
 
     /**
+     * @return int
+     * @throws Exception
+     */
+    public function getCountOfTheLastSevenDays()
+    {
+        return $this->getRepository()->getCountByDayInterval(7, 0);
+    }
+
+    /**
      * @return float
      * @throws Exception
      */
@@ -170,6 +197,15 @@ class TransactionManager extends AbstractManager
         $dayIntervalBegin = (int) $this->initializeDatetime()->format('w') - 1;
 
         return $this->getRepository()->getAmountByDayInterval($dayIntervalBegin);
+    }
+
+    /**
+     * @return float
+     * @throws Exception
+     */
+    public function getAmountOfTheLastSevenDays()
+    {
+        return $this->getRepository()->getAmountByDayInterval(7, 0);
     }
 
     /**
@@ -184,6 +220,15 @@ class TransactionManager extends AbstractManager
     }
 
     /**
+     * @return int
+     * @throws Exception
+     */
+    public function getCountOfTheLastThirtyDays()
+    {
+        return $this->getRepository()->getCountByDayInterval(30, 0);
+    }
+
+    /**
      * @return float
      * @throws Exception
      */
@@ -192,6 +237,15 @@ class TransactionManager extends AbstractManager
         $dayIntervalBegin = (int) $this->initializeDatetime()->format('j') - 1;
 
         return $this->getRepository()->getAmountByDayInterval($dayIntervalBegin);
+    }
+
+    /**
+     * @return float
+     * @throws Exception
+     */
+    public function getAmountOfTheLastThirtyDays()
+    {
+        return $this->getRepository()->getAmountByDayInterval(30, 0);
     }
 
     /**
@@ -343,10 +397,7 @@ class TransactionManager extends AbstractManager
      */
     private function initializeDatetime()
     {
-        $datetime = new DateTime();
-        $datetime->setTime(0, 0);
-
-        return $datetime;
+        return new DateTime();
     }
     /**
      * @param int $newvalue

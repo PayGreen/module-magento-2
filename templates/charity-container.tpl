@@ -14,7 +14,7 @@
  * @author    PayGreen <contact@paygreen.fr>
  * @copyright 2014 - 2021 Watt Is It
  * @license   https://opensource.org/licenses/mit-license.php MIT License X11
- * @version   2.4.0
+ * @version   2.5.0
  *
  *}
 <div id="pgcharity-container">
@@ -35,7 +35,7 @@
                 <span class="pgcharity-gift pgcharity-gift--{if $hasGift}yes{else}no{/if}"></span>
                 <p class="pgcharity-custom-message">
                     {'~charity_block_message'|pgtrans}
-                    <span class="pgcharity-gift-amount">{$currentAmount}€</span>
+                    <span class="pgcharity-gift-amount">{$currentAmount|escape:'html':'UTF-8'}€</span>
                 </p>
             </div>
         </div>

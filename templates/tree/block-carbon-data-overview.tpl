@@ -14,7 +14,7 @@
  * @author    PayGreen <contact@paygreen.fr>
  * @copyright 2014 - 2021 Watt Is It
  * @license   https://opensource.org/licenses/mit-license.php MIT License X11
- * @version   2.4.0
+ * @version   2.5.0
  *
  *}
 <table>
@@ -30,8 +30,8 @@
     {foreach from=$entries item=entry}
         <tr>
             <td>{"blocks.carbon_data_overview.period.`$entry['period']`"|pgtrans}</td>
-            <td style="text-align: center;">{$entry['footprint']} kg CO²</td>
-            <td style="text-align: center;">{$entry['carbon_offset']} €</td>
+            <td style="text-align: center;">{$entry['footprint']|escape:'html':'UTF-8'} kg CO²</td>
+            <td style="text-align: center;">{$entry['carbon_offset']|escape:'html':'UTF-8'} €</td>
         </tr>
     {/foreach}
     </tbody>

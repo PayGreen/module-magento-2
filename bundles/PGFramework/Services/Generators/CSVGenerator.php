@@ -15,7 +15,7 @@
  * @author    PayGreen <contact@paygreen.fr>
  * @copyright 2014 - 2021 Watt Is It
  * @license   https://opensource.org/licenses/mit-license.php MIT License X11
- * @version   2.4.0
+ * @version   2.5.0
  *
  */
 
@@ -30,23 +30,38 @@ class CSVGenerator
     /**
      * @param array $data
      * @param array $headerColumns
-     * @return string
+     * @return false|resource
      */
-    public function generateCSV($data, $headerColumns = array())
+    public function generateCSVFile($data, $headerColumns = array())
     {
         $workArray = array_values($data);
 
         ob_start();
 
-        $file = fopen("php://output", 'w');
+        $file = tmpfile();
         fputcsv($file, $headerColumns);
 
         foreach ($workArray as $row) {
             fputcsv($file, $row);
         }
 
-        fclose($file);
+        return $file;
+    }
 
+    /**
+     * @param array $data
+     * @param array $headerColumns
+     */
+    public function generateCSV($data, $headerColumns = array())
+    {
+        $workArray = array_values($data);
+        ob_start();
+        $file = fopen("php://output", 'w');
+        fputcsv($file, $headerColumns);
+        foreach ($workArray as $row) {
+            fputcsv($file, $row);
+        }
+        fclose($file);
         return ob_get_clean();
     }
 }

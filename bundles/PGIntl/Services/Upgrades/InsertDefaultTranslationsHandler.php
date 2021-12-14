@@ -15,14 +15,14 @@
  * @author    PayGreen <contact@paygreen.fr>
  * @copyright 2014 - 2021 Watt Is It
  * @license   https://opensource.org/licenses/mit-license.php MIT License X11
- * @version   2.4.0
+ * @version   2.5.0
  *
  */
 
 namespace PGI\Module\PGIntl\Services\Upgrades;
 
 use PGI\Module\PGIntl\Services\Handlers\TranslationHandler;
-use PGI\Module\PGModule\Components\Upgrade as UpgradeComponent;
+use PGI\Module\PGModule\Components\UpgradeStage as UpgradeComponent;
 use PGI\Module\PGModule\Interfaces\UpgradeInterface;
 use PGI\Module\PGShop\Interfaces\Entities\ShopEntityInterface;
 use PGI\Module\PGShop\Services\Managers\ShopManager;

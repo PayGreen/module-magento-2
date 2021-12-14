@@ -14,7 +14,7 @@
  * @author    PayGreen <contact@paygreen.fr>
  * @copyright 2014 - 2021 Watt Is It
  * @license   https://opensource.org/licenses/mit-license.php MIT License X11
- * @version   2.4.0
+ * @version   2.5.0
  *
  *}
 {if isset($label)}
@@ -30,8 +30,8 @@
 {/if}
 
 <table
-    {if isset($id)}id="{$id}"{/if}
-    class="pgtable pgtable__align-center pgtable__static-columns-width pg__mtop-sm pg__mbottom-sm {if isset($class)} {$class}{/if}"
+    {if isset($id)}id="{$id|escape:'html':'UTF-8'}"{/if}
+    class="pgtable pgtable__align-center pgtable__static-columns-width pg__mtop-sm pg__mbottom-sm {if isset($class)} {$class|escape:'html':'UTF-8'}{/if}"
 >
     <thead>
         <tr>
@@ -41,7 +41,7 @@
                     {include
                         file="fields/partials/input.tpl"
                         attr=['type' => 'search']
-                        placeholder="{$filterPlaceholder}"
+                        placeholder="{$filterPlaceholder|escape:'html':'UTF-8'}"
                     }
                 </span>
             {else}
@@ -51,7 +51,7 @@
 
             {foreach from=$horizontal_choices item=horizontal_name}
             <td>
-                {$horizontal_name}
+                {$horizontal_name nofilter}{* HTML content, no escape necessary *}
             </td>
             {/foreach}
         </tr>
@@ -59,9 +59,9 @@
 
     <tbody class="js__table-column-check">
         {foreach from=$vertical_choices key=vertical_code item=vertical_name}
-        <tr data-name="{$vertical_name}">
+        <tr data-name="{$vertical_name nofilter}{* HTML content, no escape necessary *}">
             <td>
-                {$vertical_name}
+                {$vertical_name nofilter}{* HTML content, no escape necessary *}
             </td>
 
             {foreach from=$horizontal_choices key=horizontal_code item=horizontal_name}
@@ -72,7 +72,7 @@
                         file="fields/partials/radio-check.tpl"
                         attr=$attr
                         name=$data['name']
-                        id="{$id}-{$data['name']}-{$data['value']}"
+                        id="{$id|escape:'html':'UTF-8'}-{$data['name']|escape:'html':'UTF-8'}-{$data['value']|escape:'html':'UTF-8'}"
                         value=$data['value']
                         isChecked=$data['checked']
                         label="misc.forms.default.buttons.yes"

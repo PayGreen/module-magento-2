@@ -8,9 +8,9 @@
         "amount": "Total amount"
       },
       "period": {
-        "day": "Today",
-        "week": "This week",
-        "month": "This month"
+        "day": "The last 24h",
+        "week": "The last 7 days",
+        "month": "The last 30 days"
       }
     }
   }

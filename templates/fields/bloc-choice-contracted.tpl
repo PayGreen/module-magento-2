@@ -14,12 +14,12 @@
  * @author    PayGreen <contact@paygreen.fr>
  * @copyright 2014 - 2021 Watt Is It
  * @license   https://opensource.org/licenses/mit-license.php MIT License X11
- * @version   2.4.0
+ * @version   2.5.0
  *
  *}
 <fieldset
-    {if isset($id)}id="{$id}"{/if}
-    class="pgform__field{if isset($fieldsetClasses)} {$fieldsetClasses|clip:' '}{/if}{if isset($class)} {$class}{/if}"
+    {if isset($id)}id="{$id|escape:'html':'UTF-8'}"{/if}
+    class="pgform__field{if isset($fieldsetClasses)} {$fieldsetClasses|clip:' '|escape:'html':'UTF-8'}{/if}{if isset($class)} {$class|escape:'html':'UTF-8'}{/if}"
 >
     {if isset($label)}
         {include file="fields/partials/label.tpl" label=$label attr=$attr}

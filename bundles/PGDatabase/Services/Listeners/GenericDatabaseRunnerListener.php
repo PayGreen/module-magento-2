@@ -15,41 +15,51 @@
  * @author    PayGreen <contact@paygreen.fr>
  * @copyright 2014 - 2021 Watt Is It
  * @license   https://opensource.org/licenses/mit-license.php MIT License X11
- * @version   2.4.0
+ * @version   2.5.0
  *
  */
 
 namespace PGI\Module\PGDatabase\Services\Listeners;
 
+use Exception;
 use PGI\Module\PGDatabase\Services\Handlers\DatabaseHandler;
-use PGI\Module\PGModule\Components\Events\Module as ModuleEventComponent;
+use PGI\Module\PGFramework\Foundations\AbstractService;
+use PGI\Module\PGModule\Foundations\AbstractEvent;
 
 /**
  * Class GenericDatabaseRunnerListener
  * @package PGDatabase\Services\Listeners
  */
-class GenericDatabaseRunnerListener
+class GenericDatabaseRunnerListener extends AbstractService
 {
     /** @var DatabaseHandler */
     private $databaseHandler;
 
-    /** @var array */
-    private $scripts;
-
     private $bin;
 
-    public function __construct(DatabaseHandler $databaseHandler, $scripts)
+    public function __construct(DatabaseHandler $databaseHandler)
     {
         $this->databaseHandler = $databaseHandler;
-        $this->scripts = is_array($scripts) ? $scripts : array($scripts);
     }
 
-    public function listen(ModuleEventComponent $event)
+    /**
+     * @param AbstractEvent $event
+     * @throws Exception
+     */
+    public function listen(AbstractEvent $event)
     {
         // Thrashing unused arguments
         $this->bin = $event;
 
-        foreach ($this->scripts as $script) {
+        $script = $this->getConfig('script');
+
+        if (empty($script)) {
+            throw new Exception("Database listener require 'script' parameter.");
+        }
+
+        $scripts = is_array($script) ? $script : array($script);
+
+        foreach ($scripts as $script) {
             $this->databaseHandler->runScript($script);
         }
     }

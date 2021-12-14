@@ -15,7 +15,7 @@
  * @author    PayGreen <contact@paygreen.fr>
  * @copyright 2014 - 2021 Watt Is It
  * @license   https://opensource.org/licenses/mit-license.php MIT License X11
- * @version   2.4.0
+ * @version   2.5.0
  *
  */
 
@@ -31,6 +31,7 @@ use PGI\Module\PGModule\Services\Handlers\BehaviorHandler;
 use PGI\Module\PGModule\Services\Logger;
 use PGI\Module\PGSystem\Services\Container;
 use PGI\Module\PGSystem\Tools\Collection as CollectionTool;
+use PGI\Module\PGFramework\Services\Handlers\RequirementHandler;
 use Exception;
 use ReflectionException;
 use ReflectionClass;
@@ -59,6 +60,9 @@ class FieldBuilder
     /** @var Logger */
     private $logger;
 
+    /** @var RequirementHandler */
+    private $requirementHandler;
+
     private $config;
 
     public function __construct(
@@ -68,7 +72,8 @@ class FieldBuilder
         BehaviorHandler     $behaviorHandler,
         AggregatorComponent $viewAggregator,
         Logger              $logger,
-        array               $config
+        array               $config,
+        RequirementHandler $requirementHandler
     ) {
         $this->container = $container;
         $this->builderValidator = $builderValidator;
@@ -77,6 +82,7 @@ class FieldBuilder
         $this->viewAggregator = $viewAggregator;
         $this->logger = $logger;
         $this->config = $config;
+        $this->requirementHandler = $requirementHandler;
     }
 
     /**
@@ -141,8 +147,9 @@ class FieldBuilder
     {
         if ($config['enabled'] === false) {
             return false;
-        } elseif (($config['behavior'] !== null) && !$this->behaviorHandler->get($config['behavior'])) {
-            return false;
+        } elseif (!empty($config['requirements'])) {
+            $this->logger->debug("Requirement", $config['requirements']);
+            return $this->requirementHandler->areFulfilled($config['requirements']);
         }
 
         return true;

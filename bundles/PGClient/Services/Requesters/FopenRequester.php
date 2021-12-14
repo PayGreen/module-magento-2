@@ -15,7 +15,7 @@
  * @author    PayGreen <contact@paygreen.fr>
  * @copyright 2014 - 2021 Watt Is It
  * @license   https://opensource.org/licenses/mit-license.php MIT License X11
- * @version   2.4.0
+ * @version   2.5.0
  *
  */
 
@@ -41,10 +41,15 @@ class FopenRequester extends AbstractRequester
         return $this->checkCompatibility();
     }
 
-    public function sendRequest(RequestComponent $request)
+    public function sendRequest(RequestComponent $request, $jsonEncodePostFields = true)
     {
         $rawRequestContent = $request->getContent();
-        $encodedRequestContent = json_encode($rawRequestContent);
+
+        if ($jsonEncodePostFields === true) {
+            $encodedRequestContent = json_encode($rawRequestContent);
+        } else {
+            $encodedRequestContent = $rawRequestContent;
+        }
 
         $contentLength = 0;
         if (!empty($rawRequestContent)) {

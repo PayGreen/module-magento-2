@@ -14,7 +14,7 @@
  * @author    PayGreen <contact@paygreen.fr>
  * @copyright 2014 - 2021 Watt Is It
  * @license   https://opensource.org/licenses/mit-license.php MIT License X11
- * @version   2.4.0
+ * @version   2.5.0
  *
  *}
 <div class="pgdiv_flex_column">
@@ -29,7 +29,7 @@
             <ul class="pgtreegenerate__list">
                 {foreach $notices as $notice}
                     <li>
-                        {$notice}
+                        {$notice|escape:'html':'UTF-8'}
                     </li>
                 {/foreach}
             </ul>
@@ -39,7 +39,7 @@
     </div>
 
     <div class="pgtreegenerate__warning pgbutton__container">
-        {if isset($error)}<p class="pgbutton__warning">{$error}</p>{/if}
+        {if isset($error)}<p class="pgbutton__warning">{$error|escape:'html':'UTF-8'}</p>{/if}
     </div>
 
     <div class="pgtreeregenerate__button pgbutton__container {if ($empty_cache)}pgbutton__hidden{/if}">

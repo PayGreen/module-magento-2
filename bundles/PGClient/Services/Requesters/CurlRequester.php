@@ -15,7 +15,7 @@
  * @author    PayGreen <contact@paygreen.fr>
  * @copyright 2014 - 2021 Watt Is It
  * @license   https://opensource.org/licenses/mit-license.php MIT License X11
- * @version   2.4.0
+ * @version   2.5.0
  *
  */
 
@@ -46,11 +46,11 @@ class CurlRequester extends AbstractRequester
 
     /**
      * @param RequestComponent $request
-     * @return mixed|ResponseComponent
+     * @param bool $jsonEncodePostFields
+     * @return FeedbackComponent
      * @throws ResponseException
-     * @throws Exception
      */
-    public function sendRequest(RequestComponent $request)
+    public function sendRequest(RequestComponent $request, $jsonEncodePostFields = true)
     {
         $ch = curl_init();
 
@@ -62,6 +62,12 @@ class CurlRequester extends AbstractRequester
         } else {
             $verifyPeer = (bool) $this->getConfig('verify_peer');
             $verifyHost = (int) $this->getConfig('verify_host');
+        }
+
+        if (empty($postFields)) {
+            $postFields = '';
+        } elseif ($jsonEncodePostFields === true) {
+            $postFields = json_encode($postFields);
         }
 
         $options = array(
@@ -76,7 +82,7 @@ class CurlRequester extends AbstractRequester
             CURLOPT_TIMEOUT => (int) $this->getConfig('timeout'),
             CURLOPT_HTTP_VERSION => $this->getHttpVersionOption(),
             CURLOPT_CUSTOMREQUEST => $request->getMethod(),
-            CURLOPT_POSTFIELDS => empty($postFields) ? '' : json_encode($postFields),
+            CURLOPT_POSTFIELDS => $postFields,
             CURLOPT_HTTPHEADER => $request->getHeaders()
         );
 

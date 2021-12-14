@@ -14,13 +14,13 @@
  * @author    PayGreen <contact@paygreen.fr>
  * @copyright 2014 - 2021 Watt Is It
  * @license   https://opensource.org/licenses/mit-license.php MIT License X11
- * @version   2.4.0
+ * @version   2.5.0
  *
  *}
 <div
     id="pgcharity-association-{$partnership->association->idAssociation|escape:'htmlall':'UTF-8'}"
     class="pgcharity-association {if $partnership->association->idAssociation == $associationSelectedId}selected{/if}"
-    data-association-id="{$partnership->association->idAssociation}"
+    data-association-id="{$partnership->association->idAssociation|escape:'html':'UTF-8'}"
 >
     <div class="pgcharity-association-img">
         <img src="{$partnership->association->picture1|escape:'htmlall':'UTF-8'}">

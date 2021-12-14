@@ -15,7 +15,7 @@
  * @author    PayGreen <contact@paygreen.fr>
  * @copyright 2014 - 2021 Watt Is It
  * @license   https://opensource.org/licenses/mit-license.php MIT License X11
- * @version   2.4.0
+ * @version   2.5.0
  *
  */
 
@@ -28,6 +28,7 @@ use PGI\Module\PGClient\Services\Requesters\CurlRequester;
 use PGI\Module\PGClient\Services\Requesters\FopenRequester;
 use PGI\Module\PGClient\Services\Sender;
 use PGI\Module\PGFramework\Services\Handlers\RequirementHandler;
+use PGI\Module\PGModule\Interfaces\ApplicationFacadeInterface;
 use PGI\Module\PGModule\Services\Logger;
 use PGI\Module\PGModule\Services\Settings;
 use PGI\Module\PGSystem\Components\Parameters as ParametersComponent;
@@ -39,9 +40,6 @@ use Exception;
  */
 class ApiFacadeFactory
 {
-    /** @var RequirementHandler */
-    private $requirementHandler;
-
     /** @var Logger */
     private $logger;
 
@@ -51,16 +49,24 @@ class ApiFacadeFactory
     /** @var ParametersComponent */
     private $parameters;
 
+    /** @var ApplicationFacadeInterface */
+    private $applicationFacade;
+
+    /** @var RequirementHandler */
+    private $requirementHandler;
+
     public function __construct(
-        RequirementHandler $requirementHandler,
         Logger $logger,
         Settings $settings,
-        ParametersComponent $parameters
+        ParametersComponent $parameters,
+        ApplicationFacadeInterface $applicationFacade,
+        RequirementHandler $requirementHandler
     ) {
-        $this->requirementHandler = $requirementHandler;
         $this->logger = $logger;
         $this->settings = $settings;
         $this->parameters = $parameters;
+        $this->applicationFacade = $applicationFacade;
+        $this->requirementHandler = $requirementHandler;
     }
 
     /**
@@ -93,7 +99,8 @@ class ApiFacadeFactory
         $sharedHeaders = array(
             "Accept: application/json",
             "Content-Type: application/json",
-            "Cache-Control: no-cache"
+            "Cache-Control: no-cache",
+            "User-Agent: " . $this->buildUserAgentHeader()
         );
 
         if (!empty($access_token)) {
@@ -160,5 +167,29 @@ class ApiFacadeFactory
         }
 
         return $url;
+    }
+
+    protected function buildUserAgentHeader()
+    {
+        $application = $this->applicationFacade->getName();
+        $applicationVersion = $this->applicationFacade->getVersion();
+        $moduleType = ($this->isImpact()) ? 'module-impact' : 'module';
+        $moduleVersion = PAYGREEN_MODULE_VERSION;
+
+        if (defined('PHP_MAJOR_VERSION') && defined('PHP_MINOR_VERSION') && defined('PHP_RELEASE_VERSION')) {
+            $phpVersion = PHP_MAJOR_VERSION . '.' . PHP_MINOR_VERSION . '.' . PHP_RELEASE_VERSION;
+        } else {
+            $phpVersion = phpversion();
+        }
+
+        return "$application/$applicationVersion php:$phpVersion;$moduleType:$moduleVersion";
+    }
+
+    /**
+     * @return bool
+     */
+    protected function isImpact()
+    {
+        return ($this->parameters['module.name'] === 'Impact');
     }
 }

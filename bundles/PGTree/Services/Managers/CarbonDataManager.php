@@ -15,7 +15,7 @@
  * @author    PayGreen <contact@paygreen.fr>
  * @copyright 2014 - 2021 Watt Is It
  * @license   https://opensource.org/licenses/mit-license.php MIT License X11
- * @version   2.4.0
+ * @version   2.5.0
  *
  */
 
@@ -99,11 +99,29 @@ class CarbonDataManager extends AbstractManager
      * @param string $columnName
      * @return float
      */
+    public function getSumOfTheLastHours($columnName)
+    {
+        return $this->getRepository()->getColumnSumByDayInterval($columnName, 1, 0);
+    }
+
+    /**
+     * @param string $columnName
+     * @return float
+     */
     public function getSumOfTheWeek($columnName)
     {
         $dayIntervalBegin = (int) $this->initializeDatetime()->format('w');
 
         return $this->getRepository()->getColumnSumByDayInterval($columnName, $dayIntervalBegin);
+    }
+
+    /**
+     * @param string $columnName
+     * @return float
+     */
+    public function getSumOfTheLastSevenDays($columnName)
+    {
+        return $this->getRepository()->getColumnSumByDayInterval($columnName, 7, 0);
     }
 
     /**
@@ -119,13 +137,19 @@ class CarbonDataManager extends AbstractManager
     }
 
     /**
+     * @param string $columnName
+     * @return float
+     */
+    public function getSumOfTheLastThirtyDays($columnName)
+    {
+        return $this->getRepository()->getColumnSumByDayInterval($columnName, 30, 0);
+    }
+
+    /**
      * @return DateTime
      */
     private function initializeDatetime()
     {
-        $datetime = new DateTime();
-        $datetime->setTime(0, 0);
-
-        return $datetime;
+        return new DateTime();
     }
 }

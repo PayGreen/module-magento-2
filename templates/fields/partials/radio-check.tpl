@@ -14,31 +14,31 @@
  * @author    PayGreen <contact@paygreen.fr>
  * @copyright 2014 - 2021 Watt Is It
  * @license   https://opensource.org/licenses/mit-license.php MIT License X11
- * @version   2.4.0
+ * @version   2.5.0
  *
  *}
-<div class="pgform__field__radio-check{if isset($classes)} {$classes}{/if}">
+<div class="pgform__field__radio-check{if isset($classes)} {$classes|escape:'html':'UTF-8'}{/if}">
     {if !isset($attr.id) && isset($id)}
         {if isset($value)}
-            {assign var="childId" value="{$id}-{$value}"}
+            {assign var="childId" value="{$id|escape:'html':'UTF-8'}-{$value|escape:'html':'UTF-8'}"}
         {elseif isset($attr.value)}
-            {assign var="childId" value="{$id}-{$attr.value}"}
+            {assign var="childId" value="{$id|escape:'html':'UTF-8'}-{$attr.value|escape:'html':'UTF-8'}"}
         {/if}
     {/if}
 
     <input
-        {foreach $attr as $key => $val}{$key}="{$val}"{/foreach}
+        {foreach $attr as $key => $val}{$key|escape:'html':'UTF-8'}="{$val|escape:'html':'UTF-8'}"{/foreach}
         {if isset($isChecked) && $isChecked}checked="checked"{/if}
-        {if isset($name)}name="{$name}"{/if}
-        {if isset($value)}value="{$value}"{/if}
-        {if isset($childId)}id="{$childId}"{/if}
+        {if isset($name)}name="{$name|escape:'html':'UTF-8'}"{/if}
+        {if isset($value)}value="{$value|escape:'html':'UTF-8'}"{/if}
+        {if isset($childId)}id="{$childId|escape:'html':'UTF-8'}"{/if}
     />
 
     <label for="{if isset($attr.id)}{$attr.id}{elseif isset($childId)}{$childId}{/if}">
         {if isset($translate) && $translate}
             {$label|pgtrans}
         {else}
-            {$label}
+            {$label|escape:'html':'UTF-8'}
         {/if}
     </label>
 </div>

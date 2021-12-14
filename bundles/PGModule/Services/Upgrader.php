@@ -15,18 +15,18 @@
  * @author    PayGreen <contact@paygreen.fr>
  * @copyright 2014 - 2021 Watt Is It
  * @license   https://opensource.org/licenses/mit-license.php MIT License X11
- * @version   2.4.0
+ * @version   2.5.0
  *
  */
 
 namespace PGI\Module\PGModule\Services;
 
 use PGI\Module\PGFramework\Components\Aggregator as AggregatorComponent;
-use PGI\Module\PGModule\Components\Upgrade as UpgradeComponent;
+use PGI\Module\PGModule\Components\UpgradeBox;
+use PGI\Module\PGModule\Components\UpgradeStage;
 use PGI\Module\PGModule\Interfaces\UpgradeInterface;
-use PGI\Module\PGModule\Services\Logger;
-use PGI\Module\PGModule\Services\Settings;
 use PGI\Module\PGSystem\Foundations\AbstractObject;
+use PGI\Module\PGSystem\Tools\Collection as CollectionTool;
 use Exception;
 
 /**
@@ -35,8 +35,6 @@ use Exception;
  */
 class Upgrader extends AbstractObject
 {
-    const DEFAULT_PRIORITY = 500;
-
     /** @var AggregatorComponent */
     private $upgradeAggregator;
 
@@ -69,27 +67,33 @@ class Upgrader extends AbstractObject
      */
     public function upgrade($from, $to)
     {
-        /** @var UpgradeComponent[] $upgradeStages */
-        $upgradeStages = $this->buildUpgradeList($from, $to);
+        /** @var UpgradeBox[] $upgradeStages */
+        $upgradeBoxes = $this->buildUpgradeBoxes($from, $to);
 
-        /** @var UpgradeComponent $upgradeStage */
-        foreach ($upgradeStages as $upgradeStage) {
-            /** @var UpgradeInterface $upgrade */
-            $upgrade = $this->upgradeAggregator->getService($upgradeStage->getType());
-
+        /** @var UpgradeBox $upgradeBox */
+        foreach ($upgradeBoxes as $upgradeBox) {
             $this->logger->info(
-                "Running upgrade stage '{$upgradeStage->getName()}' with upgrade agent '{$upgradeStage->getType()}'."
+                "Running upgrade box : {$upgradeBox->getVersion()}"
             );
 
-            try {
-                if ($upgrade->apply($upgradeStage)) {
-                    $this->logger->notice("Upgrade stage '{$upgradeStage->getName()}' applied successfully.");
-                }
-            } catch (Exception $exception) {
-                $text = "An error occurred during upgrade stage '{$upgradeStage->getName()}' execution : ";
-                $text .= $exception->getMessage();
+            foreach ($upgradeBox->getStages() as $upgradeStage) {
+                /** @var UpgradeInterface $upgrade */
+                $upgrade = $this->upgradeAggregator->getService($upgradeStage->getType());
 
-                $this->logger->error($text, $exception);
+                $this->logger->info(
+                    "Running upgrade agent '{$upgradeStage->getType()}'."
+                );
+
+                try {
+                    if ($upgrade->apply($upgradeStage)) {
+                        $this->logger->notice("Upgrade agent '{$upgradeStage->getType()}' applied successfully.");
+                    }
+                } catch (Exception $exception) {
+                    $text = "An error occurred during upgrade agent '{$upgradeStage->getType()}' execution : ";
+                    $text .= $exception->getMessage();
+
+                    $this->logger->error($text, $exception);
+                }
             }
         }
     }
@@ -97,24 +101,24 @@ class Upgrader extends AbstractObject
     /**
      * @param string $from
      * @param string $to
-     * @return UpgradeComponent[]
+     * @return UpgradeBox[]
      * @throws Exception
      */
-    protected function buildUpgradeList($from, $to)
+    protected function buildUpgradeBoxes($from, $to)
     {
-        $upgradeStages = array();
+        $upgradeBoxes = array();
 
-        foreach ($this->upgrades as $upgradeName => $upgradeConfig) {
-            $upgradeStage = new UpgradeComponent($upgradeName, $upgradeConfig);
+        foreach ($this->upgrades as $version => $config) {
+            $upgradeBox =$this->buildUpgradeBox($version, $config);
 
-            if ($upgradeStage->greaterThan($from) && ($upgradeStage->lesserOrEqualThan($to))) {
-                $upgradeStages[] = $upgradeStage;
+            if ($upgradeBox->greaterThan($from) && ($upgradeBox->lesserOrEqualThan($to))) {
+                $upgradeBoxes[] = $upgradeBox;
             }
         }
 
-        usort($upgradeStages, function (
-            UpgradeComponent $stage1,
-            UpgradeComponent $stage2
+        usort($upgradeBoxes, function (
+            UpgradeBox $stage1,
+            UpgradeBox $stage2
         ) {
             if ($stage1->lesserThan($stage2->getVersion())) {
                 return -1;
@@ -122,13 +126,32 @@ class Upgrader extends AbstractObject
                 return 1;
             }
 
-            if ($stage1->getPriority() === $stage2->getPriority()) {
-                return 0;
-            }
-
-            return ($stage1->getPriority() < $stage2->getPriority()) ? -1 : 1;
+            return 0;
         });
 
-        return $upgradeStages;
+        return $upgradeBoxes;
+    }
+
+    /**
+     * @param $version
+     * @param $config
+     * @return UpgradeBox
+     * @throws Exception
+     */
+    protected function buildUpgradeBox($version, $config)
+    {
+        if (CollectionTool::isSequential($config)) {
+            $rawStages = $config;
+        } else {
+            $rawStages = array($config);
+        }
+
+        $upgradeBox = new UpgradeBox($version);
+
+        foreach ($rawStages as $rawStage) {
+            $upgradeBox->addStage(new UpgradeStage($rawStage));
+        }
+
+        return $upgradeBox;
     }
 }

@@ -14,10 +14,10 @@
  * @author    PayGreen <contact@paygreen.fr>
  * @copyright 2014 - 2021 Watt Is It
  * @license   https://opensource.org/licenses/mit-license.php MIT License X11
- * @version   2.4.0
+ * @version   2.5.0
  *
  *}
-<select{foreach $attr as $key => $val} {$key}="{$val}"{/foreach}>
+<select{foreach $attr as $key => $val} {$key|escape:'html':'UTF-8'}="{$val|escape:'html':'UTF-8'}"{/foreach}>
     {if !empty($placeholder)}
         <option value="" disabled="disabled">
             {$placeholder|pgtrans}
@@ -31,8 +31,8 @@
             {assign var="selected" value=($code === $value)}
         {/if}
 
-        <option value="{$code}"{if $selected} selected="selected"{/if}>
-            {$name}
+        <option value="{$code|escape:'html':'UTF-8'}"{if $selected} selected="selected"{/if}>
+            {$name|escape:'html':'UTF-8'}
         </option>
     {/foreach}
 </select>

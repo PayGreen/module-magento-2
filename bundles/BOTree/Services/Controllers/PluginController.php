@@ -15,7 +15,7 @@
  * @author    PayGreen <contact@paygreen.fr>
  * @copyright 2014 - 2021 Watt Is It
  * @license   https://opensource.org/licenses/mit-license.php MIT License X11
- * @version   2.4.0
+ * @version   2.5.0
  *
  */
 
@@ -173,20 +173,20 @@ class PluginController extends AbstractBackofficeController
 
         $data[] = array(
             'period' => 'day',
-            'footprint' => ($this->carbonDataManager->getSumOfTheDay('footprint') * 1000),
-            'carbon_offset' => $this->carbonDataManager->getSumOfTheDay('carbon_offset')
+            'footprint' => ($this->carbonDataManager->getSumOfTheLastHours('footprint') * 1000),
+            'carbon_offset' => $this->carbonDataManager->getSumOfTheLastHours('carbon_offset')
         );
 
         $data[] = array(
             'period' => 'week',
-            'footprint' => ($this->carbonDataManager->getSumOfTheWeek('footprint') * 1000),
-            'carbon_offset' => $this->carbonDataManager->getSumOfTheWeek('carbon_offset')
+            'footprint' => ($this->carbonDataManager->getSumOfTheLastSevenDays('footprint') * 1000),
+            'carbon_offset' => $this->carbonDataManager->getSumOfTheLastSevenDays('carbon_offset')
         );
 
         $data[] = array(
             'period' => 'month',
-            'footprint' => ($this->carbonDataManager->getSumOfTheMonth('footprint') * 1000),
-            'carbon_offset' => $this->carbonDataManager->getSumOfTheMonth('carbon_offset')
+            'footprint' => ($this->carbonDataManager->getSumOfTheLastThirtyDays('footprint') * 1000),
+            'carbon_offset' => $this->carbonDataManager->getSumOfTheLastThirtyDays('carbon_offset')
         );
 
         foreach ($data as $index => $value) {

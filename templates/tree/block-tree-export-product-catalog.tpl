@@ -14,7 +14,7 @@
  * @author    PayGreen <contact@paygreen.fr>
  * @copyright 2014 - 2021 Watt Is It
  * @license   https://opensource.org/licenses/mit-license.php MIT License X11
- * @version   2.4.0
+ * @version   2.5.0
  *
  *}
 <div class="pgdiv_flex_column">
@@ -28,4 +28,18 @@
             {'blocks.tree_export_product_catalog.buttons.file_export.label'|pgtrans}
         </a>
     </div>
+
+    <div class="pgtreeexport__button {if ($empty_cache)}pgbutton__hidden{/if}">
+        <p>{"blocks.tree_export_product_catalog.buttons.send.description"|pgtranslines}</p>
+
+        <div class="pgbutton__container">
+            <a
+                    href="{'backoffice.tree_config.export_product_catalog'|toback}"
+                    class="pgbutton"
+            >
+                {'blocks.tree_export_product_catalog.buttons.send.label'|pgtrans}
+            </a>
+        </div>
+    </div>
 </div>
+

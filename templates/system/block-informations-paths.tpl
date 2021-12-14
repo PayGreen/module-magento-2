@@ -14,7 +14,7 @@
  * @author    PayGreen <contact@paygreen.fr>
  * @copyright 2014 - 2021 Watt Is It
  * @license   https://opensource.org/licenses/mit-license.php MIT License X11
- * @version   2.4.0
+ * @version   2.5.0
  *
  *}
 <div class="pgblock pgblock__max__xl">
@@ -39,8 +39,8 @@
         <tbody>
         {foreach from=$entries item=entry}
             <tr>
-                <td>{$entry['name']}</td>
-                <td>{$entry['path']}</td>
+                <td>{$entry['name']|escape:'html':'UTF-8'}</td>
+                <td>{$entry['path']|escape:'html':'UTF-8'}</td>
                 <td style="text-align: center;">{$entry['exists']|pgbool}</td>
                 <td style="text-align: center;">{$entry['writable']|pgbool}</td>
             </tr>

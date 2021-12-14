@@ -1,6 +1,6 @@
 {
   "climatebot": {
-    "total": " de C02",
+    "total": " de CO2",
     "description": "Estimation carbone actualisée en temps réel",
     "data": {
       "web": "Navigateur Web",

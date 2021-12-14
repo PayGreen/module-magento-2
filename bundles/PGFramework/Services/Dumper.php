@@ -15,7 +15,7 @@
  * @author    PayGreen <contact@paygreen.fr>
  * @copyright 2014 - 2021 Watt Is It
  * @license   https://opensource.org/licenses/mit-license.php MIT License X11
- * @version   2.4.0
+ * @version   2.5.0
  *
  */
 
@@ -115,7 +115,7 @@ EOT;
         } elseif (is_object($data)) {
             return $this->formatObject($data, $level);
         } else {
-            return "Unsupported data type.";
+            return $data;//"Unsupported data type.";
         }
     }
 

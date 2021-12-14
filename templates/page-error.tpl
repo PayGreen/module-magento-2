@@ -14,7 +14,7 @@
  * @author    PayGreen <contact@paygreen.fr>
  * @copyright 2014 - 2021 Watt Is It
  * @license   https://opensource.org/licenses/mit-license.php MIT License X11
- * @version   2.4.0
+ * @version   2.5.0
  *
  *}
 <div class="pglayout">
@@ -33,26 +33,26 @@
         {foreach $exceptions as $exception}
         <div class="pgblock">
             <h2>
-                {$exception['type']}
-                ({'misc.error.exception.code'|pgtrans} {$exception['code']})
+                {$exception['type']|escape:'html':'UTF-8'}
+                ({'misc.error.exception.code'|pgtrans} {$exception['code']|escape:'html':'UTF-8'})
             </h2>
 
             <ul>
                 <li>
                     {'misc.error.exception.type'|pgtrans}
-                    <strong>{$exception['type']}</strong>
+                    <strong>{$exception['type']|escape:'html':'UTF-8'}</strong>
                 </li>
 
                 <li>
                     {'misc.error.exception.text'|pgtrans}
-                    <strong>{$exception['text']}</strong>
+                    <strong>{$exception['text']|escape:'html':'UTF-8'}</strong>
                 </li>
 
                 <li>
                     {'misc.error.exception.file'|pgtrans}
-                    <strong>{$exception['file']}</strong>
+                    <strong>{$exception['file']|escape:'html':'UTF-8'}</strong>
                     {'misc.error.exception.line'|pgtrans}
-                    <strong>{$exception['line']}</strong>
+                    <strong>{$exception['line']|escape:'html':'UTF-8'}</strong>
                 </li>
             </ul>
 

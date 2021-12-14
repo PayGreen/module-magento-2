@@ -14,7 +14,9 @@
  * @author    PayGreen <contact@paygreen.fr>
  * @copyright 2014 - 2021 Watt Is It
  * @license   https://opensource.org/licenses/mit-license.php MIT License X11
- * @version   2.4.0
+ * @version   2.5.0
  *
  *}
-{foreach $children as $field}{$field}{/foreach}
+{foreach $children as $field}
+    {$field nofilter}{* HTML content, no escape necessary *}
+{/foreach}

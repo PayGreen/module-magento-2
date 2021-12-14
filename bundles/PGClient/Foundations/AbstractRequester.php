@@ -15,7 +15,7 @@
  * @author    PayGreen <contact@paygreen.fr>
  * @copyright 2014 - 2021 Watt Is It
  * @license   https://opensource.org/licenses/mit-license.php MIT License X11
- * @version   2.4.0
+ * @version   2.5.0
  *
  */
 
@@ -75,11 +75,11 @@ abstract class AbstractRequester implements RequesterInterface
     /**
      * @inheritdoc
      */
-    public function send(RequestComponent $request)
+    public function send(RequestComponent $request, $jsonEncodePostFields = true)
     {
         $request->markAsSent();
 
-        return $this->sendRequest($request);
+        return $this->sendRequest($request, $jsonEncodePostFields);
     }
 
     /**

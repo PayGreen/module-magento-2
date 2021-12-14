@@ -1,0 +1,1 @@
+DROP TABLE IF EXISTS `%{database.entities.category_has_payment.table}`;

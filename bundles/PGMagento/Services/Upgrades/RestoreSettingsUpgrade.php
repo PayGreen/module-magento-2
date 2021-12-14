@@ -15,7 +15,7 @@
  * @author    PayGreen <contact@paygreen.fr>
  * @copyright 2014 - 2021 Watt Is It
  * @license   https://opensource.org/licenses/mit-license.php MIT License X11
- * @version   2.4.0
+ * @version   2.5.0
  *
  */
 
@@ -24,7 +24,7 @@ namespace PGI\Module\PGMagento\Services\Upgrades;
 use Magento\Framework\App\ObjectManager as LocalObjectManager;
 use Magento\Framework\App\Config\ScopeConfigInterface as LocalScopeConfigInterface;
 use Magento\Framework\App\Config\ConfigResource\ConfigInterface as LocalConfigInterface;
-use PGI\Module\PGModule\Components\Upgrade as UpgradeComponent;
+use PGI\Module\PGModule\Components\UpgradeStage as UpgradeComponent;
 use PGI\Module\PGModule\Interfaces\Repositories\SettingRepositoryInterface;
 use PGI\Module\PGModule\Interfaces\UpgradeInterface;
 use PGI\Module\PGModule\Services\Officers\SettingsDatabaseOfficer;

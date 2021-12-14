@@ -8,9 +8,9 @@
         "carbon_offset": "Estimation du coût carbone"
       },
       "period": {
-        "day": "Aujourd'hui",
-        "week": "Cette semaine",
-        "month": "Ce mois-ci"
+        "day": "Ces dernières 24h",
+        "week": "Ces 7 derniers jours",
+        "month": "Ces 30 derniers jours"
       }
     }
   }

@@ -15,7 +15,7 @@
  * @author    PayGreen <contact@paygreen.fr>
  * @copyright 2014 - 2021 Watt Is It
  * @license   https://opensource.org/licenses/mit-license.php MIT License X11
- * @version   2.4.0
+ * @version   2.5.0
  *
  */
 
@@ -63,6 +63,7 @@ class SettingRepository extends AbstractRepositoryDatabase implements SettingRep
         if ($id_shop === null) {
             $where = "`name` = '$name' AND `id_shop` IS NULL";
         } else {
+            $id_shop = $this->getRequester()->quote($id_shop);
             $where = "`name` = '$name' AND `id_shop` = $id_shop";
         }
 

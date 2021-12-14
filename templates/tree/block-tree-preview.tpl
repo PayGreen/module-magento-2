@@ -14,7 +14,7 @@
  * @author    PayGreen <contact@paygreen.fr>
  * @copyright 2014 - 2021 Watt Is It
  * @license   https://opensource.org/licenses/mit-license.php MIT License X11
- * @version   2.4.0
+ * @version   2.5.0
  *
  *}
 <div class="pgdiv_flex_row">
@@ -37,7 +37,7 @@
             'isTreeTestModeActivated' => $isTreeTestModeActivated]
         }
 
-        <div class='pgclimatebot__button pgclimatebot__button--{$position} pgclimatebot__button--{$position}--{$corner}'>
+        <div class='pgclimatebot__button pgclimatebot__button--{$position|escape:'html':'UTF-8'} pgclimatebot__button--{$position|escape:'html':'UTF-8'}--{$corner|escape:'html':'UTF-8'}'>
             <div class="pgclimatebot__button__closebutton"></div>
         </div>
     </div>

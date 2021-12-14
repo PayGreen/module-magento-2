@@ -13,6 +13,10 @@
           "message": "Le don sera entièrement reversé à l'association choisi par le client.",
           "details": "Avec l’arrondi, vous avez la possibilité de conclure votre achat en réalisant un geste solidaire symbolique à hauteur de vos moyens. Le montant du don est automatiquement surchargé à votre panier."
         }
+      },
+      "single": {
+        "help": "Aider l'association",
+        "details": "En savoir plus"
       }
     }
   }

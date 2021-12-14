@@ -15,7 +15,7 @@
  * @author    PayGreen <contact@paygreen.fr>
  * @copyright 2014 - 2021 Watt Is It
  * @license   https://opensource.org/licenses/mit-license.php MIT License X11
- * @version   2.4.0
+ * @version   2.5.0
  *
  */
 
@@ -26,6 +26,7 @@ use PGI\Module\APICharity\Services\Factories\ApiFacadeFactory;
 use PGI\Module\PGClient\Components\Response as ResponseComponent;
 use PGI\Module\PGClient\Exceptions\Response as ResponseException;
 use PGI\Module\PGClient\Services\Factories\RequestFactory;
+use PGI\Module\PGGreen\Interfaces\AuthenticationHandlerInterface;
 use PGI\Module\PGModule\Services\Logger;
 use PGI\Module\PGModule\Services\Settings;
 use DateTime;
@@ -36,7 +37,7 @@ use stdClass;
  * Class CharityAuthenticationHandler
  * @package PGCharity\Services\Handlers
  */
-class CharityAuthenticationHandler
+class CharityAuthenticationHandler implements AuthenticationHandlerInterface
 {
     const REFRESH_TOKEN_VALIDITY = '1 month';
 

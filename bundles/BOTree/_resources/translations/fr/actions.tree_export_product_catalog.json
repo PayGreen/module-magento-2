@@ -1,7 +1,8 @@
 {
   "actions": {
     "tree_export_product_catalog": {
-      "invalid_product_catalog": "Votre catalogue produits est invalide, certains de vos produits n'ont pas de noms ou de références."
+      "invalid_product_catalog": "Votre catalogue produits est invalide, certains de vos produits n'ont pas de noms ou de références.",
+      "success_catalog_send": "Catalogue produit envoyé avec succès."
     }
   }
 }

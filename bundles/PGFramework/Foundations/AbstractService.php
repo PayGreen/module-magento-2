@@ -15,7 +15,7 @@
  * @author    PayGreen <contact@paygreen.fr>
  * @copyright 2014 - 2021 Watt Is It
  * @license   https://opensource.org/licenses/mit-license.php MIT License X11
- * @version   2.4.0
+ * @version   2.5.0
  *
  */
 
@@ -32,7 +32,7 @@ use PGI\Module\PGSystem\Interfaces\Services\ConfigurableServiceInterface;
 abstract class AbstractService implements ConfigurableServiceInterface
 {
     /** @var BagComponent */
-    private $config;
+    private $config = null;
 
     /** @var Logger */
     private $logger;
@@ -44,7 +44,11 @@ abstract class AbstractService implements ConfigurableServiceInterface
 
     public function addConfig(array $config)
     {
-        $this->config->merge($config);
+        if ($this->config === null) {
+            $this->setConfig($config);
+        } else {
+            $this->config->merge($config);
+        }
     }
 
     public function hasConfig($key)

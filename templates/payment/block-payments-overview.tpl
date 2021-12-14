@@ -14,7 +14,7 @@
  * @author    PayGreen <contact@paygreen.fr>
  * @copyright 2014 - 2021 Watt Is It
  * @license   https://opensource.org/licenses/mit-license.php MIT License X11
- * @version   2.4.0
+ * @version   2.5.0
  *
  *}
 <table>
@@ -30,8 +30,8 @@
     {foreach from=$entries item=entry}
         <tr>
             <td>{"blocks.payments_overview.period.`$entry['period']`"|pgtrans}</td>
-            <td style="text-align: center;">{$entry['count']}</td>
-            <td style="text-align: center;">{$entry['amount']} €</td>
+            <td style="text-align: center;">{$entry['count']|escape:'html':'UTF-8'}</td>
+            <td style="text-align: center;">{$entry['amount']|escape:'html':'UTF-8'} €</td>
         </tr>
     {/foreach}
     </tbody>

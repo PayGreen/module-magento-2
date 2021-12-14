@@ -14,13 +14,13 @@
  * @author    PayGreen <contact@paygreen.fr>
  * @copyright 2014 - 2021 Watt Is It
  * @license   https://opensource.org/licenses/mit-license.php MIT License X11
- * @version   2.4.0
+ * @version   2.5.0
  *
  *}
 {if !empty($notifications)}
 <ul class="pgnotification">
     {foreach from=$notifications item=notification}
-    <li class="pgnotification__{$notification.type}">
+    <li class="pgnotification__{$notification.type|escape:'html':'UTF-8'}">
         {$notification.text|pgtrans}
     </li>
     {/foreach}

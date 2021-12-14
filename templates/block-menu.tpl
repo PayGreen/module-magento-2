@@ -14,7 +14,7 @@
  * @author    PayGreen <contact@paygreen.fr>
  * @copyright 2014 - 2021 Watt Is It
  * @license   https://opensource.org/licenses/mit-license.php MIT License X11
- * @version   2.4.0
+ * @version   2.5.0
  *
  *}
 <div class="pgnavbar">
@@ -24,7 +24,7 @@
         title="{'misc.backoffice.menu.logo'|pgtrans}"
         class="pgnavbar__logo"
     >
-        <img src="{$logo|picture}" alt="PayGreen" />
+        <img src="{$logo|picture|escape:'html':'UTF-8'}" alt="PayGreen" />
     </a>
 
     <ul class="pgnavbar__menu">
@@ -48,9 +48,9 @@
                 {assign var="selectedCss" value=""}
             {/if}
 
-            <li class="pgnavbar__menu__element{$selectedCss}{if isset($entry['children'])} pgnavbar__menu__element--submenu{/if}">
+            <li class="pgnavbar__menu__element{$selectedCss|escape:'html':'UTF-8'}{if isset($entry['children'])} pgnavbar__menu__element--submenu{/if}">
                 {if isset($entry['href'])}
-                    <a href="{$entry['href']}" title="{$entry['title']|pgtrans}">
+                    <a href="{$entry['href']|escape:'html':'UTF-8'}" title="{$entry['title']|pgtrans}">
                         {$entry['name']|pgtrans}
                     </a>
                 {else}
@@ -64,7 +64,7 @@
                         {foreach from=$entry['children'] item=child}
                             <li class="{if $child['code'] === $selected}pg-selected{/if}">
                                 <a
-                                    href="{$child['href']}"
+                                    href="{$child['href']|escape:'html':'UTF-8'}"
                                     title="{$child['title']|pgtrans}"
                                 >
                                     {$child['name']|pgtrans}
@@ -99,13 +99,13 @@
 
                     <select id="shopSelect">
                         <option selected="selected">
-                            {$currentShop->getName()}
+                            {$currentShop->getName()|escape:'html':'UTF-8'}
                         </option>
 
                         {foreach from=$shops item=shop}
                             {if $shop->id() !== $currentShop->id()}
                                 <option value="{'backoffice.shop.select'|toback:['id' => $shop->id(), 'selected' => $selected]}">
-                                    {$shop->getName()}
+                                    {$shop->getName()|escape:'html':'UTF-8'}
                                 </option>
                             {/if}
                         {/foreach}

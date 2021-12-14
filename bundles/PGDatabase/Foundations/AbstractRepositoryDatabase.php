@@ -15,7 +15,7 @@
  * @author    PayGreen <contact@paygreen.fr>
  * @copyright 2014 - 2021 Watt Is It
  * @license   https://opensource.org/licenses/mit-license.php MIT License X11
- * @version   2.4.0
+ * @version   2.5.0
  *
  */
 
@@ -163,6 +163,7 @@ abstract class AbstractRepositoryDatabase extends AbstractRepository implements 
      */
     public function findByPrimary($id)
     {
+        $id = $this->databaseHandler->quote($id);
         $where = "`{$this->getPrimaryColumn()}` = '$id'";
 
         return $this->findOneEntity($where);
@@ -234,6 +235,8 @@ abstract class AbstractRepositoryDatabase extends AbstractRepository implements 
 
                     $value = $this->serializeField($key, $value);
 
+                    $key = $this->databaseHandler->quote($key);
+
                     $columnStatements[] = "`$key`";
 
                     if ($value === null) {
@@ -291,6 +294,8 @@ abstract class AbstractRepositoryDatabase extends AbstractRepository implements 
 
                     $value = $this->serializeField($key, $value);
 
+                    $key = $this->databaseHandler->quote($key);
+
                     if ($value === null) {
                         $updateStatements[] = "`$key` = NULL";
                     } else {
@@ -302,10 +307,12 @@ abstract class AbstractRepositoryDatabase extends AbstractRepository implements 
 
             $updateStatement = join(', ', $updateStatements);
 
+            $entityId = (int) $entity->id();
+
             $sql = "
                 UPDATE `{$this->getTableName()}`
                 SET $updateStatement
-                WHERE `{$this->getPrimaryColumn()}` = {$entity->id()};";
+                WHERE `{$this->getPrimaryColumn()}` = $entityId;";
 
             return $this->databaseHandler->execute($sql);
         } catch (Exception $exception) {
@@ -330,7 +337,9 @@ abstract class AbstractRepositoryDatabase extends AbstractRepository implements 
                 throw new Exception("Entity never created : '{$this->getClassName()}'.");
             }
 
-            $sql = "DELETE FROM `{$this->getTableName()}` WHERE `{$this->getPrimaryColumn()}` = {$entity->id()};";
+            $entityId = (int) $entity->id();
+
+            $sql = "DELETE FROM `{$this->getTableName()}` WHERE `{$this->getPrimaryColumn()}` = $entityId;";
 
             return $this->databaseHandler->execute($sql);
         } catch (Exception $exception) {

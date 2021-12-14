@@ -15,7 +15,7 @@
  * @author    PayGreen <contact@paygreen.fr>
  * @copyright 2014 - 2021 Watt Is It
  * @license   https://opensource.org/licenses/mit-license.php MIT License X11
- * @version   2.4.0
+ * @version   2.5.0
  *
  */
 
@@ -77,11 +77,13 @@ class Sender
 
     /**
      * @param RequestComponent $request
+     * @param bool $jsonEncodePostFields
      * @return ResponseComponent
-     * @throws ResponseException
-     * @throws Exception
+     * @throws \PGI\Module\PGClient\Exceptions\ResponseFailed
+     * @throws \PGI\Module\PGClient\Exceptions\ResponseHTTPError
+     * @throws \PGI\Module\PGClient\Exceptions\ResponseMalformed
      */
-    public function sendRequest(RequestComponent $request)
+    public function sendRequest(RequestComponent $request, $jsonEncodePostFields = true)
     {
         $this->log('info', 'Sending an HTTP request.', $request);
 
@@ -97,7 +99,7 @@ class Sender
                     $this->logger->debug("Send request with requester : '$requesterName'.");
 
                     /** @var FeedbackComponent $feedback */
-                    $feedback = $requester->send($request);
+                    $feedback = $requester->send($request, $jsonEncodePostFields);
                 }
             }
         } catch (Exception $exception) {

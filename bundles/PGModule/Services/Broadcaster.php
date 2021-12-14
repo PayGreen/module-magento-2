@@ -15,7 +15,7 @@
  * @author    PayGreen <contact@paygreen.fr>
  * @copyright 2014 - 2021 Watt Is It
  * @license   https://opensource.org/licenses/mit-license.php MIT License X11
- * @version   2.4.0
+ * @version   2.5.0
  *
  */
 
@@ -24,7 +24,9 @@ namespace PGI\Module\PGModule\Services;
 use PGI\Module\PGFramework\Services\Handlers\RequirementHandler;
 use PGI\Module\PGModule\Interfaces\EventInterface;
 use PGI\Module\PGModule\Services\Logger;
+use PGI\Module\PGSystem\Components\Parser;
 use PGI\Module\PGSystem\Exceptions\Configuration as ConfigurationException;
+use PGI\Module\PGSystem\Interfaces\Services\ConfigurableServiceInterface;
 use PGI\Module\PGSystem\Services\Container;
 use Exception;
 
@@ -40,6 +42,9 @@ class Broadcaster
     /** @var RequirementHandler */
     private $requirementHandler;
 
+    /** @var Parser */
+    private $parser;
+
     /** @var Logger */
     private $logger;
 
@@ -48,7 +53,8 @@ class Broadcaster
     private static $LISTENER_DEFAULT_CONFIGURATION = array(
         'method' => 'listen',
         'priority' => 500,
-        'requirements' => array()
+        'requirements' => array(),
+        'config' => array()
     );
 
     /**
@@ -61,11 +67,13 @@ class Broadcaster
     public function __construct(
         Container $container,
         RequirementHandler $requirementHandler,
+        Parser $parser,
         Logger $logger,
         array $listeners
     ) {
         $this->container = $container;
         $this->requirementHandler = $requirementHandler;
+        $this->parser = $parser;
         $this->logger = $logger;
 
         foreach ($listeners as $listener) {
@@ -100,7 +108,8 @@ class Broadcaster
                 return strtoupper($var);
             }, $listenerConfiguration['event']),
             'priority' => $listenerConfiguration['priority'],
-            'requirements' => $listenerConfiguration['requirements']
+            'requirements' => $listenerConfiguration['requirements'],
+            'config' => $listenerConfiguration['config']
         );
     }
 
@@ -179,10 +188,15 @@ class Broadcaster
     {
         $serviceName = $listener['service'];
         $method = $listener['method'];
-        $service = $this->container->get($serviceName);
 
         try {
             if ($this->requirementHandler->areFulfilled($listener['requirements'])) {
+                $service = $this->container->get($serviceName);
+
+                if ($service instanceof ConfigurableServiceInterface) {
+                    $service->addConfig($this->parser->parseConfig($listener['config']));
+                }
+
                 $this->logger->debug("Fire event '{$event->getName()}' to method '$method' in service '$serviceName'.");
 
                 if (!method_exists($service, $method)) {
