@@ -14,7 +14,7 @@
  * @author    PayGreen <contact@paygreen.fr>
  * @copyright 2014 - 2021 Watt Is It
  * @license   https://opensource.org/licenses/mit-license.php MIT License X11
- * @version   2.5.0
+ * @version   2.5.1
  *
  *}
 <div class="pgdiv_flex_row pg_justify_content_between pg_align_items-flex_start">

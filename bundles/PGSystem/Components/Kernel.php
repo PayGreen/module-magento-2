@@ -15,7 +15,7 @@
  * @author    PayGreen <contact@paygreen.fr>
  * @copyright 2014 - 2021 Watt Is It
  * @license   https://opensource.org/licenses/mit-license.php MIT License X11
- * @version   2.5.0
+ * @version   2.5.1
  *
  */
 
@@ -31,7 +31,7 @@ use Exception;
  */
 class Kernel
 {
-    const VERSION = '3.10.2';
+    const VERSION = '3.10.3';
 
     private $bundles = array();
 

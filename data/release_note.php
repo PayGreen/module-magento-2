@@ -15,7 +15,7 @@
  * @author    PayGreen <contact@paygreen.fr>
  * @copyright 2014 - 2021 Watt Is It
  * @license   https://opensource.org/licenses/mit-license.php MIT License X11
- * @version   2.5.0
+ * @version   2.5.1
  *
  */
 
@@ -1888,119 +1888,131 @@ array (
 ),
 233 =>
 array (
-'type' => 'PERF',
-'text' => 'Optimisations mineures.',
+'type' => 'FIX',
+'code' => 'PGI-3810',
+'text' => 'Corriger l\'upgrade FixGreenAccessTokenSettingUpgrade.',
 ),
 234 =>
 array (
-'type' => 'PERF',
-'text' => 'Amélioration du service Parser.',
+'type' => 'FIX',
+'code' => 'PGI-3816',
+'text' => 'Erreur à l\'enregistrement d\'une traduction dynamique.',
 ),
 235 =>
 array (
 'type' => 'PERF',
-'text' => 'Optimisation globale du framework.',
+'text' => 'Optimisations mineures.',
 ),
 236 =>
 array (
 'type' => 'PERF',
-'text' => 'Factorisation des limitations de montant du panier.',
+'text' => 'Amélioration du service Parser.',
 ),
 237 =>
 array (
 'type' => 'PERF',
-'text' => 'Optimisation de l\'autoloader.',
+'text' => 'Optimisation globale du framework.',
 ),
 238 =>
 array (
 'type' => 'PERF',
-'text' => 'Amélioration de l\'enregistrement des settings.',
+'text' => 'Factorisation des limitations de montant du panier.',
 ),
 239 =>
 array (
 'type' => 'PERF',
-'text' => 'Amélioration de la gestion des erreurs liées au mode Insite.',
+'text' => 'Optimisation de l\'autoloader.',
 ),
 240 =>
 array (
 'type' => 'PERF',
-'text' => 'Meilleure gestion des upgrades.',
+'text' => 'Amélioration de l\'enregistrement des settings.',
 ),
 241 =>
 array (
 'type' => 'PERF',
-'text' => 'Amélioration de la gestion des settings.',
+'text' => 'Amélioration de la gestion des erreurs liées au mode Insite.',
 ),
 242 =>
 array (
 'type' => 'PERF',
-'text' => 'Amélioration de la résilience du système de cache du module et de Smarty.',
+'text' => 'Meilleure gestion des upgrades.',
 ),
 243 =>
 array (
 'type' => 'PERF',
-'text' => 'Amélioration de la résilience de l\'autoloader.',
+'text' => 'Amélioration de la gestion des settings.',
 ),
 244 =>
 array (
 'type' => 'PERF',
-'text' => 'Amélioration du cache Smarty.',
+'text' => 'Amélioration de la résilience du système de cache du module et de Smarty.',
 ),
 245 =>
 array (
 'type' => 'PERF',
-'text' => 'Amélioration des logs sur la page de paiement.',
+'text' => 'Amélioration de la résilience de l\'autoloader.',
 ),
 246 =>
 array (
 'type' => 'PERF',
-'text' => 'On affiche plus la balise \'ul\' de notifications si il n\'y a pas de notifications.',
+'text' => 'Amélioration du cache Smarty.',
 ),
 247 =>
 array (
 'type' => 'PERF',
-'text' => 'Réduction du temps du PID Locking: 30sec -> 3sec.',
+'text' => 'Amélioration des logs sur la page de paiement.',
 ),
 248 =>
 array (
 'type' => 'PERF',
-'text' => 'Utilisation de la route /availablepaymenttype pour la récupération des moyens de paiement.',
+'text' => 'On affiche plus la balise \'ul\' de notifications si il n\'y a pas de notifications.',
 ),
 249 =>
 array (
 'type' => 'PERF',
-'text' => 'Utilisation de l\'index d\'autoloading pré-compilé.',
+'text' => 'Réduction du temps du PID Locking: 30sec -> 3sec.',
 ),
 250 =>
 array (
 'type' => 'PERF',
-'text' => 'Utilisation d\'un includer pré-compilé.',
+'text' => 'Utilisation de la route /availablepaymenttype pour la récupération des moyens de paiement.',
 ),
 251 =>
+array (
+'type' => 'PERF',
+'text' => 'Utilisation de l\'index d\'autoloading pré-compilé.',
+),
+252 =>
+array (
+'type' => 'PERF',
+'text' => 'Utilisation d\'un includer pré-compilé.',
+),
+253 =>
 array (
 'type' => 'PERF',
 'code' => 'PGI-2989',
 'text' => 'Renommer le concept d\'\'extension\' en \'produit\'.',
 ),
-252 =>
+254 =>
 array (
 'type' => 'PERF',
 'code' => 'PGI-2972',
 'text' => 'Renommer le wording du plugin ClimateKit.',
 ),
-253 =>
+255 =>
 array (
 'type' => 'PERF',
 'code' => 'PGI-2975',
 'text' => 'Modification de l\'affichage des crédentials de connexion au compte ClimateKit.',
 ),
-254 =>
+256 =>
 array (
 'type' => 'PERF',
 'code' => 'PGI-3309',
 'text' => 'Factoriser l\'utilisation du Parser dans le service Translator.',
 ),
-255 =>
+257 =>
 array (
 'type' => 'PERF',
 'code' => 'PGI-3420',
