@@ -1,6 +1,6 @@
 <?php
 /**
- * 2014 - 2021 Watt Is It
+ * 2014 - 2022 Watt Is It
  *
  * NOTICE OF LICENSE
  *
@@ -13,9 +13,9 @@
  * to contact@paygreen.fr so we can send you a copy immediately.
  *
  * @author    PayGreen <contact@paygreen.fr>
- * @copyright 2014 - 2021 Watt Is It
+ * @copyright 2014 - 2022 Watt Is It
  * @license   https://opensource.org/licenses/mit-license.php MIT License X11
- * @version   2.5.1
+ * @version   2.5.2
  *
  */
 
@@ -1900,119 +1900,125 @@ array (
 ),
 235 =>
 array (
-'type' => 'PERF',
-'text' => 'Optimisations mineures.',
+'type' => 'FIX',
+'code' => 'PGI-3844',
+'text' => 'Correction échec de la mise à jour sur php5.',
 ),
 236 =>
 array (
 'type' => 'PERF',
-'text' => 'Amélioration du service Parser.',
+'text' => 'Optimisations mineures.',
 ),
 237 =>
 array (
 'type' => 'PERF',
-'text' => 'Optimisation globale du framework.',
+'text' => 'Amélioration du service Parser.',
 ),
 238 =>
 array (
 'type' => 'PERF',
-'text' => 'Factorisation des limitations de montant du panier.',
+'text' => 'Optimisation globale du framework.',
 ),
 239 =>
 array (
 'type' => 'PERF',
-'text' => 'Optimisation de l\'autoloader.',
+'text' => 'Factorisation des limitations de montant du panier.',
 ),
 240 =>
 array (
 'type' => 'PERF',
-'text' => 'Amélioration de l\'enregistrement des settings.',
+'text' => 'Optimisation de l\'autoloader.',
 ),
 241 =>
 array (
 'type' => 'PERF',
-'text' => 'Amélioration de la gestion des erreurs liées au mode Insite.',
+'text' => 'Amélioration de l\'enregistrement des settings.',
 ),
 242 =>
 array (
 'type' => 'PERF',
-'text' => 'Meilleure gestion des upgrades.',
+'text' => 'Amélioration de la gestion des erreurs liées au mode Insite.',
 ),
 243 =>
 array (
 'type' => 'PERF',
-'text' => 'Amélioration de la gestion des settings.',
+'text' => 'Meilleure gestion des upgrades.',
 ),
 244 =>
 array (
 'type' => 'PERF',
-'text' => 'Amélioration de la résilience du système de cache du module et de Smarty.',
+'text' => 'Amélioration de la gestion des settings.',
 ),
 245 =>
 array (
 'type' => 'PERF',
-'text' => 'Amélioration de la résilience de l\'autoloader.',
+'text' => 'Amélioration de la résilience du système de cache du module et de Smarty.',
 ),
 246 =>
 array (
 'type' => 'PERF',
-'text' => 'Amélioration du cache Smarty.',
+'text' => 'Amélioration de la résilience de l\'autoloader.',
 ),
 247 =>
 array (
 'type' => 'PERF',
-'text' => 'Amélioration des logs sur la page de paiement.',
+'text' => 'Amélioration du cache Smarty.',
 ),
 248 =>
 array (
 'type' => 'PERF',
-'text' => 'On affiche plus la balise \'ul\' de notifications si il n\'y a pas de notifications.',
+'text' => 'Amélioration des logs sur la page de paiement.',
 ),
 249 =>
 array (
 'type' => 'PERF',
-'text' => 'Réduction du temps du PID Locking: 30sec -> 3sec.',
+'text' => 'On affiche plus la balise \'ul\' de notifications si il n\'y a pas de notifications.',
 ),
 250 =>
 array (
 'type' => 'PERF',
-'text' => 'Utilisation de la route /availablepaymenttype pour la récupération des moyens de paiement.',
+'text' => 'Réduction du temps du PID Locking: 30sec -> 3sec.',
 ),
 251 =>
 array (
 'type' => 'PERF',
-'text' => 'Utilisation de l\'index d\'autoloading pré-compilé.',
+'text' => 'Utilisation de la route /availablepaymenttype pour la récupération des moyens de paiement.',
 ),
 252 =>
 array (
 'type' => 'PERF',
-'text' => 'Utilisation d\'un includer pré-compilé.',
+'text' => 'Utilisation de l\'index d\'autoloading pré-compilé.',
 ),
 253 =>
+array (
+'type' => 'PERF',
+'text' => 'Utilisation d\'un includer pré-compilé.',
+),
+254 =>
 array (
 'type' => 'PERF',
 'code' => 'PGI-2989',
 'text' => 'Renommer le concept d\'\'extension\' en \'produit\'.',
 ),
-254 =>
+255 =>
 array (
 'type' => 'PERF',
 'code' => 'PGI-2972',
 'text' => 'Renommer le wording du plugin ClimateKit.',
 ),
-255 =>
+256 =>
 array (
 'type' => 'PERF',
 'code' => 'PGI-2975',
 'text' => 'Modification de l\'affichage des crédentials de connexion au compte ClimateKit.',
 ),
-256 =>
+257 =>
 array (
 'type' => 'PERF',
 'code' => 'PGI-3309',
 'text' => 'Factoriser l\'utilisation du Parser dans le service Translator.',
 ),
-257 =>
+258 =>
 array (
 'type' => 'PERF',
 'code' => 'PGI-3420',
@@ -4004,6 +4010,61 @@ array (
 array (
 'version' => '3.10.2',
 'from' => '3.9.6',
+),
+),
+),
+31 =>
+array (
+'version' => '2.5.1',
+'date' => '21/12/2021',
+'description' => 'Améliorations divers',
+'dependencies' =>
+array (
+'framework' =>
+array (
+'version' => '3.10.2',
+'from' => '3.10.2',
+),
+),
+),
+32 =>
+array (
+'version' => '2.5.2',
+'date' => '10/02/2022',
+'description' => 'Améliorations divers',
+'notes' =>
+array (
+0 =>
+array (
+'type' => 'FIX',
+'code' => 'WPI-1',
+'text' => 'Corriger retours pour validation.',
+),
+1 =>
+array (
+'type' => 'FIX',
+'code' => 'PGI-3810',
+'text' => 'Corriger l\'upgrade FixGreenAccessTokenSettingUpgrade.',
+),
+2 =>
+array (
+'type' => 'FIX',
+'code' => 'PGI-3816',
+'text' => 'Erreur à l\'enregistrement d\'une traduction dynamique.',
+),
+3 =>
+array (
+'type' => 'FIX',
+'code' => 'PGI-3844',
+'text' => 'Correction échec de la mise à jour sur php5.',
+),
+),
+'dependencies' =>
+array (
+'framework' =>
+array (
+'version' => '3.10.4',
+'from' => '3.10.2',
 ),
 ),
 ),

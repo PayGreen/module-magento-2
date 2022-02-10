@@ -1,6 +1,6 @@
 <?php
 /**
- * 2014 - 2021 Watt Is It
+ * 2014 - 2022 Watt Is It
  *
  * NOTICE OF LICENSE
  *
@@ -13,9 +13,9 @@
  * to contact@paygreen.fr so we can send you a copy immediately.
  *
  * @author    PayGreen <contact@paygreen.fr>
- * @copyright 2014 - 2021 Watt Is It
+ * @copyright 2014 - 2022 Watt Is It
  * @license   https://opensource.org/licenses/mit-license.php MIT License X11
- * @version   2.5.1
+ * @version   2.5.2
  *
  */
 
@@ -1052,11 +1052,19 @@ array (
 ),
 1 =>
 array (
-'type' => 'reset_tree_access_settings',
+'type' => 'reset_green_access_settings',
+'config' =>
+array (
+'target' => 'tree',
+),
 ),
 2 =>
 array (
-'type' => 'reset_charity_access_settings',
+'type' => 'reset_green_access_settings',
+'config' =>
+array (
+'target' => 'charity',
+),
 ),
 ),
 '2.5.0' =>
@@ -1080,11 +1088,19 @@ array (
 ),
 1 =>
 array (
-'type' => 'reset_tree_access_settings',
+'type' => 'reset_green_access_settings',
+'config' =>
+array (
+'target' => 'tree',
+),
 ),
 2 =>
 array (
-'type' => 'reset_charity_access_settings',
+'type' => 'reset_green_access_settings',
+'config' =>
+array (
+'target' => 'charity',
+),
 ),
 ),
 '2.2.0' =>
