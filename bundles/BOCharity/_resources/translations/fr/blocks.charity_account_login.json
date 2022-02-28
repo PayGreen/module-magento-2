@@ -1,9 +1,0 @@
-{
-  "blocks": {
-    "charity_account_login": {
-      "title": "Connexion à PayGreen CharityKit",
-      "description": "Renseignez vos identifiants CharityKit.",
-      "action": "Me connecter"
-    }
-  }
-}

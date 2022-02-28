@@ -15,13 +15,13 @@
  * @author    PayGreen <contact@paygreen.fr>
  * @copyright 2014 - 2022 Watt Is It
  * @license   https://opensource.org/licenses/mit-license.php MIT License X11
- * @version   2.5.2
+ * @version   2.6.0
  *
  */
 
 namespace PGI\Module\PGModule\Services\Handlers;
 
-use PGI\Module\PGModule\Services\Logger;
+use PGI\Module\PGLog\Interfaces\LoggerInterface;
 use PGI\Module\PGSystem\Components\Bag as BagComponent;
 use PGI\Module\PGSystem\Foundations\AbstractObject;
 use PGI\Module\PGSystem\Services\Pathfinder;
@@ -36,7 +36,7 @@ class StaticFileHandler extends AbstractObject
     /** @var BagComponent */
     protected $config;
 
-    /** @var Logger */
+    /** @var LoggerInterface */
     protected $logger;
 
     /** @var Pathfinder */
@@ -44,13 +44,13 @@ class StaticFileHandler extends AbstractObject
 
     /**
      * StaticFileHandler constructor.
-     * @param Logger $logger
+     * @param LoggerInterface $logger
      * @param Pathfinder $pathfinder
      * @param array $config
      * @throws Exception
      */
     public function __construct(
-        Logger $logger,
+        LoggerInterface $logger,
         Pathfinder $pathfinder,
         array $config
     ) {

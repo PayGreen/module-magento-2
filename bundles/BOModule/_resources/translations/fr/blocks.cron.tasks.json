@@ -1,0 +1,19 @@
+{
+  "blocks": {
+    "cron": {
+      "tasks": {
+        "title": "Liste des tâches planifiées.",
+        "description": "Vous trouverez ci-dessous la liste des tâches planifiées ainsi que la date à laquelle chacune d'elles est susceptible d'être executée.",
+        "head": {
+          "name": "Tâches",
+          "status": "État"
+        },
+        "status": {
+          "never": "Jamais executée.",
+          "now": "Exécution imminente.",
+          "later": "Sera exécutée le %{date} à partir de %{time} heure."
+        }
+      }
+    }
+  }
+}

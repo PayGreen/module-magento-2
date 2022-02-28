@@ -15,13 +15,13 @@
  * @author    PayGreen <contact@paygreen.fr>
  * @copyright 2014 - 2022 Watt Is It
  * @license   https://opensource.org/licenses/mit-license.php MIT License X11
- * @version   2.5.2
+ * @version   2.6.0
  *
  */
 
 namespace PGI\Module\PGPayment\Services\Handlers;
 
-use PGI\Module\PGModule\Services\Logger;
+use PGI\Module\PGLog\Interfaces\LoggerInterface;
 use PGI\Module\PGPayment\Components\Tasks\PaymentValidation as PaymentValidationTaskComponent;
 use PGI\Module\PGPayment\Components\Tasks\TransactionManagement as TransactionManagementTaskComponent;
 use PGI\Module\PGSystem\Foundations\AbstractObject;
@@ -39,18 +39,18 @@ class TestingPaymentHandler extends AbstractObject
     const FILENAME_LAST_PAYMENT_SENT = 'last-payment-sent.json';
     const FILENAME_FAKE_PAYMENT_DATA = 'fake-payment-data.json';
 
-    /** @var Logger */
+    /** @var LoggerInterface */
     private $logger;
 
-    /** @var Logger */
+    /** @var LoggerInterface */
     private $apiLogger;
 
     /** @var Pathfinder */
     private $pathfinder;
 
     public function __construct(
-        Logger $logger,
-        Logger $apiLogger,
+        LoggerInterface $logger,
+        LoggerInterface $apiLogger,
         Pathfinder $pathfinder
     ) {
         $this->logger = $logger;

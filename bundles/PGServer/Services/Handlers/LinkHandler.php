@@ -15,7 +15,7 @@
  * @author    PayGreen <contact@paygreen.fr>
  * @copyright 2014 - 2022 Watt Is It
  * @license   https://opensource.org/licenses/mit-license.php MIT License X11
- * @version   2.5.2
+ * @version   2.6.0
  *
  */
 
@@ -24,7 +24,7 @@ namespace PGI\Module\PGServer\Services\Handlers;
 use PGI\Module\PGFramework\Components\Aggregator as AggregatorComponent;
 use PGI\Module\PGFramework\Tools\Query as QueryTool;
 use PGI\Module\PGModule\Interfaces\ModuleFacadeInterface;
-use PGI\Module\PGModule\Services\Logger;
+use PGI\Module\PGLog\Interfaces\LoggerInterface;
 use PGI\Module\PGServer\Interfaces\LinkerInterface;
 use PGI\Module\PGSystem\Foundations\AbstractObject;
 use Exception;
@@ -35,7 +35,7 @@ use Exception;
  */
 class LinkHandler extends AbstractObject
 {
-    /** @var Logger */
+    /** @var LoggerInterface */
     private $logger;
 
     /** @var ModuleFacadeInterface */
@@ -46,7 +46,7 @@ class LinkHandler extends AbstractObject
 
     public function __construct(
         AggregatorComponent $linkerAggregator,
-        Logger $logger,
+        LoggerInterface $logger,
         ModuleFacadeInterface $moduleFacade
     ) {
         $this->linkerAggregator = $linkerAggregator;

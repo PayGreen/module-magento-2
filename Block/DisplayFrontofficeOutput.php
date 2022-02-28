@@ -15,7 +15,7 @@
  * @author    PayGreen <contact@paygreen.fr>
  * @copyright 2014 - 2022 Watt Is It
  * @license   https://opensource.org/licenses/mit-license.php MIT License X11
- * @version   2.5.2
+ * @version   2.6.0
  *
  */
 
@@ -24,7 +24,7 @@ namespace Paygreen\Payment\Block;
 use Magento\Framework\View\Element\Template as LocalTemplate;
 use Magento\Framework\View\Element\Template\Context as LocalContext;
 use PGI\Module\PGModule\Components\Output;
-use PGI\Module\PGModule\Services\Logger;
+use PGI\Module\PGLog\Interfaces\LoggerInterface;
 use PGI\Module\PGModule\Services\Providers\OutputProvider;
 use PGI\Module\PGSystem\Services\Container;
 
@@ -50,7 +50,7 @@ class DisplayFrontofficeOutput extends LocalTemplate
         /** @var Output $output */
         $output = $outputProvider->getZoneOutput('FRONT.PAYGREEN');
 
-        /** @var Logger $logger */
+        /** @var LoggerInterface $logger */
         $logger = $this->getService('logger.view');
 
         $content = $output->getContent();

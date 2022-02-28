@@ -15,7 +15,7 @@
  * @author    PayGreen <contact@paygreen.fr>
  * @copyright 2014 - 2022 Watt Is It
  * @license   https://opensource.org/licenses/mit-license.php MIT License X11
- * @version   2.5.2
+ * @version   2.6.0
  *
  */
 
@@ -28,7 +28,7 @@ use PGI\Module\PGMagento\Entities\Address;
 use PGI\Module\PGMagento\Entities\Carrier;
 use PGI\Module\PGMagento\Entities\Cart;
 use PGI\Module\PGMagento\Entities\Customer;
-use PGI\Module\PGModule\Services\Logger;
+use PGI\Module\PGLog\Interfaces\LoggerInterface;
 use PGI\Module\PGShop\Interfaces\Entities\CartEntityInterface;
 use PGI\Module\PGShop\Interfaces\Entities\OrderEntityInterface;
 use PGI\Module\PGShop\Services\Mappers\OrderStateMapper;
@@ -178,7 +178,7 @@ class Order extends AbstractEntityWrapped implements OrderEntityInterface
      */
     public function getCarrier()
     {
-         /** @var Logger $logger */
+         /** @var LoggerInterface $logger */
         $logger = $this->getService('logger');
 
         $carrierName = $this->getLocalEntity()->getShippingMethod();

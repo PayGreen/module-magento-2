@@ -15,14 +15,14 @@
  * @author    PayGreen <contact@paygreen.fr>
  * @copyright 2014 - 2022 Watt Is It
  * @license   https://opensource.org/licenses/mit-license.php MIT License X11
- * @version   2.5.2
+ * @version   2.6.0
  *
  */
 
 namespace PGI\Module\PGMagentoPayment\Services\Officers;
 
 use PGI\Module\APIPayment\Components\Replies\Transaction as TransactionReplyComponent;
-use PGI\Module\PGMagento\Components\Provisioners\PostPayment as PostPaymentProvisionerComponent;
+use PGI\Module\PGMagentoPayment\Components\Provisioners\PostPayment as PostPaymentProvisionerComponent;
 use PGI\Module\PGShop\Interfaces\Officers\PostPaymentOfficerInterface;
 use PGI\Module\PGShop\Interfaces\Provisioners\PostPaymentProvisionerInterface;
 use PGI\Module\PGShop\Services\Managers\OrderManager;

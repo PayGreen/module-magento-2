@@ -15,7 +15,7 @@
  * @author    PayGreen <contact@paygreen.fr>
  * @copyright 2014 - 2022 Watt Is It
  * @license   https://opensource.org/licenses/mit-license.php MIT License X11
- * @version   2.5.2
+ * @version   2.6.0
  *
  */
 
@@ -26,7 +26,7 @@ use PGI\Module\APIPayment\Services\Facades\ApiFacade;
 use PGI\Module\PGFramework\Foundations\AbstractProcessor;
 use PGI\Module\PGModule\Interfaces\ModuleFacadeInterface;
 use PGI\Module\PGModule\Services\Handlers\BehaviorHandler;
-use PGI\Module\PGModule\Services\Logger;
+use PGI\Module\PGLog\Interfaces\LoggerInterface;
 use PGI\Module\PGPayment\Components\Tasks\PaymentValidation as PaymentValidationTaskComponent;
 use PGI\Module\PGPayment\Components\Tasks\TransactionManagement as TransactionManagementTaskComponent;
 use PGI\Module\PGPayment\Interfaces\Entities\ProcessingEntityInterface;
@@ -79,7 +79,7 @@ class PaymentValidationProcessor extends AbstractProcessor
 
     protected function verifyPIDValidityStep(PaymentValidationTaskComponent $task)
     {
-        /** @var Logger $logger */
+        /** @var LoggerInterface $logger */
         $logger = $this->getService('logger');
 
         if (!$task->getPid()) {
@@ -90,7 +90,7 @@ class PaymentValidationProcessor extends AbstractProcessor
 
     protected function verifyModuleActivationStep(PaymentValidationTaskComponent $task)
     {
-        /** @var Logger $logger */
+        /** @var LoggerInterface $logger */
         $logger = $this->getService('logger');
 
         /** @var ModuleFacadeInterface $moduleFacade */
@@ -108,7 +108,7 @@ class PaymentValidationProcessor extends AbstractProcessor
      */
     protected function putLockStep(PaymentValidationTaskComponent $task)
     {
-        /** @var Logger $logger */
+        /** @var LoggerInterface $logger */
         $logger = $this->getService('logger');
 
         /** @var LockManager $lockManager */
@@ -129,7 +129,7 @@ class PaymentValidationProcessor extends AbstractProcessor
 
     protected function paygreenCallStep(PaymentValidationTaskComponent $task)
     {
-        /** @var Logger $logger */
+        /** @var LoggerInterface $logger */
         $logger = $this->getService('logger');
 
         /** @var ApiFacade $apiFacade */
@@ -166,7 +166,7 @@ class PaymentValidationProcessor extends AbstractProcessor
 
     protected function manageAbortedTransactionStep(PaymentValidationTaskComponent $task)
     {
-        /** @var Logger $logger */
+        /** @var LoggerInterface $logger */
         $logger = $this->getService('logger');
 
         if ($task->getTransaction()->getResult()->getStatus() === PaygreenFacade::STATUS_PENDING) {
@@ -177,7 +177,7 @@ class PaymentValidationProcessor extends AbstractProcessor
 
     protected function loadTransactionProcessorCacheStep(PaymentValidationTaskComponent $task)
     {
-        /** @var Logger $logger */
+        /** @var LoggerInterface $logger */
         $logger = $this->getService('logger');
 
         try {
@@ -201,7 +201,7 @@ class PaymentValidationProcessor extends AbstractProcessor
 
     protected function buildProvisionerStep(PaymentValidationTaskComponent $task)
     {
-        /** @var Logger $logger */
+        /** @var LoggerInterface $logger */
         $logger = $this->getService('logger');
 
         try {

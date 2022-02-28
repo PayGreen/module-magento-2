@@ -15,7 +15,7 @@
  * @author    PayGreen <contact@paygreen.fr>
  * @copyright 2014 - 2022 Watt Is It
  * @license   https://opensource.org/licenses/mit-license.php MIT License X11
- * @version   2.5.2
+ * @version   2.6.0
  *
  */
 
@@ -24,7 +24,7 @@ namespace PGI\Module\PGIntl\Services\Managers;
 use PGI\Module\PGDatabase\Foundations\AbstractManager;
 use PGI\Module\PGIntl\Interfaces\Entities\TranslationEntityInterface;
 use PGI\Module\PGIntl\Interfaces\Repositories\TranslationRepositoryInterface;
-use PGI\Module\PGModule\Services\Logger;
+use PGI\Module\PGLog\Interfaces\LoggerInterface;
 use PGI\Module\PGShop\Interfaces\Entities\ShopEntityInterface;
 use Exception;
 
@@ -112,7 +112,7 @@ class TranslationManager extends AbstractManager
 
     public function saveByCode($code, array $texts, ShopEntityInterface $shop = null, $fieldFormat = false)
     {
-        /** @var Logger $logger */
+        /** @var LoggerInterface $logger */
         $logger = $this->getService('logger');
 
         $translations = $this->getRepository()->findByCode($code, $shop);
@@ -161,7 +161,7 @@ class TranslationManager extends AbstractManager
 
     public function deleteByCode($code)
     {
-        /** @var Logger $logger */
+        /** @var LoggerInterface $logger */
         $logger = $this->getService('logger');
 
         $translations = $this->getRepository()->findByCode($code);

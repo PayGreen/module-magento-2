@@ -15,7 +15,7 @@
  * @author    PayGreen <contact@paygreen.fr>
  * @copyright 2014 - 2022 Watt Is It
  * @license   https://opensource.org/licenses/mit-license.php MIT License X11
- * @version   2.5.2
+ * @version   2.6.0
  *
  */
 
@@ -29,7 +29,7 @@ use PGI\Module\PGClient\Services\Requesters\FopenRequester;
 use PGI\Module\PGClient\Services\Sender;
 use PGI\Module\PGFramework\Interfaces\Factories\ApiFactoryInterface;
 use PGI\Module\PGModule\Interfaces\ApplicationFacadeInterface;
-use PGI\Module\PGModule\Services\Logger;
+use PGI\Module\PGLog\Interfaces\LoggerInterface;
 use PGI\Module\PGModule\Services\Settings;
 use PGI\Module\PGSystem\Components\Parameters as ParametersComponent;
 
@@ -39,7 +39,7 @@ use PGI\Module\PGSystem\Components\Parameters as ParametersComponent;
  */
 class ApiFacadeFactory implements ApiFactoryInterface
 {
-    /** @var Logger */
+    /** @var LoggerInterface */
     private $logger;
 
     /** @var Settings */
@@ -52,7 +52,7 @@ class ApiFacadeFactory implements ApiFactoryInterface
     private $parameters;
 
     public function __construct(
-        Logger $logger,
+        LoggerInterface $logger,
         Settings $settings,
         ApplicationFacadeInterface $applicationFacade,
         ParametersComponent $parameters

@@ -1,9 +1,0 @@
-{
-  "blocks": {
-    "tree_shipping_address_form": {
-      "title": "Adresse d'expédition",
-      "description": "Cette adresse sera utilisée pour calculer l'empreinte carbone d'une transaction.",
-      "action": "Sauvegarder"
-    }
-  }
-}

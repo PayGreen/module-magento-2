@@ -15,7 +15,7 @@
  * @author    PayGreen <contact@paygreen.fr>
  * @copyright 2014 - 2022 Watt Is It
  * @license   https://opensource.org/licenses/mit-license.php MIT License X11
- * @version   2.5.2
+ * @version   2.6.0
  *
  */
 
@@ -23,7 +23,7 @@ namespace PGI\Module\PGFramework\Foundations;
 
 use PGI\Module\PGFramework\Interfaces\SelectorInterface;
 use PGI\Module\PGIntl\Services\Translator;
-use PGI\Module\PGModule\Services\Logger;
+use PGI\Module\PGLog\Interfaces\LoggerInterface;
 use PGI\Module\PGSystem\Foundations\AbstractObject;
 
 /**
@@ -34,13 +34,13 @@ abstract class AbstractSelector extends AbstractObject implements SelectorInterf
 {
     private $choices = array();
 
-    /** @var Logger */
+    /** @var LoggerInterface */
     protected $logger;
 
     /** @var Translator */
     protected $translator;
 
-    public function __construct(Logger $logger)
+    public function __construct(LoggerInterface $logger)
     {
         $this->logger = $logger;
     }

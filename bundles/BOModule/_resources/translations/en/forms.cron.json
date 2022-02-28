@@ -1,0 +1,16 @@
+{
+  "forms": {
+    "cron": {
+      "fields": {
+        "cron_activation": {
+          "label": "Automatic launch of the scheduler",
+          "help": "Allows you to activate the automatic launch of the task scheduler. If not, you will have to launch it manually from this page."
+        },
+        "cron_activation_mode": {
+          "label": "Auto launch mode",
+          "help": "Configures how the scheduler can be run automatically."
+        }
+      }
+    }
+  }   
+}

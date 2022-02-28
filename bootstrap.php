@@ -15,14 +15,14 @@
  * @author    PayGreen <contact@paygreen.fr>
  * @copyright 2014 - 2022 Watt Is It
  * @license   https://opensource.org/licenses/mit-license.php MIT License X11
- * @version   2.5.2
+ * @version   2.6.0
  *
  */
 
 use Magento\Framework\App\ObjectManager as LocalObjectManager;
 use Magento\Framework\Filesystem\DirectoryList as LocalDirectoryList;
 use PGI\Module\PGModule\Services\Handlers\SetupHandler;
-use PGI\Module\PGModule\Services\Logger;
+use PGI\Module\PGLog\Interfaces\LoggerInterface;
 use PGI\Module\PGShop\Interfaces\Entities\ShopEntityInterface;
 use PGI\Module\PGShop\Services\Handlers\ShopHandler;
 use PGI\Module\PGSystem\Components\Bootstrap as BootstrapComponent;
@@ -99,7 +99,7 @@ try {
     // Logging End of bootstrap
     // #############################################################################################
 
-    /** @var Logger $logger */
+    /** @var LoggerInterface $logger */
     $logger = $bootstrap->getContainer()->get('logger');
 
     $logger->debug("Current shop detected : {$shop->getName()} #{$shop->id()}.");

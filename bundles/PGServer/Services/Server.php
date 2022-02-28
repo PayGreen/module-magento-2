@@ -15,13 +15,13 @@
  * @author    PayGreen <contact@paygreen.fr>
  * @copyright 2014 - 2022 Watt Is It
  * @license   https://opensource.org/licenses/mit-license.php MIT License X11
- * @version   2.5.2
+ * @version   2.6.0
  *
  */
 
 namespace PGI\Module\PGServer\Services;
 
-use PGI\Module\PGModule\Services\Logger;
+use PGI\Module\PGLog\Interfaces\LoggerInterface;
 use PGI\Module\PGServer\Components\Requests\Blank as BlankRequestComponent;
 use PGI\Module\PGServer\Components\Requests\Forward as ForwardRequestComponent;
 use PGI\Module\PGServer\Components\Requests\HTTP as HTTPRequestComponent;
@@ -75,7 +75,7 @@ class Server extends AbstractObject
     /** @var Derouter */
     private $derouter;
 
-    /** @var Logger */
+    /** @var LoggerInterface */
     private $logger;
 
     /** @var StageFactory */
@@ -89,7 +89,7 @@ class Server extends AbstractObject
      * @param Router $router
      * @param Derouter $derouter
      * @param Dispatcher $dispatcher
-     * @param Logger $logger
+     * @param LoggerInterface $logger
      * @param StageFactory $stageFactory
      * @param array $config
      * @throws Exception
@@ -98,7 +98,7 @@ class Server extends AbstractObject
         Router $router,
         Derouter $derouter,
         Dispatcher $dispatcher,
-        Logger $logger,
+        LoggerInterface $logger,
         StageFactory $stageFactory,
         array $config
     ) {

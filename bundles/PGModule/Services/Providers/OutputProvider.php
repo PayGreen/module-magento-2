@@ -15,7 +15,7 @@
  * @author    PayGreen <contact@paygreen.fr>
  * @copyright 2014 - 2022 Watt Is It
  * @license   https://opensource.org/licenses/mit-license.php MIT License X11
- * @version   2.5.2
+ * @version   2.6.0
  *
  */
 
@@ -24,7 +24,7 @@ namespace PGI\Module\PGModule\Services\Providers;
 use PGI\Module\PGFramework\Components\Aggregator as AggregatorComponent;
 use PGI\Module\PGFramework\Services\Handlers\RequirementHandler;
 use PGI\Module\PGModule\Components\Output as OutputComponent;
-use PGI\Module\PGModule\Services\Logger;
+use PGI\Module\PGLog\Interfaces\LoggerInterface;
 use PGI\Module\PGServer\Components\ResourceBag as ResourceBagComponent;
 use PGI\Module\PGSystem\Components\Bag as BagComponent;
 use Exception;
@@ -41,7 +41,7 @@ class OutputProvider
     /** @var RequirementHandler */
     private $requirementHandler;
 
-    /** @var Logger */
+    /** @var LoggerInterface */
     private $logger;
 
     /** @var OutputComponent[] */
@@ -55,13 +55,13 @@ class OutputProvider
      * @param AggregatorComponent $outputBuilderAggregator
      * @param RequirementHandler $requirementHandler
      * @param array $sources
-     * @param Logger $logger
+     * @param LoggerInterface $logger
      */
     public function __construct(
         AggregatorComponent $outputBuilderAggregator,
         RequirementHandler $requirementHandler,
         array $sources,
-        Logger $logger
+        LoggerInterface $logger
     ) {
         $this->outputBuilderAggregator = $outputBuilderAggregator;
         $this->requirementHandler = $requirementHandler;

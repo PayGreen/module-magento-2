@@ -15,7 +15,7 @@
  * @author    PayGreen <contact@paygreen.fr>
  * @copyright 2014 - 2022 Watt Is It
  * @license   https://opensource.org/licenses/mit-license.php MIT License X11
- * @version   2.5.2
+ * @version   2.6.0
  *
  */
 
@@ -23,7 +23,7 @@ namespace PGI\Module\PGIntl\Services\Handlers;
 
 use PGI\Module\PGIntl\Services\Handlers\LocaleHandler;
 use PGI\Module\PGIntl\Services\Managers\TranslationManager;
-use PGI\Module\PGModule\Services\Logger;
+use PGI\Module\PGLog\Interfaces\LoggerInterface;
 use PGI\Module\PGShop\Interfaces\Entities\ShopEntityInterface;
 use PGI\Module\PGSystem\Foundations\AbstractObject;
 use Exception;
@@ -42,20 +42,20 @@ class TranslationHandler extends AbstractObject
     /** @var LocaleHandler */
     private $localeHandler;
 
-    /** @var Logger */
+    /** @var LoggerInterface */
     private $logger;
 
     /**
      * TranslationHandler constructor.
      * @param TranslationManager $translationManager
      * @param LocaleHandler $localeHandler
-     * @param Logger $logger
+     * @param LoggerInterface $logger
      * @param array $config
      */
     public function __construct(
         TranslationManager $translationManager,
         LocaleHandler $localeHandler,
-        Logger $logger,
+        LoggerInterface $logger,
         array $config
     ) {
         $this->translationManager = $translationManager;

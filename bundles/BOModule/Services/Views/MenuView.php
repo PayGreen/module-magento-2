@@ -15,7 +15,7 @@
  * @author    PayGreen <contact@paygreen.fr>
  * @copyright 2014 - 2022 Watt Is It
  * @license   https://opensource.org/licenses/mit-license.php MIT License X11
- * @version   2.5.2
+ * @version   2.6.0
  *
  */
 
@@ -73,7 +73,8 @@ class MenuView extends View
         }
 
         $data['entries'] = $this->menuHandler->getEntries();
-        $data['logo'] = $this->parameters['logo'];
+        $data['logo'] = $this->parameters['logo.path'];
+        $data['template'] = $this->parameters['logo.template'];
 
         if ($this->menuHandler->isShopSelectorActivated() && $this->shopHandler->isMultiShopActivated()) {
             $data['shops'] = $this->shopManager->getAll();

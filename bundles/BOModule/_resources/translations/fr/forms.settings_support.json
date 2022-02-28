@@ -4,7 +4,7 @@
       "fields": {
         "detailed_logs": {
           "label": "Activer les logs détaillés",
-          "help": "Les logs détaillés peuvent engendrer une importante occupation du disque. Ce réglage est à modifier avec l'accord du support PayGreen."
+          "help": "Les logs détaillés engendrent une importante occupation du disque. N'activez les logs détaillés qu'en cas de problème avec votre module et sur demande de notre support."
         },
         "behavior_iss": {
           "label": "Activer l'accès distant au support PayGreen",

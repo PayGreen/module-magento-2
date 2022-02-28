@@ -15,7 +15,7 @@
  * @author    PayGreen <contact@paygreen.fr>
  * @copyright 2014 - 2022 Watt Is It
  * @license   https://opensource.org/licenses/mit-license.php MIT License X11
- * @version   2.5.2
+ * @version   2.6.0
  *
  */
 
@@ -59,4 +59,9 @@ interface ProductEntityInterface extends EntityWrappedInterface
      * @return bool
      */
     public function isVirtual();
+
+    /**
+     * @return float
+     */
+    public function getPrice();
 }

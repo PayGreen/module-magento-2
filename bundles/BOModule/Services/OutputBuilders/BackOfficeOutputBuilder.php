@@ -15,7 +15,7 @@
  * @author    PayGreen <contact@paygreen.fr>
  * @copyright 2014 - 2022 Watt Is It
  * @license   https://opensource.org/licenses/mit-license.php MIT License X11
- * @version   2.5.2
+ * @version   2.6.0
  *
  */
 
@@ -23,10 +23,13 @@ namespace PGI\Module\BOModule\Services\OutputBuilders;
 
 use PGI\Module\BOModule\Services\Handlers\MenuHandler;
 use PGI\Module\PGFramework\Services\Handlers\OutputHandler;
+use PGI\Module\PGLog\Interfaces\LoggerInterface;
 use PGI\Module\PGModule\Foundations\AbstractOutputBuilder;
+use PGI\Module\PGModule\Services\Handlers\StaticFileHandler;
 use PGI\Module\PGServer\Components\Resources\ScriptFile as ScriptFileResourceComponent;
 use PGI\Module\PGServer\Components\Resources\StyleFile as StyleFileResourceComponent;
 use PGI\Module\PGServer\Services\Server;
+use PGI\Module\PGSystem\Components\Parameters as ParametersComponent;
 
 /**
  * Class BackOfficeOutputBuilder
@@ -40,18 +43,33 @@ class BackOfficeOutputBuilder extends AbstractOutputBuilder
     /** @var OutputHandler */
     private $outputhandler;
 
+    /** @var LoggerInterface */
+    private $logger;
+
     /** @var MenuHandler $menuHandler */
     private $menuHandler;
+
+    /** @var StaticFileHandler */
+    private $staticFileHandler;
+
+    /** @var ParametersComponent */
+    private $parameters;
 
     public function __construct(
         Server $server,
         OutputHandler $outputhandler,
-        MenuHandler $menuHandler
+        MenuHandler $menuHandler,
+        LoggerInterface $logger,
+        StaticFileHandler $staticFileHandler,
+        ParametersComponent $parameters
     ) {
         parent::__construct();
         $this->server = $server;
         $this->outputhandler = $outputhandler;
         $this->menuHandler = $menuHandler;
+        $this->logger = $logger;
+        $this->staticFileHandler = $staticFileHandler;
+        $this->parameters = $parameters;
     }
 
     /**
@@ -62,8 +80,17 @@ class BackOfficeOutputBuilder extends AbstractOutputBuilder
         $this->server->getRequestBuilder()->setConfig('default_action', $this->menuHandler->getDefaultAction());
         $this->server->run();
 
-        $this->outputhandler->addResource(new ScriptFileResourceComponent('/js/backoffice.js'));
+        $backofficeJS = new ScriptFileResourceComponent('/js/backoffice.js');
+
+        $backofficeJSUrl = $this->staticFileHandler->getUrl($backofficeJS->getPath());
+
+        $content = $this->getViewHandler()->renderTemplate($this->parameters['data.backoffice.template'],array(
+            "backoffice_url" => $backofficeJSUrl
+        ));
+        $this->outputhandler->addContent($content);
+
         $this->outputhandler->addResource(new StyleFileResourceComponent('/css/backoffice.css'));
+
 
         return $this->outputhandler;
     }

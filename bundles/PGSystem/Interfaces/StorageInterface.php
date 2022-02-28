@@ -15,19 +15,20 @@
  * @author    PayGreen <contact@paygreen.fr>
  * @copyright 2014 - 2022 Watt Is It
  * @license   https://opensource.org/licenses/mit-license.php MIT License X11
- * @version   2.5.2
+ * @version   2.6.0
  *
  */
 
 namespace PGI\Module\PGSystem\Interfaces;
 
 use ArrayAccess;
+use Iterator;
 
 /**
  * Interface StorageInterface
  * @package PGSystem\Interfaces
  */
-interface StorageInterface extends ArrayAccess
+interface StorageInterface extends ArrayAccess, Iterator
 {
     /**
      * @return mixed

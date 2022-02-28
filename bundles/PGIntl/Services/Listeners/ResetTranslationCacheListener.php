@@ -15,7 +15,7 @@
  * @author    PayGreen <contact@paygreen.fr>
  * @copyright 2014 - 2022 Watt Is It
  * @license   https://opensource.org/licenses/mit-license.php MIT License X11
- * @version   2.5.2
+ * @version   2.6.0
  *
  */
 
@@ -23,7 +23,7 @@ namespace PGI\Module\PGIntl\Services\Listeners;
 
 use PGI\Module\PGIntl\Services\Handlers\CacheTranslationHandler;
 use PGI\Module\PGModule\Components\Events\Module as ModuleEventComponent;
-use PGI\Module\PGModule\Services\Logger;
+use PGI\Module\PGLog\Interfaces\LoggerInterface;
 use Exception;
 
 /**
@@ -35,14 +35,14 @@ class ResetTranslationCacheListener
     /** @var CacheTranslationHandler */
     private $cacheHandler;
 
-    /** @var Logger */
+    /** @var LoggerInterface */
     private $logger;
 
     private $bin;
 
     public function __construct(
         CacheTranslationHandler $cacheHandler,
-        Logger $logger
+        LoggerInterface $logger
     ) {
         $this->cacheHandler = $cacheHandler;
         $this->logger = $logger;

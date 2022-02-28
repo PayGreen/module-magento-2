@@ -14,7 +14,7 @@
  * @author    PayGreen <contact@paygreen.fr>
  * @copyright 2014 - 2022 Watt Is It
  * @license   https://opensource.org/licenses/mit-license.php MIT License X11
- * @version   2.5.2
+ * @version   2.6.0
  *
  */
 .block_paygreen_infos{padding:15px 0;display:flex;flex-direction:column;align-items:center}.block_paygreen_infos>div{display:flex}.block_paygreen_infos>div>img{max-height:15px;margin-top:3px;margin-right:5px}.block_paygreen_infos>div>span{font-style:italic}.block_paygreen_infos>div>span.white{color:#fff}.block_paygreen_infos>div>span.green{color:#25b373}.block_paygreen_infos>div>span.black{color:#000}.block_paygreen_infos>a>img{display:block;max-width:150px;height:auto;max-height:50px;width:100%}

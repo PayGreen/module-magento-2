@@ -15,7 +15,7 @@
  * @author    PayGreen <contact@paygreen.fr>
  * @copyright 2014 - 2022 Watt Is It
  * @license   https://opensource.org/licenses/mit-license.php MIT License X11
- * @version   2.5.2
+ * @version   2.6.0
  *
  */
 
@@ -23,7 +23,7 @@ namespace PGI\Module\PGPayment\Services\Handlers;
 
 use PGI\Module\PGFramework\Services\Handlers\PictureHandler;
 use PGI\Module\PGModule\Services\Handlers\StaticFileHandler;
-use PGI\Module\PGModule\Services\Logger;
+use PGI\Module\PGLog\Interfaces\LoggerInterface;
 use PGI\Module\PGPayment\Interfaces\Entities\ButtonEntityInterface;
 
 /**
@@ -32,7 +32,7 @@ use PGI\Module\PGPayment\Interfaces\Entities\ButtonEntityInterface;
  */
 class PaymentButtonHandler
 {
-    /** @var Logger */
+    /** @var LoggerInterface */
     private $logger;
 
     /** @var PictureHandler */
@@ -45,7 +45,7 @@ class PaymentButtonHandler
     private $paymentDefaultPictures;
 
     public function __construct(
-        Logger $logger,
+        LoggerInterface $logger,
         PictureHandler $pictureHandler,
         StaticFileHandler $staticFileHandler,
         array $paymentDefaultPictures = array()

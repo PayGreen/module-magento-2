@@ -1,9 +1,0 @@
-{
-  "blocks": {
-    "charity_account_logout": {
-      "title": "Déconnexion",
-      "description": "Attention&nbsp;: si vous vous déconnectez, vous ne serez plus en mesure de proposer l'arrondi en ligne à vos clients via le module PayGreen CharityKit.",
-      "action": "Me déconnecter"
-    }
-  }
-}

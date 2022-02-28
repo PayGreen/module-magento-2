@@ -15,7 +15,7 @@
  * @author    PayGreen <contact@paygreen.fr>
  * @copyright 2014 - 2022 Watt Is It
  * @license   https://opensource.org/licenses/mit-license.php MIT License X11
- * @version   2.5.2
+ * @version   2.6.0
  *
  */
 
@@ -23,7 +23,7 @@ namespace Paygreen\Payment\Model;
 
 use Magento\Payment\Model\Method\AbstractMethod as LocalAbstractMethod;
 use Magento\Payment\Model\InfoInterface as LocalInfoInterface;
-use PGI\Module\PGMagento\Components\Provisioners\Checkout as CheckoutProvisionerComponent;
+use PGI\Module\PGMagentoPayment\Components\Provisioners\Checkout as CheckoutProvisionerComponent;
 use PGI\Module\PGMagento\Entities\Order;
 use PGI\Module\PGModule\Interfaces\ModuleFacadeInterface;
 use PGI\Module\PGModule\Services\Broadcaster;

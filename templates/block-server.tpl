@@ -14,7 +14,7 @@
  * @author    PayGreen <contact@paygreen.fr>
  * @copyright 2014 - 2022 Watt Is It
  * @license   https://opensource.org/licenses/mit-license.php MIT License X11
- * @version   2.5.2
+ * @version   2.6.0
  *
  *}
 {if $servers != null}
@@ -31,7 +31,7 @@
             </thead>
             {foreach from=$servers key=key item=item}
                 <tr>
-                    <td>{$key|pgtrans}</td>
+                    <td>{$key}</td>
                     <td>{$item|pgtrans}</td>
                 </tr>
             {/foreach}

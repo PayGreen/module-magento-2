@@ -15,7 +15,7 @@
  * @author    PayGreen <contact@paygreen.fr>
  * @copyright 2014 - 2022 Watt Is It
  * @license   https://opensource.org/licenses/mit-license.php MIT License X11
- * @version   2.5.2
+ * @version   2.6.0
  *
  */
 
@@ -24,7 +24,7 @@ namespace PGI\Module\PGPayment\Foundations\Processors;
 use PGI\Module\PGFramework\Foundations\AbstractProcessor;
 use PGI\Module\PGModule\Services\Broadcaster;
 use PGI\Module\PGModule\Services\Handlers\BehaviorHandler;
-use PGI\Module\PGModule\Services\Logger;
+use PGI\Module\PGLog\Interfaces\LoggerInterface;
 use PGI\Module\PGPayment\Components\Tasks\TransactionManagement as TransactionManagementTaskComponent;
 use PGI\Module\PGPayment\Interfaces\Entities\TransactionEntityInterface;
 use PGI\Module\PGPayment\Services\Managers\TransactionManager;
@@ -92,7 +92,7 @@ class AbstractTransactionManagementProcessor extends AbstractProcessor
      */
     protected function insertTransactionStep(TransactionManagementTaskComponent $task)
     {
-        /** @var Logger $logger */
+        /** @var LoggerInterface $logger */
         $logger = $this->getService('logger');
 
         /** @var TransactionManager $transactionManager */
@@ -126,7 +126,7 @@ class AbstractTransactionManagementProcessor extends AbstractProcessor
      */
     protected function checkAmountValidityStep(TransactionManagementTaskComponent $task)
     {
-        /** @var Logger $logger */
+        /** @var LoggerInterface $logger */
         $logger = $this->getService('logger');
 
         if ($task->getTransaction()->getUserAmount() !== $task->getProvisioner()->getUserAmount()) {
@@ -186,7 +186,7 @@ class AbstractTransactionManagementProcessor extends AbstractProcessor
         /** @var OrderStateManager $orderStateManager */
         $orderStateManager = $this->getService('manager.order_state');
 
-        /** @var Logger $logger */
+        /** @var LoggerInterface $logger */
         $logger = $this->getService('logger');
 
         $order = null;
@@ -216,7 +216,7 @@ class AbstractTransactionManagementProcessor extends AbstractProcessor
         /** @var OrderManager $orderManager */
         $orderManager = $this->getService('manager.order');
 
-        /** @var Logger $logger */
+        /** @var LoggerInterface $logger */
         $logger = $this->getService('logger');
 
         try {

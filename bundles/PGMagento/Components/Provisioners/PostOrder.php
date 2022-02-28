@@ -15,14 +15,14 @@
  * @author    PayGreen <contact@paygreen.fr>
  * @copyright 2014 - 2022 Watt Is It
  * @license   https://opensource.org/licenses/mit-license.php MIT License X11
- * @version   2.5.2
+ * @version   2.6.0
  *
  */
 
 namespace PGI\Module\PGMagento\Components\Provisioners;
 
 use PGI\Module\PGMagento\Entities\Carrier;
-use PGI\Module\PGModule\Services\Logger;
+use PGI\Module\PGLog\Interfaces\LoggerInterface;
 use PGI\Module\PGShop\Interfaces\Entities\CarrierEntityInterface;
 use PGI\Module\PGShop\Interfaces\Entities\CustomerEntityInterface;
 use PGI\Module\PGShop\Interfaces\Entities\OrderEntityInterface;
@@ -73,7 +73,7 @@ class PostOrder extends AbstractObject implements PostOrderProvisionerInterface
 
     protected function loadCarrier()
     {
-        /** @var Logger $logger */
+        /** @var LoggerInterface $logger */
         $logger = $this->getService('logger');
 
         $carrierName = $this->order->getLocalEntity()->getShippingMethod();

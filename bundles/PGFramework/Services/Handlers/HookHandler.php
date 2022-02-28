@@ -15,13 +15,13 @@
  * @author    PayGreen <contact@paygreen.fr>
  * @copyright 2014 - 2022 Watt Is It
  * @license   https://opensource.org/licenses/mit-license.php MIT License X11
- * @version   2.5.2
+ * @version   2.6.0
  *
  */
 
 namespace PGI\Module\PGFramework\Services\Handlers;
 
-use PGI\Module\PGModule\Services\Logger;
+use PGI\Module\PGLog\Interfaces\LoggerInterface;
 use PGI\Module\PGSystem\Services\Container;
 use PGI\Module\PGFramework\Components\Aggregator as AggregatorComponent;
 use Exception;
@@ -35,12 +35,12 @@ class HookHandler
     /** @var AggregatorComponent */
     private $hookAggregator;
 
-    /** @var Logger */
+    /** @var LoggerInterface */
     private $logger;
 
     private $hooks = array();
 
-    public function __construct(AggregatorComponent $hookAggregator, Logger $logger)
+    public function __construct(AggregatorComponent $hookAggregator, LoggerInterface $logger)
     {
         $this->hookAggregator = $hookAggregator;
         $this->logger = $logger;

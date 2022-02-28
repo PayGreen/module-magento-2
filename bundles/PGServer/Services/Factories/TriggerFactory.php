@@ -15,13 +15,13 @@
  * @author    PayGreen <contact@paygreen.fr>
  * @copyright 2014 - 2022 Watt Is It
  * @license   https://opensource.org/licenses/mit-license.php MIT License X11
- * @version   2.5.2
+ * @version   2.6.0
  *
  */
 
 namespace PGI\Module\PGServer\Services\Factories;
 
-use PGI\Module\PGModule\Services\Logger;
+use PGI\Module\PGLog\Interfaces\LoggerInterface;
 use PGI\Module\PGServer\Components\Trigger as TriggerComponent;
 use PGI\Module\PGServer\Foundations\AbstractAcceptor;
 use PGI\Module\PGSystem\Foundations\AbstractObject;
@@ -40,10 +40,10 @@ class TriggerFactory extends AbstractObject
     /** @var AggregatorComponent */
     private $acceptorAggregator;
 
-    /** @var Logger */
+    /** @var LoggerInterface */
     private $logger;
 
-    public function __construct(AggregatorComponent $acceptorAggregator, Logger $logger)
+    public function __construct(AggregatorComponent $acceptorAggregator, LoggerInterface $logger)
     {
         $this->acceptorAggregator = $acceptorAggregator;
         $this->logger = $logger;

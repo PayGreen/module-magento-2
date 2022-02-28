@@ -15,14 +15,14 @@
  * @author    PayGreen <contact@paygreen.fr>
  * @copyright 2014 - 2022 Watt Is It
  * @license   https://opensource.org/licenses/mit-license.php MIT License X11
- * @version   2.5.2
+ * @version   2.6.0
  *
  */
 
 namespace PGI\Module\PGPayment\Services\Listeners;
 
 use PGI\Module\PGModule\Services\Handlers\BehaviorHandler;
-use PGI\Module\PGModule\Services\Logger;
+use PGI\Module\PGLog\Interfaces\LoggerInterface;
 use PGI\Module\PGPayment\Components\Events\Refund as RefundEventComponent;
 use PGI\Module\PGPayment\Exceptions\Unrefundable as UnrefundableException;
 use PGI\Module\PGPayment\Services\Handlers\RefundHandler;
@@ -40,13 +40,13 @@ class RefundListener
     /** @var BehaviorHandler */
     private $behaviorHandler;
 
-    /** @var Logger */
+    /** @var LoggerInterface */
     private $logger;
 
     public function __construct(
         RefundHandler $refundHandler,
         BehaviorHandler $behaviorHandler,
-        Logger $logger
+        LoggerInterface $logger
     ) {
         $this->refundHandler = $refundHandler;
         $this->behaviorHandler = $behaviorHandler;

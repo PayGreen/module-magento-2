@@ -14,16 +14,16 @@
  * @author    PayGreen <contact@paygreen.fr>
  * @copyright 2014 - 2022 Watt Is It
  * @license   https://opensource.org/licenses/mit-license.php MIT License X11
- * @version   2.5.2
+ * @version   2.6.0
  *
  */
 define(
     [
         'Magento_Checkout/js/view/payment/default',
         'ko',
-        'Paygreen_Payment/js/action/redirect-after-checkout'
+        'jquery'
     ],
-    function (Component, ko, redirectAfterCheckout) {
+    function (Component, ko, $) {
         'use strict';
 
         let title = window.checkoutConfig.paygreen.title;
@@ -40,7 +40,7 @@ define(
             },
 
             afterPlaceOrder: function () {
-                redirectAfterCheckout(selectedButton());
+                this.redirectAfterCheckout(selectedButton());
                 return false;
             },
 
@@ -95,9 +95,9 @@ define(
                     selectedButton(event.id);
 
                     obj.currentTarget
-                    .closest('#paygreen-payment-list-container')
-                    .querySelector('.radio')
-                    .click();
+                        .closest('#paygreen-payment-list-container')
+                        .querySelector('.radio')
+                        .click();
                 }
 
                 return true;
@@ -105,6 +105,14 @@ define(
 
             isButtonSelected: function() {
                 return (selectedButton() !== null);
+            },
+
+            redirectAfterCheckout: function (id_button) {
+                this.getButtons().forEach(function(button) {
+                    if (button.id === id_button) {
+                        $.mage.redirect(button.url);
+                    }
+                });
             }
         });
     }

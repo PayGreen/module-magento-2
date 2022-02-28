@@ -15,14 +15,14 @@
  * @author    PayGreen <contact@paygreen.fr>
  * @copyright 2014 - 2022 Watt Is It
  * @license   https://opensource.org/licenses/mit-license.php MIT License X11
- * @version   2.5.2
+ * @version   2.6.0
  *
  */
 
 namespace PGI\Module\PGServer\Services\Builders;
 
 use PGI\Module\PGFramework\Interfaces\SuperglobalInterface;
-use PGI\Module\PGModule\Services\Logger;
+use PGI\Module\PGLog\Interfaces\LoggerInterface;
 use PGI\Module\PGServer\Components\Requests\Blank as BlankRequestComponent;
 use PGI\Module\PGServer\Components\Requests\HTTP as HTTPRequestComponent;
 use PGI\Module\PGServer\Exceptions\HTTPBadRequest as HTTPBadRequestException;
@@ -95,7 +95,7 @@ class RequestBuilder extends AbstractObject
         // Thrashing unused arguments
         $this->bin = $context;
 
-        /** @var Logger $logger */
+        /** @var LoggerInterface $logger */
         $logger = $this->getService('logger');
 
         try {

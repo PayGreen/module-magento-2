@@ -1,9 +1,0 @@
-{
-  "blocks": {
-    "tree_account_logout": {
-      "title": "Déconnexion",
-      "description": "Attention&nbsp;: si vous vous déconnectez, vous ne serez plus en mesure de compenser le coût carbone d'une transaction via le module PayGreen ClimateKit.",
-      "action": "Me déconnecter"
-    }
-  }
-}

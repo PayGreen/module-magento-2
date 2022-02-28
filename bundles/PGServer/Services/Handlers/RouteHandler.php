@@ -15,7 +15,7 @@
  * @author    PayGreen <contact@paygreen.fr>
  * @copyright 2014 - 2022 Watt Is It
  * @license   https://opensource.org/licenses/mit-license.php MIT License X11
- * @version   2.5.2
+ * @version   2.6.0
  *
  */
 
@@ -73,12 +73,10 @@ class RouteHandler
     {
         $config = $this->getRouteConfiguration($routeName);
 
-        $requirementConfiguration = $config["requirements.$requirementName"];
-
-        if ($requirementConfiguration === null) {
+        if (($config["requirements"] === null) || (!in_array($requirementName, $config["requirements"]))) {
             return true;
         } else {
-            return $this->requirementHandler->isFulfilled($requirementName, $requirementConfiguration);
+            return $this->requirementHandler->isFulfilled($requirementName);
         }
     }
 

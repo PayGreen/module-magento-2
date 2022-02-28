@@ -15,7 +15,7 @@
  * @author    PayGreen <contact@paygreen.fr>
  * @copyright 2014 - 2022 Watt Is It
  * @license   https://opensource.org/licenses/mit-license.php MIT License X11
- * @version   2.5.2
+ * @version   2.6.0
  *
  */
 
@@ -24,7 +24,7 @@ namespace PGI\Module\FOPayment\Services\OutputBuilders;
 use PGI\Module\PGIntl\Services\Handlers\TranslationHandler;
 use PGI\Module\PGModule\Components\Output as OutputComponent;
 use PGI\Module\PGModule\Foundations\AbstractOutputBuilder;
-use PGI\Module\PGModule\Services\Logger;
+use PGI\Module\PGLog\Interfaces\LoggerInterface;
 use PGI\Module\PGServer\Services\Handlers\LinkHandler;
 use PGI\Module\PGShop\Interfaces\Entities\OrderEntityInterface;
 use PGI\Module\PGView\Services\Handlers\ViewHandler;
@@ -45,14 +45,14 @@ class SuccessPaymentMessageOutputBuilder extends AbstractOutputBuilder
     /** @var LinkHandler */
     private $linkHandler;
 
-    /** @var Logger */
+    /** @var LoggerInterface */
     private $logger;
 
     public function __construct(
         TranslationHandler $translationHandler,
         ViewHandler $viewHandler,
         LinkHandler $linkHandler,
-        Logger $logger
+        LoggerInterface $logger
     ) {
         parent::__construct();
 

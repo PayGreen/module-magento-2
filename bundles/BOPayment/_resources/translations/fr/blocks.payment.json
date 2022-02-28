@@ -6,7 +6,11 @@
       "payment_activation": {
         "title": "Activation des paiements",
         "help": "Si les paiements sont activés, vous encaissez les paiements de vos clients et vous êtes soumis à la facturation PayGreen*."
-      }
+      },
+      "text1": "Facilitez l’étape de paiement sur votre plateforme de vente en ligne.",
+      "text2": "Optimisez les ventes sur votre plateforme e-commerce.",
+      "text3": "Acceptez facilement tous les moyens de paiement. ",
+      "description" : "Si vous avez déjà créé votre espace de paiement PayGreen, connectez vous dès maintenant pour encaisser simplement les paiements en ligne."
     }
   }
 }

@@ -15,14 +15,14 @@
  * @author    PayGreen <contact@paygreen.fr>
  * @copyright 2014 - 2022 Watt Is It
  * @license   https://opensource.org/licenses/mit-license.php MIT License X11
- * @version   2.5.2
+ * @version   2.6.0
  *
  */
 
 namespace PGI\Module\PGFramework\Services\Selectors;
 
 use PGI\Module\PGFramework\Foundations\AbstractSelector;
-use PGI\Module\PGModule\Services\Logger;
+use PGI\Module\PGLog\Interfaces\LoggerInterface;
 use Exception;
 
 /**
@@ -31,7 +31,7 @@ use Exception;
  */
 class StaticArraySelector extends AbstractSelector
 {
-    public function __construct(Logger $logger, array $choices)
+    public function __construct(LoggerInterface $logger, array $choices)
     {
         parent::__construct($logger);
 

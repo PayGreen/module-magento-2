@@ -15,7 +15,7 @@
  * @author    PayGreen <contact@paygreen.fr>
  * @copyright 2014 - 2022 Watt Is It
  * @license   https://opensource.org/licenses/mit-license.php MIT License X11
- * @version   2.5.2
+ * @version   2.6.0
  *
  */
 
@@ -27,7 +27,7 @@ use Magento\Backend\App\Action\Context as LocalContext;
 use Magento\Framework\App\RequestInterface;
 use Magento\Framework\View\Result\PageFactory as LocalPageFactory;
 use PGI\Module\PGModule\Services\Handlers\SetupHandler;
-use PGI\Module\PGModule\Services\Logger;
+use PGI\Module\PGLog\Interfaces\LoggerInterface;
 use PGI\Module\PGSystem\Services\Container;
 
 class Index extends LocalAction
@@ -61,7 +61,7 @@ class Index extends LocalAction
 
         $this->resultPageFactory = $resultPageFactory;
 
-        /** @var Logger $logger */
+        /** @var LoggerInterface $logger */
         $logger = $this->getService('logger');
 
         $logger->debug("Request incoming in back office endpoint.");

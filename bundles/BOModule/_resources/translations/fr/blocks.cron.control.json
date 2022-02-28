@@ -1,0 +1,19 @@
+{
+  "blocks": {
+    "cron": {
+      "control": {
+        "title": "Contrôle du planificateur.",
+        "description": "Vous pouvez ici lancer manuellement le planificateur. Seule les tâches en attente seront éxécutées.",
+        "button": {
+          "text": "Lancer le planificateur",
+          "confirm": "Voulez-vous vraiment lancer le planificateur ?"
+        },
+        "link": {
+          "title": "URL de lancement du planificateur",
+          "description": "Vous pouvez utiliser le lien suivant pour lancer le planificateur depuis une interface externe.",
+          "warning": "Attention, pour pouvoir utiliser vous-même cette URL, vous devez sélectionner le mode de lancement automatique suivant :"
+        }
+      }
+    }
+  }
+}

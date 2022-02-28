@@ -8,7 +8,7 @@
             <block class="Paygreen\Payment\Block\DisplayBackofficeHeader" name="paygreen_payment_block_displaybackofficeheader" cacheable="false" />
         </referenceBlock>
         <referenceContainer name="content">
-            <block class="Paygreen\Payment\Block\DisplayBackofficeOutput" cacheable="false" />
+            <block class="Paygreen\Payment\Block\DisplayBackofficeOutput" name="paygreen_payment_block_displaybackoffice" cacheable="false" />
         </referenceContainer>
     </body>
 </page>

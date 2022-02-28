@@ -15,13 +15,13 @@
  * @author    PayGreen <contact@paygreen.fr>
  * @copyright 2014 - 2022 Watt Is It
  * @license   https://opensource.org/licenses/mit-license.php MIT License X11
- * @version   2.5.2
+ * @version   2.6.0
  *
  */
 
 namespace PGI\Module\PGSystem\Components\Service;
 
-use PGI\Module\PGModule\Services\Logger;
+use PGI\Module\PGLog\Interfaces\LoggerInterface;
 use PGI\Module\PGSystem\Components\Parser as ParserComponent;
 use PGI\Module\PGSystem\Components\Service\CallDelayer as CallDelayerServiceComponent;
 use PGI\Module\PGSystem\Components\Service\Library as LibraryServiceComponent;
@@ -107,7 +107,7 @@ class Builder
             return $service;
         } catch (Exception $exception) {
             if ($this->container->has('logger')) {
-                /** @var Logger $logger */
+                /** @var LoggerInterface $logger */
                 $logger = $this->container->get('logger');
 
                 $logger->emergency("Error during building the service '$name'.", $exception);

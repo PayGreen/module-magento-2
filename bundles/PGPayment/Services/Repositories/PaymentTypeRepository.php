@@ -15,7 +15,7 @@
  * @author    PayGreen <contact@paygreen.fr>
  * @copyright 2014 - 2022 Watt Is It
  * @license   https://opensource.org/licenses/mit-license.php MIT License X11
- * @version   2.5.2
+ * @version   2.6.0
  *
  */
 
@@ -24,7 +24,7 @@ namespace PGI\Module\PGPayment\Services\Repositories;
 use PGI\Module\APIPayment\Components\Response as ResponseComponent;
 use PGI\Module\PGDatabase\Foundations\AbstractRepositoryPaygreen;
 use PGI\Module\PGFramework\Services\Handlers\CacheHandler;
-use PGI\Module\PGModule\Services\Logger;
+use PGI\Module\PGLog\Interfaces\LoggerInterface;
 use PGI\Module\PGPayment\Entities\PaymentType;
 use Exception;
 
@@ -52,7 +52,7 @@ class PaymentTypeRepository extends AbstractRepositoryPaygreen
         /** @var CacheHandler $cacheHandler */
         $cacheHandler = $this->getService('handler.cache');
 
-        /** @var Logger $logger */
+        /** @var LoggerInterface $logger */
         $logger = $this->getService('logger');
 
         $rawPaymentTypes = $cacheHandler->loadEntry('payment-types');

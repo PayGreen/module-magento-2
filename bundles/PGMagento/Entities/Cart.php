@@ -15,7 +15,7 @@
  * @author    PayGreen <contact@paygreen.fr>
  * @copyright 2014 - 2022 Watt Is It
  * @license   https://opensource.org/licenses/mit-license.php MIT License X11
- * @version   2.5.2
+ * @version   2.6.0
  *
  */
 
@@ -25,7 +25,7 @@ use PGI\Module\PGMagento\Entities\Address;
 use PGI\Module\PGMagento\Entities\Carrier;
 use PGI\Module\PGMagento\Entities\CartItem;
 use PGI\Module\PGMagento\Entities\Currency;
-use PGI\Module\PGModule\Services\Logger;
+use PGI\Module\PGLog\Interfaces\LoggerInterface;
 use PGI\Module\PGShop\Foundations\Entities\AbstractCartEntity;
 use PGI\Module\PGShop\Tools\Price as PriceTool;
 
@@ -136,7 +136,7 @@ class Cart extends AbstractCartEntity
      */
     public function getCarrier()
     {
-        /** @var Logger $logger */
+        /** @var LoggerInterface $logger */
         $logger = $this->getService('logger');
 
         $carrierName = $this->getLocalEntity()->getShippingAddress()->getShippingMethod();

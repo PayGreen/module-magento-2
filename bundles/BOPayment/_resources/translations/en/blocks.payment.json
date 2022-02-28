@@ -6,7 +6,11 @@
       "payment_activation": {
         "title": "Activation of payments",
         "help": "If payments are enabled, you collect payments from your customers and are subject to PayGreen* billing."
-      }
+      },
+      "text1": "Make the payment process easier on your online sales platform.",
+      "text2": "Optimize sales on your e-commerce platform.",
+      "text3": "Easily accept all payment methods.",
+      "description" : "If you have already created your PayGreen payment area, log in now to simply collect online payments."
     }
   }
 }

@@ -15,14 +15,14 @@
  * @author    PayGreen <contact@paygreen.fr>
  * @copyright 2014 - 2022 Watt Is It
  * @license   https://opensource.org/licenses/mit-license.php MIT License X11
- * @version   2.5.2
+ * @version   2.6.0
  *
  */
 
 namespace PGI\Module\BOModule\Services\Controllers;
 
 use PGI\Module\BOModule\Foundations\Controllers\AbstractBackofficeController;
-use PGI\Module\PGModule\Services\Logger;
+use PGI\Module\PGLog\Interfaces\LoggerInterface;
 use PGI\Module\PGServer\Components\Resources\ScriptFile as ScriptFileResourceComponent;
 use PGI\Module\PGSystem\Components\Storages\PHPFile as PHPFileStorageComponent;
 use PGI\Module\PGSystem\Services\Pathfinder;
@@ -38,12 +38,12 @@ class ReleaseNoteController extends AbstractBackofficeController
     /** @var Pathfinder */
     private $pathfinder;
 
-    /** @var Logger */
+    /** @var LoggerInterface */
     private $logger;
 
     public function __construct(
         Pathfinder $pathfinder,
-        Logger $logger
+        LoggerInterface $logger
     ) {
         $this->pathfinder = $pathfinder;
         $this->logger = $logger;

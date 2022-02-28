@@ -14,18 +14,10 @@
  * @author    PayGreen <contact@paygreen.fr>
  * @copyright 2014 - 2022 Watt Is It
  * @license   https://opensource.org/licenses/mit-license.php MIT License X11
- * @version   2.5.2
+ * @version   2.6.0
  *
  *}
-<h2 class="pg__danger">
-    {'blocks.account_logout.title'|pgtrans}
-</h2>
-
-<p>
-    {'blocks.account_logout.description'|pgtrans}
-</p>
-
-<div class="pgbutton__container pg__mtop-md">
+<div class="pgbutton__container">
     <a
         href="{'backoffice.account.disconnect'|toback}"
         class="pgbutton pg__danger"
@@ -33,3 +25,7 @@
         {'blocks.account_logout.action'|pgtrans}
     </a>
 </div>
+
+<p>
+    {'blocks.account_logout.description'|pgtrans}
+</p>

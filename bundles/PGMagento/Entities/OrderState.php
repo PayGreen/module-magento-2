@@ -15,7 +15,7 @@
  * @author    PayGreen <contact@paygreen.fr>
  * @copyright 2014 - 2022 Watt Is It
  * @license   https://opensource.org/licenses/mit-license.php MIT License X11
- * @version   2.5.2
+ * @version   2.6.0
  *
  */
 
@@ -69,5 +69,13 @@ class OrderState extends AbstractEntityWrapped implements OrderStateEntityInterf
         return [
             'state' => $this->getLocalEntity()->getData('state')
         ];
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function isPaid()
+    {
+        return false;
     }
 }

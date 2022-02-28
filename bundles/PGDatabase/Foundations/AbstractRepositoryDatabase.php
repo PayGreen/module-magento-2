@@ -15,7 +15,7 @@
  * @author    PayGreen <contact@paygreen.fr>
  * @copyright 2014 - 2022 Watt Is It
  * @license   https://opensource.org/licenses/mit-license.php MIT License X11
- * @version   2.5.2
+ * @version   2.6.0
  *
  */
 
@@ -26,7 +26,7 @@ use PGI\Module\PGDatabase\Foundations\AbstractRepositoryPaygreen;
 use PGI\Module\PGDatabase\Interfaces\EntityPersistedInterface;
 use PGI\Module\PGDatabase\Interfaces\RepositoryInterface;
 use PGI\Module\PGDatabase\Services\Handlers\DatabaseHandler;
-use PGI\Module\PGModule\Services\Logger;
+use PGI\Module\PGLog\Interfaces\LoggerInterface;
 use PGI\Module\PGSystem\Components\Bag as BagComponent;
 use Exception;
 
@@ -93,7 +93,7 @@ abstract class AbstractRepositoryDatabase extends AbstractRepository implements 
      */
     protected function unserializeField($key, $value)
     {
-        /** @var Logger $logger */
+        /** @var LoggerInterface $logger */
         $logger = $this->getService('logger');
 
         $type = $this->config['fields'][$key]['type'];
@@ -212,7 +212,7 @@ abstract class AbstractRepositoryDatabase extends AbstractRepository implements 
      */
     protected function insertEntity(EntityPersistedInterface $entity)
     {
-        /** @var Logger $logger */
+        /** @var LoggerInterface $logger */
         $logger = $this->getService('logger');
 
         try {
@@ -272,7 +272,7 @@ abstract class AbstractRepositoryDatabase extends AbstractRepository implements 
      */
     protected function updateEntity(EntityPersistedInterface $entity)
     {
-        /** @var Logger $logger */
+        /** @var LoggerInterface $logger */
         $logger = $this->getService('logger');
 
         try {
@@ -329,7 +329,7 @@ abstract class AbstractRepositoryDatabase extends AbstractRepository implements 
      */
     protected function deleteEntity(EntityPersistedInterface $entity)
     {
-        /** @var Logger $logger */
+        /** @var LoggerInterface $logger */
         $logger = $this->getService('logger');
 
         try {

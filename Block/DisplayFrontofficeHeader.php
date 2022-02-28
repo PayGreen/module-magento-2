@@ -15,7 +15,7 @@
  * @author    PayGreen <contact@paygreen.fr>
  * @copyright 2014 - 2022 Watt Is It
  * @license   https://opensource.org/licenses/mit-license.php MIT License X11
- * @version   2.5.2
+ * @version   2.6.0
  *
  */
 
@@ -26,7 +26,7 @@ use Magento\Framework\View\Element\Template as LocalTemplate;
 use Magento\Framework\View\Element\Template\Context as LocalContext;
 use Magento\Theme\Block\Html\Header\Logo as Logo;
 use PGI\Module\PGMagento\Services\Compilers\StaticResourceCompiler;
-use PGI\Module\PGModule\Services\Logger;
+use PGI\Module\PGLog\Interfaces\LoggerInterface;
 use PGI\Module\PGModule\Services\Providers\OutputProvider;
 use PGI\Module\PGSystem\Services\Container;
 
@@ -48,7 +48,7 @@ class DisplayFrontofficeHeader extends LocalTemplate
 
         require_once PAYGREEN_BOOTSTRAP_SRC;
 
-        /** @var Logger $logger */
+        /** @var LoggerInterface $logger */
         $logger = $this->getService('logger.view');
 
         $logger->debug('Successfully init frontoffice header block.');
@@ -78,7 +78,7 @@ class DisplayFrontofficeHeader extends LocalTemplate
         if ($checkModule === "checkout_index_index"){
             $logger->debug("Checkout page detected. Loading associated ressources.");
             $channels[] = 'FRONT.FUNNEL.CHECKOUT';
-        } elseif ($checkModule === "pgfront_frontoffice_index"){
+        } elseif ($checkModule === "paygreen_frontoffice_index"){
             $logger->debug("PGFrontPage page detected. Loading associated ressources.");
             $channels[] = 'FRONT.PAYGREEN';
         } elseif ($this->headerLogo->isHomePage()) {

@@ -15,32 +15,16 @@
  * @author    PayGreen <contact@paygreen.fr>
  * @copyright 2014 - 2022 Watt Is It
  * @license   https://opensource.org/licenses/mit-license.php MIT License X11
- * @version   2.5.2
+ * @version   2.6.0
  *
  */
 
 namespace PGI\Module\PGMagento\Services\Linkers;
 
-use Magento\Framework\App\ObjectManager as LocalObjectManager;
-use Magento\Store\Model\StoreManagerInterface as LocalStoreManagerInterface;
-use PGI\Module\PGServer\Interfaces\LinkerInterface;
-
-class HomeLinker implements LinkerInterface
+class HomeLinker extends MagentoLinker
 {
-    /** @var LocalStoreManagerInterface */
-    private $storeManager;
-
-    /**
-     * HomeLinker constructor.
-     * @param LocalObjectManager $objectManager
-     */
-    public function __construct(LocalObjectManager $objectManager)
-    {
-        $this->storeManager = $objectManager->get('\Magento\Store\Model\StoreManagerInterface');
-    }
-
     public function buildUrl(array $data = array())
     {
-        return $this->storeManager->getStore()->getBaseUrl();
+        return $this->getLocalUrlBuilder()->getBaseUrl();
     }
 }

@@ -15,7 +15,7 @@
  * @author    PayGreen <contact@paygreen.fr>
  * @copyright 2014 - 2022 Watt Is It
  * @license   https://opensource.org/licenses/mit-license.php MIT License X11
- * @version   2.5.2
+ * @version   2.6.0
  *
  */
 
@@ -28,7 +28,7 @@ use PGI\Module\PGForm\Interfaces\FormatterInterface;
 use PGI\Module\PGForm\Services\Builders\ValidatorBuilder;
 use PGI\Module\PGFramework\Components\Aggregator as AggregatorComponent;
 use PGI\Module\PGModule\Services\Handlers\BehaviorHandler;
-use PGI\Module\PGModule\Services\Logger;
+use PGI\Module\PGLog\Interfaces\LoggerInterface;
 use PGI\Module\PGSystem\Services\Container;
 use PGI\Module\PGSystem\Tools\Collection as CollectionTool;
 use PGI\Module\PGFramework\Services\Handlers\RequirementHandler;
@@ -57,7 +57,7 @@ class FieldBuilder
     /** @var AggregatorComponent */
     private $viewAggregator;
 
-    /** @var Logger */
+    /** @var LoggerInterface */
     private $logger;
 
     /** @var RequirementHandler */
@@ -71,7 +71,7 @@ class FieldBuilder
         AggregatorComponent $formatterAggregator,
         BehaviorHandler     $behaviorHandler,
         AggregatorComponent $viewAggregator,
-        Logger              $logger,
+        LoggerInterface              $logger,
         array               $config,
         RequirementHandler $requirementHandler
     ) {

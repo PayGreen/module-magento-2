@@ -1,0 +1,11 @@
+{
+  "actions": {
+    "cron": {
+      "run": {
+        "result": {
+          "success": "The scheduler has been executed successfully."
+        }
+      }
+    }
+  }
+}

@@ -15,7 +15,7 @@
  * @author    PayGreen <contact@paygreen.fr>
  * @copyright 2014 - 2022 Watt Is It
  * @license   https://opensource.org/licenses/mit-license.php MIT License X11
- * @version   2.5.2
+ * @version   2.6.0
  *
  */
 
@@ -23,7 +23,7 @@ namespace PGI\Module\PGPayment\Services\Handlers;
 
 use PGI\Module\PGFramework\Services\Handlers\RequirementHandler;
 use PGI\Module\PGModule\Interfaces\ModuleFacadeInterface;
-use PGI\Module\PGModule\Services\Logger;
+use PGI\Module\PGLog\Interfaces\LoggerInterface;
 use PGI\Module\PGPayment\Services\Facades\PaygreenFacade;
 use PGI\Module\PGPayment\Services\Managers\ButtonManager;
 use PGI\Module\PGShop\Interfaces\Provisioners\CheckoutProvisionerInterface;
@@ -47,12 +47,12 @@ class CheckoutHandler extends AbstractObject
     /** @var RequirementHandler */
     private $requirementHandler;
 
-    /** @var Logger */
+    /** @var LoggerInterface */
     private $logger;
 
     public function __construct(
         RequirementHandler $requirementHandler,
-        Logger $logger
+        LoggerInterface $logger
     ) {
         $this->requirementHandler = $requirementHandler;
         $this->logger = $logger;
@@ -99,7 +99,7 @@ class CheckoutHandler extends AbstractObject
             return false;
         }
 
-        if (!$this->requirementHandler->isFulfilled('payment_activation', true)) {
+        if (!$this->requirementHandler->isFulfilled('payment_activation')) {
             $this->logger->warning("PayGreen payments are deactivated.");
             return false;
         }

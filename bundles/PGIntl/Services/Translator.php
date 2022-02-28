@@ -15,7 +15,7 @@
  * @author    PayGreen <contact@paygreen.fr>
  * @copyright 2014 - 2022 Watt Is It
  * @license   https://opensource.org/licenses/mit-license.php MIT License X11
- * @version   2.5.2
+ * @version   2.6.0
  *
  */
 
@@ -25,7 +25,7 @@ use PGI\Module\PGIntl\Components\Translation as TranslationComponent;
 use PGI\Module\PGIntl\Services\Handlers\CacheTranslationHandler;
 use PGI\Module\PGIntl\Services\Handlers\LocaleHandler;
 use PGI\Module\PGIntl\Services\Handlers\TranslationHandler;
-use PGI\Module\PGModule\Services\Logger;
+use PGI\Module\PGLog\Interfaces\LoggerInterface;
 use PGI\Module\PGSystem\Components\Bag;
 use PGI\Module\PGSystem\Components\Parser as ParserComponent;
 use PGI\Module\PGSystem\Exceptions\Configuration as ConfigurationException;
@@ -56,7 +56,7 @@ class Translator extends AbstractObject
     /** @var Pathfinder */
     private $pathfinder;
 
-    /** @var Logger */
+    /** @var LoggerInterface */
     private $logger;
 
     private $translations = array();
@@ -70,7 +70,7 @@ class Translator extends AbstractObject
      * @param CacheTranslationHandler $cacheHandler
      * @param Pathfinder $pathfinder
      * @param LocaleHandler $localeHandler
-     * @param Logger $logger
+     * @param LoggerInterface $logger
      * @param array $config
      * @throws ConfigurationException
      */
@@ -78,7 +78,7 @@ class Translator extends AbstractObject
         CacheTranslationHandler $cacheHandler,
         Pathfinder $pathfinder,
         LocaleHandler $localeHandler,
-        Logger $logger,
+        LoggerInterface $logger,
         array $config
     ) {
         $this->cacheHandler = $cacheHandler;

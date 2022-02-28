@@ -15,14 +15,14 @@
  * @author    PayGreen <contact@paygreen.fr>
  * @copyright 2014 - 2022 Watt Is It
  * @license   https://opensource.org/licenses/mit-license.php MIT License X11
- * @version   2.5.2
+ * @version   2.6.0
  *
  */
 
 namespace PGI\Module\PGFramework\Services\Listeners;
 
 use PGI\Module\PGModule\Services\Handlers\StaticFileHandler;
-use PGI\Module\PGModule\Services\Logger;
+use PGI\Module\PGLog\Interfaces\LoggerInterface;
 use Exception;
 
 /**
@@ -34,10 +34,10 @@ class InstallStaticFilesListener
     /** @var StaticFileHandler */
     private $staticFileHandler;
 
-    /** @var Logger */
+    /** @var LoggerInterface */
     private $logger;
 
-    public function __construct(StaticFileHandler $staticFileHandler, Logger $logger)
+    public function __construct(StaticFileHandler $staticFileHandler, LoggerInterface $logger)
     {
         $this->staticFileHandler = $staticFileHandler;
         $this->logger = $logger;

@@ -15,7 +15,7 @@
  * @author    PayGreen <contact@paygreen.fr>
  * @copyright 2014 - 2022 Watt Is It
  * @license   https://opensource.org/licenses/mit-license.php MIT License X11
- * @version   2.5.2
+ * @version   2.6.0
  *
  */
 
@@ -24,7 +24,7 @@ namespace PGI\Module\PGModule\Services\Handlers;
 use PGI\Module\PGFramework\Foundations\AbstractDiagnostic;
 use PGI\Module\PGFramework\Components\Aggregator as AggregatorComponent;
 use PGI\Module\PGModule\Components\Events\Module as ModuleEventComponent;
-use PGI\Module\PGModule\Services\Logger;
+use PGI\Module\PGLog\Interfaces\LoggerInterface;
 use PGI\Module\PGSystem\Foundations\AbstractObject;
 use PGI\Module\PGSystem\Services\Container;
 use Exception;
@@ -35,7 +35,7 @@ use Exception;
  */
 class DiagnosticHandler extends AbstractObject
 {
-    /** @var Logger */
+    /** @var LoggerInterface */
     private $logger;
 
     /** @var AggregatorComponent */
@@ -43,7 +43,7 @@ class DiagnosticHandler extends AbstractObject
 
     private $bin;
 
-    public function __construct(AggregatorComponent $diagnosticAggregator, Logger $logger)
+    public function __construct(AggregatorComponent $diagnosticAggregator, LoggerInterface $logger)
     {
         $this->logger = $logger;
         $this->diagnosticAggregator = $diagnosticAggregator;

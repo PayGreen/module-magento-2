@@ -15,7 +15,7 @@
  * @author    PayGreen <contact@paygreen.fr>
  * @copyright 2014 - 2022 Watt Is It
  * @license   https://opensource.org/licenses/mit-license.php MIT License X11
- * @version   2.5.2
+ * @version   2.6.0
  *
  */
 
@@ -48,7 +48,7 @@ class UpgradeBox
     /**
      * @return array
      */
-    public function getStages()
+    public function getStages(): array
     {
         return $this->stages;
     }

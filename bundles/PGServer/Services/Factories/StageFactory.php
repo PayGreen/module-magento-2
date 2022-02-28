@@ -15,13 +15,13 @@
  * @author    PayGreen <contact@paygreen.fr>
  * @copyright 2014 - 2022 Watt Is It
  * @license   https://opensource.org/licenses/mit-license.php MIT License X11
- * @version   2.5.2
+ * @version   2.6.0
  *
  */
 
 namespace PGI\Module\PGServer\Services\Factories;
 
-use PGI\Module\PGModule\Services\Logger;
+use PGI\Module\PGLog\Interfaces\LoggerInterface;
 use PGI\Module\PGServer\Components\Stage as StageComponent;
 use PGI\Module\PGServer\Components\Trigger as TriggerComponent;
 use PGI\Module\PGServer\Services\Factories\TriggerFactory;
@@ -37,10 +37,10 @@ class StageFactory extends AbstractObject
     /** @var TriggerFactory */
     private $triggerFactory;
 
-    /** @var Logger */
+    /** @var LoggerInterface */
     private $logger;
 
-    public function __construct(TriggerFactory $triggerFactory, Logger $logger)
+    public function __construct(TriggerFactory $triggerFactory, LoggerInterface $logger)
     {
         $this->triggerFactory = $triggerFactory;
         $this->logger = $logger;

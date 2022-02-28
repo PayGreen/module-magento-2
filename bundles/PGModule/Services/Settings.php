@@ -15,7 +15,7 @@
  * @author    PayGreen <contact@paygreen.fr>
  * @copyright 2014 - 2022 Watt Is It
  * @license   https://opensource.org/licenses/mit-license.php MIT License X11
- * @version   2.5.2
+ * @version   2.6.0
  *
  */
 
@@ -376,7 +376,9 @@ class Settings extends AbstractObject
         if (array_key_exists('type', $definitions)) {
             switch ($definitions['type']) {
                 case 'array':
-                    if (!is_array($value)) {
+                    if (empty($value)) {
+                        $value = array();
+                    } elseif (!is_array($value)) {
                         $value = (array) unserialize($value);
                     }
                     break;

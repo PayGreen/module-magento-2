@@ -15,14 +15,14 @@
  * @author    PayGreen <contact@paygreen.fr>
  * @copyright 2014 - 2022 Watt Is It
  * @license   https://opensource.org/licenses/mit-license.php MIT License X11
- * @version   2.5.2
+ * @version   2.6.0
  *
  */
 
 namespace PGI\Module\PGDatabase\Services\Handlers;
 
 use PGI\Module\PGDatabase\Interfaces\DatabaseOfficerInterface;
-use PGI\Module\PGModule\Services\Logger;
+use PGI\Module\PGLog\Interfaces\LoggerInterface;
 use PGI\Module\PGSystem\Components\Parser as ParserComponent;
 use PGI\Module\PGSystem\Services\Pathfinder;
 use Exception;
@@ -42,14 +42,14 @@ class DatabaseHandler
     /** @var Pathfinder */
     private $pathfinder;
 
-    /** @var Logger */
+    /** @var LoggerInterface */
     private $logger;
 
     public function __construct(
         DatabaseOfficerInterface $databaseOfficer,
         ParserComponent $parser,
         Pathfinder $pathfinder,
-        Logger $logger
+        LoggerInterface $logger
     ) {
         $this->databaseOfficer = $databaseOfficer;
         $this->parser = $parser;

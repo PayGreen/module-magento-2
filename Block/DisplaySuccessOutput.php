@@ -15,7 +15,7 @@
  * @author    PayGreen <contact@paygreen.fr>
  * @copyright 2014 - 2022 Watt Is It
  * @license   https://opensource.org/licenses/mit-license.php MIT License X11
- * @version   2.5.2
+ * @version   2.6.0
  *
  */
 
@@ -28,7 +28,7 @@ use Magento\Framework\View\Element\Template\Context as LocalContext;
 use Magento\Sales\Model\Order as LocalOrder;
 use PGI\Module\PGMagento\Services\Repositories\OrderRepository;
 use PGI\Module\PGModule\Components\Output as OutputComponent;
-use PGI\Module\PGModule\Services\Logger;
+use PGI\Module\PGLog\Interfaces\LoggerInterface;
 use PGI\Module\PGModule\Services\Providers\OutputProvider;
 use PGI\Module\PGSystem\Services\Container;
 
@@ -53,7 +53,7 @@ class DisplaySuccessOutput extends LocalTemplate
 
     protected function _toHtml()
     {
-        /** @var Logger $logger */
+        /** @var LoggerInterface $logger */
         $logger = $this->getService('logger.view');
 
         $content = parent::_toHtml();
@@ -71,7 +71,7 @@ class DisplaySuccessOutput extends LocalTemplate
      */
     public function getContent()
     {
-        /** @var Logger $logger */
+        /** @var LoggerInterface $logger */
         $logger = $this->getService('logger.view');
 
         /** @var OutputProvider */

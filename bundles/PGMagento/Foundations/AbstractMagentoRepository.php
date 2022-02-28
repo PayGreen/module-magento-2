@@ -15,7 +15,7 @@
  * @author    PayGreen <contact@paygreen.fr>
  * @copyright 2014 - 2022 Watt Is It
  * @license   https://opensource.org/licenses/mit-license.php MIT License X11
- * @version   2.5.2
+ * @version   2.6.0
  *
  */
 
@@ -27,7 +27,7 @@ use Magento\Framework\Model\ResourceModel\Db\AbstractDb as LocalAbstractDb;
 use Magento\Framework\Model\AbstractModel as LocalAbstractModel;
 use PGI\Module\PGDatabase\Interfaces\RepositoryWrappedEntityInterface;
 use PGI\Module\PGDatabase\Services\Handlers\DatabaseHandler;
-use PGI\Module\PGModule\Services\Logger;
+use PGI\Module\PGLog\Interfaces\LoggerInterface;
 use PGI\Module\PGSystem\Foundations\AbstractObject;
 use Exception;
 
@@ -121,7 +121,7 @@ abstract class AbstractMagentoRepository extends AbstractObject implements Repos
      */
     protected function insertLocalEntity(LocalAbstractModel $localEntity)
     {
-        /** @var Logger $logger */
+        /** @var LoggerInterface $logger */
         $logger = $this->getService('logger');
 
         /** @var LocalAbstractDb $resource */
@@ -152,7 +152,7 @@ abstract class AbstractMagentoRepository extends AbstractObject implements Repos
      */
     protected function updateLocalEntity(LocalAbstractModel $localEntity)
     {
-        /** @var Logger $logger */
+        /** @var LoggerInterface $logger */
         $logger = $this->getService('logger');
 
         /** @var LocalAbstractDb $resource */
@@ -183,7 +183,7 @@ abstract class AbstractMagentoRepository extends AbstractObject implements Repos
      */
     protected function deleteLocalEntity(LocalAbstractModel $localEntity)
     {
-        /** @var Logger $logger */
+        /** @var LoggerInterface $logger */
         $logger = $this->getService('logger');
 
         /** @var LocalAbstractDb $resource */

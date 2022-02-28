@@ -15,13 +15,13 @@
  * @author    PayGreen <contact@paygreen.fr>
  * @copyright 2014 - 2022 Watt Is It
  * @license   https://opensource.org/licenses/mit-license.php MIT License X11
- * @version   2.5.2
+ * @version   2.6.0
  *
  */
 
 namespace PGI\Module\PGShop\Services\Mappers;
 
-use PGI\Module\PGModule\Services\Logger;
+use PGI\Module\PGLog\Interfaces\LoggerInterface;
 use PGI\Module\PGShop\Interfaces\OrderStateMapperStrategyInterface;
 use PGI\Module\PGSystem\Exceptions\Configuration as ConfigurationException;
 use PGI\Module\PGSystem\Foundations\AbstractObject;
@@ -34,6 +34,7 @@ use LogicException;
 class OrderStateMapper extends AbstractObject
 {
     const STATE_UNKNOWN = 'UNKNOWN';
+    const STATE_UNKNOWN_PAID = 'UNKNOWN_PAID';
 
     /** @var OrderStateMapperStrategyInterface[] */
     private $mapperStrategies = array();
@@ -104,7 +105,7 @@ class OrderStateMapper extends AbstractObject
         }
 
         if ($state === self::STATE_UNKNOWN) {
-            /** @var Logger $logger */
+            /** @var LoggerInterface $logger */
             $logger = $this->getService('logger');
 
             $logger->warning("Unknown order state.", $source);

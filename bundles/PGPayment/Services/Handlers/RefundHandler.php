@@ -15,7 +15,7 @@
  * @author    PayGreen <contact@paygreen.fr>
  * @copyright 2014 - 2022 Watt Is It
  * @license   https://opensource.org/licenses/mit-license.php MIT License X11
- * @version   2.5.2
+ * @version   2.6.0
  *
  */
 
@@ -24,7 +24,7 @@ namespace PGI\Module\PGPayment\Services\Handlers;
 use PGI\Module\APIPayment\Components\Response as ResponseComponent;
 use PGI\Module\APIPayment\Services\Facades\ApiFacade;
 use PGI\Module\PGClient\Exceptions\Response as ResponseException;
-use PGI\Module\PGModule\Services\Logger;
+use PGI\Module\PGLog\Interfaces\LoggerInterface;
 use PGI\Module\PGPayment\Exceptions\Unrefundable as UnrefundableException;
 use PGI\Module\PGPayment\Interfaces\Entities\TransactionEntityInterface;
 use PGI\Module\PGPayment\Services\Facades\PaygreenFacade;
@@ -50,10 +50,10 @@ class RefundHandler extends AbstractObject
     /** @var ApiFacade */
     private $apiFacade;
 
-    /** @var Logger */
+    /** @var LoggerInterface */
     private $logger;
 
-    public function __construct(PaygreenFacade $paygreenFacade, Logger $logger)
+    public function __construct(PaygreenFacade $paygreenFacade, LoggerInterface $logger)
     {
         $this->apiFacade = $paygreenFacade->getApiFacade();
         $this->logger = $logger;

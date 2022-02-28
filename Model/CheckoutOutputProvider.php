@@ -15,7 +15,7 @@
  * @author    PayGreen <contact@paygreen.fr>
  * @copyright 2014 - 2022 Watt Is It
  * @license   https://opensource.org/licenses/mit-license.php MIT License X11
- * @version   2.5.2
+ * @version   2.6.0
  *
  */
 
@@ -24,7 +24,7 @@ namespace Paygreen\Payment\Model;
 use Exception;
 use Magento\Checkout\Model\ConfigProviderInterface as LocalConfigProviderInterface;
 use PGI\Module\PGModule\Components\Output as OutputComponent;
-use PGI\Module\PGModule\Services\Logger;
+use PGI\Module\PGLog\Interfaces\LoggerInterface;
 use PGI\Module\PGModule\Services\Providers\OutputProvider;
 use PGI\Module\PGSystem\Services\Container;
 
@@ -55,7 +55,7 @@ class CheckoutOutputProvider implements LocalConfigProviderInterface
      */
     public function getContent()
     {
-        /** @var Logger $logger */
+        /** @var LoggerInterface $logger */
         $logger = $this->getService('logger.view');
 
         /** @var OutputProvider */

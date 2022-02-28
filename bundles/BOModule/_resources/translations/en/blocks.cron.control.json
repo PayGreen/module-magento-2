@@ -1,0 +1,19 @@
+{
+  "blocks": {
+    "cron": {
+      "control": {
+        "title": "Planner control.",
+        "description": "Here you can manually start the planner. Only pending tasks will be executed.",
+        "button": {
+          "text": "Start the planner",
+          "confirm": "Are you sure you want to start the planner?"
+        },
+        "link": {
+          "title": "Planner launch URL",
+          "description": "You can use the following link to launch the scheduler from an external interface.",
+          "warning": "Please note, to be able to use this URL yourself, you must select the following automatic launch mode :"
+        }
+      }
+    }
+  }
+}

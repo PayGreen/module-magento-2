@@ -15,7 +15,7 @@
  * @author    PayGreen <contact@paygreen.fr>
  * @copyright 2014 - 2022 Watt Is It
  * @license   https://opensource.org/licenses/mit-license.php MIT License X11
- * @version   2.5.2
+ * @version   2.6.0
  *
  */
 
@@ -23,7 +23,7 @@ namespace PGI\Module\PGShop\Services\Managers;
 
 use PGI\Module\PGDatabase\Foundations\AbstractManager;
 use PGI\Module\PGModule\Services\Broadcaster;
-use PGI\Module\PGModule\Services\Logger;
+use PGI\Module\PGLog\Interfaces\LoggerInterface;
 use PGI\Module\PGShop\Components\Events\OrderState as OrderStateEventComponent;
 use PGI\Module\PGShop\Components\Events\OrderStateTransition as OrderStateTransitionEventComponent;
 use PGI\Module\PGShop\Components\OrderStateTransition as OrderStateTransitionComponent;
@@ -48,7 +48,7 @@ class OrderManager extends AbstractManager
     /** @var Broadcaster */
     protected $broadcaster;
 
-    /** @var Logger */
+    /** @var LoggerInterface */
     protected $logger;
 
     /**
@@ -68,9 +68,9 @@ class OrderManager extends AbstractManager
     }
 
     /**
-     * @param Logger $logger
+     * @param LoggerInterface $logger
      */
-    public function setLogger(Logger $logger)
+    public function setLogger(LoggerInterface $logger)
     {
         $this->logger = $logger;
     }
@@ -113,7 +113,7 @@ class OrderManager extends AbstractManager
         $currentState = $order->getState();
         $targetState = $orderStateTransition->getTargetState();
 
-        if ($orderStateManager->isAllowedTransition($mode, $currentState, $targetState)) {
+        if ($currentState === OrderStateMapper::STATE_UNKNOWN_PAID || $orderStateManager->isAllowedTransition($mode, $currentState, $targetState)) {
             $this->logger->debug(
                 'updateOrderStatus : '. $currentState . ' -> ' . $targetState
             );

@@ -5,9 +5,7 @@
       "description": "The informations below are required for activating your PayGreen account.",
       "form": {
         "public_key": "Unique identifier"
-      },
-      "increase": "The total amount of your payments compared to last month has increased by ",
-      "decrease": "The total amount of your payments compared to last month has decreased by "
+      }
     }
   }
 }

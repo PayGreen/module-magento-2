@@ -15,7 +15,7 @@
  * @author    PayGreen <contact@paygreen.fr>
  * @copyright 2014 - 2022 Watt Is It
  * @license   https://opensource.org/licenses/mit-license.php MIT License X11
- * @version   2.5.2
+ * @version   2.6.0
  *
  */
 
@@ -25,7 +25,7 @@ use Magento\Framework\Event\Observer as LocalObserver;
 use Magento\Framework\Event\ObserverInterface as LocalObserverInterface;
 use PGI\Module\PGModule\Components\Events\Display as DisplayEventComponent;
 use PGI\Module\PGModule\Services\Broadcaster;
-use PGI\Module\PGModule\Services\Logger;
+use PGI\Module\PGLog\Interfaces\LoggerInterface;
 use PGI\Module\PGSystem\Services\Container;
 
 class FrontObserver implements LocalObserverInterface
@@ -37,7 +37,7 @@ class FrontObserver implements LocalObserverInterface
 
     public function execute(LocalObserver $observer)
     {
-        /** @var Logger $logger */
+        /** @var LoggerInterface $logger */
         $logger = $this->getService('logger');
         
         $logger->debug("Fire front event controller_front_send_response_before from Magento.");

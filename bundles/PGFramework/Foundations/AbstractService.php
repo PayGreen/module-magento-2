@@ -15,62 +15,33 @@
  * @author    PayGreen <contact@paygreen.fr>
  * @copyright 2014 - 2022 Watt Is It
  * @license   https://opensource.org/licenses/mit-license.php MIT License X11
- * @version   2.5.2
+ * @version   2.6.0
  *
  */
 
 namespace PGI\Module\PGFramework\Foundations;
 
-use PGI\Module\PGModule\Services\Logger;
-use PGI\Module\PGSystem\Components\Bag as BagComponent;
-use PGI\Module\PGSystem\Interfaces\Services\ConfigurableServiceInterface;
+use PGI\Module\PGLog\Interfaces\LoggerInterface;
 
 /**
  * Class AbstractService
  * @package PGFramework\Foundations
  */
-abstract class AbstractService implements ConfigurableServiceInterface
+abstract class AbstractService extends AbstractConfigurableService
 {
-    /** @var BagComponent */
-    private $config = null;
-
-    /** @var Logger */
+    /** @var LoggerInterface */
     private $logger;
 
-    public function setConfig(array $config)
-    {
-        $this->config = new BagComponent($config);
-    }
-
-    public function addConfig(array $config)
-    {
-        if ($this->config === null) {
-            $this->setConfig($config);
-        } else {
-            $this->config->merge($config);
-        }
-    }
-
-    public function hasConfig($key)
-    {
-        return isset($this->config[$key]);
-    }
-
-    public function getConfig($key)
-    {
-        return $this->config[$key];
-    }
-
     /**
-     * @param Logger $logger
+     * @param LoggerInterface $logger
      */
-    public function setLogger(Logger $logger)
+    public function setLogger(LoggerInterface $logger)
     {
         $this->logger = $logger;
     }
 
     /**
-     * @return Logger
+     * @return LoggerInterface
      */
     protected function log()
     {

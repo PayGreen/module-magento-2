@@ -15,7 +15,7 @@
  * @author    PayGreen <contact@paygreen.fr>
  * @copyright 2014 - 2022 Watt Is It
  * @license   https://opensource.org/licenses/mit-license.php MIT License X11
- * @version   2.5.2
+ * @version   2.6.0
  *
  */
 
@@ -30,24 +30,15 @@ return array (
 7 => 'PGForm',
 8 => 'PGClient',
 9 => 'PGShop',
-10 => 'BOModule',
-11 => 'FOModule',
-12 => 'PGPayment',
-13 => 'APIPayment',
-14 => 'BOPayment',
-15 => 'FOPayment',
-16 => 'PGGreen',
-17 => 'PGTree',
-18 => 'APITree',
-19 => 'BOTree',
-20 => 'FOTree',
-21 => 'PGCharity',
-22 => 'APICharity',
-23 => 'BOCharity',
-24 => 'FOCharity',
-25 => 'PGMagento',
-26 => 'PGMagentoPayment',
-27 => 'PGMagentoTree',
-28 => 'PGMagentoCharity',
-29 => 'MODPaygreen',
+10 => 'PGCron',
+11 => 'PGLog',
+12 => 'BOModule',
+13 => 'FOModule',
+14 => 'PGPayment',
+15 => 'APIPayment',
+16 => 'BOPayment',
+17 => 'FOPayment',
+18 => 'PGMagento',
+19 => 'PGMagentoPayment',
+20 => 'MODPaygreen',
 );

@@ -15,7 +15,7 @@
  * @author    PayGreen <contact@paygreen.fr>
  * @copyright 2014 - 2022 Watt Is It
  * @license   https://opensource.org/licenses/mit-license.php MIT License X11
- * @version   2.5.2
+ * @version   2.6.0
  *
  */
 
@@ -26,7 +26,7 @@ use Magento\Framework\Event\ObserverInterface as LocalObserverInterface;
 use Magento\Sales\Model\Order as LocalOrder;
 use PGI\Module\PGMagento\Services\Repositories\OrderRepository;
 use PGI\Module\PGModule\Services\Broadcaster;
-use PGI\Module\PGModule\Services\Logger;
+use PGI\Module\PGLog\Interfaces\LoggerInterface;
 use PGI\Module\PGShop\Components\Events\LocalOrder as LocalOrderEventComponent;
 use PGI\Module\PGShop\Interfaces\Entities\OrderEntityInterface;
 use PGI\Module\PGSystem\Services\Container;
@@ -40,7 +40,7 @@ class OrderConfirmationObserver implements LocalObserverInterface
 
     public function execute(LocalObserver $observer)
     {
-        /** @var Logger $logger */
+        /** @var LoggerInterface $logger */
         $logger = $this->getService('logger');
 
         /** @var Broadcaster $broadcaster */

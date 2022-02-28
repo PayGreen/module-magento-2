@@ -15,7 +15,7 @@
  * @author    PayGreen <contact@paygreen.fr>
  * @copyright 2014 - 2022 Watt Is It
  * @license   https://opensource.org/licenses/mit-license.php MIT License X11
- * @version   2.5.2
+ * @version   2.6.0
  *
  */
 
@@ -28,7 +28,7 @@ use Magento\Sales\Model\Order\Invoice as LocalInvoice;
 use Magento\Sales\Model\Service\InvoiceService as LocalInvoiceService;
 use Magento\Sales\Model\Order\Email\Sender\InvoiceSender as LocalInvoiceSender;
 use Magento\Framework\Exception\LocalizedException as LocalLocalizedException;
-use PGI\Module\PGModule\Services\Logger;
+use PGI\Module\PGLog\Interfaces\LoggerInterface;
 use PGI\Module\PGShop\Components\Events\Order as OrderEventComponent;
 use Exception;
 
@@ -37,10 +37,10 @@ class OrderValidationListener
     /** @var LocalObjectManager */
     private $magento;
 
-    /** @var Logger */
+    /** @var LoggerInterface */
     private $logger;
 
-    public function __construct(LocalObjectManager $magento, Logger $logger)
+    public function __construct(LocalObjectManager $magento, LoggerInterface $logger)
     {
         $this->magento = $magento;
         $this->logger = $logger;

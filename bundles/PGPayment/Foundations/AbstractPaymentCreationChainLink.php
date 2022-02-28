@@ -15,13 +15,13 @@
  * @author    PayGreen <contact@paygreen.fr>
  * @copyright 2014 - 2022 Watt Is It
  * @license   https://opensource.org/licenses/mit-license.php MIT License X11
- * @version   2.5.2
+ * @version   2.6.0
  *
  */
 
 namespace PGI\Module\PGPayment\Foundations;
 
-use PGI\Module\PGModule\Services\Logger;
+use PGI\Module\PGLog\Interfaces\LoggerInterface;
 use PGI\Module\PGPayment\Components\PaymentProject as PaymentProjectComponent;
 use PGI\Module\PGPayment\Interfaces\PaymentCreationChainLinkInterface;
 
@@ -34,7 +34,7 @@ abstract class AbstractPaymentCreationChainLink implements PaymentCreationChainL
     /** @var PaymentCreationChainLinkInterface|null */
     private $next = null;
 
-    /** @var Logger */
+    /** @var LoggerInterface */
     private $logger;
 
     /**
@@ -46,15 +46,15 @@ abstract class AbstractPaymentCreationChainLink implements PaymentCreationChainL
     }
 
     /**
-     * @param Logger $logger
+     * @param LoggerInterface $logger
      */
-    public function setLogger(Logger $logger)
+    public function setLogger(LoggerInterface $logger)
     {
         $this->logger = $logger;
     }
 
     /**
-     * @return Logger
+     * @return LoggerInterface
      */
     protected function getLogger()
     {

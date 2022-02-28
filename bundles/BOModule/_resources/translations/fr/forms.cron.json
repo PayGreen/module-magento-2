@@ -1,0 +1,16 @@
+{
+  "forms": {
+    "cron": {
+      "fields": {
+        "cron_activation": {
+          "label": "Lancement automatique du planificateur",
+          "help": "Permet d'activer le lancement automatique du planificateur de tâche. Si ce n'est pas le cas, vous devrez le lancer manuellement depuis cette page."
+        },
+        "cron_activation_mode": {
+          "label": "Mode de lancement automatique",
+          "help": "Configure la manière dont le planificateur peut-être exécuté automatiquement."
+        }
+      }
+    }
+  }   
+}

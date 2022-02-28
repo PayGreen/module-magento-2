@@ -15,14 +15,14 @@
  * @author    PayGreen <contact@paygreen.fr>
  * @copyright 2014 - 2022 Watt Is It
  * @license   https://opensource.org/licenses/mit-license.php MIT License X11
- * @version   2.5.2
+ * @version   2.6.0
  *
  */
 
 namespace PGI\Module\PGFramework\Services\Handlers;
 
 use PGI\Module\PGFramework\Components\Picture as PictureComponent;
-use PGI\Module\PGModule\Services\Logger;
+use PGI\Module\PGLog\Interfaces\LoggerInterface;
 use PGI\Module\PGSystem\Foundations\AbstractObject;
 use Exception;
 
@@ -77,7 +77,7 @@ class PictureHandler extends AbstractObject
         }
 
         if (!$this->isStored($filename)) {
-            /** @var Logger $logger */
+            /** @var LoggerInterface $logger */
             $logger = $this->getService('logger');
 
             $logger->alert("Unknown media file : '$filename'.");
@@ -95,7 +95,7 @@ class PictureHandler extends AbstractObject
      */
     public function store($source, $name, $keepOriginal = false)
     {
-        /** @var Logger $logger */
+        /** @var LoggerInterface $logger */
         $logger = $this->getService('logger');
 
         if (!is_file($source)) {
@@ -128,7 +128,7 @@ class PictureHandler extends AbstractObject
      */
     public function removeFromStore($filename)
     {
-        /** @var Logger $logger */
+        /** @var LoggerInterface $logger */
         $logger = $this->getService('logger');
 
         if (!$this->isStored($filename)) {

@@ -15,13 +15,13 @@
  * @author    PayGreen <contact@paygreen.fr>
  * @copyright 2014 - 2022 Watt Is It
  * @license   https://opensource.org/licenses/mit-license.php MIT License X11
- * @version   2.5.2
+ * @version   2.6.0
  *
  */
 
 namespace PGI\Module\PGFramework\Services\Handlers;
 
-use PGI\Module\PGModule\Services\Logger;
+use PGI\Module\PGLog\Interfaces\LoggerInterface;
 use PGI\Module\PGModule\Services\Settings;
 use PGI\Module\PGSystem\Services\Pathfinder;
 use DateTime;
@@ -47,14 +47,14 @@ class CacheHandler
     /** @var Settings */
     private $settings;
 
-    /** @var Logger */
+    /** @var LoggerInterface */
     private $logger;
 
     public function __construct(
         array $parameters,
         Pathfinder $pathfinder,
         Settings $settings,
-        Logger $logger
+        LoggerInterface $logger
     ) {
         $this->entries = $parameters['entries'];
 

@@ -15,14 +15,14 @@
  * @author    PayGreen <contact@paygreen.fr>
  * @copyright 2014 - 2022 Watt Is It
  * @license   https://opensource.org/licenses/mit-license.php MIT License X11
- * @version   2.5.2
+ * @version   2.6.0
  *
  */
 
 namespace PGI\Module\PGServer\Foundations;
 
 use PGI\Module\PGFramework\Services\Notifier;
-use PGI\Module\PGModule\Services\Logger;
+use PGI\Module\PGLog\Interfaces\LoggerInterface;
 use PGI\Module\PGServer\Components\Requests\Forward as ForwardRequestComponent;
 use PGI\Module\PGServer\Components\Responses\Forward as ForwardResponseComponent;
 use PGI\Module\PGServer\Components\Responses\HTTP as HTTPResponseComponent;
@@ -42,7 +42,7 @@ abstract class AbstractDeflector implements DeflectorInterface
     /** @var Notifier */
     private $notifier;
 
-    /** @var Logger */
+    /** @var LoggerInterface */
     private $logger;
 
     /** @var LinkHandler */
@@ -60,9 +60,9 @@ abstract class AbstractDeflector implements DeflectorInterface
     }
 
     /**
-     * @param Logger $logger
+     * @param LoggerInterface $logger
      */
-    public function setLogger(Logger $logger)
+    public function setLogger(LoggerInterface $logger)
     {
         $this->logger = $logger;
     }
@@ -88,7 +88,7 @@ abstract class AbstractDeflector implements DeflectorInterface
     abstract protected function buildResponse();
 
     /**
-     * @return Logger
+     * @return LoggerInterface
      */
     protected function getLogger()
     {

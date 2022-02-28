@@ -15,18 +15,29 @@
  * @author    PayGreen <contact@paygreen.fr>
  * @copyright 2014 - 2022 Watt Is It
  * @license   https://opensource.org/licenses/mit-license.php MIT License X11
- * @version   2.5.2
+ * @version   2.6.0
  *
  */
 
 namespace PGI\Module\PGMagento\Services\Linkers;
 
-use PGI\Module\PGMagento\Foundations\Linkers\AbstractOrderLinker;
+use Magento\Framework\UrlInterface;
 use PGI\Module\PGShop\Interfaces\Entities\OrderEntityInterface;
 use Exception;
+use PGI\Module\PGShop\Services\Managers\OrderManager;
 
-class OrderLinker extends AbstractOrderLinker
+class OrderLinker extends MagentoLinker
 {
+    /** @var OrderManager */
+    private $orderManager;
+
+    public function __construct(UrlInterface $localUrlBuilder, OrderManager $orderManager)
+    {
+        parent::__construct($localUrlBuilder);
+
+        $this->orderManager = $orderManager;
+    }
+
     /**
      * @inheritDoc
      * @throws Exception
@@ -36,6 +47,33 @@ class OrderLinker extends AbstractOrderLinker
         /** @var OrderEntityInterface $localOrder */
         $order = $this->findOrder($data);
 
-        return $this->buildFrontUrl('sales/order/view', ['order_id' => $order->id()]);
+        return $this->getLocalUrlBuilder()->getUrl('sales/order/view', ['order_id' => $order->id()]);
+    }
+
+    /**
+     * @param array $data
+     * @return OrderEntityInterface
+     * @throws Exception
+     */
+    public function findOrder(array $data = array())
+    {
+        /** @var OrderEntityInterface $order */
+        $order = null;
+
+        if (array_key_exists('id_order', $data)) {
+            $order = $this->orderManager->getByPrimary($data['id_order']);
+        } elseif (!array_key_exists('order', $data)) {
+            throw new Exception("Building order URL require order entity or order primary.");
+        } elseif (!$data['order'] instanceof OrderEntityInterface) {
+            throw new Exception("Building order URL require OrderEntityInterface entity.");
+        } else {
+            $order = $data['order'];
+        }
+
+        if ($order === null) {
+            throw new Exception("Order not found.");
+        }
+
+        return $order;
     }
 }

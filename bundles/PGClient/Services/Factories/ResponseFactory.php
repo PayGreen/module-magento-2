@@ -15,7 +15,7 @@
  * @author    PayGreen <contact@paygreen.fr>
  * @copyright 2014 - 2022 Watt Is It
  * @license   https://opensource.org/licenses/mit-license.php MIT License X11
- * @version   2.5.2
+ * @version   2.6.0
  *
  */
 
@@ -28,7 +28,7 @@ use PGI\Module\PGClient\Components\ValidityRangeList as ValidityRangeListCompone
 use PGI\Module\PGClient\Exceptions\ResponseFailed as ResponseFailedException;
 use PGI\Module\PGClient\Exceptions\ResponseHTTPError as ResponseHTTPErrorException;
 use PGI\Module\PGClient\Exceptions\ResponseMalformed as ResponseMalformedException;
-use PGI\Module\PGModule\Services\Logger;
+use PGI\Module\PGLog\Interfaces\LoggerInterface;
 use PGI\Module\PGSystem\Components\Bag as BagComponent;
 use Exception;
 
@@ -44,7 +44,7 @@ class ResponseFactory
         'strict' => false
     );
 
-    /** @var Logger Service to log requests, responses and errors. */
+    /** @var LoggerInterface Service to log requests, responses and errors. */
     private $logger;
 
     /** @var BagComponent List of request definitions. */
@@ -57,10 +57,10 @@ class ResponseFactory
 
     /**
      * RequestSender constructor.
-     * @param Logger $logger
+     * @param LoggerInterface $logger
      */
     public function __construct(
-        Logger $logger,
+        LoggerInterface $logger,
         array $requestDefinitions,
         array $config,
         $httpCodes = array()

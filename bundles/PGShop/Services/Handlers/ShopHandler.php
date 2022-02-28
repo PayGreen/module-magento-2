@@ -15,14 +15,14 @@
  * @author    PayGreen <contact@paygreen.fr>
  * @copyright 2014 - 2022 Watt Is It
  * @license   https://opensource.org/licenses/mit-license.php MIT License X11
- * @version   2.5.2
+ * @version   2.6.0
  *
  */
 
 namespace PGI\Module\PGShop\Services\Handlers;
 
 use PGI\Module\PGFramework\Interfaces\Handlers\SessionHandlerInterface;
-use PGI\Module\PGModule\Services\Logger;
+use PGI\Module\PGLog\Interfaces\LoggerInterface;
 use PGI\Module\PGShop\Interfaces\Entities\ShopEntityInterface;
 use PGI\Module\PGShop\Interfaces\Officers\ShopOfficerInterface;
 use PGI\Module\PGShop\Services\Managers\ShopManager;
@@ -48,14 +48,14 @@ class ShopHandler extends AbstractObject
     /** @var ShopOfficerInterface */
     private $shopOfficer;
 
-    /** @var Logger */
+    /** @var LoggerInterface */
     private $logger;
 
     /**
      * ShopHandler constructor.
-     * @param Logger $logger
+     * @param LoggerInterface $logger
      */
-    public function __construct(Logger $logger)
+    public function __construct(LoggerInterface $logger)
     {
         $this->logger = $logger;
     }
@@ -93,7 +93,7 @@ class ShopHandler extends AbstractObject
     }
 
     /**
-     * @return Logger
+     * @return LoggerInterface
      */
     public function getLogger()
     {

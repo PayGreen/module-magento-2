@@ -15,7 +15,7 @@
  * @author    PayGreen <contact@paygreen.fr>
  * @copyright 2014 - 2022 Watt Is It
  * @license   https://opensource.org/licenses/mit-license.php MIT License X11
- * @version   2.5.2
+ * @version   2.6.0
  *
  */
 
@@ -72,6 +72,26 @@ abstract class AbstractStorage implements StorageInterface
     public function offsetExists($offset)
     {
         return array_key_exists($offset, $this->data);
+    }
+
+    function rewind() {
+        return reset($this->data);
+    }
+
+    function current() {
+        return current($this->data);
+    }
+
+    function key() {
+        return key($this->data);
+    }
+
+    function next() {
+        return next($this->data);
+    }
+
+    function valid() {
+        return !is_null(key($this->data));
     }
 
     abstract protected function loadData();

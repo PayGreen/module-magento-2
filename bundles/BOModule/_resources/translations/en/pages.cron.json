@@ -1,0 +1,8 @@
+{
+  "pages": {
+    "cron": {
+      "name": "Scheduled tasks",
+      "title": "Management of scheduled internal tasks."
+    }
+  }
+}

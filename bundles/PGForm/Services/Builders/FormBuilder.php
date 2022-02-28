@@ -15,7 +15,7 @@
  * @author    PayGreen <contact@paygreen.fr>
  * @copyright 2014 - 2022 Watt Is It
  * @license   https://opensource.org/licenses/mit-license.php MIT License X11
- * @version   2.5.2
+ * @version   2.6.0
  *
  */
 
@@ -26,7 +26,7 @@ use PGI\Module\PGForm\Interfaces\Fields\BasicFieldInterface;
 use PGI\Module\PGForm\Interfaces\FormInterface;
 use PGI\Module\PGForm\Services\Builders\FieldBuilder;
 use PGI\Module\PGFramework\Components\Aggregator as AggregatorComponent;
-use PGI\Module\PGModule\Services\Logger;
+use PGI\Module\PGLog\Interfaces\LoggerInterface;
 use PGI\Module\PGSystem\Tools\Collection as CollectionTool;
 use Exception;
 
@@ -39,7 +39,7 @@ class FormBuilder
     /** @var FieldBuilder */
     private $fieldBuilder;
 
-    /** @var Logger */
+    /** @var LoggerInterface */
     private $logger;
 
     /** @var AggregatorComponent */
@@ -49,7 +49,7 @@ class FormBuilder
 
     public function __construct(
         FieldBuilder $fieldBuilder,
-        Logger $logger,
+        LoggerInterface $logger,
         AggregatorComponent $viewAggregator,
         array $config
     ) {

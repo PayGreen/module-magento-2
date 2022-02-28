@@ -15,7 +15,7 @@
  * @author    PayGreen <contact@paygreen.fr>
  * @copyright 2014 - 2022 Watt Is It
  * @license   https://opensource.org/licenses/mit-license.php MIT License X11
- * @version   2.5.2
+ * @version   2.6.0
  *
  */
 
@@ -29,7 +29,7 @@ use PGI\Module\PGClient\Exceptions\ResponseFailed as ResponseFailedException;
 use PGI\Module\PGFramework\Interfaces\Factories\ApiFactoryInterface;
 use PGI\Module\PGFramework\Services\Handlers\CacheHandler;
 use PGI\Module\PGFramework\Services\Handlers\HTTPHandler;
-use PGI\Module\PGModule\Services\Logger;
+use PGI\Module\PGLog\Interfaces\LoggerInterface;
 use PGI\Module\PGModule\Services\Settings;
 use PGI\Module\PGPayment\Entities\PaymentType;
 use PGI\Module\PGPayment\Exceptions\PaygreenAccount as PaygreenAccountException;
@@ -198,7 +198,7 @@ class PaygreenFacade extends AbstractObject
 
     public function verifyInsiteValidity()
     {
-        /** @var Logger $logger */
+        /** @var LoggerInterface $logger */
         $logger = $this->getService('logger');
 
         $isHttps = $this->httpHandler->isSecureConnection();
@@ -315,7 +315,7 @@ class PaygreenFacade extends AbstractObject
                 }
             }
         } catch (Exception $exception) {
-            /** @var Logger $logger */
+            /** @var LoggerInterface $logger */
             $logger = $this->getService('logger');
 
             $logger->error(
@@ -336,7 +336,7 @@ class PaygreenFacade extends AbstractObject
         try {
             $paymentTypes = $this->paymentTypeManager->getAll();
         } catch (Exception $exception) {
-            /** @var Logger $logger */
+            /** @var LoggerInterface $logger */
             $logger = $this->getService('logger');
 
             $logger->error("An error occurred during available payment types agregation: " . $exception->getMessage());

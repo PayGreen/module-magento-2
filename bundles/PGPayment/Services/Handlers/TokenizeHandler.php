@@ -15,7 +15,7 @@
  * @author    PayGreen <contact@paygreen.fr>
  * @copyright 2014 - 2022 Watt Is It
  * @license   https://opensource.org/licenses/mit-license.php MIT License X11
- * @version   2.5.2
+ * @version   2.6.0
  *
  */
 
@@ -24,7 +24,7 @@ namespace PGI\Module\PGPayment\Services\Handlers;
 use PGI\Module\APIPayment\Services\Facades\ApiFacade;
 use PGI\Module\PGModule\Services\Broadcaster;
 use PGI\Module\PGModule\Services\Handlers\BehaviorHandler;
-use PGI\Module\PGModule\Services\Logger;
+use PGI\Module\PGLog\Interfaces\LoggerInterface;
 use PGI\Module\PGPayment\Components\Events\TokenizeConfirmation as TokenizeConfirmationEventComponent;
 use PGI\Module\PGPayment\Data;
 use PGI\Module\PGPayment\Services\Facades\PaygreenFacade;
@@ -51,12 +51,12 @@ class TokenizeHandler extends AbstractObject
     /** @var ApiFacade */
     private $apiFacade;
 
-    /** @var Logger */
+    /** @var LoggerInterface */
     private $logger;
 
     public function __construct(
         Broadcaster $broadcaster,
-        Logger $logger
+        LoggerInterface $logger
     ) {
         $this->broadcaster = $broadcaster;
         $this->logger = $logger;

@@ -15,14 +15,14 @@
  * @author    PayGreen <contact@paygreen.fr>
  * @copyright 2014 - 2022 Watt Is It
  * @license   https://opensource.org/licenses/mit-license.php MIT License X11
- * @version   2.5.2
+ * @version   2.6.0
  *
  */
 
 namespace PGI\Module\PGPayment\Services\Managers;
 
 use PGI\Module\PGDatabase\Foundations\AbstractManager;
-use PGI\Module\PGModule\Services\Logger;
+use PGI\Module\PGLog\Interfaces\LoggerInterface;
 use PGI\Module\PGPayment\Interfaces\Entities\LockEntityInterface;
 use PGI\Module\PGPayment\Interfaces\Repositories\LockRepositoryInterface;
 use DateTime;
@@ -67,7 +67,7 @@ class LockManager extends AbstractManager
      */
     public function isLocked($pid, $repeat = 0)
     {
-        /** @var Logger $logger */
+        /** @var LoggerInterface $logger */
         $logger = $this->getService('logger');
 
         if ($repeat > self::LOCK_REPEAT) {

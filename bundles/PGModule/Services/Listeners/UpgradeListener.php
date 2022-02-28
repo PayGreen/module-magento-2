@@ -15,14 +15,14 @@
  * @author    PayGreen <contact@paygreen.fr>
  * @copyright 2014 - 2022 Watt Is It
  * @license   https://opensource.org/licenses/mit-license.php MIT License X11
- * @version   2.5.2
+ * @version   2.6.0
  *
  */
 
 namespace PGI\Module\PGModule\Services\Listeners;
 
 use PGI\Module\PGModule\Components\Events\Module as ModuleEventComponent;
-use PGI\Module\PGModule\Services\Logger;
+use PGI\Module\PGLog\Interfaces\LoggerInterface;
 use PGI\Module\PGModule\Services\Upgrader;
 use Exception;
 
@@ -35,10 +35,10 @@ class UpgradeListener
     /** @var Upgrader */
     private $upgrader;
 
-    /** @var Logger */
+    /** @var LoggerInterface */
     private $logger;
 
-    public function __construct(Upgrader $upgrader, Logger $logger)
+    public function __construct(Upgrader $upgrader, LoggerInterface $logger)
     {
         $this->upgrader = $upgrader;
         $this->logger = $logger;

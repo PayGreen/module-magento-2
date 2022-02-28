@@ -15,7 +15,7 @@
  * @author    PayGreen <contact@paygreen.fr>
  * @copyright 2014 - 2022 Watt Is It
  * @license   https://opensource.org/licenses/mit-license.php MIT License X11
- * @version   2.5.2
+ * @version   2.6.0
  *
  */
 
@@ -24,7 +24,7 @@ namespace PGI\Module\PGModule\Services\Handlers;
 use PGI\Module\PGModule\Components\Events\Module as ModuleEventComponent;
 use PGI\Module\PGModule\Interfaces\Officers\SetupOfficerInterface;
 use PGI\Module\PGModule\Services\Broadcaster;
-use PGI\Module\PGModule\Services\Logger;
+use PGI\Module\PGLog\Interfaces\LoggerInterface;
 use PGI\Module\PGModule\Services\Settings;
 use Exception;
 
@@ -47,7 +47,7 @@ class SetupHandler
     /** @var Settings */
     private $settings;
 
-    /** @var Logger */
+    /** @var LoggerInterface */
     private $logger;
 
     /** @var string|null */
@@ -58,14 +58,14 @@ class SetupHandler
      * @param Broadcaster $broadcaster
      * @param SetupOfficerInterface $setupOfficer
      * @param Settings $settings
-     * @param Logger $logger
+     * @param LoggerInterface $logger
      * @throws Exception
      */
     public function __construct(
         Broadcaster $broadcaster,
         SetupOfficerInterface $setupOfficer,
         Settings $settings,
-        Logger $logger
+        LoggerInterface $logger
     ) {
         $this->broadcaster = $broadcaster;
         $this->setupOfficer = $setupOfficer;

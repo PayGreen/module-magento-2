@@ -14,79 +14,71 @@
  * @author    PayGreen <contact@paygreen.fr>
  * @copyright 2014 - 2022 Watt Is It
  * @license   https://opensource.org/licenses/mit-license.php MIT License X11
- * @version   2.5.2
+ * @version   2.6.0
  *
  *}
-<h2>
-    {'blocks.payment.title'|pgtrans}
-</h2>
+<div class="pgdiv_flex_row pg_justify_content_between pg_align_items-flex_start pgpayment_home_block">
+    <h2 class="pgblock__shadow__title pg__mtop-md">
+        {'blocks.payment.title'|pgtrans}
+    </h2>
+</div>
 
-<div class="pgdiv_flex_row">
+<article>
     {if $connected}
-        {if $paymentKitInfos != null}
-            {include file="payment/block-payment-kit-infos.tpl" infos=[
-                'blocks.payment_kit_infos.form.public_key' => $paymentKitInfos['public_key']
-            ]   paymentsOverview=$paymentKitInfos['payments_overview']
-                growth=$growth}
-        {/if}
+        {include
+        file="toggle.tpl"
+        title="blocks.payment.payment_activation.title"
+        description="blocks.payment.payment_activation.help"
+        action="backoffice.payment.activation"
+        active=$paymentActivated}
+        <div class="pgblock pg__success_container">
+            <div class="pgbutton__container">
+                <a
+                        href="{'backoffice.account.display'|toback}"
+                        class="pgbutton pg__default"
+                >
+                    {'pages.account.name'|pgtrans}
+                </a>
+            </div>
+            <p>
+                {'pages.account.title'|pgtrans}
+            </p>
+        </div>
+        <div class="pgblock pg__danger_container">
+            {include file="account/block-logout.tpl"}
+        </div>
     {else}
-        <div class="pgdiv_flex_column">
-            <div class="pgblock pgblock__min__md">
-                <p>{'blocks.account_login.title'|pgtrans}</p>
+        <ul>
+            <li>
+                {'blocks.payment.text1'|pgtrans}
+            </li>
+            <li class="pg__mtop">
+                {'blocks.payment.text2'|pgtrans}
+            </li>
+            <li class="pg__mtop">
+                {'blocks.payment.text3'|pgtrans}
+            </li>
+        </ul>
 
-                <div class="pgbutton__container pg__mtop-md pg__mbottom-md">
-                    <a href="{'backoffice.account.oauth.request'|toback}" class="pgbutton">
-                        {'blocks.account_login.action'|pgtrans}
-                    </a>
-                </div>
-
-                <p>{'blocks.account_subscription.title'|pgtrans}</p>
-
-                <div class="pgbutton__container pg__mtop-md">
-                    <a href="http://paygreen.fr/subscribe" target="_blank" class="pgbutton">
-                        {'blocks.account_subscription.action'|pgtrans}
-                    </a>
-                </div>
+        <div class="pgdiv_flex_row">
+            <div class="pgbutton__container">
+                <a
+                        target="_blank"
+                        href="https://paygreen.fr/subscribe"
+                        class="pgbutton pg__default"
+                >
+                    {'blocks.account_subscription.activate'|pgtrans}
+                </a>
+            </div>
+            <div class="pgbutton__container">
+                <a href="{'backoffice.account.oauth.request'|toback}" class="pgbutton">
+                    {'blocks.account_login.action'|pgtrans}
+                </a>
             </div>
         </div>
+        <p>
+            {'blocks.payment.description'|pgtrans}
+        </p>
     {/if}
 
-    <div class="pgdiv_flex_column">
-        <div class="pgblock pgblock__max__md">
-            {include
-            file="toggle.tpl"
-            title="blocks.payment.payment_activation.title"
-            description="blocks.payment.payment_activation.help"
-            action="backoffice.payment.activation"
-            active=$paymentActivated}
-        </div>
-        <div class="pgblock pgblock__max__md">
-            <p>{'blocks.payment.shortcuts'|pgtrans} :</p>
-            <ul class="p-0 no-list-style">
-                <li>
-                    <a href="{'backoffice.account.display'|toback}" class="pglink pg__default">
-                        {'pages.account.name'|pgtrans}
-                    </a>
-                </li>
-                {if $connected}
-                    <li>
-                        <a href="{'backoffice.config.display'|toback}" class="pglink pg__default">
-                            {'pages.config.name'|pgtrans}
-                        </a>
-                    </li>
-                    <li>
-                        <a href="{'backoffice.buttons.display'|toback}" class="pglink pg__default">
-                            {'pages.buttons.name'|pgtrans}
-                        </a>
-                    </li>
-                {/if}
-                <li>
-                    <a target="_blank" href="https://paygreen.fr/login" class="pglink pg__default">
-                        {'pages.link.name'|pgtrans}
-                    </a>
-                </li>
-            </ul>
-        </div>
-    </div>
-
-</div>
+</article>

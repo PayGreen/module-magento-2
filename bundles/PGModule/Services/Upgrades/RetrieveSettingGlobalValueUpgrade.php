@@ -15,7 +15,7 @@
  * @author    PayGreen <contact@paygreen.fr>
  * @copyright 2014 - 2022 Watt Is It
  * @license   https://opensource.org/licenses/mit-license.php MIT License X11
- * @version   2.5.2
+ * @version   2.6.0
  *
  */
 
@@ -25,7 +25,7 @@ use Exception;
 use PGI\Module\PGModule\Components\UpgradeStage as UpgradeComponent;
 use PGI\Module\PGModule\Interfaces\Entities\SettingEntityInterface;
 use PGI\Module\PGModule\Interfaces\UpgradeInterface;
-use PGI\Module\PGModule\Services\Logger;
+use PGI\Module\PGLog\Interfaces\LoggerInterface;
 use PGI\Module\PGModule\Services\Managers\SettingManager;
 use PGI\Module\PGShop\Interfaces\Entities\ShopEntityInterface;
 use PGI\Module\PGShop\Services\Managers\ShopManager;
@@ -42,13 +42,13 @@ class RetrieveSettingGlobalValueUpgrade implements UpgradeInterface
     /** @var ShopManager */
     private $shopManager;
 
-    /** @var Logger */
+    /** @var LoggerInterface */
     private $logger;
 
     public function __construct(
         SettingManager $settingManager,
         ShopManager $shopManager,
-        Logger $logger
+        LoggerInterface $logger
     ) {
         $this->settingManager = $settingManager;
         $this->shopManager = $shopManager;

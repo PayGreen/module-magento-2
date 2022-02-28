@@ -15,13 +15,13 @@
  * @author    PayGreen <contact@paygreen.fr>
  * @copyright 2014 - 2022 Watt Is It
  * @license   https://opensource.org/licenses/mit-license.php MIT License X11
- * @version   2.5.2
+ * @version   2.6.0
  *
  */
 
 namespace PGI\Module\PGServer\Services\Renderers\Processors;
 
-use PGI\Module\PGModule\Services\Logger;
+use PGI\Module\PGLog\Interfaces\LoggerInterface;
 use PGI\Module\PGServer\Components\Responses\HTTP as HTTPResponseComponent;
 use PGI\Module\PGSystem\Foundations\AbstractObject;
 
@@ -43,7 +43,7 @@ class WriteHTTPRendererProcessor extends AbstractObject
 
     public function process(HTTPResponseComponent $response)
     {
-        /** @var Logger $logger */
+        /** @var LoggerInterface $logger */
         $logger = $this->getService('logger');
 
         while (ob_get_level() > 0) {

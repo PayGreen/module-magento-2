@@ -15,7 +15,7 @@
  * @author    PayGreen <contact@paygreen.fr>
  * @copyright 2014 - 2022 Watt Is It
  * @license   https://opensource.org/licenses/mit-license.php MIT License X11
- * @version   2.5.2
+ * @version   2.6.0
  *
  */
 
@@ -179,8 +179,9 @@ array (
 'arguments' =>
 array (
 0 => '@aggregator.requirement',
-1 => '%requirements',
-2 => '@logger',
+1 => '@parser',
+2 => '%requirements',
+3 => '@logger',
 ),
 ),
 'handler.hook' =>
@@ -319,6 +320,42 @@ array (
 array (
 'class' => 'PGI\\Module\\PGFramework\\Services\\Generators\\CSVGenerator',
 ),
+'cron.tab.global' =>
+array (
+'abstract' => false,
+'factory' => 'factory.cron.tab',
+'tags' =>
+array (
+0 =>
+array (
+'name' => 'cron.tab',
+),
+),
+'extends' => 'cron.tab.abstract',
+'arguments' =>
+array (
+0 => '@storage.crontab.global',
+1 => 'global',
+),
+),
+'cron.tab.shop' =>
+array (
+'abstract' => false,
+'factory' => 'factory.cron.tab',
+'tags' =>
+array (
+0 =>
+array (
+'name' => 'cron.tab',
+),
+),
+'extends' => 'cron.tab.abstract',
+'arguments' =>
+array (
+0 => '@storage.crontab.shop',
+1 => 'shop',
+),
+),
 'handler.setup' =>
 array (
 'class' => 'PGI\\Module\\PGModule\\Services\\Handlers\\SetupHandler',
@@ -368,6 +405,28 @@ array (
 ),
 ),
 ),
+),
+'storage.crontab.global' =>
+array (
+'abstract' => false,
+'class' => 'PGI\\Module\\PGModule\\Components\\Storages\\Setting',
+'arguments' =>
+array (
+0 => '@settings',
+1 => 'crontab_global',
+),
+'extends' => 'storage.setting.abstract',
+),
+'storage.crontab.shop' =>
+array (
+'abstract' => false,
+'class' => 'PGI\\Module\\PGModule\\Components\\Storages\\Setting',
+'arguments' =>
+array (
+0 => '@settings',
+1 => 'crontab_shop',
+),
+'extends' => 'storage.setting.abstract',
 ),
 'manager.setting' =>
 array (
@@ -505,26 +564,80 @@ array (
 2 => '@logger',
 ),
 ),
-'logger' =>
+'upgrade.remove_settings' =>
 array (
-'class' => 'PGI\\Module\\PGModule\\Services\\Logger',
+'abstract' => false,
+'tags' =>
+array (
+0 =>
+array (
+'name' => 'upgrade',
+),
+),
+'class' => 'PGI\\Module\\PGModule\\Services\\Upgrades\\RemoveSettingsUpgrade',
+'extends' => 'upgrade.abstract',
 'arguments' =>
 array (
-0 => '@dumper',
-1 => '@pathfinder',
-2 => '%{log.file}',
-3 => '%{log.format}',
+0 => '@manager.setting',
+1 => '@manager.shop',
 ),
+),
+'requirement.generic.setting' =>
+array (
+'abstract' => false,
 'calls' =>
 array (
 0 =>
 array (
-'method' => 'setBehaviorHandler',
+'method' => 'setLogger',
 'arguments' =>
 array (
-0 => '@handler.behavior',
+0 => '@logger',
 ),
 ),
+),
+'extends' => 'requirement.abstract',
+'shared' => false,
+'tags' =>
+array (
+0 =>
+array (
+'name' => 'requirement',
+),
+),
+'class' => 'PGI\\Module\\PGModule\\Services\\Requirements\\GenericSettingRequirement',
+'arguments' =>
+array (
+0 => '@settings',
+),
+),
+'requirement.generic.bridge' =>
+array (
+'abstract' => false,
+'calls' =>
+array (
+0 =>
+array (
+'method' => 'setLogger',
+'arguments' =>
+array (
+0 => '@logger',
+),
+),
+),
+'extends' => 'requirement.abstract',
+'shared' => false,
+'tags' =>
+array (
+0 =>
+array (
+'name' => 'requirement',
+),
+),
+'class' => 'PGI\\Module\\PGModule\\Services\\Requirements\\GenericBridgeRequirement',
+'arguments' =>
+array (
+0 => '@container',
 ),
 ),
 'settings' =>
@@ -617,6 +730,27 @@ array (
 'arguments' =>
 array (
 0 => '@pathfinder',
+),
+),
+'logger' =>
+array (
+'abstract' => false,
+'class' => 'PGI\\Module\\PGLog\\Services\\Logger',
+'calls' =>
+array (
+0 =>
+array (
+'method' => 'setBehaviorHandler',
+'arguments' =>
+array (
+0 => '@handler.behavior',
+),
+),
+),
+'extends' => 'logger.abstract',
+'arguments' =>
+array (
+0 => '@log.writer.default',
 ),
 ),
 'handler.database' =>
@@ -1392,16 +1526,33 @@ array (
 1 => '%smarty.builder',
 ),
 ),
-'logger.view' =>
+'log.writer.view' =>
 array (
-'class' => 'PGI\\Module\\PGModule\\Services\\Logger',
+'abstract' => false,
+'tags' =>
+array (
+0 =>
+array (
+'name' => 'log.writer',
+),
+1 =>
+array (
+'name' => 'log.writer.file',
+),
+),
+'extends' => 'log.writer.file.abstract',
+'class' => 'PGI\\Module\\PGLog\\Services\\LogWriters\\FileLogWriter',
 'arguments' =>
 array (
 0 => '@dumper',
 1 => '@pathfinder',
-2 => '%{log.view.file}',
-3 => '%{log.view.format}',
 ),
+'config' => '%log.outputs.view.config',
+),
+'logger.view' =>
+array (
+'abstract' => false,
+'class' => 'PGI\\Module\\PGLog\\Services\\Logger',
 'calls' =>
 array (
 0 =>
@@ -1412,6 +1563,11 @@ array (
 0 => '@handler.behavior',
 ),
 ),
+),
+'extends' => 'logger.abstract',
+'arguments' =>
+array (
+0 => '@log.writer.view',
 ),
 ),
 'view.form' =>
@@ -1874,19 +2030,9 @@ array (
 0 => '@aggregator.validator',
 ),
 ),
-'formatter.abstract' =>
-array (
-'shared' => false,
-'tags' =>
-array (
-0 =>
-array (
-'name' => 'formatter',
-),
-),
-),
 'formatter.string' =>
 array (
+'abstract' => false,
 'shared' => false,
 'tags' =>
 array (
@@ -1895,12 +2041,12 @@ array (
 'name' => 'formatter',
 ),
 ),
-'abstract' => false,
 'extends' => 'formatter.abstract',
 'class' => 'PGI\\Module\\PGForm\\Services\\Formatters\\StringFormatter',
 ),
 'formatter.int' =>
 array (
+'abstract' => false,
 'shared' => false,
 'tags' =>
 array (
@@ -1909,12 +2055,12 @@ array (
 'name' => 'formatter',
 ),
 ),
-'abstract' => false,
 'extends' => 'formatter.abstract',
 'class' => 'PGI\\Module\\PGForm\\Services\\Formatters\\IntegerFormatter',
 ),
 'formatter.float' =>
 array (
+'abstract' => false,
 'shared' => false,
 'tags' =>
 array (
@@ -1923,12 +2069,12 @@ array (
 'name' => 'formatter',
 ),
 ),
-'abstract' => false,
 'extends' => 'formatter.abstract',
 'class' => 'PGI\\Module\\PGForm\\Services\\Formatters\\FloatFormatter',
 ),
 'formatter.array' =>
 array (
+'abstract' => false,
 'shared' => false,
 'tags' =>
 array (
@@ -1937,12 +2083,12 @@ array (
 'name' => 'formatter',
 ),
 ),
-'abstract' => false,
 'extends' => 'formatter.abstract',
 'class' => 'PGI\\Module\\PGForm\\Services\\Formatters\\ArrayFormatter',
 ),
 'formatter.object' =>
 array (
+'abstract' => false,
 'shared' => false,
 'tags' =>
 array (
@@ -1951,12 +2097,12 @@ array (
 'name' => 'formatter',
 ),
 ),
-'abstract' => false,
 'extends' => 'formatter.abstract',
 'class' => 'PGI\\Module\\PGForm\\Services\\Formatters\\ObjectFormatter',
 ),
 'formatter.bool' =>
 array (
+'abstract' => false,
 'shared' => false,
 'tags' =>
 array (
@@ -1965,9 +2111,31 @@ array (
 'name' => 'formatter',
 ),
 ),
-'abstract' => false,
 'extends' => 'formatter.abstract',
 'class' => 'PGI\\Module\\PGForm\\Services\\Formatters\\BooleanFormatter',
+),
+'log.writer.api' =>
+array (
+'abstract' => false,
+'tags' =>
+array (
+0 =>
+array (
+'name' => 'log.writer',
+),
+1 =>
+array (
+'name' => 'log.writer.file',
+),
+),
+'extends' => 'log.writer.file.abstract',
+'class' => 'PGI\\Module\\PGLog\\Services\\LogWriters\\FileLogWriter',
+'arguments' =>
+array (
+0 => '@dumper',
+1 => '@pathfinder',
+),
+'config' => '%log.outputs.api.config',
 ),
 'handler.shop' =>
 array (
@@ -2295,6 +2463,248 @@ array (
 'arguments' =>
 array (
 0 => '@local.repository.quote',
+),
+),
+'aggregator.cron.tab' =>
+array (
+'abstract' => false,
+'class' => 'PGI\\Module\\PGFramework\\Components\\Aggregator',
+'arguments' =>
+array (
+0 => '@container',
+),
+'extends' => 'aggregator.abstract',
+'config' =>
+array (
+'type' => 'cron.tab',
+'interface' => 'PGI\\Module\\PGCron\\Interfaces\\CronTabInterface',
+),
+'catch' => 'cron.tab',
+),
+'aggregator.cron.task' =>
+array (
+'abstract' => false,
+'class' => 'PGI\\Module\\PGFramework\\Components\\Aggregator',
+'arguments' =>
+array (
+0 => '@container',
+),
+'extends' => 'aggregator.abstract',
+'config' =>
+array (
+'type' => 'cron.task',
+'interface' => 'PGI\\Module\\PGCron\\Interfaces\\CronTaskInterface',
+),
+'catch' => 'cron.task',
+),
+'listener.cron.tabs.pre_filling' =>
+array (
+'class' => 'PGI\\Module\\PGCron\\Services\\Listeners\\PreFillingCronTabsListener',
+'arguments' =>
+array (
+0 => '@aggregator.cron.tab',
+1 => '@logger',
+),
+),
+'listener.cron.tabs.cleaning' =>
+array (
+'class' => 'PGI\\Module\\PGCron\\Services\\Listeners\\CleaningCronTabsListener',
+'arguments' =>
+array (
+0 => '@aggregator.cron.tab',
+1 => '@logger',
+),
+),
+'scheduler' =>
+array (
+'abstract' => false,
+'calls' =>
+array (
+0 =>
+array (
+'method' => 'setLogger',
+'arguments' =>
+array (
+0 => '@logger',
+),
+),
+),
+'extends' => 'service.abstract',
+'class' => 'PGI\\Module\\PGCron\\Services\\Scheduler',
+'arguments' =>
+array (
+0 => '@aggregator.cron.tab',
+1 => '@builder.cron.task',
+),
+),
+'selector.cron_activation_mode' =>
+array (
+'arguments' =>
+array (
+0 => '@logger',
+1 => '%data.cron_activation_mode',
+),
+'abstract' => false,
+'calls' =>
+array (
+0 =>
+array (
+'method' => 'setTranslator',
+'arguments' =>
+array (
+0 => '@translator',
+),
+),
+),
+'tags' =>
+array (
+0 =>
+array (
+'name' => 'selector',
+),
+),
+'extends' => 'selector.abstract',
+'class' => 'PGI\\Module\\PGFramework\\Services\\Selectors\\StaticArraySelector',
+),
+'builder.cron.task' =>
+array (
+'class' => 'PGI\\Module\\PGCron\\Services\\Builders\\CronTaskBuilder',
+'arguments' =>
+array (
+0 => '@aggregator.cron.task',
+1 => '@parser',
+),
+'config' =>
+array (
+'tasks' => '%tasks',
+),
+),
+'factory.cron.tab' =>
+array (
+'class' => 'PGI\\Module\\PGCron\\Services\\Factories\\CronTabFactory',
+'arguments' =>
+array (
+0 => '%tasks',
+),
+),
+'handler.log.file' =>
+array (
+'abstract' => false,
+'calls' =>
+array (
+0 =>
+array (
+'method' => 'setLogger',
+'arguments' =>
+array (
+0 => '@logger',
+),
+),
+),
+'extends' => 'service.abstract',
+'class' => 'PGI\\Module\\PGLog\\Services\\Handlers\\LogFileHandler',
+'arguments' =>
+array (
+0 => '@aggregator.log.writer.file',
+1 => '@pathfinder',
+),
+'config' => '%log.archive.file',
+),
+'aggregator.log.writer.file' =>
+array (
+'abstract' => false,
+'class' => 'PGI\\Module\\PGFramework\\Components\\Aggregator',
+'arguments' =>
+array (
+0 => '@container',
+),
+'extends' => 'aggregator.abstract',
+'config' =>
+array (
+'type' => 'log.writer',
+'interface' => 'PGI\\Module\\PGLog\\Interfaces\\LogWriterFileInterface',
+),
+'catch' => 'log.writer.file',
+),
+'log.writer.default' =>
+array (
+'abstract' => false,
+'tags' =>
+array (
+0 =>
+array (
+'name' => 'log.writer',
+),
+1 =>
+array (
+'name' => 'log.writer.file',
+),
+),
+'extends' => 'log.writer.file.abstract',
+'class' => 'PGI\\Module\\PGLog\\Services\\LogWriters\\FileLogWriter',
+'arguments' =>
+array (
+0 => '@dumper',
+1 => '@pathfinder',
+),
+'config' => '%log.outputs.default.config',
+),
+'cron.task.log.cleaning' =>
+array (
+'abstract' => false,
+'calls' =>
+array (
+0 =>
+array (
+'method' => 'setLogger',
+'arguments' =>
+array (
+0 => '@logger',
+),
+),
+),
+'extends' => 'cron.task.abstract',
+'shared' => false,
+'tags' =>
+array (
+0 =>
+array (
+'name' => 'cron.task',
+),
+),
+'class' => 'PGI\\Module\\PGLog\\Services\\CronTasks\\LogFileCleanerCronTask',
+'arguments' =>
+array (
+0 => '@handler.log.file',
+),
+),
+'cron.task.log.zipping' =>
+array (
+'abstract' => false,
+'calls' =>
+array (
+0 =>
+array (
+'method' => 'setLogger',
+'arguments' =>
+array (
+0 => '@logger',
+),
+),
+),
+'extends' => 'cron.task.abstract',
+'shared' => false,
+'tags' =>
+array (
+0 =>
+array (
+'name' => 'cron.task',
+),
+),
+'class' => 'PGI\\Module\\PGLog\\Services\\CronTasks\\LogFileZipperCronTask',
+'arguments' =>
+array (
+0 => '@handler.log.file',
 ),
 ),
 'controller.backoffice.shop' =>
@@ -2784,6 +3194,75 @@ array (
 0 => '@handler.cache',
 ),
 ),
+'controller.backoffice.cron' =>
+array (
+'abstract' => false,
+'shared' => false,
+'calls' =>
+array (
+0 =>
+array (
+'method' => 'setLogger',
+'arguments' =>
+array (
+0 => '@logger',
+),
+),
+1 =>
+array (
+'method' => 'setNotifier',
+'arguments' =>
+array (
+0 => '@notifier',
+),
+),
+2 =>
+array (
+'method' => 'setLinkHandler',
+'arguments' =>
+array (
+0 => '@handler.link',
+),
+),
+3 =>
+array (
+'method' => 'setSettings',
+'arguments' =>
+array (
+0 => '@settings',
+),
+),
+4 =>
+array (
+'method' => 'setParameters',
+'arguments' =>
+array (
+0 => '@parameters',
+),
+),
+5 =>
+array (
+'method' => 'setFormBuilder',
+'arguments' =>
+array (
+0 => '@builder.form',
+),
+),
+),
+'tags' =>
+array (
+0 =>
+array (
+'name' => 'controller',
+),
+),
+'extends' => 'controller.abstract',
+'class' => 'PGI\\Module\\BOModule\\Services\\Controllers\\CronController',
+'arguments' =>
+array (
+0 => '@scheduler',
+),
+),
 'view.menu' =>
 array (
 'class' => 'PGI\\Module\\BOModule\\Services\\Views\\MenuView',
@@ -3046,6 +3525,9 @@ array (
 0 => '@server.backoffice',
 1 => '@handler.output',
 2 => '@handler.menu',
+3 => '@logger',
+4 => '@handler.static_file',
+5 => '@parameters',
 ),
 ),
 'action.support_configuration.save' =>
@@ -3351,6 +3833,106 @@ array (
 'page_name' => 'products',
 ),
 ),
+'action.cron.display' =>
+array (
+'abstract' => false,
+'shared' => false,
+'calls' =>
+array (
+0 =>
+array (
+'method' => 'setLogger',
+'arguments' =>
+array (
+0 => '@logger',
+),
+),
+1 =>
+array (
+'method' => 'setNotifier',
+'arguments' =>
+array (
+0 => '@notifier',
+),
+),
+2 =>
+array (
+'method' => 'setLinkHandler',
+'arguments' =>
+array (
+0 => '@handler.link',
+),
+),
+),
+'tags' =>
+array (
+0 =>
+array (
+'name' => 'action',
+),
+),
+'extends' => 'action.standardized_display_page.abstract',
+'class' => 'PGI\\Module\\BOModule\\Services\\Actions\\StandardizedDisplayPageAction',
+'arguments' =>
+array (
+0 => '@handler.block',
+),
+'config' =>
+array (
+'page_name' => 'cron',
+),
+),
+'action.cron_configuration.save' =>
+array (
+'abstract' => false,
+'shared' => false,
+'calls' =>
+array (
+0 =>
+array (
+'method' => 'setLogger',
+'arguments' =>
+array (
+0 => '@logger',
+),
+),
+1 =>
+array (
+'method' => 'setNotifier',
+'arguments' =>
+array (
+0 => '@notifier',
+),
+),
+2 =>
+array (
+'method' => 'setLinkHandler',
+'arguments' =>
+array (
+0 => '@handler.link',
+),
+),
+),
+'tags' =>
+array (
+0 =>
+array (
+'name' => 'action',
+),
+),
+'extends' => 'action.standardized_save_settings.abstract',
+'class' => 'PGI\\Module\\BOModule\\Services\\Actions\\StandardizedSaveSettingsAction',
+'arguments' =>
+array (
+0 => '@builder.form',
+1 => '@settings',
+),
+'config' =>
+array (
+'form_name' => 'cron',
+'redirection' => 'backoffice.cron.display',
+),
+),
 'handler.menu' =>
 array (
 'class' => 'PGI\\Module\\BOModule\\Services\\Handlers\\MenuHandler',
@@ -3367,27 +3949,6 @@ array (
 'arguments' =>
 array (
 0 => '@settings',
-),
-'calls' =>
-array (
-0 =>
-array (
-'method' => 'addServer',
-'arguments' =>
-array (
-0 => 'blocks.tree.tree_products.title',
-1 => 'tree_api_server',
-),
-),
-1 =>
-array (
-'method' => 'addServer',
-'arguments' =>
-array (
-0 => 'blocks.charity.charity_products.title',
-1 => 'charity_api_server',
-),
-),
 ),
 ),
 'plugin.smarty.bool' =>
@@ -3470,23 +4031,6 @@ array (
 array (
 0 => '@notifier',
 1 => '@handler.shop',
-),
-),
-'requirement.shop_context' =>
-array (
-'abstract' => false,
-'tags' =>
-array (
-0 =>
-array (
-'name' => 'requirement',
-),
-),
-'class' => 'PGI\\Module\\BOModule\\Services\\Requirements\\ShopContextRequirement',
-'extends' => 'requirement.abstract',
-'arguments' =>
-array (
-0 => '@handler.shop',
 ),
 ),
 'builder.request.backoffice' =>
@@ -3597,6 +4141,75 @@ array (
 'extends' => 'controller.abstract',
 'class' => 'PGI\\Module\\FOModule\\Services\\Controllers\\NotificationController',
 ),
+'controller.front.cron' =>
+array (
+'abstract' => false,
+'shared' => false,
+'calls' =>
+array (
+0 =>
+array (
+'method' => 'setLogger',
+'arguments' =>
+array (
+0 => '@logger',
+),
+),
+1 =>
+array (
+'method' => 'setNotifier',
+'arguments' =>
+array (
+0 => '@notifier',
+),
+),
+2 =>
+array (
+'method' => 'setLinkHandler',
+'arguments' =>
+array (
+0 => '@handler.link',
+),
+),
+3 =>
+array (
+'method' => 'setSettings',
+'arguments' =>
+array (
+0 => '@settings',
+),
+),
+4 =>
+array (
+'method' => 'setParameters',
+'arguments' =>
+array (
+0 => '@parameters',
+),
+),
+5 =>
+array (
+'method' => 'setFormBuilder',
+'arguments' =>
+array (
+0 => '@builder.form',
+),
+),
+),
+'tags' =>
+array (
+0 =>
+array (
+'name' => 'controller',
+),
+),
+'extends' => 'controller.abstract',
+'class' => 'PGI\\Module\\FOModule\\Services\\Controllers\\CronController',
+'arguments' =>
+array (
+0 => '@scheduler',
+),
+),
 'builder.output.front_office_paygreen' =>
 array (
 'abstract' => false,
@@ -3655,6 +4268,35 @@ array (
 array (
 0 => '/css/global-frontoffice.css',
 ),
+),
+),
+'builder.output.cron_launcher' =>
+array (
+'abstract' => false,
+'calls' =>
+array (
+0 =>
+array (
+'method' => 'setViewHandler',
+'arguments' =>
+array (
+0 => '@handler.view',
+),
+),
+),
+'tags' =>
+array (
+0 =>
+array (
+'name' => 'builder.output',
+),
+),
+'extends' => 'builder.output.abstract',
+'class' => 'PGI\\Module\\FOModule\\Services\\OutputBuilders\\CronLauncherOutputBuilder',
+'arguments' =>
+array (
+0 => '@handler.link',
+1 => '@settings',
 ),
 ),
 'builder.request.frontoffice' =>
@@ -4092,82 +4734,12 @@ array (
 2 => '@manager.setting',
 ),
 ),
-'requirement.paygreen_connexion' =>
-array (
-'abstract' => false,
-'tags' =>
-array (
-0 =>
-array (
-'name' => 'requirement',
-),
-),
-'class' => 'PGI\\Module\\PGPayment\\Services\\Requirements\\PaygreenConnexionRequirement',
-'extends' => 'requirement.abstract',
-'arguments' =>
-array (
-0 => '@paygreen.facade',
-),
-),
-'requirement.payment_kit_activation' =>
-array (
-'abstract' => false,
-'tags' =>
-array (
-0 =>
-array (
-'name' => 'requirement',
-),
-),
-'class' => 'PGI\\Module\\PGPayment\\Services\\Requirements\\PaymentKitActivationRequirement',
-'extends' => 'requirement.abstract',
-'arguments' =>
-array (
-0 => '@settings',
-),
-),
-'requirement.payment_activation' =>
-array (
-'abstract' => false,
-'tags' =>
-array (
-0 =>
-array (
-'name' => 'requirement',
-),
-),
-'class' => 'PGI\\Module\\PGPayment\\Services\\Requirements\\PaymentActivationRequirement',
-'extends' => 'requirement.abstract',
-'arguments' =>
-array (
-0 => '@settings',
-),
-),
-'requirement.footer_displayed' =>
-array (
-'abstract' => false,
-'tags' =>
-array (
-0 =>
-array (
-'name' => 'requirement',
-),
-),
-'class' => 'PGI\\Module\\PGPayment\\Services\\Requirements\\FooterDisplayedRequirement',
-'extends' => 'requirement.abstract',
-'arguments' =>
-array (
-0 => '@settings',
-1 => '@facade.module',
-2 => '@paygreen.facade',
-),
-),
 'paygreen.facade' =>
 array (
 'class' => 'PGI\\Module\\PGPayment\\Services\\Facades\\PaygreenFacade',
 'arguments' =>
 array (
-0 => '@api.factory',
+0 => '@factory.api',
 1 => '@handler.http',
 2 => '@manager.payment_type',
 ),
@@ -4646,7 +5218,7 @@ array (
 0 => '@paygreen.facade',
 ),
 ),
-'api.factory' =>
+'factory.api' =>
 array (
 'class' => 'PGI\\Module\\APIPayment\\Services\\Factories\\ApiFacadeFactory',
 'arguments' =>
@@ -4659,14 +5231,8 @@ array (
 ),
 'logger.api' =>
 array (
-'class' => 'PGI\\Module\\PGModule\\Services\\Logger',
-'arguments' =>
-array (
-0 => '@dumper',
-1 => '@pathfinder',
-2 => '%{log.api.file}',
-3 => '%{log.api.format}',
-),
+'abstract' => false,
+'class' => 'PGI\\Module\\PGLog\\Services\\Logger',
 'calls' =>
 array (
 0 =>
@@ -4677,6 +5243,11 @@ array (
 0 => '@handler.behavior',
 ),
 ),
+),
+'extends' => 'logger.abstract',
+'arguments' =>
+array (
+0 => '@log.writer.api',
 ),
 ),
 'controller.backoffice.account' =>
@@ -5032,8 +5603,6 @@ array (
 'arguments' =>
 array (
 0 => '@paygreen.facade',
-1 => '@handler.cache',
-2 => '@manager.transaction',
 ),
 ),
 'view.button.line' =>
@@ -5233,57 +5802,6 @@ array (
 array (
 'form_name' => 'settings_customization',
 'redirection' => 'backoffice.config.display',
-),
-),
-'action.payment_kit_activation.save' =>
-array (
-'abstract' => false,
-'shared' => false,
-'calls' =>
-array (
-0 =>
-array (
-'method' => 'setLogger',
-'arguments' =>
-array (
-0 => '@logger',
-),
-),
-1 =>
-array (
-'method' => 'setNotifier',
-'arguments' =>
-array (
-0 => '@notifier',
-),
-),
-2 =>
-array (
-'method' => 'setLinkHandler',
-'arguments' =>
-array (
-0 => '@handler.link',
-),
-),
-),
-'tags' =>
-array (
-0 =>
-array (
-'name' => 'action',
-),
-),
-'extends' => 'action.standardized_save_settings.abstract',
-'class' => 'PGI\\Module\\BOModule\\Services\\Actions\\StandardizedSaveSettingsAction',
-'arguments' =>
-array (
-0 => '@builder.form',
-1 => '@settings',
-),
-'config' =>
-array (
-'form_name' => 'payment_kit_activation',
-'redirection' => 'backoffice.home.display',
 ),
 ),
 'action.account.display' =>
@@ -5774,63 +6292,6 @@ array (
 ),
 ),
 ),
-'action.payment_statistics.display' =>
-array (
-'abstract' => false,
-'shared' => false,
-'calls' =>
-array (
-0 =>
-array (
-'method' => 'setLogger',
-'arguments' =>
-array (
-0 => '@logger',
-),
-),
-1 =>
-array (
-'method' => 'setNotifier',
-'arguments' =>
-array (
-0 => '@notifier',
-),
-),
-2 =>
-array (
-'method' => 'setLinkHandler',
-'arguments' =>
-array (
-0 => '@handler.link',
-),
-),
-),
-'tags' =>
-array (
-0 =>
-array (
-'name' => 'action',
-),
-),
-'extends' => 'action.standardized_display_page.abstract',
-'class' => 'PGI\\Module\\BOPayment\\Services\\Actions\\DisplayPaymentStatisticsPageAction',
-'arguments' =>
-array (
-0 => '@handler.block',
-1 => '@handler.payment_statistics',
-),
-'config' =>
-array (
-'page_name' => 'statistics',
-'static' =>
-array (
-'js' =>
-array (
-0 => '/js/page-statistics.js',
-),
-),
-),
-),
 'action.payment_translations.display' =>
 array (
 'abstract' => false,
@@ -5981,14 +6442,6 @@ array (
 array (
 'translation_tag' => 'payment',
 'redirect_to' => 'payment_translations',
-),
-),
-'handler.payment_statistics' =>
-array (
-'class' => 'PGI\\Module\\BOPayment\\Services\\Handlers\\PaymentStatisticsHandler',
-'arguments' =>
-array (
-0 => '@manager.transaction',
 ),
 ),
 'deflector.filter.paygreen_connexion' =>
@@ -6251,6 +6704,18 @@ array (
 'linker.retry_payment_validation' =>
 array (
 'abstract' => false,
+'calls' =>
+array (
+0 =>
+array (
+'method' => 'setLogger',
+'arguments' =>
+array (
+0 => '@logger',
+),
+),
+),
+'extends' => 'linker.abstract',
 'tags' =>
 array (
 0 =>
@@ -6259,2964 +6724,9 @@ array (
 ),
 ),
 'class' => 'PGI\\Module\\FOPayment\\Services\\Linkers\\RetryPaymentValidationLinker',
-'extends' => 'linker.abstract',
 'arguments' =>
 array (
 0 => '@handler.payment_creation',
-),
-),
-'upgrade.reset_green_access_settings' =>
-array (
-'abstract' => false,
-'tags' =>
-array (
-0 =>
-array (
-'name' => 'upgrade',
-),
-),
-'class' => 'PGI\\Module\\PGGreen\\Services\\Upgrades\\ResetGreenAccessSettingsUpgrade',
-'extends' => 'upgrade.abstract',
-'arguments' =>
-array (
-0 => '@manager.setting',
-1 => '@handler.shop',
-2 => '@logger',
-),
-),
-'handler.tree_authentication' =>
-array (
-'class' => 'PGI\\Module\\PGTree\\Services\\Handlers\\TreeAuthenticationHandler',
-'arguments' =>
-array (
-0 => '@facade.api.tree',
-1 => '@factory.api.tree',
-2 => '@settings',
-3 => '@logger',
-),
-),
-'handler.tree_carbon_offsetting' =>
-array (
-'class' => 'PGI\\Module\\PGTree\\Services\\Handlers\\TreeCarbonOffsettingHandler',
-'arguments' =>
-array (
-0 => '@facade.api.tree',
-1 => '@handler.tree_footprint_id',
-2 => '@broadcaster',
-3 => '@handler.requirement',
-4 => '@manager.carbon_data',
-5 => '@logger',
-),
-),
-'handler.tree_footprint_id' =>
-array (
-'class' => 'PGI\\Module\\PGTree\\Services\\Handlers\\TreeFootprintIdHandler',
-'arguments' =>
-array (
-0 => '@handler.cookie',
-1 => '@handler.shop',
-2 => '@settings',
-3 => '@logger',
-4 => '@facade.api.tree',
-),
-),
-'handler.page_counter' =>
-array (
-'class' => 'PGI\\Module\\PGTree\\Services\\Handlers\\PageCounterHandler',
-'arguments' =>
-array (
-0 => '@handler.cookie',
-),
-),
-'handler.tree.catalog' =>
-array (
-'class' => 'PGI\\Module\\PGTree\\Services\\Handlers\\TreeCatalogHandler',
-'arguments' =>
-array (
-0 => '@manager.product',
-1 => '@handler.cache',
-2 => '@translator',
-3 => '@filter.product_reference',
-4 => '@filter.product_name',
-5 => '@parameters',
-),
-),
-'handler.tree_account' =>
-array (
-'class' => 'PGI\\Module\\PGTree\\Services\\Handlers\\TreeAccountHandler',
-'arguments' =>
-array (
-0 => '@handler.tree_authentication',
-1 => '@facade.api.tree',
-2 => '@handler.cache',
-3 => '@settings',
-4 => '@logger',
-),
-),
-'manager.carbon_data' =>
-array (
-'class' => 'PGI\\Module\\PGTree\\Services\\Managers\\CarbonDataManager',
-'arguments' =>
-array (
-0 => '@repository.carbon_data',
-),
-),
-'listener.carbon_offsetting_computing.adding_web_data' =>
-array (
-'class' => 'PGI\\Module\\PGTree\\Services\\Listeners\\CarbonOffsettingComputingWebListener',
-'arguments' =>
-array (
-0 => '@facade.api.tree',
-1 => '@handler.page_counter',
-2 => '@logger',
-),
-),
-'listener.carbon_offsetting_computing.setting_transport_data' =>
-array (
-'class' => 'PGI\\Module\\PGTree\\Services\\Listeners\\CarbonOffsettingComputingTransportationListener',
-'arguments' =>
-array (
-0 => '@facade.api.tree',
-1 => '@translator',
-2 => '@settings',
-3 => '@parameters',
-4 => '@logger',
-),
-),
-'listener.carbon_offsetting_computing.setting_product_data' =>
-array (
-'class' => 'PGI\\Module\\PGTree\\Services\\Listeners\\CarbonOffsettingComputingProductListener',
-'arguments' =>
-array (
-0 => '@facade.api.tree',
-1 => '@filter.product_reference',
-2 => '@logger',
-),
-),
-'listener.tree.page_counting' =>
-array (
-'class' => 'PGI\\Module\\PGTree\\Services\\Listeners\\PageCountingListener',
-'arguments' =>
-array (
-0 => '@handler.page_counter',
-1 => '@logger',
-),
-),
-'upgrade.fix_tree_access_token' =>
-array (
-'abstract' => false,
-'tags' =>
-array (
-0 =>
-array (
-'name' => 'upgrade',
-),
-),
-'class' => 'PGI\\Module\\PGGreen\\Services\\Upgrades\\FixGreenAccessTokenSettingUpgrade',
-'extends' => 'upgrade.abstract',
-'arguments' =>
-array (
-0 => '@manager.setting',
-1 => '@handler.shop',
-2 => '@handler.tree_authentication',
-3 => '@logger',
-),
-),
-'requirement.tree_connexion' =>
-array (
-'abstract' => false,
-'tags' =>
-array (
-0 =>
-array (
-'name' => 'requirement',
-),
-),
-'class' => 'PGI\\Module\\PGTree\\Services\\Requirements\\TreeConnexionRequirement',
-'extends' => 'requirement.abstract',
-'arguments' =>
-array (
-0 => '@handler.tree_authentication',
-),
-),
-'requirement.tree_kit_activation' =>
-array (
-'abstract' => false,
-'tags' =>
-array (
-0 =>
-array (
-'name' => 'requirement',
-),
-),
-'class' => 'PGI\\Module\\PGTree\\Services\\Requirements\\TreeKitActivationRequirement',
-'extends' => 'requirement.abstract',
-'arguments' =>
-array (
-0 => '@settings',
-),
-),
-'requirement.tree_activation' =>
-array (
-'abstract' => false,
-'tags' =>
-array (
-0 =>
-array (
-'name' => 'requirement',
-),
-),
-'class' => 'PGI\\Module\\PGTree\\Services\\Requirements\\TreeActivationRequirement',
-'extends' => 'requirement.abstract',
-'arguments' =>
-array (
-0 => '@settings',
-),
-),
-'requirement.tree_bot_activation' =>
-array (
-'abstract' => false,
-'tags' =>
-array (
-0 =>
-array (
-'name' => 'requirement',
-),
-),
-'class' => 'PGI\\Module\\PGTree\\Services\\Requirements\\TreeBotActivationRequirement',
-'extends' => 'requirement.abstract',
-'arguments' =>
-array (
-0 => '@settings',
-),
-),
-'requirement.tree_prod_available' =>
-array (
-'abstract' => false,
-'tags' =>
-array (
-0 =>
-array (
-'name' => 'requirement',
-),
-),
-'class' => 'PGI\\Module\\PGTree\\Services\\Requirements\\TreeProdAvailableRequirement',
-'extends' => 'requirement.abstract',
-'arguments' =>
-array (
-0 => '@handler.tree_account',
-),
-),
-'requirement.tree_access_available' =>
-array (
-'abstract' => false,
-'tags' =>
-array (
-0 =>
-array (
-'name' => 'requirement',
-),
-),
-'class' => 'PGI\\Module\\PGTree\\Services\\Requirements\\TreeAccessAvailableRequirement',
-'extends' => 'requirement.abstract',
-'arguments' =>
-array (
-0 => '@handler.tree_account',
-),
-),
-'requirement.tree_access_available_without_activation' =>
-array (
-'abstract' => false,
-'tags' =>
-array (
-0 =>
-array (
-'name' => 'requirement',
-),
-),
-'class' => 'PGI\\Module\\PGTree\\Services\\Requirements\\TreeAccessAvailableRequirement',
-'extends' => 'requirement.abstract',
-'arguments' =>
-array (
-0 => '@handler.tree_account',
-),
-),
-'filter.product_reference' =>
-array (
-'class' => 'PGI\\Module\\PGTree\\Services\\Filters\\ProductReferenceFilter',
-),
-'filter.product_name' =>
-array (
-'class' => 'PGI\\Module\\PGTree\\Services\\Filters\\ProductNameFilter',
-),
-'repository.carbon_data' =>
-array (
-'abstract' => false,
-'arguments' =>
-array (
-0 => '@handler.database',
-1 => '%database.entities.carbon_data',
-),
-'extends' => 'repository.abstract',
-'class' => 'PGI\\Module\\PGTree\\Services\\Repositories\\CarbonDataRepository',
-),
-'listener.setup.tree_client_compatibility_checker' =>
-array (
-'class' => 'PGI\\Module\\APITree\\Services\\Listeners\\InstallCompatibilityCheckListener',
-'arguments' =>
-array (
-0 => '@facade.api.tree',
-),
-),
-'facade.api.tree' =>
-array (
-'factory' => 'factory.api.tree',
-),
-'factory.api.tree' =>
-array (
-'class' => 'PGI\\Module\\APITree\\Services\\Factories\\ApiFacadeFactory',
-'arguments' =>
-array (
-0 => '@logger.api_tree',
-1 => '@settings',
-2 => '@parameters',
-3 => '@facade.application',
-4 => '@handler.requirement',
-),
-),
-'logger.api_tree' =>
-array (
-'class' => 'PGI\\Module\\PGModule\\Services\\Logger',
-'arguments' =>
-array (
-0 => '@dumper',
-1 => '@pathfinder',
-2 => '%{log.api_tree.file}',
-3 => '%{log.api_tree.format}',
-),
-'calls' =>
-array (
-0 =>
-array (
-'method' => 'setBehaviorHandler',
-'arguments' =>
-array (
-0 => '@handler.behavior',
-),
-),
-),
-),
-'controller.backoffice.tree' =>
-array (
-'abstract' => false,
-'shared' => false,
-'calls' =>
-array (
-0 =>
-array (
-'method' => 'setLogger',
-'arguments' =>
-array (
-0 => '@logger',
-),
-),
-1 =>
-array (
-'method' => 'setNotifier',
-'arguments' =>
-array (
-0 => '@notifier',
-),
-),
-2 =>
-array (
-'method' => 'setLinkHandler',
-'arguments' =>
-array (
-0 => '@handler.link',
-),
-),
-3 =>
-array (
-'method' => 'setSettings',
-'arguments' =>
-array (
-0 => '@settings',
-),
-),
-4 =>
-array (
-'method' => 'setParameters',
-'arguments' =>
-array (
-0 => '@parameters',
-),
-),
-5 =>
-array (
-'method' => 'setFormBuilder',
-'arguments' =>
-array (
-0 => '@builder.form',
-),
-),
-6 =>
-array (
-'method' => 'setTreeAuthenticationHandler',
-'arguments' =>
-array (
-0 => '@handler.tree_authentication',
-),
-),
-7 =>
-array (
-'method' => 'setCarbonDataManager',
-'arguments' =>
-array (
-0 => '@manager.carbon_data',
-),
-),
-8 =>
-array (
-'method' => 'setTreeAccountHandler',
-'arguments' =>
-array (
-0 => '@handler.tree_account',
-),
-),
-),
-'tags' =>
-array (
-0 =>
-array (
-'name' => 'controller',
-),
-),
-'extends' => 'controller.abstract',
-'class' => 'PGI\\Module\\BOTree\\Services\\Controllers\\PluginController',
-),
-'controller.backoffice.tree_account' =>
-array (
-'abstract' => false,
-'shared' => false,
-'calls' =>
-array (
-0 =>
-array (
-'method' => 'setLogger',
-'arguments' =>
-array (
-0 => '@logger',
-),
-),
-1 =>
-array (
-'method' => 'setNotifier',
-'arguments' =>
-array (
-0 => '@notifier',
-),
-),
-2 =>
-array (
-'method' => 'setLinkHandler',
-'arguments' =>
-array (
-0 => '@handler.link',
-),
-),
-3 =>
-array (
-'method' => 'setSettings',
-'arguments' =>
-array (
-0 => '@settings',
-),
-),
-4 =>
-array (
-'method' => 'setParameters',
-'arguments' =>
-array (
-0 => '@parameters',
-),
-),
-5 =>
-array (
-'method' => 'setFormBuilder',
-'arguments' =>
-array (
-0 => '@builder.form',
-),
-),
-6 =>
-array (
-'method' => 'setTreeAuthenticationHandler',
-'arguments' =>
-array (
-0 => '@handler.tree_authentication',
-),
-),
-),
-'tags' =>
-array (
-0 =>
-array (
-'name' => 'controller',
-),
-),
-'extends' => 'controller.abstract',
-'class' => 'PGI\\Module\\BOTree\\Services\\Controllers\\AccountController',
-),
-'controller.backoffice.tree_export_product_catalog' =>
-array (
-'abstract' => false,
-'shared' => false,
-'calls' =>
-array (
-0 =>
-array (
-'method' => 'setLogger',
-'arguments' =>
-array (
-0 => '@logger',
-),
-),
-1 =>
-array (
-'method' => 'setNotifier',
-'arguments' =>
-array (
-0 => '@notifier',
-),
-),
-2 =>
-array (
-'method' => 'setLinkHandler',
-'arguments' =>
-array (
-0 => '@handler.link',
-),
-),
-3 =>
-array (
-'method' => 'setSettings',
-'arguments' =>
-array (
-0 => '@settings',
-),
-),
-4 =>
-array (
-'method' => 'setParameters',
-'arguments' =>
-array (
-0 => '@parameters',
-),
-),
-5 =>
-array (
-'method' => 'setFormBuilder',
-'arguments' =>
-array (
-0 => '@builder.form',
-),
-),
-),
-'tags' =>
-array (
-0 =>
-array (
-'name' => 'controller',
-),
-),
-'extends' => 'controller.abstract',
-'class' => 'PGI\\Module\\BOTree\\Services\\Controllers\\ExportProductCatalogController',
-'arguments' =>
-array (
-0 => '@generator.csv',
-1 => '@handler.tree.catalog',
-2 => '@facade.api.tree',
-),
-),
-'action.tree_shipping_address.save' =>
-array (
-'abstract' => false,
-'shared' => false,
-'calls' =>
-array (
-0 =>
-array (
-'method' => 'setLogger',
-'arguments' =>
-array (
-0 => '@logger',
-),
-),
-1 =>
-array (
-'method' => 'setNotifier',
-'arguments' =>
-array (
-0 => '@notifier',
-),
-),
-2 =>
-array (
-'method' => 'setLinkHandler',
-'arguments' =>
-array (
-0 => '@handler.link',
-),
-),
-),
-'tags' =>
-array (
-0 =>
-array (
-'name' => 'action',
-),
-),
-'extends' => 'action.standardized_save_settings.abstract',
-'class' => 'PGI\\Module\\BOModule\\Services\\Actions\\StandardizedSaveSettingsAction',
-'arguments' =>
-array (
-0 => '@builder.form',
-1 => '@settings',
-),
-'config' =>
-array (
-'form_name' => 'tree_shipping_address',
-'redirection' => 'backoffice.tree_config.display',
-),
-),
-'action.tree_kit_activation.save' =>
-array (
-'abstract' => false,
-'shared' => false,
-'calls' =>
-array (
-0 =>
-array (
-'method' => 'setLogger',
-'arguments' =>
-array (
-0 => '@logger',
-),
-),
-1 =>
-array (
-'method' => 'setNotifier',
-'arguments' =>
-array (
-0 => '@notifier',
-),
-),
-2 =>
-array (
-'method' => 'setLinkHandler',
-'arguments' =>
-array (
-0 => '@handler.link',
-),
-),
-),
-'tags' =>
-array (
-0 =>
-array (
-'name' => 'action',
-),
-),
-'extends' => 'action.standardized_save_settings.abstract',
-'class' => 'PGI\\Module\\BOModule\\Services\\Actions\\StandardizedSaveSettingsAction',
-'arguments' =>
-array (
-0 => '@builder.form',
-1 => '@settings',
-),
-'config' =>
-array (
-'form_name' => 'tree_kit_activation',
-'redirection' => 'backoffice.home.display',
-),
-),
-'action.tree_account.display' =>
-array (
-'abstract' => false,
-'shared' => false,
-'calls' =>
-array (
-0 =>
-array (
-'method' => 'setLogger',
-'arguments' =>
-array (
-0 => '@logger',
-),
-),
-1 =>
-array (
-'method' => 'setNotifier',
-'arguments' =>
-array (
-0 => '@notifier',
-),
-),
-2 =>
-array (
-'method' => 'setLinkHandler',
-'arguments' =>
-array (
-0 => '@handler.link',
-),
-),
-),
-'tags' =>
-array (
-0 =>
-array (
-'name' => 'action',
-),
-),
-'extends' => 'action.standardized_display_page.abstract',
-'class' => 'PGI\\Module\\BOModule\\Services\\Actions\\StandardizedDisplayPageAction',
-'arguments' =>
-array (
-0 => '@handler.block',
-),
-'config' =>
-array (
-'page_name' => 'tree_account',
-),
-),
-'action.tree_config.display' =>
-array (
-'abstract' => false,
-'shared' => false,
-'calls' =>
-array (
-0 =>
-array (
-'method' => 'setLogger',
-'arguments' =>
-array (
-0 => '@logger',
-),
-),
-1 =>
-array (
-'method' => 'setNotifier',
-'arguments' =>
-array (
-0 => '@notifier',
-),
-),
-2 =>
-array (
-'method' => 'setLinkHandler',
-'arguments' =>
-array (
-0 => '@handler.link',
-),
-),
-),
-'tags' =>
-array (
-0 =>
-array (
-'name' => 'action',
-),
-),
-'extends' => 'action.standardized_display_page.abstract',
-'class' => 'PGI\\Module\\BOModule\\Services\\Actions\\StandardizedDisplayPageAction',
-'arguments' =>
-array (
-0 => '@handler.block',
-),
-'config' =>
-array (
-'page_name' => 'tree_config',
-),
-),
-'action.carbon_bot_config.display' =>
-array (
-'abstract' => false,
-'shared' => false,
-'calls' =>
-array (
-0 =>
-array (
-'method' => 'setLogger',
-'arguments' =>
-array (
-0 => '@logger',
-),
-),
-1 =>
-array (
-'method' => 'setNotifier',
-'arguments' =>
-array (
-0 => '@notifier',
-),
-),
-2 =>
-array (
-'method' => 'setLinkHandler',
-'arguments' =>
-array (
-0 => '@handler.link',
-),
-),
-),
-'tags' =>
-array (
-0 =>
-array (
-'name' => 'action',
-),
-),
-'extends' => 'action.standardized_display_page.abstract',
-'class' => 'PGI\\Module\\BOModule\\Services\\Actions\\StandardizedDisplayPageAction',
-'arguments' =>
-array (
-0 => '@handler.block',
-),
-'config' =>
-array (
-'page_name' => 'carbon_bot_config',
-),
-),
-'action.carbon_bot_config_global_form.display' =>
-array (
-'abstract' => false,
-'shared' => false,
-'calls' =>
-array (
-0 =>
-array (
-'method' => 'setLogger',
-'arguments' =>
-array (
-0 => '@logger',
-),
-),
-1 =>
-array (
-'method' => 'setNotifier',
-'arguments' =>
-array (
-0 => '@notifier',
-),
-),
-2 =>
-array (
-'method' => 'setLinkHandler',
-'arguments' =>
-array (
-0 => '@handler.link',
-),
-),
-3 =>
-array (
-'method' => 'setSettings',
-'arguments' =>
-array (
-0 => '@settings',
-),
-),
-4 =>
-array (
-'method' => 'setParameters',
-'arguments' =>
-array (
-0 => '@parameters',
-),
-),
-5 =>
-array (
-'method' => 'setFormBuilder',
-'arguments' =>
-array (
-0 => '@builder.form',
-),
-),
-),
-'tags' =>
-array (
-0 =>
-array (
-'name' => 'action',
-),
-),
-'extends' => 'action.standardized_form_settings_block.abstract',
-'class' => 'PGI\\Module\\BOModule\\Services\\Actions\\StandardizedFormSettingsBlockAction',
-'config' =>
-array (
-'form_name' => 'carbon_bot_config_global',
-'form_action' => 'backoffice.carbon_bot_config_global_form.save',
-),
-),
-'action.tree_bot_form.display' =>
-array (
-'abstract' => false,
-'shared' => false,
-'calls' =>
-array (
-0 =>
-array (
-'method' => 'setLogger',
-'arguments' =>
-array (
-0 => '@logger',
-),
-),
-1 =>
-array (
-'method' => 'setNotifier',
-'arguments' =>
-array (
-0 => '@notifier',
-),
-),
-2 =>
-array (
-'method' => 'setLinkHandler',
-'arguments' =>
-array (
-0 => '@handler.link',
-),
-),
-3 =>
-array (
-'method' => 'setSettings',
-'arguments' =>
-array (
-0 => '@settings',
-),
-),
-4 =>
-array (
-'method' => 'setParameters',
-'arguments' =>
-array (
-0 => '@parameters',
-),
-),
-5 =>
-array (
-'method' => 'setFormBuilder',
-'arguments' =>
-array (
-0 => '@builder.form',
-),
-),
-),
-'tags' =>
-array (
-0 =>
-array (
-'name' => 'action',
-),
-),
-'extends' => 'action.abstract',
-'class' => 'PGI\\Module\\BOTree\\Services\\Actions\\DisplayCarbonBotConfigurationFormAction',
-),
-'action.carbon_bot_config_global_form.save' =>
-array (
-'abstract' => false,
-'shared' => false,
-'calls' =>
-array (
-0 =>
-array (
-'method' => 'setLogger',
-'arguments' =>
-array (
-0 => '@logger',
-),
-),
-1 =>
-array (
-'method' => 'setNotifier',
-'arguments' =>
-array (
-0 => '@notifier',
-),
-),
-2 =>
-array (
-'method' => 'setLinkHandler',
-'arguments' =>
-array (
-0 => '@handler.link',
-),
-),
-),
-'tags' =>
-array (
-0 =>
-array (
-'name' => 'action',
-),
-),
-'extends' => 'action.standardized_save_settings.abstract',
-'class' => 'PGI\\Module\\BOModule\\Services\\Actions\\StandardizedSaveSettingsAction',
-'arguments' =>
-array (
-0 => '@builder.form',
-1 => '@settings',
-),
-'config' =>
-array (
-'form_name' => 'carbon_bot_config_global',
-'redirection' => 'backoffice.carbon_bot_config.display',
-),
-),
-'action.tree_bot_form.save' =>
-array (
-'abstract' => false,
-'shared' => false,
-'calls' =>
-array (
-0 =>
-array (
-'method' => 'setLogger',
-'arguments' =>
-array (
-0 => '@logger',
-),
-),
-1 =>
-array (
-'method' => 'setNotifier',
-'arguments' =>
-array (
-0 => '@notifier',
-),
-),
-2 =>
-array (
-'method' => 'setLinkHandler',
-'arguments' =>
-array (
-0 => '@handler.link',
-),
-),
-),
-'tags' =>
-array (
-0 =>
-array (
-'name' => 'action',
-),
-),
-'extends' => 'action.standardized_save_settings.abstract',
-'class' => 'PGI\\Module\\BOModule\\Services\\Actions\\StandardizedSaveSettingsAction',
-'arguments' =>
-array (
-0 => '@builder.form',
-1 => '@settings',
-),
-'config' =>
-array (
-'form_name' => 'tree_bot',
-'redirection' => 'backoffice.carbon_bot_config.display',
-),
-),
-'action.tree_module_config.display' =>
-array (
-'abstract' => false,
-'shared' => false,
-'calls' =>
-array (
-0 =>
-array (
-'method' => 'setLogger',
-'arguments' =>
-array (
-0 => '@logger',
-),
-),
-1 =>
-array (
-'method' => 'setNotifier',
-'arguments' =>
-array (
-0 => '@notifier',
-),
-),
-2 =>
-array (
-'method' => 'setLinkHandler',
-'arguments' =>
-array (
-0 => '@handler.link',
-),
-),
-3 =>
-array (
-'method' => 'setSettings',
-'arguments' =>
-array (
-0 => '@settings',
-),
-),
-4 =>
-array (
-'method' => 'setParameters',
-'arguments' =>
-array (
-0 => '@parameters',
-),
-),
-5 =>
-array (
-'method' => 'setFormBuilder',
-'arguments' =>
-array (
-0 => '@builder.form',
-),
-),
-),
-'tags' =>
-array (
-0 =>
-array (
-'name' => 'action',
-),
-),
-'extends' => 'action.standardized_form_settings_block.abstract',
-'class' => 'PGI\\Module\\BOModule\\Services\\Actions\\StandardizedFormSettingsBlockAction',
-'config' =>
-array (
-'form_name' => 'tree_config',
-'form_action' => 'backoffice.tree_config.save',
-),
-),
-'action.tree_shipping_address.display' =>
-array (
-'abstract' => false,
-'shared' => false,
-'calls' =>
-array (
-0 =>
-array (
-'method' => 'setLogger',
-'arguments' =>
-array (
-0 => '@logger',
-),
-),
-1 =>
-array (
-'method' => 'setNotifier',
-'arguments' =>
-array (
-0 => '@notifier',
-),
-),
-2 =>
-array (
-'method' => 'setLinkHandler',
-'arguments' =>
-array (
-0 => '@handler.link',
-),
-),
-3 =>
-array (
-'method' => 'setSettings',
-'arguments' =>
-array (
-0 => '@settings',
-),
-),
-4 =>
-array (
-'method' => 'setParameters',
-'arguments' =>
-array (
-0 => '@parameters',
-),
-),
-5 =>
-array (
-'method' => 'setFormBuilder',
-'arguments' =>
-array (
-0 => '@builder.form',
-),
-),
-),
-'tags' =>
-array (
-0 =>
-array (
-'name' => 'action',
-),
-),
-'extends' => 'action.standardized_form_settings_block.abstract',
-'class' => 'PGI\\Module\\BOModule\\Services\\Actions\\StandardizedFormSettingsBlockAction',
-'config' =>
-array (
-'form_name' => 'tree_shipping_address',
-'form_action' => 'backoffice.tree_shipping_address.save',
-),
-),
-'action.tree_translations.display' =>
-array (
-'abstract' => false,
-'shared' => false,
-'calls' =>
-array (
-0 =>
-array (
-'method' => 'setLogger',
-'arguments' =>
-array (
-0 => '@logger',
-),
-),
-1 =>
-array (
-'method' => 'setNotifier',
-'arguments' =>
-array (
-0 => '@notifier',
-),
-),
-2 =>
-array (
-'method' => 'setLinkHandler',
-'arguments' =>
-array (
-0 => '@handler.link',
-),
-),
-),
-'tags' =>
-array (
-0 =>
-array (
-'name' => 'action',
-),
-),
-'extends' => 'action.standardized_display_page.abstract',
-'class' => 'PGI\\Module\\BOModule\\Services\\Actions\\StandardizedDisplayPageAction',
-'arguments' =>
-array (
-0 => '@handler.block',
-),
-'config' =>
-array (
-'page_name' => 'tree_translations',
-),
-),
-'action.tree_translations_form.display' =>
-array (
-'abstract' => false,
-'shared' => false,
-'calls' =>
-array (
-0 =>
-array (
-'method' => 'setLogger',
-'arguments' =>
-array (
-0 => '@logger',
-),
-),
-1 =>
-array (
-'method' => 'setNotifier',
-'arguments' =>
-array (
-0 => '@notifier',
-),
-),
-2 =>
-array (
-'method' => 'setLinkHandler',
-'arguments' =>
-array (
-0 => '@handler.link',
-),
-),
-),
-'tags' =>
-array (
-0 =>
-array (
-'name' => 'action',
-),
-),
-'extends' => 'action.standardized_translations_form_block.abstract',
-'class' => 'PGI\\Module\\BOModule\\Services\\Actions\\StandardizedFormTranslationsBlockAction',
-'arguments' =>
-array (
-0 => '@builder.translation_form',
-1 => '@handler.translation',
-),
-'config' =>
-array (
-'translation_tag' => 'tree',
-'form_action' => 'backoffice.tree_translations.save',
-),
-),
-'action.tree_translations_form.save' =>
-array (
-'abstract' => false,
-'shared' => false,
-'calls' =>
-array (
-0 =>
-array (
-'method' => 'setLogger',
-'arguments' =>
-array (
-0 => '@logger',
-),
-),
-1 =>
-array (
-'method' => 'setNotifier',
-'arguments' =>
-array (
-0 => '@notifier',
-),
-),
-2 =>
-array (
-'method' => 'setLinkHandler',
-'arguments' =>
-array (
-0 => '@handler.link',
-),
-),
-),
-'tags' =>
-array (
-0 =>
-array (
-'name' => 'action',
-),
-),
-'extends' => 'action.standardized_save_translations_form.abstract',
-'class' => 'PGI\\Module\\BOModule\\Services\\Actions\\StandardizedSaveTranslationsFormAction',
-'arguments' =>
-array (
-0 => '@builder.translation_form',
-1 => '@handler.translation',
-2 => '@manager.translation',
-),
-'config' =>
-array (
-'translation_tag' => 'tree',
-'redirect_to' => 'tree_translations',
-),
-),
-'action.tree_bot_translations_form.display' =>
-array (
-'abstract' => false,
-'shared' => false,
-'calls' =>
-array (
-0 =>
-array (
-'method' => 'setLogger',
-'arguments' =>
-array (
-0 => '@logger',
-),
-),
-1 =>
-array (
-'method' => 'setNotifier',
-'arguments' =>
-array (
-0 => '@notifier',
-),
-),
-2 =>
-array (
-'method' => 'setLinkHandler',
-'arguments' =>
-array (
-0 => '@handler.link',
-),
-),
-),
-'tags' =>
-array (
-0 =>
-array (
-'name' => 'action',
-),
-),
-'extends' => 'action.standardized_translations_form_block.abstract',
-'class' => 'PGI\\Module\\BOModule\\Services\\Actions\\StandardizedFormTranslationsBlockAction',
-'arguments' =>
-array (
-0 => '@builder.translation_form',
-1 => '@handler.translation',
-),
-'config' =>
-array (
-'translation_tag' => 'tree_bot',
-'form_action' => 'backoffice.tree_bot_translations.save',
-),
-),
-'action.tree_bot_translations_form.save' =>
-array (
-'abstract' => false,
-'shared' => false,
-'calls' =>
-array (
-0 =>
-array (
-'method' => 'setLogger',
-'arguments' =>
-array (
-0 => '@logger',
-),
-),
-1 =>
-array (
-'method' => 'setNotifier',
-'arguments' =>
-array (
-0 => '@notifier',
-),
-),
-2 =>
-array (
-'method' => 'setLinkHandler',
-'arguments' =>
-array (
-0 => '@handler.link',
-),
-),
-),
-'tags' =>
-array (
-0 =>
-array (
-'name' => 'action',
-),
-),
-'extends' => 'action.standardized_save_translations_form.abstract',
-'class' => 'PGI\\Module\\BOModule\\Services\\Actions\\StandardizedSaveTranslationsFormAction',
-'arguments' =>
-array (
-0 => '@builder.translation_form',
-1 => '@handler.translation',
-2 => '@manager.translation',
-),
-'config' =>
-array (
-'translation_tag' => 'tree_bot',
-'redirect_to' => 'carbon_bot_config',
-),
-),
-'action.tree_configuration.save' =>
-array (
-'abstract' => false,
-'shared' => false,
-'calls' =>
-array (
-0 =>
-array (
-'method' => 'setLogger',
-'arguments' =>
-array (
-0 => '@logger',
-),
-),
-1 =>
-array (
-'method' => 'setNotifier',
-'arguments' =>
-array (
-0 => '@notifier',
-),
-),
-2 =>
-array (
-'method' => 'setLinkHandler',
-'arguments' =>
-array (
-0 => '@handler.link',
-),
-),
-),
-'tags' =>
-array (
-0 =>
-array (
-'name' => 'action',
-),
-),
-'extends' => 'action.standardized_save_settings.abstract',
-'class' => 'PGI\\Module\\BOModule\\Services\\Actions\\StandardizedSaveSettingsAction',
-'arguments' =>
-array (
-0 => '@builder.form',
-1 => '@settings',
-),
-'config' =>
-array (
-'form_name' => 'tree_config',
-'redirection' => 'backoffice.tree_config.display',
-),
-),
-'action.tree_products_synchronization.display' =>
-array (
-'abstract' => false,
-'shared' => false,
-'calls' =>
-array (
-0 =>
-array (
-'method' => 'setLogger',
-'arguments' =>
-array (
-0 => '@logger',
-),
-),
-1 =>
-array (
-'method' => 'setNotifier',
-'arguments' =>
-array (
-0 => '@notifier',
-),
-),
-2 =>
-array (
-'method' => 'setLinkHandler',
-'arguments' =>
-array (
-0 => '@handler.link',
-),
-),
-),
-'tags' =>
-array (
-0 =>
-array (
-'name' => 'action',
-),
-),
-'extends' => 'action.standardized_display_page.abstract',
-'class' => 'PGI\\Module\\BOModule\\Services\\Actions\\StandardizedDisplayPageAction',
-'arguments' =>
-array (
-0 => '@handler.block',
-),
-'config' =>
-array (
-'page_name' => 'tree_products_synchronization',
-),
-),
-'listener.tree_action.display_backoffice' =>
-array (
-'class' => 'PGI\\Module\\BOTree\\Services\\Listeners\\DisplayBackofficeNotificationListener',
-'arguments' =>
-array (
-0 => '@notifier',
-1 => '@handler.tree_authentication',
-),
-),
-'listener.tree_action.shipping_address' =>
-array (
-'class' => 'PGI\\Module\\BOTree\\Services\\Listeners\\ShippingAddressListener',
-'arguments' =>
-array (
-0 => '@notifier',
-1 => '@handler.tree_authentication',
-2 => '@settings',
-),
-),
-'listener.tree_action.display_tree_test_mode_expiration_notification' =>
-array (
-'class' => 'PGI\\Module\\BOTree\\Services\\Listeners\\DisplayTestModeExpirationNotificationListener',
-'arguments' =>
-array (
-0 => '@notifier',
-1 => '@handler.tree_account',
-),
-),
-'controller.front.tree.climatebot' =>
-array (
-'abstract' => false,
-'shared' => false,
-'calls' =>
-array (
-0 =>
-array (
-'method' => 'setLogger',
-'arguments' =>
-array (
-0 => '@logger',
-),
-),
-1 =>
-array (
-'method' => 'setNotifier',
-'arguments' =>
-array (
-0 => '@notifier',
-),
-),
-2 =>
-array (
-'method' => 'setLinkHandler',
-'arguments' =>
-array (
-0 => '@handler.link',
-),
-),
-3 =>
-array (
-'method' => 'setSettings',
-'arguments' =>
-array (
-0 => '@settings',
-),
-),
-4 =>
-array (
-'method' => 'setParameters',
-'arguments' =>
-array (
-0 => '@parameters',
-),
-),
-5 =>
-array (
-'method' => 'setFormBuilder',
-'arguments' =>
-array (
-0 => '@builder.form',
-),
-),
-),
-'tags' =>
-array (
-0 =>
-array (
-'name' => 'controller',
-),
-),
-'extends' => 'controller.abstract',
-'class' => 'PGI\\Module\\FOTree\\Services\\Controllers\\ClimateBotController',
-'arguments' =>
-array (
-0 => '@manager.customer',
-1 => '@manager.cart',
-2 => '@handler.view',
-3 => '@handler.tree_carbon_offsetting',
-4 => '@handler.carbon_rounder',
-),
-),
-'builder.output.carbon_footprint' =>
-array (
-'abstract' => false,
-'calls' =>
-array (
-0 =>
-array (
-'method' => 'setViewHandler',
-'arguments' =>
-array (
-0 => '@handler.view',
-),
-),
-),
-'tags' =>
-array (
-0 =>
-array (
-'name' => 'builder.output',
-),
-),
-'extends' => 'builder.output.abstract',
-'class' => 'PGI\\Module\\FOTree\\Services\\OutputBuilders\\CarbonFootprintOutputBuilder',
-'arguments' =>
-array (
-0 => '@manager.carbon_data',
-1 => '@handler.carbon_rounder',
-2 => '@logger',
-3 => '@settings',
-),
-),
-'builder.output.carbon_bot' =>
-array (
-'abstract' => false,
-'calls' =>
-array (
-0 =>
-array (
-'method' => 'setViewHandler',
-'arguments' =>
-array (
-0 => '@handler.view',
-),
-),
-),
-'tags' =>
-array (
-0 =>
-array (
-'name' => 'builder.output',
-),
-),
-'extends' => 'builder.output.abstract',
-'class' => 'PGI\\Module\\FOTree\\Services\\OutputBuilders\\CarbonBotOutputBuilder',
-'arguments' =>
-array (
-0 => '@handler.link',
-1 => '@settings',
-),
-),
-'handler.carbon_rounder' =>
-array (
-'class' => 'PGI\\Module\\FOTree\\Services\\Handlers\\CarbonRounderHandler',
-'arguments' =>
-array (
-0 => '@handler.locale',
-),
-),
-'listener.carbon_footprint.finalization' =>
-array (
-'class' => 'PGI\\Module\\FOTree\\Services\\Listeners\\CarbonFootprintFinalizationListener',
-'arguments' =>
-array (
-0 => '@handler.tree_carbon_offsetting',
-1 => '@repository.carbon_data',
-2 => '@logger',
-),
-),
-'diagnostic.charity_gift' =>
-array (
-'abstract' => false,
-'tags' =>
-array (
-0 =>
-array (
-'name' => 'diagnostic',
-),
-),
-'class' => 'PGI\\Module\\PGCharity\\Services\\Diagnostics\\CharityGiftDiagnostic',
-'extends' => 'diagnostic.abstract',
-'arguments' =>
-array (
-0 => '@handler.charity_gift',
-1 => '@logger',
-),
-),
-'handler.charity_authentication' =>
-array (
-'class' => 'PGI\\Module\\PGCharity\\Services\\Handlers\\CharityAuthenticationHandler',
-'arguments' =>
-array (
-0 => '@facade.api.charity',
-1 => '@factory.api.charity',
-2 => '@settings',
-3 => '@logger',
-),
-),
-'handler.charity_association' =>
-array (
-'class' => 'PGI\\Module\\PGCharity\\Services\\Handlers\\CharityAssociationHandler',
-'arguments' =>
-array (
-0 => '@facade.api.charity',
-1 => '@handler.cache',
-2 => '@logger',
-),
-),
-'handler.charity_cart' =>
-array (
-'class' => 'PGI\\Module\\PGCharity\\Services\\Handlers\\CharityCartHandler',
-'arguments' =>
-array (
-0 => '@manager.cart',
-1 => '@handler.charity_gift',
-2 => '@manager.product',
-3 => '@logger',
-),
-),
-'handler.charity' =>
-array (
-'class' => 'PGI\\Module\\PGCharity\\Services\\Handlers\\CharityHandler',
-'arguments' =>
-array (
-0 => '@handler.charity_cart',
-1 => '@handler.charity_partnership',
-2 => '@handler.charity_gift',
-3 => '@facade.api.charity',
-4 => '@handler.session',
-5 => '@manager.gift',
-6 => '@handler.shop',
-7 => '@settings',
-8 => '@logger',
-),
-),
-'handler.charity_partnership' =>
-array (
-'class' => 'PGI\\Module\\PGCharity\\Services\\Handlers\\CharityPartnershipHandler',
-'arguments' =>
-array (
-0 => '@facade.api.charity',
-1 => '@handler.cache',
-2 => '@settings',
-3 => '@logger',
-),
-),
-'handler.charity_gift' =>
-array (
-'class' => 'PGI\\Module\\PGCharity\\Services\\Handlers\\CharityGiftHandler',
-'arguments' =>
-array (
-0 => '@manager.product',
-1 => '@officer.charity_gift',
-2 => '@handler.shop',
-),
-),
-'handler.charity_account' =>
-array (
-'class' => 'PGI\\Module\\PGCharity\\Services\\Handlers\\CharityAccountHandler',
-'arguments' =>
-array (
-0 => '@handler.charity_authentication',
-1 => '@facade.api.charity',
-2 => '@handler.cache',
-3 => '@settings',
-4 => '@logger',
-),
-),
-'manager.gift' =>
-array (
-'class' => 'PGI\\Module\\PGCharity\\Services\\Managers\\GiftManager',
-'arguments' =>
-array (
-0 => '@repository.gift',
-),
-),
-'listener.setup.charity_gift_product' =>
-array (
-'class' => 'PGI\\Module\\PGCharity\\Services\\Listeners\\SetupCharityGiftProductListener',
-'arguments' =>
-array (
-0 => '@handler.charity_gift',
-1 => '@logger',
-),
-),
-'upgrade.install_charity_gift_product' =>
-array (
-'abstract' => false,
-'tags' =>
-array (
-0 =>
-array (
-'name' => 'upgrade',
-),
-),
-'class' => 'PGI\\Module\\PGCharity\\Services\\Upgrades\\InstallCharityGiftProductUpgrade',
-'extends' => 'upgrade.abstract',
-'arguments' =>
-array (
-0 => '@handler.charity_gift',
-),
-),
-'upgrade.fix_charity_access_token' =>
-array (
-'abstract' => false,
-'tags' =>
-array (
-0 =>
-array (
-'name' => 'upgrade',
-),
-),
-'class' => 'PGI\\Module\\PGGreen\\Services\\Upgrades\\FixGreenAccessTokenSettingUpgrade',
-'extends' => 'upgrade.abstract',
-'arguments' =>
-array (
-0 => '@manager.setting',
-1 => '@handler.shop',
-2 => '@handler.charity_authentication',
-3 => '@logger',
-),
-),
-'requirement.charity_connexion' =>
-array (
-'abstract' => false,
-'tags' =>
-array (
-0 =>
-array (
-'name' => 'requirement',
-),
-),
-'class' => 'PGI\\Module\\PGCharity\\Services\\Requirements\\CharityConnexionRequirement',
-'extends' => 'requirement.abstract',
-'arguments' =>
-array (
-0 => '@handler.charity_authentication',
-),
-),
-'requirement.charity_kit_activation' =>
-array (
-'abstract' => false,
-'tags' =>
-array (
-0 =>
-array (
-'name' => 'requirement',
-),
-),
-'class' => 'PGI\\Module\\PGCharity\\Services\\Requirements\\CharityKitActivationRequirement',
-'extends' => 'requirement.abstract',
-'arguments' =>
-array (
-0 => '@settings',
-),
-),
-'requirement.charity_activation' =>
-array (
-'abstract' => false,
-'tags' =>
-array (
-0 =>
-array (
-'name' => 'requirement',
-),
-),
-'class' => 'PGI\\Module\\PGCharity\\Services\\Requirements\\CharityActivationRequirement',
-'extends' => 'requirement.abstract',
-'arguments' =>
-array (
-0 => '@settings',
-),
-),
-'requirement.charity_prod_available' =>
-array (
-'abstract' => false,
-'tags' =>
-array (
-0 =>
-array (
-'name' => 'requirement',
-),
-),
-'class' => 'PGI\\Module\\PGCharity\\Services\\Requirements\\CharityProdAvailableRequirement',
-'extends' => 'requirement.abstract',
-'arguments' =>
-array (
-0 => '@handler.charity_account',
-),
-),
-'requirement.charity_access_available' =>
-array (
-'abstract' => false,
-'tags' =>
-array (
-0 =>
-array (
-'name' => 'requirement',
-),
-),
-'class' => 'PGI\\Module\\PGCharity\\Services\\Requirements\\CharityAccessAvailableRequirement',
-'extends' => 'requirement.abstract',
-'arguments' =>
-array (
-0 => '@handler.charity_account',
-),
-),
-'repository.gift' =>
-array (
-'abstract' => false,
-'arguments' =>
-array (
-0 => '@handler.database',
-1 => '%database.entities.gift',
-),
-'extends' => 'repository.abstract',
-'class' => 'PGI\\Module\\PGCharity\\Services\\Repositories\\GiftRepository',
-),
-'officer.charity_gift' =>
-array (
-'abstract' => false,
-'calls' =>
-array (
-0 =>
-array (
-'method' => 'setLogger',
-'arguments' =>
-array (
-0 => '@logger',
-),
-),
-),
-'extends' => 'service.abstract',
-'class' => 'PGI\\Module\\PGMagentoCharity\\Services\\Officers\\CharityGiftOfficer',
-'arguments' =>
-array (
-0 => '@local.factory.product',
-1 => '@local.repository.product',
-2 => '@local.app.state',
-3 => '@manager.product',
-4 => '@settings',
-5 => '@officer.charity_gift.picture',
-6 => '@officer.charity_gift.translation',
-7 => '@officer.charity_gift.stock',
-),
-'config' =>
-array (
-'gift_reference' => '%data.charity_gift.reference',
-'gift_primary_setting' => 'charity_gift_id',
-),
-),
-'facade.api.charity' =>
-array (
-'factory' => 'factory.api.charity',
-),
-'listener.setup.charity_client_compatibility_checker' =>
-array (
-'class' => 'PGI\\Module\\APICharity\\Services\\Listeners\\InstallCompatibilityCheckListener',
-'arguments' =>
-array (
-0 => '@facade.api.charity',
-),
-),
-'logger.api_charity' =>
-array (
-'class' => 'PGI\\Module\\PGModule\\Services\\Logger',
-'arguments' =>
-array (
-0 => '@dumper',
-1 => '@pathfinder',
-2 => '%{log.api_charity.file}',
-3 => '%{log.api_charity.format}',
-),
-'calls' =>
-array (
-0 =>
-array (
-'method' => 'setBehaviorHandler',
-'arguments' =>
-array (
-0 => '@handler.behavior',
-),
-),
-),
-),
-'factory.api.charity' =>
-array (
-'class' => 'PGI\\Module\\APICharity\\Services\\Factories\\ApiFacadeFactory',
-'arguments' =>
-array (
-0 => '@logger.api_charity',
-1 => '@settings',
-2 => '@parameters',
-3 => '@facade.application',
-4 => '@handler.requirement',
-),
-),
-'controller.backoffice.charity' =>
-array (
-'abstract' => false,
-'shared' => false,
-'calls' =>
-array (
-0 =>
-array (
-'method' => 'setLogger',
-'arguments' =>
-array (
-0 => '@logger',
-),
-),
-1 =>
-array (
-'method' => 'setNotifier',
-'arguments' =>
-array (
-0 => '@notifier',
-),
-),
-2 =>
-array (
-'method' => 'setLinkHandler',
-'arguments' =>
-array (
-0 => '@handler.link',
-),
-),
-3 =>
-array (
-'method' => 'setSettings',
-'arguments' =>
-array (
-0 => '@settings',
-),
-),
-4 =>
-array (
-'method' => 'setParameters',
-'arguments' =>
-array (
-0 => '@parameters',
-),
-),
-5 =>
-array (
-'method' => 'setFormBuilder',
-'arguments' =>
-array (
-0 => '@builder.form',
-),
-),
-6 =>
-array (
-'method' => 'setCharityAuthenticationHandler',
-'arguments' =>
-array (
-0 => '@handler.charity_authentication',
-),
-),
-7 =>
-array (
-'method' => 'setCharityAccountHandler',
-'arguments' =>
-array (
-0 => '@handler.charity_account',
-),
-),
-8 =>
-array (
-'method' => 'setGiftManager',
-'arguments' =>
-array (
-0 => '@manager.gift',
-),
-),
-9 =>
-array (
-'method' => 'setBroadcaster',
-'arguments' =>
-array (
-0 => '@broadcaster',
-),
-),
-),
-'tags' =>
-array (
-0 =>
-array (
-'name' => 'controller',
-),
-),
-'extends' => 'controller.abstract',
-'class' => 'PGI\\Module\\BOCharity\\Services\\Controllers\\PluginController',
-),
-'controller.backoffice.charity_account' =>
-array (
-'abstract' => false,
-'shared' => false,
-'calls' =>
-array (
-0 =>
-array (
-'method' => 'setLogger',
-'arguments' =>
-array (
-0 => '@logger',
-),
-),
-1 =>
-array (
-'method' => 'setNotifier',
-'arguments' =>
-array (
-0 => '@notifier',
-),
-),
-2 =>
-array (
-'method' => 'setLinkHandler',
-'arguments' =>
-array (
-0 => '@handler.link',
-),
-),
-3 =>
-array (
-'method' => 'setSettings',
-'arguments' =>
-array (
-0 => '@settings',
-),
-),
-4 =>
-array (
-'method' => 'setParameters',
-'arguments' =>
-array (
-0 => '@parameters',
-),
-),
-5 =>
-array (
-'method' => 'setFormBuilder',
-'arguments' =>
-array (
-0 => '@builder.form',
-),
-),
-6 =>
-array (
-'method' => 'setCharityAuthenticationHandler',
-'arguments' =>
-array (
-0 => '@handler.charity_authentication',
-),
-),
-),
-'tags' =>
-array (
-0 =>
-array (
-'name' => 'controller',
-),
-),
-'extends' => 'controller.abstract',
-'class' => 'PGI\\Module\\BOCharity\\Services\\Controllers\\AccountController',
-),
-'controller.backoffice.charity_partnerships' =>
-array (
-'abstract' => false,
-'shared' => false,
-'calls' =>
-array (
-0 =>
-array (
-'method' => 'setLogger',
-'arguments' =>
-array (
-0 => '@logger',
-),
-),
-1 =>
-array (
-'method' => 'setNotifier',
-'arguments' =>
-array (
-0 => '@notifier',
-),
-),
-2 =>
-array (
-'method' => 'setLinkHandler',
-'arguments' =>
-array (
-0 => '@handler.link',
-),
-),
-3 =>
-array (
-'method' => 'setSettings',
-'arguments' =>
-array (
-0 => '@settings',
-),
-),
-4 =>
-array (
-'method' => 'setParameters',
-'arguments' =>
-array (
-0 => '@parameters',
-),
-),
-5 =>
-array (
-'method' => 'setFormBuilder',
-'arguments' =>
-array (
-0 => '@builder.form',
-),
-),
-6 =>
-array (
-'method' => 'setCharityPartnershipHandler',
-'arguments' =>
-array (
-0 => '@handler.charity_partnership',
-),
-),
-),
-'tags' =>
-array (
-0 =>
-array (
-'name' => 'controller',
-),
-),
-'extends' => 'controller.abstract',
-'class' => 'PGI\\Module\\BOCharity\\Services\\Controllers\\PartnershipsController',
-),
-'view.partnership.line' =>
-array (
-'class' => 'PGI\\Module\\BOCharity\\Services\\Views\\PartnershipLineView',
-'shared' => false,
-'calls' =>
-array (
-0 =>
-array (
-'method' => 'setViewHandler',
-'arguments' =>
-array (
-0 => '@handler.view',
-),
-),
-),
-'tags' =>
-array (
-0 =>
-array (
-'name' => 'view',
-),
-),
-'abstract' => false,
-'extends' => 'view.basic',
-'arguments' =>
-array (
-0 => '@translator',
-),
-),
-'action.charity_account.display' =>
-array (
-'abstract' => false,
-'shared' => false,
-'calls' =>
-array (
-0 =>
-array (
-'method' => 'setLogger',
-'arguments' =>
-array (
-0 => '@logger',
-),
-),
-1 =>
-array (
-'method' => 'setNotifier',
-'arguments' =>
-array (
-0 => '@notifier',
-),
-),
-2 =>
-array (
-'method' => 'setLinkHandler',
-'arguments' =>
-array (
-0 => '@handler.link',
-),
-),
-),
-'tags' =>
-array (
-0 =>
-array (
-'name' => 'action',
-),
-),
-'extends' => 'action.standardized_display_page.abstract',
-'class' => 'PGI\\Module\\BOModule\\Services\\Actions\\StandardizedDisplayPageAction',
-'arguments' =>
-array (
-0 => '@handler.block',
-),
-'config' =>
-array (
-'page_name' => 'charity_account',
-),
-),
-'action.charity_config.display' =>
-array (
-'abstract' => false,
-'shared' => false,
-'calls' =>
-array (
-0 =>
-array (
-'method' => 'setLogger',
-'arguments' =>
-array (
-0 => '@logger',
-),
-),
-1 =>
-array (
-'method' => 'setNotifier',
-'arguments' =>
-array (
-0 => '@notifier',
-),
-),
-2 =>
-array (
-'method' => 'setLinkHandler',
-'arguments' =>
-array (
-0 => '@handler.link',
-),
-),
-),
-'tags' =>
-array (
-0 =>
-array (
-'name' => 'action',
-),
-),
-'extends' => 'action.standardized_display_page.abstract',
-'class' => 'PGI\\Module\\BOModule\\Services\\Actions\\StandardizedDisplayPageAction',
-'arguments' =>
-array (
-0 => '@handler.block',
-),
-'config' =>
-array (
-'page_name' => 'charity_config',
-),
-),
-'action.charity_module_config.display' =>
-array (
-'abstract' => false,
-'shared' => false,
-'calls' =>
-array (
-0 =>
-array (
-'method' => 'setLogger',
-'arguments' =>
-array (
-0 => '@logger',
-),
-),
-1 =>
-array (
-'method' => 'setNotifier',
-'arguments' =>
-array (
-0 => '@notifier',
-),
-),
-2 =>
-array (
-'method' => 'setLinkHandler',
-'arguments' =>
-array (
-0 => '@handler.link',
-),
-),
-3 =>
-array (
-'method' => 'setSettings',
-'arguments' =>
-array (
-0 => '@settings',
-),
-),
-4 =>
-array (
-'method' => 'setParameters',
-'arguments' =>
-array (
-0 => '@parameters',
-),
-),
-5 =>
-array (
-'method' => 'setFormBuilder',
-'arguments' =>
-array (
-0 => '@builder.form',
-),
-),
-),
-'tags' =>
-array (
-0 =>
-array (
-'name' => 'action',
-),
-),
-'extends' => 'action.standardized_form_settings_block.abstract',
-'class' => 'PGI\\Module\\BOModule\\Services\\Actions\\StandardizedFormSettingsBlockAction',
-'config' =>
-array (
-'form_name' => 'charity_config',
-'form_action' => 'backoffice.charity_config.save',
-),
-),
-'action.charity_config.save' =>
-array (
-'abstract' => false,
-'shared' => false,
-'calls' =>
-array (
-0 =>
-array (
-'method' => 'setLogger',
-'arguments' =>
-array (
-0 => '@logger',
-),
-),
-1 =>
-array (
-'method' => 'setNotifier',
-'arguments' =>
-array (
-0 => '@notifier',
-),
-),
-2 =>
-array (
-'method' => 'setLinkHandler',
-'arguments' =>
-array (
-0 => '@handler.link',
-),
-),
-),
-'tags' =>
-array (
-0 =>
-array (
-'name' => 'action',
-),
-),
-'extends' => 'action.standardized_save_settings.abstract',
-'class' => 'PGI\\Module\\BOModule\\Services\\Actions\\StandardizedSaveSettingsAction',
-'arguments' =>
-array (
-0 => '@builder.form',
-1 => '@settings',
-),
-'config' =>
-array (
-'form_name' => 'charity_config',
-'redirection' => 'backoffice.charity_config.display',
-),
-),
-'action.charity_partnerships.display' =>
-array (
-'abstract' => false,
-'shared' => false,
-'calls' =>
-array (
-0 =>
-array (
-'method' => 'setLogger',
-'arguments' =>
-array (
-0 => '@logger',
-),
-),
-1 =>
-array (
-'method' => 'setNotifier',
-'arguments' =>
-array (
-0 => '@notifier',
-),
-),
-2 =>
-array (
-'method' => 'setLinkHandler',
-'arguments' =>
-array (
-0 => '@handler.link',
-),
-),
-),
-'tags' =>
-array (
-0 =>
-array (
-'name' => 'action',
-),
-),
-'extends' => 'action.standardized_display_page.abstract',
-'class' => 'PGI\\Module\\BOModule\\Services\\Actions\\StandardizedDisplayPageAction',
-'arguments' =>
-array (
-0 => '@handler.block',
-),
-'config' =>
-array (
-'page_name' => 'charity_partnerships',
-),
-),
-'action.charity_translations.display' =>
-array (
-'abstract' => false,
-'shared' => false,
-'calls' =>
-array (
-0 =>
-array (
-'method' => 'setLogger',
-'arguments' =>
-array (
-0 => '@logger',
-),
-),
-1 =>
-array (
-'method' => 'setNotifier',
-'arguments' =>
-array (
-0 => '@notifier',
-),
-),
-2 =>
-array (
-'method' => 'setLinkHandler',
-'arguments' =>
-array (
-0 => '@handler.link',
-),
-),
-),
-'tags' =>
-array (
-0 =>
-array (
-'name' => 'action',
-),
-),
-'extends' => 'action.standardized_display_page.abstract',
-'class' => 'PGI\\Module\\BOModule\\Services\\Actions\\StandardizedDisplayPageAction',
-'arguments' =>
-array (
-0 => '@handler.block',
-),
-'config' =>
-array (
-'page_name' => 'charity_translations',
-),
-),
-'action.charity_translations_form.display' =>
-array (
-'abstract' => false,
-'shared' => false,
-'calls' =>
-array (
-0 =>
-array (
-'method' => 'setLogger',
-'arguments' =>
-array (
-0 => '@logger',
-),
-),
-1 =>
-array (
-'method' => 'setNotifier',
-'arguments' =>
-array (
-0 => '@notifier',
-),
-),
-2 =>
-array (
-'method' => 'setLinkHandler',
-'arguments' =>
-array (
-0 => '@handler.link',
-),
-),
-),
-'tags' =>
-array (
-0 =>
-array (
-'name' => 'action',
-),
-),
-'extends' => 'action.standardized_translations_form_block.abstract',
-'class' => 'PGI\\Module\\BOModule\\Services\\Actions\\StandardizedFormTranslationsBlockAction',
-'arguments' =>
-array (
-0 => '@builder.translation_form',
-1 => '@handler.translation',
-),
-'config' =>
-array (
-'translation_tag' => 'charity',
-'form_action' => 'backoffice.charity_translations.save',
-),
-),
-'action.charity_translations_form.save' =>
-array (
-'abstract' => false,
-'shared' => false,
-'calls' =>
-array (
-0 =>
-array (
-'method' => 'setLogger',
-'arguments' =>
-array (
-0 => '@logger',
-),
-),
-1 =>
-array (
-'method' => 'setNotifier',
-'arguments' =>
-array (
-0 => '@notifier',
-),
-),
-2 =>
-array (
-'method' => 'setLinkHandler',
-'arguments' =>
-array (
-0 => '@handler.link',
-),
-),
-),
-'tags' =>
-array (
-0 =>
-array (
-'name' => 'action',
-),
-),
-'extends' => 'action.standardized_save_translations_form.abstract',
-'class' => 'PGI\\Module\\BOModule\\Services\\Actions\\StandardizedSaveTranslationsFormAction',
-'arguments' =>
-array (
-0 => '@builder.translation_form',
-1 => '@handler.translation',
-2 => '@manager.translation',
-),
-'config' =>
-array (
-'translation_tag' => 'charity',
-'redirect_to' => 'charity_translations',
-),
-),
-'listener.charity_action.display_backoffice' =>
-array (
-'class' => 'PGI\\Module\\BOCharity\\Services\\Listeners\\DisplayBackofficeNotificationListener',
-'arguments' =>
-array (
-0 => '@notifier',
-1 => '@handler.charity_authentication',
-),
-),
-'listener.charity_action.display_charity_test_mode_expiration_notification' =>
-array (
-'class' => 'PGI\\Module\\BOCharity\\Services\\Listeners\\DisplayTestModeExpirationNotificationListener',
-'arguments' =>
-array (
-0 => '@notifier',
-1 => '@handler.charity_account',
-),
-),
-'controller.front.charity.popin' =>
-array (
-'abstract' => false,
-'shared' => false,
-'calls' =>
-array (
-0 =>
-array (
-'method' => 'setLogger',
-'arguments' =>
-array (
-0 => '@logger',
-),
-),
-1 =>
-array (
-'method' => 'setNotifier',
-'arguments' =>
-array (
-0 => '@notifier',
-),
-),
-2 =>
-array (
-'method' => 'setLinkHandler',
-'arguments' =>
-array (
-0 => '@handler.link',
-),
-),
-3 =>
-array (
-'method' => 'setSettings',
-'arguments' =>
-array (
-0 => '@settings',
-),
-),
-4 =>
-array (
-'method' => 'setParameters',
-'arguments' =>
-array (
-0 => '@parameters',
-),
-),
-5 =>
-array (
-'method' => 'setFormBuilder',
-'arguments' =>
-array (
-0 => '@builder.form',
-),
-),
-),
-'tags' =>
-array (
-0 =>
-array (
-'name' => 'controller',
-),
-),
-'extends' => 'controller.abstract',
-'class' => 'PGI\\Module\\FOCharity\\Services\\Controllers\\CharityPopinController',
-'arguments' =>
-array (
-0 => '@handler.view',
-1 => '@handler.charity_partnership',
-2 => '@handler.charity',
-),
-),
-'controller.front.charity.gift' =>
-array (
-'abstract' => false,
-'shared' => false,
-'calls' =>
-array (
-0 =>
-array (
-'method' => 'setLogger',
-'arguments' =>
-array (
-0 => '@logger',
-),
-),
-1 =>
-array (
-'method' => 'setNotifier',
-'arguments' =>
-array (
-0 => '@notifier',
-),
-),
-2 =>
-array (
-'method' => 'setLinkHandler',
-'arguments' =>
-array (
-0 => '@handler.link',
-),
-),
-3 =>
-array (
-'method' => 'setSettings',
-'arguments' =>
-array (
-0 => '@settings',
-),
-),
-4 =>
-array (
-'method' => 'setParameters',
-'arguments' =>
-array (
-0 => '@parameters',
-),
-),
-5 =>
-array (
-'method' => 'setFormBuilder',
-'arguments' =>
-array (
-0 => '@builder.form',
-),
-),
-),
-'tags' =>
-array (
-0 =>
-array (
-'name' => 'controller',
-),
-),
-'extends' => 'controller.abstract',
-'class' => 'PGI\\Module\\FOCharity\\Services\\Controllers\\CharityGiftController',
-'arguments' =>
-array (
-0 => '@handler.charity',
-1 => '@handler.session',
-),
-),
-'builder.output.charity_block' =>
-array (
-'abstract' => false,
-'calls' =>
-array (
-0 =>
-array (
-'method' => 'setViewHandler',
-'arguments' =>
-array (
-0 => '@handler.view',
-),
-),
-),
-'tags' =>
-array (
-0 =>
-array (
-'name' => 'builder.output',
-),
-),
-'extends' => 'builder.output.abstract',
-'class' => 'PGI\\Module\\FOCharity\\Services\\OutputBuilders\\CharityBlockOutputBuilder',
-'arguments' =>
-array (
-0 => '@handler.charity',
-1 => '@handler.link',
-2 => '@settings',
-3 => '@handler.charity_partnership',
-),
-),
-'listener.charity_gift.finalization' =>
-array (
-'class' => 'PGI\\Module\\FOCharity\\Services\\Listeners\\CharityGiftFinalizationListener',
-'arguments' =>
-array (
-0 => '@handler.charity',
-1 => '@repository.gift',
-2 => '@logger',
 ),
 ),
 'builder.output.frontoffice_override_css' =>
@@ -9290,14 +6800,6 @@ array (
 0 => '@handler.static_file',
 ),
 ),
-'provisioner.pre_payment' =>
-array (
-'class' => 'PGI\\Module\\PGMagento\\Components\\Provisioners\\PrePayment',
-'arguments' =>
-array (
-0 => '@magento',
-),
-),
 'officer.settings.configuration.global' =>
 array (
 'class' => 'PGI\\Module\\PGMagento\\Services\\Officers\\ConfigurationGlobalSettingsOfficer',
@@ -9330,9 +6832,33 @@ array (
 0 => 'Magento\\Quote\\Api\\CartRepositoryInterface',
 ),
 ),
+'local.builder.url' =>
+array (
+'factory' =>
+array (
+'service' => 'magento',
+'method' => 'get',
+),
+'arguments' =>
+array (
+0 => 'Magento\\Framework\\UrlInterface',
+),
+),
 'linker.backoffice' =>
 array (
 'abstract' => false,
+'calls' =>
+array (
+0 =>
+array (
+'method' => 'setLogger',
+'arguments' =>
+array (
+0 => '@logger',
+),
+),
+),
+'extends' => 'linker.abstract.magento',
 'tags' =>
 array (
 0 =>
@@ -9340,12 +6866,31 @@ array (
 'name' => 'linker',
 ),
 ),
-'class' => 'PGI\\Module\\PGMagento\\Services\\Linkers\\BackofficeLinker',
-'extends' => 'linker.abstract',
+'class' => 'PGI\\Module\\PGMagento\\Services\\Linkers\\MagentoLinker',
+'arguments' =>
+array (
+0 => '@local.builder.url',
+),
+'config' =>
+array (
+'route' => 'paygreen/backoffice/index',
+),
 ),
 'linker.frontoffice' =>
 array (
 'abstract' => false,
+'calls' =>
+array (
+0 =>
+array (
+'method' => 'setLogger',
+'arguments' =>
+array (
+0 => '@logger',
+),
+),
+),
+'extends' => 'linker.abstract.magento',
 'tags' =>
 array (
 0 =>
@@ -9353,17 +6898,31 @@ array (
 'name' => 'linker',
 ),
 ),
-'extends' => 'linker.abstract.front',
+'class' => 'PGI\\Module\\PGMagento\\Services\\Linkers\\MagentoLinker',
 'arguments' =>
 array (
-0 => '@magento',
-1 => 'pgfront/frontoffice/index',
+0 => '@local.builder.url',
 ),
-'class' => 'PGI\\Module\\PGMagento\\Services\\Linkers\\FrontBasicLinker',
+'config' =>
+array (
+'route' => 'paygreen/frontoffice/index',
+),
 ),
 'linker.home' =>
 array (
 'abstract' => false,
+'calls' =>
+array (
+0 =>
+array (
+'method' => 'setLogger',
+'arguments' =>
+array (
+0 => '@logger',
+),
+),
+),
+'extends' => 'linker.abstract.magento',
 'tags' =>
 array (
 0 =>
@@ -9372,15 +6931,26 @@ array (
 ),
 ),
 'class' => 'PGI\\Module\\PGMagento\\Services\\Linkers\\HomeLinker',
-'extends' => 'linker.abstract',
 'arguments' =>
 array (
-0 => '@magento',
+0 => '@local.builder.url',
 ),
 ),
 'linker.order' =>
 array (
 'abstract' => false,
+'calls' =>
+array (
+0 =>
+array (
+'method' => 'setLogger',
+'arguments' =>
+array (
+0 => '@logger',
+),
+),
+),
+'extends' => 'linker.abstract.magento',
 'tags' =>
 array (
 0 =>
@@ -9388,17 +6958,28 @@ array (
 'name' => 'linker',
 ),
 ),
-'extends' => 'linker.abstract.order',
+'class' => 'PGI\\Module\\PGMagento\\Services\\Linkers\\OrderLinker',
 'arguments' =>
 array (
-0 => '@magento',
+0 => '@local.builder.url',
 1 => '@manager.order',
 ),
-'class' => 'PGI\\Module\\PGMagento\\Services\\Linkers\\OrderLinker',
 ),
 'linker.order.history' =>
 array (
 'abstract' => false,
+'calls' =>
+array (
+0 =>
+array (
+'method' => 'setLogger',
+'arguments' =>
+array (
+0 => '@logger',
+),
+),
+),
+'extends' => 'linker.abstract.magento',
 'tags' =>
 array (
 0 =>
@@ -9406,17 +6987,31 @@ array (
 'name' => 'linker',
 ),
 ),
-'extends' => 'linker.abstract.front',
+'class' => 'PGI\\Module\\PGMagento\\Services\\Linkers\\MagentoLinker',
 'arguments' =>
 array (
-0 => '@magento',
-1 => 'sales/order/history',
+0 => '@local.builder.url',
 ),
-'class' => 'PGI\\Module\\PGMagento\\Services\\Linkers\\FrontBasicLinker',
+'config' =>
+array (
+'route' => 'sales/order/history',
+),
 ),
 'linker.checkout' =>
 array (
 'abstract' => false,
+'calls' =>
+array (
+0 =>
+array (
+'method' => 'setLogger',
+'arguments' =>
+array (
+0 => '@logger',
+),
+),
+),
+'extends' => 'linker.abstract.magento',
 'tags' =>
 array (
 0 =>
@@ -9424,17 +7019,31 @@ array (
 'name' => 'linker',
 ),
 ),
-'extends' => 'linker.abstract.front',
+'class' => 'PGI\\Module\\PGMagento\\Services\\Linkers\\MagentoLinker',
 'arguments' =>
 array (
-0 => '@magento',
-1 => 'checkout',
+0 => '@local.builder.url',
 ),
-'class' => 'PGI\\Module\\PGMagento\\Services\\Linkers\\FrontBasicLinker',
+'config' =>
+array (
+'route' => 'checkout',
+),
 ),
 'linker.checkout.success' =>
 array (
 'abstract' => false,
+'calls' =>
+array (
+0 =>
+array (
+'method' => 'setLogger',
+'arguments' =>
+array (
+0 => '@logger',
+),
+),
+),
+'extends' => 'linker.abstract.magento',
 'tags' =>
 array (
 0 =>
@@ -9442,13 +7051,15 @@ array (
 'name' => 'linker',
 ),
 ),
-'extends' => 'linker.abstract.front',
+'class' => 'PGI\\Module\\PGMagento\\Services\\Linkers\\MagentoLinker',
 'arguments' =>
 array (
-0 => '@magento',
-1 => 'checkout/onepage/success',
+0 => '@local.builder.url',
 ),
-'class' => 'PGI\\Module\\PGMagento\\Services\\Linkers\\FrontBasicLinker',
+'config' =>
+array (
+'route' => 'checkout/onepage/success',
+),
 ),
 'controller.front.invalid_payments' =>
 array (
@@ -9540,6 +7151,14 @@ array (
 1 => '@logger',
 ),
 ),
+'provisioner.pre_payment' =>
+array (
+'class' => 'PGI\\Module\\PGMagentoPayment\\Components\\Provisioners\\PrePayment',
+'arguments' =>
+array (
+0 => '@magento',
+),
+),
 'strategy.order_state_mapper.magento' =>
 array (
 'class' => 'PGI\\Module\\PGMagentoPayment\\Services\\Strategies\\OrderStateMagentoStrategy',
@@ -9564,209 +7183,6 @@ array (
 0 => '@manager.order_state',
 ),
 ),
-),
-),
-'builder.output.carbon_bot_css' =>
-array (
-'abstract' => false,
-'calls' =>
-array (
-0 =>
-array (
-'method' => 'setViewHandler',
-'arguments' =>
-array (
-0 => '@handler.view',
-),
-),
-),
-'tags' =>
-array (
-0 =>
-array (
-'name' => 'builder.output',
-),
-),
-'extends' => 'builder.output.abstract.static_files',
-'class' => 'PGI\\Module\\PGModule\\Services\\OutputBuilders\\StaticFilesOutputBuilder',
-'config' =>
-array (
-'css' =>
-array (
-0 => '/css/tree-frontoffice.css',
-),
-),
-),
-'officer.charity_gift.picture' =>
-array (
-'abstract' => false,
-'calls' =>
-array (
-0 =>
-array (
-'method' => 'setLogger',
-'arguments' =>
-array (
-0 => '@logger',
-),
-),
-),
-'extends' => 'service.abstract',
-'class' => 'PGI\\Module\\PGMagentoCharity\\Services\\Officers\\CharityGiftPictureOfficer',
-'arguments' =>
-array (
-0 => '@pathfinder',
-1 => '@local.product.media.config',
-2 => '@local.filesystem',
-),
-'config' =>
-array (
-'gift_picture' => 'static:/pictures/FOCharity/logo-charity-kit.png',
-),
-),
-'officer.charity_gift.translation' =>
-array (
-'abstract' => false,
-'calls' =>
-array (
-0 =>
-array (
-'method' => 'setLogger',
-'arguments' =>
-array (
-0 => '@logger',
-),
-),
-),
-'extends' => 'service.abstract',
-'class' => 'PGI\\Module\\PGMagentoCharity\\Services\\Officers\\CharityGiftTranslationOfficer',
-'arguments' =>
-array (
-0 => '@local.factory.product',
-1 => '@local.resource_model.product',
-2 => '@local.scope',
-3 => '@translator',
-),
-'config' =>
-array (
-'gift_name_translation_key' => 'data.charity_gift.name',
-),
-),
-'officer.charity_gift.stock' =>
-array (
-'abstract' => false,
-'calls' =>
-array (
-0 =>
-array (
-'method' => 'setLogger',
-'arguments' =>
-array (
-0 => '@logger',
-),
-),
-),
-'extends' => 'service.abstract',
-'class' => 'PGI\\Module\\PGMagentoCharity\\Services\\Officers\\CharityGiftStockOfficer',
-'arguments' =>
-array (
-0 => '@local.registry.stock',
-),
-),
-'local.repository.product' =>
-array (
-'factory' =>
-array (
-'service' => 'magento',
-'method' => 'get',
-),
-'arguments' =>
-array (
-0 => 'Magento\\Catalog\\Api\\ProductRepositoryInterface',
-),
-),
-'local.factory.product' =>
-array (
-'factory' =>
-array (
-'service' => 'magento',
-'method' => 'get',
-),
-'arguments' =>
-array (
-0 => 'Magento\\Catalog\\Api\\Data\\ProductInterfaceFactory',
-),
-),
-'local.resource_model.product' =>
-array (
-'factory' =>
-array (
-'service' => 'magento',
-'method' => 'get',
-),
-'arguments' =>
-array (
-0 => 'Magento\\Catalog\\Model\\ResourceModel\\Product',
-),
-),
-'local.app.state' =>
-array (
-'factory' =>
-array (
-'service' => 'magento',
-'method' => 'get',
-),
-'arguments' =>
-array (
-0 => 'Magento\\Framework\\App\\State',
-),
-),
-'local.registry.stock' =>
-array (
-'factory' =>
-array (
-'service' => 'magento',
-'method' => 'get',
-),
-'arguments' =>
-array (
-0 => 'Magento\\CatalogInventory\\Api\\StockRegistryInterface',
-),
-),
-'local.product.media.config' =>
-array (
-'factory' =>
-array (
-'service' => 'magento',
-'method' => 'get',
-),
-'arguments' =>
-array (
-0 => 'Magento\\Catalog\\Model\\Product\\Media\\Config',
-),
-),
-'local.filesystem' =>
-array (
-'factory' =>
-array (
-'service' => 'magento',
-'method' => 'get',
-),
-'arguments' =>
-array (
-0 => 'Magento\\Framework\\Filesystem',
-),
-),
-'local.scope' =>
-array (
-'factory' =>
-array (
-'service' => 'magento',
-'method' => 'get',
-),
-'arguments' =>
-array (
-0 => 'Magento\\Framework\\App\\Config\\ScopeConfigInterface',
 ),
 ),
 );

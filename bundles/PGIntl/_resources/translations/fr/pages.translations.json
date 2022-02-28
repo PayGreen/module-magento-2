@@ -1,7 +1,7 @@
 {
   "pages": {
     "translations": {
-      "name": "Gestion des traductions",
+      "name": "Textes et traductions",
       "title": "Traduction des éléments dynamiques du frontoffice",
       "frontoffice": {
         "title": "Traduction du front-office",

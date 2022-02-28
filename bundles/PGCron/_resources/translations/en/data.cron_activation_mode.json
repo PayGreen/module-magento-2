@@ -1,0 +1,8 @@
+{
+  "data": {
+    "cron_activation_mode": {
+      "url": "Calling a URL from an external service",
+      "ajax": "Triggering from a JavaScript script"
+    }
+  }
+}

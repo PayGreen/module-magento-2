@@ -14,18 +14,12 @@
  * @author    PayGreen <contact@paygreen.fr>
  * @copyright 2014 - 2022 Watt Is It
  * @license   https://opensource.org/licenses/mit-license.php MIT License X11
- * @version   2.5.2
+ * @version   2.6.0
  *
  *}
 <div class="pgnavbar">
-    <a
-        href="https://www.paygreen.io/"
-        target="_blank"
-        title="{'misc.backoffice.menu.logo'|pgtrans}"
-        class="pgnavbar__logo"
-    >
-        <img src="{$logo|picture|escape:'html':'UTF-8'}" alt="PayGreen" />
-    </a>
+
+    {include file=$template entries=$logo}
 
     <ul class="pgnavbar__menu">
         {foreach from=$entries item=entry}

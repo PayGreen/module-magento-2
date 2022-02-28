@@ -15,7 +15,7 @@
  * @author    PayGreen <contact@paygreen.fr>
  * @copyright 2014 - 2022 Watt Is It
  * @license   https://opensource.org/licenses/mit-license.php MIT License X11
- * @version   2.5.2
+ * @version   2.6.0
  *
  */
 
@@ -24,7 +24,7 @@ namespace PGI\Module\PGServer\Foundations;
 use PGI\Module\PGForm\Interfaces\FormInterface;
 use PGI\Module\PGForm\Services\Builders\FormBuilder;
 use PGI\Module\PGFramework\Services\Notifier;
-use PGI\Module\PGModule\Services\Logger;
+use PGI\Module\PGLog\Interfaces\LoggerInterface;
 use PGI\Module\PGModule\Services\Settings;
 use PGI\Module\PGServer\Components\Requests\Forward as ForwardRequestComponent;
 use PGI\Module\PGServer\Components\Responses\Blank as BlankResponseComponent;
@@ -47,7 +47,7 @@ abstract class AbstractController
     /** @var Notifier */
     private $notifier;
 
-    /** @var Logger */
+    /** @var LoggerInterface */
     private $logger;
 
     /** @var LinkHandler */
@@ -74,7 +74,7 @@ abstract class AbstractController
     }
 
     /**
-     * @return Logger
+     * @return LoggerInterface
      */
     protected function getLogger()
     {
@@ -82,9 +82,9 @@ abstract class AbstractController
     }
 
     /**
-     * @param Logger
+     * @param LoggerInterface
      */
-    public function setLogger(Logger $logger)
+    public function setLogger(LoggerInterface $logger)
     {
         $this->logger = $logger;
     }

@@ -1,0 +1,19 @@
+{
+  "blocks": {
+    "cron": {
+      "tasks": {
+        "title": "List of scheduled tasks.",
+        "description": "You will find below the list of planned tasks as well as the date on which each of them is likely to be carried out.",
+        "head": {
+          "name": "Tasks",
+          "status": "Status"
+        },
+        "status": {
+          "never": "Never executed.",
+          "now": "Imminent execution.",
+          "later": "Will run on %{date} from %{time} hour."
+        }
+      }
+    }
+  }
+}

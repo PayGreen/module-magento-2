@@ -15,7 +15,7 @@
  * @author    PayGreen <contact@paygreen.fr>
  * @copyright 2014 - 2022 Watt Is It
  * @license   https://opensource.org/licenses/mit-license.php MIT License X11
- * @version   2.5.2
+ * @version   2.6.0
  *
  */
 
@@ -23,7 +23,7 @@ namespace Paygreen\Payment\Model;
 
 use Magento\Checkout\Model\ConfigProviderInterface as LocalConfigProviderInterface;
 use PGI\Module\PGIntl\Services\Translator;
-use PGI\Module\PGMagento\Components\Provisioners\Checkout as CheckoutProvisionerComponent;
+use PGI\Module\PGMagentoPayment\Components\Provisioners\Checkout as CheckoutProvisionerComponent;
 use PGI\Module\PGPayment\Interfaces\Entities\ButtonEntityInterface;
 use PGI\Module\PGPayment\Services\Handlers\PaymentButtonHandler;
 use PGI\Module\PGServer\Services\Handlers\LinkHandler;

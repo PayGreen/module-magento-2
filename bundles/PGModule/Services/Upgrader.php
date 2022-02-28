@@ -15,13 +15,14 @@
  * @author    PayGreen <contact@paygreen.fr>
  * @copyright 2014 - 2022 Watt Is It
  * @license   https://opensource.org/licenses/mit-license.php MIT License X11
- * @version   2.5.2
+ * @version   2.6.0
  *
  */
 
 namespace PGI\Module\PGModule\Services;
 
 use PGI\Module\PGFramework\Components\Aggregator as AggregatorComponent;
+use PGI\Module\PGLog\Interfaces\LoggerInterface;
 use PGI\Module\PGModule\Components\UpgradeBox;
 use PGI\Module\PGModule\Components\UpgradeStage;
 use PGI\Module\PGModule\Interfaces\UpgradeInterface;
@@ -38,7 +39,7 @@ class Upgrader extends AbstractObject
     /** @var AggregatorComponent */
     private $upgradeAggregator;
 
-    /** @var Logger */
+    /** @var LoggerInterface */
     private $logger;
 
     /** @var array */
@@ -47,12 +48,12 @@ class Upgrader extends AbstractObject
     /**
      * Settings constructor.
      * @param AggregatorComponent $upgradeAggregator
-     * @param Logger $logger
+     * @param LoggerInterface $logger
      * @param array $upgrades
      */
     public function __construct(
         AggregatorComponent $upgradeAggregator,
-        Logger $logger,
+        LoggerInterface $logger,
         array $upgrades
     ) {
         $this->upgradeAggregator = $upgradeAggregator;

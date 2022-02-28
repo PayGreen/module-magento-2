@@ -1,0 +1,7 @@
+{
+  "blocks": {
+    "config_form_cron": {
+      "title": "Configuration du planificateur"
+    }
+  }
+}

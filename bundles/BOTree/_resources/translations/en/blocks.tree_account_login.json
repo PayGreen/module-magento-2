@@ -1,9 +1,0 @@
-{
-  "blocks": {
-    "tree_account_login": {
-      "title": "PayGreen ClimateKit login",
-      "description": "Fill in your ClimateKit identifiers.",
-      "action": "Login"
-    }
-  }
-}

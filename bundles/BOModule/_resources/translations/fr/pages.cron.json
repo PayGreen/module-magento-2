@@ -1,0 +1,8 @@
+{
+  "pages": {
+    "cron": {
+      "name": "Taches planifiées",
+      "title": "Gestion des taches internes planifiées."
+    }
+  }
+}

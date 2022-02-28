@@ -15,14 +15,14 @@
  * @author    PayGreen <contact@paygreen.fr>
  * @copyright 2014 - 2022 Watt Is It
  * @license   https://opensource.org/licenses/mit-license.php MIT License X11
- * @version   2.5.2
+ * @version   2.6.0
  *
  */
 
 namespace PGI\Module\PGServer\Services;
 
 use PGI\Module\PGFramework\Components\Aggregator as AggregatorComponent;
-use PGI\Module\PGModule\Services\Logger;
+use PGI\Module\PGLog\Interfaces\LoggerInterface;
 use PGI\Module\PGServer\Foundations\AbstractRequest;
 use PGI\Module\PGServer\Foundations\AbstractResponse;
 use PGI\Module\PGServer\Interfaces\DeflectorInterface;
@@ -37,12 +37,12 @@ class Derouter
     /** @var AggregatorComponent */
     private $deflectorAggregator;
 
-    /** @var Logger */
+    /** @var LoggerInterface */
     private $logger;
 
     public function __construct(
         AggregatorComponent $deflectorAggregator,
-        Logger $logger
+        LoggerInterface $logger
     ) {
         $this->deflectorAggregator = $deflectorAggregator;
         $this->logger = $logger;

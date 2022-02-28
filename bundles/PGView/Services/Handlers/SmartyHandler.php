@@ -15,13 +15,13 @@
  * @author    PayGreen <contact@paygreen.fr>
  * @copyright 2014 - 2022 Watt Is It
  * @license   https://opensource.org/licenses/mit-license.php MIT License X11
- * @version   2.5.2
+ * @version   2.6.0
  *
  */
 
 namespace PGI\Module\PGView\Services\Handlers;
 
-use PGI\Module\PGModule\Services\Logger;
+use PGI\Module\PGLog\Interfaces\LoggerInterface;
 use PGI\Module\PGSystem\Components\Bag as BagComponent;
 use PGI\Module\PGSystem\Foundations\AbstractObject;
 use PGI\Module\PGSystem\Services\Pathfinder;
@@ -42,7 +42,7 @@ class SmartyHandler extends AbstractObject
     /** @var Pathfinder */
     private $pathfinder;
 
-    /** @var Logger */
+    /** @var LoggerInterface */
     private $logger;
 
     /** @var BagComponent */
@@ -52,13 +52,13 @@ class SmartyHandler extends AbstractObject
      * SmartyHandler constructor.
      * @param SmartyBuilderInterface $smartyBuilder
      * @param Pathfinder $pathfinder
-     * @param Logger $logger
+     * @param LoggerInterface $logger
      * @throws Exception
      */
     public function __construct(
         SmartyBuilderInterface $smartyBuilder,
         Pathfinder $pathfinder,
-        Logger $logger,
+        LoggerInterface $logger,
         array $config
     ) {
         $this->pathfinder = $pathfinder;

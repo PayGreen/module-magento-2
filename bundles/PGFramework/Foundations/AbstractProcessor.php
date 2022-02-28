@@ -15,7 +15,7 @@
  * @author    PayGreen <contact@paygreen.fr>
  * @copyright 2014 - 2022 Watt Is It
  * @license   https://opensource.org/licenses/mit-license.php MIT License X11
- * @version   2.5.2
+ * @version   2.6.0
  *
  */
 
@@ -24,7 +24,7 @@ namespace PGI\Module\PGFramework\Foundations;
 use PGI\Module\PGFramework\Components\Events\Task as TaskEventComponent;
 use PGI\Module\PGFramework\Interfaces\TaskInterface;
 use PGI\Module\PGModule\Services\Broadcaster;
-use PGI\Module\PGModule\Services\Logger;
+use PGI\Module\PGLog\Interfaces\LoggerInterface;
 use PGI\Module\PGSystem\Foundations\AbstractObject;
 use Exception;
 
@@ -101,7 +101,7 @@ abstract class AbstractProcessor extends AbstractObject
      */
     public function execute(TaskInterface $task)
     {
-        /** @var Logger $logger */
+        /** @var LoggerInterface $logger */
         $logger = $this->getService('logger');
 
         $taskName = static::PROCESSOR_NAME;

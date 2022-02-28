@@ -2,7 +2,8 @@
   "blocks": {
     "account_subscription": {
       "title": "Pas encore de compte PayGreen&nbsp;?",
-      "action": "M'inscrire"
+      "action": "M'inscrire",
+      "activate": "Activer mon espace"
     }
   }
 }

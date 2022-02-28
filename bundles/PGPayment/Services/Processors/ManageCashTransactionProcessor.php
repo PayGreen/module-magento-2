@@ -15,7 +15,7 @@
  * @author    PayGreen <contact@paygreen.fr>
  * @copyright 2014 - 2022 Watt Is It
  * @license   https://opensource.org/licenses/mit-license.php MIT License X11
- * @version   2.5.2
+ * @version   2.6.0
  *
  */
 
@@ -42,6 +42,21 @@ class ManageCashTransactionProcessor extends AbstractTransactionManagementProces
                 break;
 
             case PaygreenFacade::STATUS_WAITING:
+                if($task->getTransaction()->getType() != "CB") {
+                    $this->pushSteps(array(
+                        array('setOrderStatus', array('VALIDATE')),
+                        'checkTestingMode',
+                        'checkAmountValidity',
+                        'saveOrder',
+                        'insertTransaction',
+                        array('sendOrderEvent', array('VALIDATION')),
+                        array('setStatus', array(
+                            $task::STATE_SUCCESS
+                        ))
+                    ));
+                }
+
+                break;
             case PaygreenFacade::STATUS_SUCCESSED:
                 $this->pushSteps(array(
                     array('setOrderStatus', array('VALIDATE')),

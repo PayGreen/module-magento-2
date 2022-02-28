@@ -15,7 +15,7 @@
  * @author    PayGreen <contact@paygreen.fr>
  * @copyright 2014 - 2022 Watt Is It
  * @license   https://opensource.org/licenses/mit-license.php MIT License X11
- * @version   2.5.2
+ * @version   2.6.0
  *
  */
 
@@ -23,7 +23,7 @@ namespace PGI\Module\PGModule\Services;
 
 use PGI\Module\PGFramework\Services\Handlers\RequirementHandler;
 use PGI\Module\PGModule\Interfaces\EventInterface;
-use PGI\Module\PGModule\Services\Logger;
+use PGI\Module\PGLog\Interfaces\LoggerInterface;
 use PGI\Module\PGSystem\Components\Parser;
 use PGI\Module\PGSystem\Exceptions\Configuration as ConfigurationException;
 use PGI\Module\PGSystem\Interfaces\Services\ConfigurableServiceInterface;
@@ -45,7 +45,7 @@ class Broadcaster
     /** @var Parser */
     private $parser;
 
-    /** @var Logger */
+    /** @var LoggerInterface */
     private $logger;
 
     private $listeners = array();
@@ -60,7 +60,7 @@ class Broadcaster
     /**
      * Broadcaster constructor.
      * @param Container $container
-     * @param Logger $logger
+     * @param LoggerInterface $logger
      * @param array $listeners
      * @throws ConfigurationException
      */
@@ -68,7 +68,7 @@ class Broadcaster
         Container $container,
         RequirementHandler $requirementHandler,
         Parser $parser,
-        Logger $logger,
+        LoggerInterface $logger,
         array $listeners
     ) {
         $this->container = $container;

@@ -1,0 +1,11 @@
+{
+  "actions": {
+    "cron": {
+      "run": {
+        "result": {
+          "success": "Le planificateur a été exécuté avec succès."
+        }
+      }
+    }
+  }
+}

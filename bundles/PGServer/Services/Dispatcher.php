@@ -15,14 +15,14 @@
  * @author    PayGreen <contact@paygreen.fr>
  * @copyright 2014 - 2022 Watt Is It
  * @license   https://opensource.org/licenses/mit-license.php MIT License X11
- * @version   2.5.2
+ * @version   2.6.0
  *
  */
 
 namespace PGI\Module\PGServer\Services;
 
 use PGI\Module\PGModule\Services\Broadcaster;
-use PGI\Module\PGModule\Services\Logger;
+use PGI\Module\PGLog\Interfaces\LoggerInterface;
 use PGI\Module\PGServer\Components\Events\Action as ActionEventComponent;
 use PGI\Module\PGServer\Foundations\AbstractController;
 use PGI\Module\PGServer\Foundations\AbstractRequest;
@@ -39,7 +39,7 @@ class Dispatcher
 {
     const DEFAULT_ACTION = 'process';
 
-    /** @var Logger */
+    /** @var LoggerInterface */
     private $logger;
 
     /** @var Broadcaster */
@@ -52,7 +52,7 @@ class Dispatcher
     private $actionAggregator;
 
     public function __construct(
-        Logger $logger,
+        LoggerInterface $logger,
         Broadcaster $broadcaster,
         AggregatorComponent $controllerAggregator,
         AggregatorComponent $actionAggregator

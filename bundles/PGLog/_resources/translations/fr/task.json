@@ -1,0 +1,6 @@
+{
+  "task": {
+    "log_zipping_module": "Archivage des fichiers de log.",
+    "log_cleaning": "Suppression des anciennes archives de log."
+  }
+}
