@@ -15,7 +15,7 @@
  * @author    PayGreen <contact@paygreen.fr>
  * @copyright 2014 - 2022 Watt Is It
  * @license   https://opensource.org/licenses/mit-license.php MIT License X11
- * @version   2.6.0
+ * @version   2.6.1
  *
  */
 
@@ -63,6 +63,9 @@ class PaymentCreationHandler extends AbstractObject
         $linkHandler = $this->getService('handler.link');
 
         $customerEntrypoint = $this->config['entrypoints.customer'];
+
+        var_dump($customerEntrypoint);
+        die();
 
         return $linkHandler->buildFrontOfficeUrl($customerEntrypoint);
     }

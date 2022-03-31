@@ -14,7 +14,7 @@
  * @author    PayGreen <contact@paygreen.fr>
  * @copyright 2014 - 2022 Watt Is It
  * @license   https://opensource.org/licenses/mit-license.php MIT License X11
- * @version   2.6.0
+ * @version   2.6.1
  *
  *}
 <h2>{'blocks.cron.tasks.title'|pgtrans}</h2>

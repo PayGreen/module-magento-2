@@ -15,7 +15,7 @@
  * @author    PayGreen <contact@paygreen.fr>
  * @copyright 2014 - 2022 Watt Is It
  * @license   https://opensource.org/licenses/mit-license.php MIT License X11
- * @version   2.6.0
+ * @version   2.6.1
  *
  */
 
@@ -1996,119 +1996,125 @@ array (
 ),
 251 =>
 array (
-'type' => 'PERF',
-'text' => 'Optimisations mineures.',
+'type' => 'FIX',
+'code' => 'PGI-3907',
+'text' => 'Correction d\'une erreur lors de la mise à jour du module sur les versions 5 de php.',
 ),
 252 =>
 array (
 'type' => 'PERF',
-'text' => 'Amélioration du service Parser.',
+'text' => 'Optimisations mineures.',
 ),
 253 =>
 array (
 'type' => 'PERF',
-'text' => 'Optimisation globale du framework.',
+'text' => 'Amélioration du service Parser.',
 ),
 254 =>
 array (
 'type' => 'PERF',
-'text' => 'Factorisation des limitations de montant du panier.',
+'text' => 'Optimisation globale du framework.',
 ),
 255 =>
 array (
 'type' => 'PERF',
-'text' => 'Optimisation de l\'autoloader.',
+'text' => 'Factorisation des limitations de montant du panier.',
 ),
 256 =>
 array (
 'type' => 'PERF',
-'text' => 'Amélioration de l\'enregistrement des settings.',
+'text' => 'Optimisation de l\'autoloader.',
 ),
 257 =>
 array (
 'type' => 'PERF',
-'text' => 'Amélioration de la gestion des erreurs liées au mode Insite.',
+'text' => 'Amélioration de l\'enregistrement des settings.',
 ),
 258 =>
 array (
 'type' => 'PERF',
-'text' => 'Meilleure gestion des upgrades.',
+'text' => 'Amélioration de la gestion des erreurs liées au mode Insite.',
 ),
 259 =>
 array (
 'type' => 'PERF',
-'text' => 'Amélioration de la gestion des settings.',
+'text' => 'Meilleure gestion des upgrades.',
 ),
 260 =>
 array (
 'type' => 'PERF',
-'text' => 'Amélioration de la résilience du système de cache du module et de Smarty.',
+'text' => 'Amélioration de la gestion des settings.',
 ),
 261 =>
 array (
 'type' => 'PERF',
-'text' => 'Amélioration de la résilience de l\'autoloader.',
+'text' => 'Amélioration de la résilience du système de cache du module et de Smarty.',
 ),
 262 =>
 array (
 'type' => 'PERF',
-'text' => 'Amélioration du cache Smarty.',
+'text' => 'Amélioration de la résilience de l\'autoloader.',
 ),
 263 =>
 array (
 'type' => 'PERF',
-'text' => 'Amélioration des logs sur la page de paiement.',
+'text' => 'Amélioration du cache Smarty.',
 ),
 264 =>
 array (
 'type' => 'PERF',
-'text' => 'On affiche plus la balise \'ul\' de notifications si il n\'y a pas de notifications.',
+'text' => 'Amélioration des logs sur la page de paiement.',
 ),
 265 =>
 array (
 'type' => 'PERF',
-'text' => 'Réduction du temps du PID Locking: 30sec -> 3sec.',
+'text' => 'On affiche plus la balise \'ul\' de notifications si il n\'y a pas de notifications.',
 ),
 266 =>
 array (
 'type' => 'PERF',
-'text' => 'Utilisation de la route /availablepaymenttype pour la récupération des moyens de paiement.',
+'text' => 'Réduction du temps du PID Locking: 30sec -> 3sec.',
 ),
 267 =>
 array (
 'type' => 'PERF',
-'text' => 'Utilisation de l\'index d\'autoloading pré-compilé.',
+'text' => 'Utilisation de la route /availablepaymenttype pour la récupération des moyens de paiement.',
 ),
 268 =>
 array (
 'type' => 'PERF',
-'text' => 'Utilisation d\'un includer pré-compilé.',
+'text' => 'Utilisation de l\'index d\'autoloading pré-compilé.',
 ),
 269 =>
+array (
+'type' => 'PERF',
+'text' => 'Utilisation d\'un includer pré-compilé.',
+),
+270 =>
 array (
 'type' => 'PERF',
 'code' => 'PGI-2989',
 'text' => 'Renommer le concept d\'\'extension\' en \'produit\'.',
 ),
-270 =>
+271 =>
 array (
 'type' => 'PERF',
 'code' => 'PGI-2972',
 'text' => 'Renommer le wording du plugin ClimateKit.',
 ),
-271 =>
+272 =>
 array (
 'type' => 'PERF',
 'code' => 'PGI-2975',
 'text' => 'Modification de l\'affichage des crédentials de connexion au compte ClimateKit.',
 ),
-272 =>
+273 =>
 array (
 'type' => 'PERF',
 'code' => 'PGI-3309',
 'text' => 'Factoriser l\'utilisation du Parser dans le service Translator.',
 ),
-273 =>
+274 =>
 array (
 'type' => 'PERF',
 'code' => 'PGI-3420',
@@ -4106,7 +4112,7 @@ array (
 31 =>
 array (
 'version' => '2.6.0',
-'date' => '28/02/2022',
+'date' => '05/11/2021',
 'description' => 'Améliorations divers',
 'notes' =>
 array (
@@ -4213,6 +4219,28 @@ array (
 array (
 'version' => '3.11.0',
 'from' => '3.10.2',
+),
+),
+),
+32 =>
+array (
+'version' => '2.6.1',
+'date' => '29/03/2022',
+'description' => 'Améliorations divers',
+'notes' =>
+array (
+0 =>
+array (
+'type' => 'FIX',
+'code' => 'PGI-3938',
+'text' => 'Correctifs concernant la table transantion_locks.',
+),
+),
+'dependencies' =>
+array (
+'framework' =>
+array (
+'version' => '3.11.0',
 ),
 ),
 ),

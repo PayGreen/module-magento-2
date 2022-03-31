@@ -14,7 +14,7 @@
  * @author    PayGreen <contact@paygreen.fr>
  * @copyright 2014 - 2022 Watt Is It
  * @license   https://opensource.org/licenses/mit-license.php MIT License X11
- * @version   2.6.0
+ * @version   2.6.1
  *
  *}
 <label{if isset($attr.id)} for="{$attr.id|escape:'html':'UTF-8'}"{/if} class="pgform__field__label">
